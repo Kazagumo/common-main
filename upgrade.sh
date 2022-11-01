@@ -16,7 +16,7 @@ function Diy_Part1() {
     sed  -i  's/ luci-app-ttyd//g' $HOME_PATH/target/linux/*/Makefile
     sed  -i  's/ luci-app-autoupdate//g' $HOME_PATH/target/linux/*/Makefile
     sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd?g' $HOME_PATH/target/linux/*/Makefile
-    [[ -d $HOME_PATH/package/luci-app-autoupdate ]] && echo "增加定时更新插件成功"
+    [[ -d $HOME_PATH/package/luci-app-autoupdate ]] && echo "增加定时更新固件的插件成功"
   else
     echo "没发现AutoUpdate.sh文件存在，不能增加在线升级固件程序"
   fi
