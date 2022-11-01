@@ -857,7 +857,7 @@ else
 fi
 export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-
+echo "${TARGET_PROFILE}"
 
 if [[ ! ${bendi_script} == "1" ]]; then
   echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
