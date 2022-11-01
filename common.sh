@@ -105,6 +105,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> ${GITHUB_ENV}
   echo "BY_INFORMATION=${BY_INFORMATION}" >> ${GITHUB_ENV}
   echo "Library=${Warehouse##*/}" >> ${GITHUB_ENV}
+  echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
   echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
   echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
   echo "MAINTAIN=${MAINTAIN}" >> ${GITHUB_ENV}
