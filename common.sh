@@ -390,6 +390,24 @@ AMLOGIC)
   sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
 ;;
 esac
+
+
+# 增加应用文件
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O ${BASE_PATH}/etc/FinishIng.sh
+fi
+chmod 775 ${BASE_PATH}/etc/FinishIng.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > ${BASE_PATH}/etc/init.d/FinishIng
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O ${BASE_PATH}/etc/init.d/FinishIng
+fi
+chmod 775 ${BASE_PATH}/etc/init.d/FinishIng
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > ${BASE_PATH}/etc/webweb.sh
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O ${BASE_PATH}/etc/webweb.sh
+fi
+chmod 775 ${BASE_PATH}/etc/webweb.sh
 }
 
 function Diy_conf() {
@@ -490,26 +508,6 @@ if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "1
   /bin/bash ${HOME_PATH}/zh_Hans.sh
   rm -rf ${HOME_PATH}/zh_Hans.sh
 fi
-}
-
-
-function Diy_webweb() {
-# 增加应用文件
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O ${BASE_PATH}/etc/FinishIng.sh
-fi
-chmod 775 ${BASE_PATH}/etc/FinishIng.sh
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > ${BASE_PATH}/etc/init.d/FinishIng
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O ${BASE_PATH}/etc/init.d/FinishIng
-fi
-chmod 775 ${BASE_PATH}/etc/init.d/FinishIng
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > ${BASE_PATH}/etc/webweb.sh
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O ${BASE_PATH}/etc/webweb.sh
-fi
-chmod 775 ${BASE_PATH}/etc/webweb.sh
 }
 
 
