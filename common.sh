@@ -90,6 +90,7 @@ esac
 
 
 if [[ ! ${bendi_script} == "1" ]]; then
+  echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
   echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
   echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
   echo "PACKAGE_BRANCH=${PACKAGE_BRANCH}" >> ${GITHUB_ENV}
