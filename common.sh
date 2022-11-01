@@ -250,26 +250,6 @@ TIME r ""
 }
 
 
-function Diy_webweb() {
-# 拉取源码之后，feeds之前增加应用文件
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O ${BASE_PATH}/etc/FinishIng.sh
-fi
-chmod 775 ${BASE_PATH}/etc/FinishIng.sh
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > ${BASE_PATH}/etc/init.d/FinishIng
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O ${BASE_PATH}/etc/init.d/FinishIng
-fi
-chmod 775 ${BASE_PATH}/etc/init.d/FinishIng
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > ${BASE_PATH}/etc/webweb.sh
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O ${BASE_PATH}/etc/webweb.sh
-fi
-chmod 775 ${BASE_PATH}/etc/webweb.sh
-}
-
-
 function Diy_clean() {
 echo "正在执行：进行源码微调"
 # 拉库和做标记
@@ -411,6 +391,28 @@ AMLOGIC)
 ;;
 esac
 }
+
+
+
+function Diy_webweb() {
+# 拉取源码之后，feeds之前增加应用文件
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O ${BASE_PATH}/etc/FinishIng.sh
+fi
+chmod 775 ${BASE_PATH}/etc/FinishIng.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > ${BASE_PATH}/etc/init.d/FinishIng
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O ${BASE_PATH}/etc/init.d/FinishIng
+fi
+chmod 775 ${BASE_PATH}/etc/init.d/FinishIng
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > ${BASE_PATH}/etc/webweb.sh
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O ${BASE_PATH}/etc/webweb.sh
+fi
+chmod 775 ${BASE_PATH}/etc/webweb.sh
+}
+
 
 
 function Diy_conf() {
@@ -1096,7 +1098,7 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
-function Diy_menu2() {
+function Diy_menu4() {
 if [[ ! "${bendi_script}" == "1" ]]; then
   Diy_prevent
 fi
@@ -1104,11 +1106,9 @@ Make_defconfig
 Diy_adguardhome
 }
 
-function Diy_menu() {
-Diy_clean
+function Diy_menu3() {
 Diy_conf
 Diy_files
-Diy_webweb
 Diy_part_sh
 Diy_upgrade1
 sbin_openwrt
@@ -1118,4 +1118,14 @@ Diy_Language
 Diy_zzz
 Diy_amlogic
 Diy_feeds
+}
+
+function Diy_menu2() {
+Diy_clean
+Diy_webweb
+}
+
+function Diy_menu1() {
+Diy_repo_url
+Diy_settings
 }
