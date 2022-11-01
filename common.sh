@@ -413,7 +413,7 @@ EOF
 
 function Diy_part_sh() {
 cd ${HOME_PATH}
-echo "正在执行：运行$DIY_PART_SH文件"
+echo "正在执行：openclash分支选择"
 
 # 修正连接数
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
@@ -431,16 +431,6 @@ else
   echo "没发现该分支的openclash，默认使用master分支"
   git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
   echo "正在使用master分支的openclash"
-fi
-}
-
-
-function sbin_openwrt() {
-if [[ -f ${BUILD_PATH}/openwrt.sh ]]; then
-  echo "正在执行：给固件增加[openwrt]命令"
-  [[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir ${BASE_PATH}/usr/bin
-  cp -Rf ${BUILD_PATH}/openwrt.sh ${BASE_PATH}/usr/bin/openwrt
-  chmod 777 ${BASE_PATH}/usr/bin/openwrt
 fi
 }
 
@@ -464,6 +454,16 @@ if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
 fi
 chmod -R 775 ${HOME_PATH}/files
 rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
+}
+
+
+function sbin_openwrt() {
+if [[ -f ${BUILD_PATH}/openwrt.sh ]]; then
+  echo "正在执行：给固件增加[openwrt]命令"
+  [[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir ${BASE_PATH}/usr/bin
+  cp -Rf ${BUILD_PATH}/openwrt.sh ${BASE_PATH}/usr/bin/openwrt
+  chmod 777 ${BASE_PATH}/usr/bin/openwrt
+fi
 }
 
 
