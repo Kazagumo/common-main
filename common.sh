@@ -1098,7 +1098,7 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
-function Diy_menu4() {
+function Diy_menu5() {
 if [[ ! "${bendi_script}" == "1" ]]; then
   Diy_prevent
 fi
@@ -1106,7 +1106,7 @@ Make_defconfig
 Diy_adguardhome
 }
 
-function Diy_menu3() {
+function Diy_menu4() {
 Diy_conf
 Diy_files
 Diy_part_sh
@@ -1120,9 +1120,14 @@ Diy_amlogic
 Diy_feeds
 }
 
-function Diy_menu2() {
+function Diy_menu3() {
 Diy_clean
 Diy_webweb
+}
+
+function Diy_menu2() {
+Diy_variable
+Diy_Notice
 }
 
 function Diy_menu1() {
