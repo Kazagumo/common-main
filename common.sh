@@ -262,6 +262,10 @@ COOLSNOWWOLF)
   # 给固件LUCI做个标记
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  
+  sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
+  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
+  sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
 ;;
 LIENOL)
   # 删除重复插件（Lienol）
@@ -325,9 +329,17 @@ IMMORTALWRT)
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
     sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
     echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+    
+    sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/*/index.htm
+    sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/*/index.htm
+    sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/*/index.htm
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
     sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
     echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+    
+    sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/generic/index.htm
+    sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/generic/index.htm
+    sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/generic/index.htm
   fi
   
   # 给源码增加luci-app-ssr-plus为默认自选
@@ -365,6 +377,10 @@ AMLOGIC)
   # 给固件LUCI做个标记
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  
+  sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
+  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
+  sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
 ;;
 esac
 }
@@ -392,6 +408,9 @@ cat >>"${KEEPD}" <<-EOF
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background
 EOF
+
+rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+svn export https://github.com/sbwml/packages_lang_golang/branches/19.x ${HOME_PATH}/feeds/packages/lang/golang
 }
 
 
@@ -463,20 +482,6 @@ sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE}/ && sync
 sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 }
 
-function Diy_indexhtm() {
-echo "正在执行：去除主页一串的LUCI版本号显示"
-if [[ "${REPO_BRANCH}" == "master" ]]; then
-  sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
-  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
-  sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
-fi
-if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-  sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/*/index.htm
-  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/*/index.htm
-  sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/*/index.htm
-fi
-}
-
 function Diy_patches() {
 echo "正在执行：如果有补丁文件，给源码打补丁"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
@@ -489,8 +494,6 @@ fi
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
   find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
-rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-svn export https://github.com/sbwml/packages_lang_golang/branches/19.x ${HOME_PATH}/feeds/packages/lang/golang
 }
 
 function Diy_upgrade1() {
@@ -791,10 +794,7 @@ fi
 function Diy_files() {
 echo "正在执行：files大法，设置固件无烦恼"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/${SOURCE}/* ${BUILD_PATH}
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* ${BUILD_PATH}
-else
-  cp -Rf ${HOME_PATH}/build/common/${SOURCE}/* ${BUILD_PATH}
 fi
 
 if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
@@ -836,27 +836,8 @@ sed -i "/exit 0/i\/etc/init.d/FinishIng enable" "${ZZZ_PATH}"
 
 function Make_defconfig() {
 echo "正在执行：识别源码编译为何机型"
-export TAR_BOARD1="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
-export TAR_SUBTARGET1="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
-echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
-echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
-if [ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` -eq '1' ]; then
-  echo "TARGET_PROFILE=x86-64" >> ${GITHUB_ENV}
-elif [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` == '0' ]]; then
-  echo "TARGET_PROFILE=x86_32" >> ${GITHUB_ENV}
-elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]; then
-  grep '^CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
-  [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> ${GITHUB_ENV}
-else
-  echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
-fi
-echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1" >> ${GITHUB_ENV}
-}
-
-function Make_upgrade() {
-## 本地编译加载机型用
-export TARGET_BOARD1="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
-export TARGET_SUBTARGET1="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
 if [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="x86-64"
 elif [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` == '0' ]]; then
@@ -866,8 +847,16 @@ elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; t
 else
   export TARGET_PROFILE="${TARGET_BOARD}"
 fi
-export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD1}/${TARGET_SUBTARGET1}
-export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD1}/${TARGET_SUBTARGET1}
+export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+
+
+if [[ ! ${bendi_script} == "1" ]]; then
+  echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
+  echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
+  echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
+  echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
+fi
 }
 
 function Diy_upgrade3() {
@@ -878,7 +867,7 @@ fi
 }
 
 function Diy_organize() {
-cd ${FIRMWARE}
+cd ${FIRMWARE_PATH}
 mkdir -p ipk
 cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sync && sudo rm -rf ipk
