@@ -109,6 +109,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
   echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
   echo "MAINTAIN=${MAINTAIN}" >> ${GITHUB_ENV}
+  echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
 fi
 }
 
@@ -209,7 +210,6 @@ esac
 
 
 if [[ ! ${bendi_script} == "1" ]]; then
-  echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
   echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
   echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
