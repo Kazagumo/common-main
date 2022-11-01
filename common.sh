@@ -47,7 +47,7 @@ LIENOL)
   export SOURCE="Lienol"
   export MAINTAIN="Lienol's"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
-    export PACKAGE_BRANCH="21.02"
+    export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="master"
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     export PACKAGE_BRANCH="21.02"
@@ -285,7 +285,8 @@ LIENOL)
   # 给固件LUCI做个标记
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-    echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+    echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
     echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
@@ -294,6 +295,7 @@ LIENOL)
     if [[ `grep -c "KernelPackage/inet-diag" ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
       curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/libs/package/kernel/linux/modules/2102netsupport.mk > ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk
     fi
+  
   elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
     sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
     echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
@@ -327,6 +329,7 @@ IMMORTALWRT)
     
     export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
     curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+  
   elif [[ "${REPO_BRANCH}" == "master" ]]; then
     sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
     echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
@@ -335,6 +338,7 @@ IMMORTALWRT)
     
     export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
     curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+  
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
     sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
     echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
@@ -342,6 +346,7 @@ IMMORTALWRT)
     sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/*/index.htm
     sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/*/index.htm
     sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/*/index.htm
+  
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
     sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
     echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
