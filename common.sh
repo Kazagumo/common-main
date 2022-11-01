@@ -465,8 +465,6 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
 
 function Diy_part_sh() {
 cd ${HOME_PATH}
-echo "正在执行：openclash分支选择"
-
 # 修正连接数
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
 echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
@@ -1113,7 +1111,6 @@ Diy_part_sh
 Diy_upgrade1
 sbin_openwrt
 Diy_amlogic
-Diy_part_sh
 Diy_Language
 Diy_zzz
 Diy_amlogic
