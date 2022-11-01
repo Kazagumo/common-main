@@ -1092,29 +1092,23 @@ function Diy_menu2() {
 if [[ ! "${bendi_script}" == "1" ]]; then
   Diy_prevent
 fi
-Diy_files
-Diy_zzz
-sbin_openwrt
+Make_defconfig
 Diy_adguardhome
-Diy_Language
-if [[ ! "${bendi_script}" == "1" ]]; then
-  Make_defconfig
-else
-  Make_upgrade
-fi
 }
 
 function Diy_menu() {
-if [[ ! ${ERCI_BYGJ} == "1" ]]; then
-  Diy_clean
-fi
+Diy_clean
 Diy_conf
+Diy_files
 Diy_webweb
-Diy_${SOURCE}
+Diy_part_sh
+Diy_upgrade1
+sbin_openwrt
 Diy_amlogic
 Diy_part_sh
-Diy_indexhtm
-Diy_patches
-Diy_upgrade1
+Diy_Language
+Diy_webweb
+Diy_zzz
+Diy_amlogic
 Diy_feeds
 }
