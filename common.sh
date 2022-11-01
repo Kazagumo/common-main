@@ -109,7 +109,6 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
   echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
   echo "MAINTAIN=${MAINTAIN}" >> ${GITHUB_ENV}
-  echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
 fi
 }
 
