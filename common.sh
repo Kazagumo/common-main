@@ -169,6 +169,7 @@ fi
 }
 
 function Diy_variable() {
+
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
   ZZZ_PATH="${HOME_PATH}/package/lean/default-settings/files/zzz-default-settings"
@@ -198,6 +199,10 @@ AMLOGIC)
     TIME r "上游源码作者修改了zzz-default-settings文件的路径或者名称，找编译脚本的作者及时更正脚本代码"
     exit 1
   fi
+;;
+*)
+  TIME r "没有发现该源码,或者源码获取方法已更改,请同步上游仓库，或者重新拉取上游仓库，特别留意settings.ini的更改"
+  exit 1
 ;;
 esac
 
