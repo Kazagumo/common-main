@@ -171,7 +171,8 @@ fi
 function Diy_variable() {
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
-  export ZZZ_PATH="${HOME_PATH}/package/lean/default-settings/files/zzz-default-settings"
+  ZZZ_PATH="${HOME_PATH}/package/lean/default-settings/files/zzz-default-settings"
+  echo "${ZZZ_PATH}"
   if [[ ! -f "${ZZZ_PATH}" ]]; then
     TIME r "上游源码作者修改了zzz-default-settings文件的路径或者名称，找编译脚本的作者及时更正脚本代码"
     exit 1
