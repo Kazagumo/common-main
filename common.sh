@@ -244,7 +244,7 @@ TIME r ""
 
 
 function Diy_clean() {
-echo "正在执行：更新插件源,让源码更多插件存在"
+echo "正在执行：进行源码微调"
 # 拉库和做标记
 
 ./scripts/feeds clean
@@ -386,7 +386,7 @@ esac
 }
 
 function Diy_conf() {
-# 给feeds.conf.default增加插件源
+echo "正在执行：给feeds.conf.default增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 echo "
 src-git helloworld https://github.com/fw876/helloworld
@@ -408,9 +408,30 @@ cat >>"${KEEPD}" <<-EOF
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background
 EOF
+}
 
-rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-svn export https://github.com/sbwml/packages_lang_golang/branches/19.x ${HOME_PATH}/feeds/packages/lang/golang
+
+function Diy_part_sh() {
+cd ${HOME_PATH}
+echo "正在执行：运行$DIY_PART_SH文件"
+
+# 修正连接数
+sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
+echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
+
+# openclash分支选择
+find . -name 'luci-app-openclash' | xargs -i rm -rf {}
+if [[ "${OpenClash_branch}" == "master" ]]; then
+  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+  echo "正在使用master分支的openclash"
+elif [[ "${OpenClash_branch}" == "dev" ]]; then
+  git clone -b dev --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+  echo "正在使用dev分支的openclash"
+else
+  echo "没发现该分支的openclash，默认使用master分支"
+  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+  echo "正在使用master分支的openclash"
+fi
 }
 
 
@@ -421,6 +442,28 @@ if [[ -f ${BUILD_PATH}/openwrt.sh ]]; then
   cp -Rf ${BUILD_PATH}/openwrt.sh ${BASE_PATH}/usr/bin/openwrt
   chmod 777 ${BASE_PATH}/usr/bin/openwrt
 fi
+}
+
+
+function Diy_files() {
+echo "正在执行：files大法，设置固件无烦恼"
+if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
+  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* ${BUILD_PATH}
+fi
+
+if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
+  find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
+fi
+
+if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
+  cp -Rf ${BUILD_PATH}/diy/* ${HOME_PATH}
+fi
+
+if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
+  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
+fi
+chmod -R 775 ${HOME_PATH}/files
+rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
 }
 
 
@@ -480,20 +523,6 @@ sudo chmod +x make
 sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
 sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
 sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
-}
-
-function Diy_patches() {
-echo "正在执行：如果有补丁文件，给源码打补丁"
-if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/${SOURCE}/* ${BUILD_PATH}
-  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* ${BUILD_PATH}
-else
-  cp -Rf ${HOME_PATH}/build/common/${SOURCE}/* ${BUILD_PATH}
-fi
-
-if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
-  find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
-fi
 }
 
 function Diy_upgrade1() {
@@ -774,6 +803,17 @@ if [[ ! ${bendi_script} == "1" ]]; then
 fi
 }
 
+function Diy_Language() {
+if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
+  echo "正在执行：把插件语言转换成zh_Hans"
+  cd ${HOME_PATH}
+  cp -Rf ${HOME_PATH}/build/common/Convert/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
+  chmod +x ${HOME_PATH}/zh_Hans.sh
+  /bin/bash ${HOME_PATH}/zh_Hans.sh
+  rm -rf ${HOME_PATH}/zh_Hans.sh
+fi
+}
+
 function Diy_adguardhome() {
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "正在执行：给adguardhome下载核心"
@@ -816,22 +856,6 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
 fi
 }
 
-function Diy_files() {
-echo "正在执行：files大法，设置固件无烦恼"
-if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* ${BUILD_PATH}
-fi
-
-if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
-  cp -Rf ${BUILD_PATH}/diy/* ${HOME_PATH}
-fi
-if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
-  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
-fi
-chmod -R 775 ${HOME_PATH}/files
-rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
-}
-
 function Diy_webweb() {
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
 if [[ $? -ne 0 ]]; then
@@ -851,7 +875,7 @@ chmod 775 ${BASE_PATH}/etc/webweb.sh
 }
 
 function Diy_zzz() {
-echo "正在执行：在zzz-default-settings文件加条执行命令"
+# zzz-default-settings文件加条执行命令
 sed -i '/webweb.sh/d' "${ZZZ_PATH}"
 sed -i "/exit 0/i\source /etc/webweb.sh" "${ZZZ_PATH}"
 
@@ -893,41 +917,6 @@ function Diy_firmware() {
 echo "正在执行：整理固件,您不想要啥就删啥,删删删"
 Diy_upgrade3
 Diy_organize
-}
-
-function Diy_Language() {
-if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
-  echo "正在执行：把插件语言转换成zh_Hans"
-  cd ${HOME_PATH}
-  cp -Rf ${HOME_PATH}/build/common/Convert/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  chmod +x ${HOME_PATH}/zh_Hans.sh
-  /bin/bash ${HOME_PATH}/zh_Hans.sh
-  rm -rf ${HOME_PATH}/zh_Hans.sh
-fi
-}
-
-function Diy_part_sh() {
-cd ${HOME_PATH}
-echo "正在执行：运行$DIY_PART_SH文件"
-source "${BUILD_PATH}/${DIY_PART_SH}"
-
-# 修正连接数
-sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
-echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
-
-# openclash分支选择
-find . -name 'luci-app-openclash' | xargs -i rm -rf {}
-if [[ "${OpenClash_branch}" == "master" ]]; then
-  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用master分支的openclash"
-elif [[ "${OpenClash_branch}" == "dev" ]]; then
-  git clone -b dev --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用dev分支的openclash"
-else
-  echo "没发现该分支的openclash，默认使用master分支"
-  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用master分支的openclash"
-fi
 }
 
 function Diy_feeds() {
