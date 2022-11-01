@@ -331,6 +331,8 @@ IMMORTALWRT)
     sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
     echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
     
+    rm -rf package/network/services/dnsmasq && svn co https://github.com/Lienol/openwrt/trunk/package/network/services/dnsmasq package/network/services/dnsmasq
+    
     export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
     curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
