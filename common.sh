@@ -455,11 +455,11 @@ echo "正在执行：打包N1和景晨系列固件"
 cd ${GITHUB_WORKSPACE}
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
 [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
-if [[ `ls -1 "${FIRMWARE}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
-  cp -Rf ${FIRMWARE}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
+  cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 else
-  armvirtargz="$(ls -1 "${FIRMWARE}" |grep ".*tar.gz" |awk 'END {print}')"
-  cp -Rf ${FIRMWARE}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+  armvirtargz="$(ls -1 "${FIRMWARE_PATH}" |grep ".*tar.gz" |awk 'END {print}')"
+  cp -Rf ${FIRMWARE_PATH}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 fi
 # 自定义机型,内核,分区
 if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
@@ -478,7 +478,7 @@ fi
 cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
 sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
-sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE}/ && sync
+sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
 sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 }
 
@@ -749,6 +749,31 @@ if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
 fi
 }
 
+function Make_defconfig() {
+echo "正在执行：识别源码编译为何机型"
+export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
+if [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  export TARGET_PROFILE="x86-64"
+elif [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` == '0' ]]; then
+  export TARGET_PROFILE="x86_32"
+elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  export TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+else
+  export TARGET_PROFILE="${TARGET_BOARD}"
+fi
+export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+
+
+if [[ ! ${bendi_script} == "1" ]]; then
+  echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
+  echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
+  echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
+  echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
+fi
+}
+
 function Diy_adguardhome() {
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "正在执行：给adguardhome下载核心"
@@ -834,34 +859,9 @@ sed -i '/FinishIng/d' "${ZZZ_PATH}"
 sed -i "/exit 0/i\/etc/init.d/FinishIng enable" "${ZZZ_PATH}"
 }
 
-function Make_defconfig() {
-echo "正在执行：识别源码编译为何机型"
-export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
-export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
-if [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  export TARGET_PROFILE="x86-64"
-elif [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` == '0' ]]; then
-  export TARGET_PROFILE="x86_32"
-elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  export TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
-else
-  export TARGET_PROFILE="${TARGET_BOARD}"
-fi
-export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-
-
-if [[ ! ${bendi_script} == "1" ]]; then
-  echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
-  echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
-  echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
-  echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
-fi
-}
-
 function Diy_upgrade3() {
 if [ "${REGULAR_UPDATE}" == "true" ]; then
-  cp -Rf ${FIRMWARE} ${HOME_PATH}/upgrade
+  cp -Rf ${FIRMWARE_PATH} ${HOME_PATH}/upgrade
   source ${BUILD_PATH}/upgrade.sh && Diy_Part3
 fi
 }
