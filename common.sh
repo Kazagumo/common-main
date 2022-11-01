@@ -250,6 +250,26 @@ TIME r ""
 }
 
 
+function Diy_webweb() {
+# 拉取源码之后，feeds之前增加应用文件
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O ${BASE_PATH}/etc/FinishIng.sh
+fi
+chmod 775 ${BASE_PATH}/etc/FinishIng.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > ${BASE_PATH}/etc/init.d/FinishIng
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O ${BASE_PATH}/etc/init.d/FinishIng
+fi
+chmod 775 ${BASE_PATH}/etc/init.d/FinishIng
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > ${BASE_PATH}/etc/webweb.sh
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O ${BASE_PATH}/etc/webweb.sh
+fi
+chmod 775 ${BASE_PATH}/etc/webweb.sh
+}
+
+
 function Diy_clean() {
 echo "正在执行：进行源码微调"
 # 拉库和做标记
@@ -390,25 +410,8 @@ AMLOGIC)
   sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
 ;;
 esac
-
-
-# 增加应用文件
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O ${BASE_PATH}/etc/FinishIng.sh
-fi
-chmod 775 ${BASE_PATH}/etc/FinishIng.sh
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > ${BASE_PATH}/etc/init.d/FinishIng
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O ${BASE_PATH}/etc/init.d/FinishIng
-fi
-chmod 775 ${BASE_PATH}/etc/init.d/FinishIng
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > ${BASE_PATH}/etc/webweb.sh
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O ${BASE_PATH}/etc/webweb.sh
-fi
-chmod 775 ${BASE_PATH}/etc/webweb.sh
 }
+
 
 function Diy_conf() {
 echo "正在执行：给feeds.conf.default增加插件源"
@@ -1112,7 +1115,6 @@ sbin_openwrt
 Diy_amlogic
 Diy_part_sh
 Diy_Language
-Diy_webweb
 Diy_zzz
 Diy_amlogic
 Diy_feeds
