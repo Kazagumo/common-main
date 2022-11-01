@@ -411,6 +411,28 @@ EOF
 }
 
 
+function Diy_files() {
+echo "正在执行：files大法，设置固件无烦恼"
+if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
+  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* ${BUILD_PATH}
+fi
+
+if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
+  find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
+fi
+
+if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
+  cp -Rf ${BUILD_PATH}/diy/* ${HOME_PATH}
+fi
+
+if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
+  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
+fi
+chmod -R 775 ${HOME_PATH}/files
+rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
+}
+
+
 function Diy_part_sh() {
 cd ${HOME_PATH}
 echo "正在执行：openclash分支选择"
@@ -435,25 +457,10 @@ fi
 }
 
 
-function Diy_files() {
-echo "正在执行：files大法，设置固件无烦恼"
-if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* ${BUILD_PATH}
+function Diy_upgrade1() {
+if [[ "${REGULAR_UPDATE}" == "true" ]]; then
+  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
 fi
-
-if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
-  find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
-fi
-
-if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
-  cp -Rf ${BUILD_PATH}/diy/* ${HOME_PATH}
-fi
-
-if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
-  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
-fi
-chmod -R 775 ${HOME_PATH}/files
-rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
 }
 
 
@@ -464,6 +471,48 @@ if [[ -f ${BUILD_PATH}/openwrt.sh ]]; then
   cp -Rf ${BUILD_PATH}/openwrt.sh ${BASE_PATH}/usr/bin/openwrt
   chmod 777 ${BASE_PATH}/usr/bin/openwrt
 fi
+}
+
+
+function Diy_Language() {
+if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
+  echo "正在执行：把插件语言转换成zh_Hans"
+  cd ${HOME_PATH}
+  cp -Rf ${HOME_PATH}/build/common/Convert/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
+  chmod +x ${HOME_PATH}/zh_Hans.sh
+  /bin/bash ${HOME_PATH}/zh_Hans.sh
+  rm -rf ${HOME_PATH}/zh_Hans.sh
+fi
+}
+
+
+function Diy_webweb() {
+# 增加应用文件
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O ${BASE_PATH}/etc/FinishIng.sh
+fi
+chmod 775 ${BASE_PATH}/etc/FinishIng.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > ${BASE_PATH}/etc/init.d/FinishIng
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O ${BASE_PATH}/etc/init.d/FinishIng
+fi
+chmod 775 ${BASE_PATH}/etc/init.d/FinishIng
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > ${BASE_PATH}/etc/webweb.sh
+if [[ $? -ne 0 ]]; then
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O ${BASE_PATH}/etc/webweb.sh
+fi
+chmod 775 ${BASE_PATH}/etc/webweb.sh
+}
+
+
+function Diy_zzz() {
+# zzz-default-settings文件加条执行命令
+sed -i '/webweb.sh/d' "${ZZZ_PATH}"
+sed -i "/exit 0/i\source /etc/webweb.sh" "${ZZZ_PATH}"
+
+sed -i '/FinishIng/d' "${ZZZ_PATH}"
+sed -i "/exit 0/i\/etc/init.d/FinishIng enable" "${ZZZ_PATH}"
 }
 
 
@@ -491,6 +540,18 @@ if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/package/lean/autocore/Makefile
 fi
 }
+
+
+function Diy_feeds() {
+echo "正在执行：更新feeds,请耐心等待..."
+cd ${HOME_PATH}
+./scripts/feeds update -a
+./scripts/feeds install -a > /dev/null 2>&1
+./scripts/feeds install -a
+[[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
+make defconfig > /dev/null 2>&1
+}
+
 
 function Package_amlogic() {
 echo "正在执行：打包N1和景晨系列固件"
@@ -525,11 +586,6 @@ sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
 sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 }
 
-function Diy_upgrade1() {
-if [[ "${REGULAR_UPDATE}" == "true" ]]; then
-  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
-fi
-}
 
 function Diy_prevent() {
 echo "正在执行：判断插件有否冲突减少编译错误"
@@ -803,16 +859,6 @@ if [[ ! ${bendi_script} == "1" ]]; then
 fi
 }
 
-function Diy_Language() {
-if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
-  echo "正在执行：把插件语言转换成zh_Hans"
-  cd ${HOME_PATH}
-  cp -Rf ${HOME_PATH}/build/common/Convert/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  chmod +x ${HOME_PATH}/zh_Hans.sh
-  /bin/bash ${HOME_PATH}/zh_Hans.sh
-  rm -rf ${HOME_PATH}/zh_Hans.sh
-fi
-}
 
 function Diy_adguardhome() {
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
@@ -856,32 +902,6 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
 fi
 }
 
-function Diy_webweb() {
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O ${BASE_PATH}/etc/FinishIng.sh
-fi
-chmod 775 ${BASE_PATH}/etc/FinishIng.sh
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > ${BASE_PATH}/etc/init.d/FinishIng
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O ${BASE_PATH}/etc/init.d/FinishIng
-fi
-chmod 775 ${BASE_PATH}/etc/init.d/FinishIng
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > ${BASE_PATH}/etc/webweb.sh
-if [[ $? -ne 0 ]]; then
-  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O ${BASE_PATH}/etc/webweb.sh
-fi
-chmod 775 ${BASE_PATH}/etc/webweb.sh
-}
-
-function Diy_zzz() {
-# zzz-default-settings文件加条执行命令
-sed -i '/webweb.sh/d' "${ZZZ_PATH}"
-sed -i "/exit 0/i\source /etc/webweb.sh" "${ZZZ_PATH}"
-
-sed -i '/FinishIng/d' "${ZZZ_PATH}"
-sed -i "/exit 0/i\/etc/init.d/FinishIng enable" "${ZZZ_PATH}"
-}
 
 function Diy_upgrade3() {
 if [ "${REGULAR_UPDATE}" == "true" ]; then
@@ -889,6 +909,7 @@ if [ "${REGULAR_UPDATE}" == "true" ]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part3
 fi
 }
+
 
 function Diy_organize() {
 cd ${FIRMWARE_PATH}
@@ -913,23 +934,12 @@ if [ "${REGULAR_UPDATE}" == "true" ]; then
 fi
 }
 
+
 function Diy_firmware() {
 echo "正在执行：整理固件,您不想要啥就删啥,删删删"
 Diy_upgrade3
 Diy_organize
 }
-
-function Diy_feeds() {
-echo "正在执行：更新feeds,请耐心等待..."
-cd ${HOME_PATH}
-./scripts/feeds update -a
-./scripts/feeds install -a > /dev/null 2>&1
-./scripts/feeds install -a
-[[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
-make defconfig > /dev/null 2>&1
-}
-
-
 
 
 function Diy_xinxi() {
