@@ -1,28 +1,10 @@
-#!/bin/sh /etc/rc.common
-START=85
-STOP=15
-#PROCD=1
-
-start(){
-     echo "monitor-inet startup ..."
-     res=`ps |grep "*monitor_inet" | grep /bin/sh`
-        if [ -n "${res}" ];then
-          echo "monitor_inet existence exiting.." > /dev/console
-          return 0
-        else
-          ./etc/momitor_inet.sh & 
-          return 1
-        fi
-}
-stop(){
-      pid=`ps |grep "*monitor_inet" | grep /bin/sh | awk '{print $1}'`
-      if [ -n "${res}" ];then
-        kill ${pid}
-      fi
-      return 0
-
-}
-restart(){
-      echo "monitor-inet don,t restart command"
-      return 0
-}
+#!/bin/sh
+sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
+echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION='18.06'" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"Immortalwrt-18.06\"" >> /usr/lib/lua/luci/version.lua
