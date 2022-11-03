@@ -246,21 +246,7 @@ EOF
 }
 
 
-function Diy_chajianyuan() {
-echo "正在执行：给feeds.conf.default增加插件源"
-# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
-echo "
-src-git helloworld https://github.com/fw876/helloworld
-src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
-src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
-src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
-src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
-src-git nas https://github.com/linkease/nas-packages.git;master
-src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
-" >> ${HOME_PATH}/feeds.conf.default
-sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
-sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
-
+function Diy_clean() {
 ./scripts/feeds clean
 ./scripts/feeds update -a
 }
@@ -428,6 +414,23 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
 sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
 sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
+}
+
+
+function Diy_chajianyuan() {
+echo "正在执行：给feeds.conf.default增加插件源"
+# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
+echo "
+src-git helloworld https://github.com/fw876/helloworld
+src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
+src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
+src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
+src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
+src-git nas https://github.com/linkease/nas-packages.git;master
+src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
+" >> ${HOME_PATH}/feeds.conf.default
+sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
+sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
 }
 
 
@@ -753,6 +756,12 @@ if [[ ! "${REGULAR_UPDATE}" == "true" ]] || [[ -z "${REPO_TOKEN}" ]]; then
   sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
 fi
 
+if [[ "${SOURCE_CODE}" == "IMMORTALWRT" && "${REPO_BRANCH}" == "master" ]] || [[ "${SOURCE_CODE}" == "IMMORTALWRT" && "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+  echo -e "\nCONFIG_PACKAGE_luci=y" >> "${HOME_PATH}/.config"
+  echo -e "\nCONFIG_LUCI_LANG_zh_Hans=y" >> "${HOME_PATH}/.config"
+  echo -e "\nCONFIG_PACKAGE_luci-i18n-base-zh-cn=y" >> "${HOME_PATH}/.config"
+fi
+
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   PARTSIZE="$(egrep -o "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
   if [[ "${PARTSIZE}" -lt "950" ]];then
@@ -1057,9 +1066,10 @@ Diy_feeds
 }
 
 function Diy_menu3() {
+Diy_clean
 Diy_wenjian
-Diy_chajianyuan
 Diy_${SOURCE_CODE}
+Diy_chajianyuan
 }
 
 function Diy_menu2() {
