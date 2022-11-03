@@ -220,6 +220,13 @@ sudo touch "${BASE_PATH}/etc/init.d/Postapplication"
 sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
 sudo cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
 
+
+[[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir ${BASE_PATH}/usr/bin
+sudo rm -rf "${BASE_PATH}/usr/bin/openwrt"
+sudo touch "${BASE_PATH}/usr/bin/openwrt"
+sudo chmod +x "${BASE_PATH}/usr/bin/openwrt"
+sudo cp ${BUILD_PATH}/openwrt.sh "${BASE_PATH}/usr/bin/openwrt"
+
 sudo rm -rf "${DELETE}"
 sudo touch "${DELETE}"
 sudo chmod +x "${DELETE}"
@@ -227,6 +234,7 @@ sudo chmod +x "${DELETE}"
 sudo rm -rf "${CLEAR_PATH}"
 sudo touch "${CLEAR_PATH}"
 sudo chmod +x "${CLEAR_PATH}"
+
 
 # 给固件保留配置更新固件的保留项目
 cat >>"${KEEPD}" <<-EOF
@@ -474,16 +482,6 @@ fi
 }
 
 
-function sbin_openwrt() {
-if [[ -f ${BUILD_PATH}/openwrt.sh ]]; then
-  echo "正在执行：给固件增加[openwrt]命令"
-  [[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir ${BASE_PATH}/usr/bin
-  cp -Rf ${BUILD_PATH}/openwrt.sh ${BASE_PATH}/usr/bin/openwrt
-  chmod 777 ${BASE_PATH}/usr/bin/openwrt
-fi
-}
-
-
 function Diy_Language() {
 if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
@@ -493,16 +491,6 @@ if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "1
   /bin/bash ${HOME_PATH}/zh_Hans.sh
   rm -rf ${HOME_PATH}/zh_Hans.sh
 fi
-}
-
-
-function Diy_zzz() {
-# zzz-default-settings文件加条执行命令
-sed -i '/webweb.sh/d' "${ZZZ_PATH}"
-sed -i "/exit 0/i\source /etc/webweb.sh" "${ZZZ_PATH}"
-
-sed -i '/FinishIng/d' "${ZZZ_PATH}"
-sed -i "/exit 0/i\/etc/init.d/FinishIng enable" "${ZZZ_PATH}"
 }
 
 
@@ -1061,15 +1049,10 @@ Diy_adguardhome
 }
 
 function Diy_menu4() {
-Diy_conf
 Diy_files
 Diy_part_sh
 Diy_upgrade1
-sbin_openwrt
-Diy_amlogic
 Diy_Language
-Diy_zzz
-Diy_amlogic
 Diy_feeds
 }
 
