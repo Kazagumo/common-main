@@ -876,6 +876,15 @@ fi
 }
 
 
+
+function Diy_upgrade2() {
+if [[ "${REGULAR_UPDATE}" == "true" ]]; then
+  source ${BUILD_PATH}/upgrade.sh && Diy_Part2
+  cat ${BASE_PATH}/bin/openwrt_info
+fi
+}
+
+
 function Diy_upgrade3() {
 if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${FIRMWARE_PATH} ${HOME_PATH}/upgrade
@@ -1067,6 +1076,7 @@ if [[ ! "${bendi_script}" == "1" ]]; then
 fi
 Make_defconfig
 Diy_adguardhome
+Diy_upgrade2
 }
 
 function Diy_menu4() {
