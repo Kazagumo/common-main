@@ -883,7 +883,6 @@ fi
 function Diy_upgrade2() {
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part2
-  cat ${BASE_PATH}/bin/openwrt_info
 fi
 }
 
