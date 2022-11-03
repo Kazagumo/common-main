@@ -2,7 +2,7 @@
 
 touch /etc/crontabs/root
 
-chmod -R 775 /etc/init.d /usr/share
+chmod -R 0775 /etc/init.d /usr/share
 
 if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
   export DISTRIB_TA="$(grep DISTRIB_TARGET= /etc/openwrt_release |sed "s/'//g" |cut -d "=" -f2)"
