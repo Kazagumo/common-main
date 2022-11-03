@@ -94,6 +94,8 @@ function GET_TARGET_INFO() {
 
 function Diy_Part2() {
 GET_TARGET_INFO
+sudo touch ${In_Firmware_Info}
+sudo chmod +x ${In_Firmware_Info}
 cat >${In_Firmware_Info} <<-EOF
 Github=${Github}
 Author=${Author}
