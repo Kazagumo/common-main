@@ -6,9 +6,9 @@ uci commit luci
 uci set fstab.@global[0].anon_mount=1
 uci commit fstab
 
-set system.@system[0].timezone='CST-8'
-set system.@system[0].zonename='Asia/Shanghai'
-set system.@system[0].hostname='OpenWrt-123'
+uci set system.@system[0].timezone=CST-8
+uci set system.@system[0].zonename=Asia/Shanghai
+uci set system.@system[0].hostname='OpenWrt-123'
 delete system.ntp.server
 add_list system.ntp.server='ntp.tencent.com'
 add_list system.ntp.server='ntp1.aliyun.com'
