@@ -5,7 +5,9 @@ START=90
 
 Postapp()
 {
-    /etc/default-setting
+    if [ -f "/etc/default-setting" ]; then
+      /etc/default-setting
+    fi
 }
 
 start() {
