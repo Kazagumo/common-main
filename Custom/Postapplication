@@ -3,13 +3,11 @@
 
 START=90
 
-Postapp() {
-	if [ -f "/etc/default-setting" ]; then
-          /etc/default-setting
-         fi
+Postapp()
+{
+    /etc/default-setting
 }
 
-
 start() {
-	 Postapp
+    Postapp
 }
