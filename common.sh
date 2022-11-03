@@ -212,9 +212,14 @@ TIME r ""
 }
 
 
-
 function Diy_webweb() {
 # 拉取源码之后增加应用文件
+
+sudo rm -rf "${BASE_PATH}/etc/default-setting"
+sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/default-setting"
+sudo chmod +x "${BASE_PATH}/etc/default-setting"
+sudo cp ${HOME_PATH}/build/common/Custom/default-setting "${BASE_PATH}/etc/default-setting"
+
 sudo rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
 sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/init.d/Postapplication"
 sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
@@ -223,6 +228,10 @@ sudo rm -rf "${BASE_PATH}/etc/default-setting"
 sudo touch "${BASE_PATH}/etc/default-setting"
 sudo chmod +x "${BASE_PATH}/etc/default-setting"
 sudo cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
+
+sudo rm -rf "${DELETE}"
+sudo touch "${DELETE}"
+sudo chmod +x "${DELETE}"
 }
 
 
