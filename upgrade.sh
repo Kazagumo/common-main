@@ -12,7 +12,7 @@ function Diy_Part1() {
     [[ ! -d "$BASE_PATH/usr/bin" ]] && mkdir $BASE_PATH/usr/bin
     touch $BASE_PATH/usr/bin/AutoUpdate
     touch $BASE_PATH/usr/bin/replace
-    chmod +x $BASE_PATH/usr/bin/AutoUpdate $BASE_PATH/usr/bin/replace
+    sudo chmod +x $BASE_PATH/usr/bin/AutoUpdate $BASE_PATH/usr/bin/replace
     cp $BUILD_PATH/AutoUpdate.sh $BASE_PATH/usr/bin/AutoUpdate
     cp $BUILD_PATH/replace.sh $BASE_PATH/usr/bin/replace
     sed  -i  's/ luci-app-ttyd//g' $HOME_PATH/target/linux/*/Makefile
@@ -94,7 +94,7 @@ function GET_TARGET_INFO() {
 
 function Diy_Part2() {
 GET_TARGET_INFO
-sudo touch ${In_Firmware_Info}
+touch ${In_Firmware_Info}
 sudo chmod +x ${In_Firmware_Info}
 cat >${In_Firmware_Info} <<-EOF
 Github=${Github}
