@@ -210,30 +210,30 @@ TIME r ""
 function Diy_wenjian() {
 # 拉取源码之后增加应用文件
 
-sudo rm -rf "${FIN_PATH}"
-sudo touch "${FIN_PATH}"
-sudo chmod +x "${FIN_PATH}"
-sudo cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
+rm -rf "${FIN_PATH}"
+touch "${FIN_PATH}"
+chmod +x "${FIN_PATH}"
+cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
 
-sudo rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
-sudo touch "${BASE_PATH}/etc/init.d/Postapplication"
-sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
-sudo cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
+rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
+touch "${BASE_PATH}/etc/init.d/Postapplication"
+chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
+cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
 
 
 [[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir ${BASE_PATH}/usr/bin
-sudo rm -rf "${BASE_PATH}/usr/bin/openwrt"
-sudo touch "${BASE_PATH}/usr/bin/openwrt"
-sudo chmod +x "${BASE_PATH}/usr/bin/openwrt"
-sudo cp ${BUILD_PATH}/openwrt.sh "${BASE_PATH}/usr/bin/openwrt"
+rm -rf "${BASE_PATH}/usr/bin/openwrt"
+touch "${BASE_PATH}/usr/bin/openwrt"
+chmod +x "${BASE_PATH}/usr/bin/openwrt"
+cp ${BUILD_PATH}/openwrt.sh "${BASE_PATH}/usr/bin/openwrt"
 
-sudo rm -rf "${DELETE}"
-sudo touch "${DELETE}"
-sudo chmod +x "${DELETE}"
+rm -rf "${DELETE}"
+touch "${DELETE}"
+chmod +x "${DELETE}"
 
-sudo rm -rf "${CLEAR_PATH}"
-sudo touch "${CLEAR_PATH}"
-sudo chmod +x "${CLEAR_PATH}"
+rm -rf "${CLEAR_PATH}"
+touch "${CLEAR_PATH}"
+chmod +x "${CLEAR_PATH}"
 
 
 # 给固件保留配置更新固件的保留项目
