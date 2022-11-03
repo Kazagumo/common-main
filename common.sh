@@ -23,7 +23,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 }
 
 
-function Diy_repo_url() {
+function Diy_variable() {
 if [[ ! ${bendi_script} == "1" ]]; then
   if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini" 2>/dev/null)" ]; then
     TIME r "错误提示：编译脚本缺少[settings.ini]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
@@ -33,7 +33,6 @@ if [[ ! ${bendi_script} == "1" ]]; then
   fi
 fi
 
-
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
@@ -41,11 +40,13 @@ COOLSNOWWOLF)
   export LUCI_EDITION="18.06"
   export MAINTAIN="Lede's"
   export PACKAGE_BRANCH="master"
+  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
   export MAINTAIN="Lienol's"
+  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="master"
@@ -61,6 +62,7 @@ IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
   export MAINTAIN="ctcgfw's"
+  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings"
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     export PACKAGE_BRANCH="openwrt-21.02"
     export LUCI_EDITION="21.02"
@@ -81,6 +83,7 @@ AMLOGIC)
   export LUCI_EDITION="18.06"
   export MAINTAIN="Lede's"
   export PACKAGE_BRANCH="master"
+  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
 ;;
 *)
   TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT和AMLOGIC"
@@ -110,6 +113,19 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
   echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
   echo "MAINTAIN=${MAINTAIN}" >> ${GITHUB_ENV}
+  
+  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+  echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
+  echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
+  echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
+  echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
+  echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
+  echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
+  echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> ${GITHUB_ENV}
+  echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
+  echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
+  echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
+  echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 fi
 }
 
@@ -171,31 +187,6 @@ fi
 }
 
 
-function Diy_variable() {
-if [[ ! ${bendi_script} == "1" ]]; then
-  echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
-  echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
-  echo "NETIP=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/networkip" >> ${GITHUB_ENV}
-  echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
-  echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
-  echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
-  echo "AMLOGIC_SH_PATH=${GITHUB_WORKSPACE}/openwrt/amlogic_openwrt" >> ${GITHUB_ENV}
-  echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
-  echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> ${GITHUB_ENV}
-  echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
-  echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
-  echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
-  echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
-fi
-
-
-export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
-export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
-export RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
-export RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
-}
-
-
 function Diy_Notice() {
 TIME r ""
 TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
@@ -204,6 +195,10 @@ TIME r "修改IP、DNS、网关，请输入命令：openwrt"
 TIME r "如果您的机子在线更新固件可用，而又编译了，也可请输入命令查看在线更新操作：openwrt"
 TIME r ""
 TIME r ""
+export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
+export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
+export RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
+export RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
 TIME g "CPU性能：8370C > 8272CL > 8171M > E5系列"
 TIME g "您现在编译所用的服务器CPU型号为[ ${Model_Name} ]"
 TIME g "在此服务器分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
@@ -228,6 +223,10 @@ sudo cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.
 sudo rm -rf "${DELETE}"
 sudo touch "${DELETE}"
 sudo chmod +x "${DELETE}"
+
+sudo rm -rf "${CLEAR_PATH}"
+sudo touch "${CLEAR_PATH}"
+sudo chmod +x "${CLEAR_PATH}"
 }
 
 
@@ -890,7 +889,7 @@ for X in $(cat "${CLEAR_PATH}" |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed 's/\r/
    rm -rf "${X}"
 done
 rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}/" *
-
+sudo rm -rf "${CLEAR_PATH}"
 cd ${HOME_PATH}
 # 发布用的update_log.txt
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
