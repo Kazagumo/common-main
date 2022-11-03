@@ -177,7 +177,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
   echo "NETIP=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/networkip" >> ${GITHUB_ENV}
   echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
-  echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/FinishIng.sh" >> ${GITHUB_ENV}
+  echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
   echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
   echo "AMLOGIC_SH_PATH=${GITHUB_WORKSPACE}/openwrt/amlogic_openwrt" >> ${GITHUB_ENV}
   echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
@@ -216,9 +216,9 @@ function Diy_webweb() {
 # 拉取源码之后增加应用文件
 
 sudo rm -rf "${BASE_PATH}/etc/default-setting"
-sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/default-setting"
-sudo chmod +x "${BASE_PATH}/etc/default-setting"
-sudo cp ${HOME_PATH}/build/common/Custom/default-setting "${BASE_PATH}/etc/default-setting"
+sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${FIN_PATH}"
+sudo chmod +x "${FIN_PATH}"
+sudo cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
 
 sudo rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
 sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/init.d/Postapplication"
