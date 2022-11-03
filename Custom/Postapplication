@@ -5,6 +5,11 @@ START=90
 
 Postapp()
 {
+    if [ -f "/etc/zzz-default-settings" ]; then
+      /etc/zzz-default-settings
+      rm -rf zzz-default-settings
+    fi
+    
     if [ -f "/etc/default-setting" ]; then
       /etc/default-setting
     fi
