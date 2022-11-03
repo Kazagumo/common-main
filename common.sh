@@ -175,7 +175,6 @@ function Diy_variable() {
 if [[ ! ${bendi_script} == "1" ]]; then
   echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
   echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
-  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   echo "NETIP=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/networkip" >> ${GITHUB_ENV}
   echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
   echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/FinishIng.sh" >> ${GITHUB_ENV}
@@ -217,19 +216,13 @@ TIME r ""
 function Diy_webweb() {
 # 拉取源码之后增加应用文件
 sudo rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
-
+sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/init.d/Postapplication"
 sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
-
 
 sudo rm -rf "${BASE_PATH}/etc/default-setting"
 sudo touch "${BASE_PATH}/etc/default-setting"
 sudo chmod +x "${BASE_PATH}/etc/default-setting"
-curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/xql.sh > xql.sh
-if [[ $? -ne 0 ]]; then
-  wget -P -O xql.sh https://raw.githubusercontent.com/281677160/common-main/main/xql.sh
-fi
-sudo cp xql.sh "${BASE_PATH}/etc/default-setting"
-sudo rm -rf  xql.sh
+sudo cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
 }
 
 
@@ -331,8 +324,9 @@ if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
 elif [[ "${REPO_BRANCH}" == "master" ]]; then
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
-    
-  rm -rf package/network/services/dnsmasq && svn co https://github.com/Lienol/openwrt/trunk/package/network/services/dnsmasq package/network/services/dnsmasq
+  sudo touch "${BASE_PATH}/etc/zzz-default-settings"
+  sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/zzz-default-settings"
+  sudo chmod +x "${BASE_PATH}/etc/zzz-default-settings"
     
   export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
