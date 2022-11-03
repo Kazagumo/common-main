@@ -328,8 +328,8 @@ elif [[ "${REPO_BRANCH}" == "master" ]]; then
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
   
   sudo rm -rf "${BASE_PATH}/etc/zzz-default-settings"
-  sudo touch "${BASE_PATH}/etc/zzz-default-settings"
-  sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/zzz-default-settings"
+  touch "${BASE_PATH}/etc/zzz-default-settings"
+  cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/zzz-default-settings"
   sudo chmod +x "${BASE_PATH}/etc/zzz-default-settings"
     
   export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
