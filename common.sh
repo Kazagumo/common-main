@@ -248,7 +248,7 @@ EOF
 
 function Diy_clean() {
 ./scripts/feeds clean
-./scripts/feeds update -a
+./scripts/feeds update -a > /dev/null 2>&1
 }
 
 
