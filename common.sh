@@ -215,18 +215,14 @@ TIME r ""
 function Diy_webweb() {
 # 拉取源码之后增加应用文件
 
-sudo rm -rf "${BASE_PATH}/etc/default-setting"
-sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${FIN_PATH}"
+sudo rm -rf "${FIN_PATH}"
+sudo touch "${FIN_PATH}"
 sudo chmod +x "${FIN_PATH}"
 sudo cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
 
 sudo rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
-sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/init.d/Postapplication"
+sudo touch "${BASE_PATH}/etc/init.d/Postapplication"
 sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
-
-sudo rm -rf "${BASE_PATH}/etc/default-setting"
-sudo touch "${BASE_PATH}/etc/default-setting"
-sudo chmod +x "${BASE_PATH}/etc/default-setting"
 sudo cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
 
 sudo rm -rf "${DELETE}"
@@ -333,6 +329,8 @@ if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
 elif [[ "${REPO_BRANCH}" == "master" ]]; then
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  
+  sudo rm -rf "${BASE_PATH}/etc/zzz-default-settings"
   sudo touch "${BASE_PATH}/etc/zzz-default-settings"
   sudo cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/zzz-default-settings"
   sudo chmod +x "${BASE_PATH}/etc/zzz-default-settings"
