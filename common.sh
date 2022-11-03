@@ -245,6 +245,14 @@ src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
 sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
 
+# 给固件保留配置更新固件的保留项目
+cat >>"${KEEPD}" <<-EOF
+/mnt/network
+/mnt/Detectionnetwork
+/etc/config/AdGuardHome.yaml
+/www/luci-static/argon/background
+EOF
+
 ./scripts/feeds clean
 ./scripts/feeds update -a
 }
@@ -412,16 +420,6 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
 sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
 sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
-}
-
-
-# 给固件保留配置更新固件的保留项目
-cat >>"${KEEPD}" <<-EOF
-/mnt/network
-/mnt/Detectionnetwork
-/etc/config/AdGuardHome.yaml
-/www/luci-static/argon/background
-EOF
 }
 
 
