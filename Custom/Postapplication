@@ -1,0 +1,16 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2008 OpenWrt.org
+
+START=90
+
+Postapp()
+{
+	if [ -f "/etc/default-setting" ]; then
+    /etc/default-setting
+  fi
+}
+
+
+start() {
+	Postapp
+}
