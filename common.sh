@@ -207,7 +207,7 @@ TIME r ""
 }
 
 
-function Diy_webweb() {
+function Diy_wenjian() {
 # 拉取源码之后增加应用文件
 
 sudo rm -rf "${FIN_PATH}"
@@ -227,10 +227,18 @@ sudo chmod +x "${DELETE}"
 sudo rm -rf "${CLEAR_PATH}"
 sudo touch "${CLEAR_PATH}"
 sudo chmod +x "${CLEAR_PATH}"
+
+# 给固件保留配置更新固件的保留项目
+cat >>"${KEEPD}" <<-EOF
+/mnt/network
+/mnt/Detectionnetwork
+/etc/config/AdGuardHome.yaml
+/www/luci-static/argon/background
+EOF
 }
 
 
-function Diy_clean() {
+function Diy_chajianyuan() {
 echo "正在执行：给feeds.conf.default增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 echo "
@@ -244,14 +252,6 @@ src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
 " >> ${HOME_PATH}/feeds.conf.default
 sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
-
-# 给固件保留配置更新固件的保留项目
-cat >>"${KEEPD}" <<-EOF
-/mnt/network
-/mnt/Detectionnetwork
-/etc/config/AdGuardHome.yaml
-/www/luci-static/argon/background
-EOF
 
 ./scripts/feeds clean
 ./scripts/feeds update -a
@@ -387,7 +387,7 @@ EOF
 }
 
 
-function Diy_IMMORTALWRT() {
+function Diy_AMLOGIC() {
 # 删除重复插件（LEDE - N1等）
 find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
 find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
@@ -1074,16 +1074,16 @@ Diy_feeds
 }
 
 function Diy_menu3() {
-Diy_clean
-Diy_webweb
+Diy_wenjian
+Diy_chajianyuan
+Diy_${SOURCE_CODE}
 }
 
 function Diy_menu2() {
-Diy_variable
 Diy_Notice
 }
 
 function Diy_menu1() {
-Diy_repo_url
+Diy_variable
 Diy_settings
 }
