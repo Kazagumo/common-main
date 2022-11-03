@@ -231,10 +231,6 @@ rm -rf "${DELETE}"
 touch "${DELETE}"
 sudo chmod +x "${DELETE}"
 
-rm -rf "${CLEAR_PATH}"
-touch "${CLEAR_PATH}"
-sudo chmod +x "${CLEAR_PATH}"
-
 
 # 给固件保留配置更新固件的保留项目
 cat >>"${KEEPD}" <<-EOF
