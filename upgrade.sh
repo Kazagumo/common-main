@@ -10,11 +10,11 @@ function Diy_Part1() {
     find . -name 'luci-app-autoupdate' | xargs -i rm -rf {}
     git clone https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate > /dev/null 2>&1
     [[ ! -d "$BASE_PATH/usr/bin" ]] && mkdir $BASE_PATH/usr/bin
-    sudo touch $BASE_PATH/usr/bin/AutoUpdate
-    sudo touch $BASE_PATH/usr/bin/replace
-    sudo chmod +x $BASE_PATH/usr/bin/AutoUpdate $BASE_PATH/usr/bin/replace
-    sudo cp $BUILD_PATH/AutoUpdate.sh $BASE_PATH/usr/bin/AutoUpdate
-    sudo cp $BUILD_PATH/replace.sh $BASE_PATH/usr/bin/replace
+    touch $BASE_PATH/usr/bin/AutoUpdate
+    touch $BASE_PATH/usr/bin/replace
+    chmod +x $BASE_PATH/usr/bin/AutoUpdate $BASE_PATH/usr/bin/replace
+    cp $BUILD_PATH/AutoUpdate.sh $BASE_PATH/usr/bin/AutoUpdate
+    cp $BUILD_PATH/replace.sh $BASE_PATH/usr/bin/replace
     sed  -i  's/ luci-app-ttyd//g' $HOME_PATH/target/linux/*/Makefile
     sed  -i  's/ luci-app-autoupdate//g' $HOME_PATH/target/linux/*/Makefile
     sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd?g' $HOME_PATH/target/linux/*/Makefile
