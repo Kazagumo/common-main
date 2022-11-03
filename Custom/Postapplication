@@ -3,8 +3,7 @@
 
 START=90
 
-Postapp()
-{
+Postapp() {
 	if [ -f "/etc/default-setting" ]; then
           /etc/default-setting
          fi
@@ -12,5 +11,5 @@ Postapp()
 
 
 start() {
-	Postapp
+	 Postapp
 }
