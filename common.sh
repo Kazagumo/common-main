@@ -486,6 +486,11 @@ fi
 }
 
 
+function Diy_kkkk() {
+echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+}
+
+
 function Diy_Language() {
 if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
