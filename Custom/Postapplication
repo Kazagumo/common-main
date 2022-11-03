@@ -7,7 +7,7 @@ Postapp()
 {
     if [ -f "/etc/zzz-default-settings" ]; then
       /etc/zzz-default-settings
-      rm -rf zzz-default-settings
+      rm -rf /etc/zzz-default-settings
     fi
     
     if [ -f "/etc/default-setting" ]; then
