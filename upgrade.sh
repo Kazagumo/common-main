@@ -90,6 +90,12 @@ function GET_TARGET_INFO() {
 	export Release_download="https://github.com/${Warehouse}/releases/download/AutoUpdate"
 	export LOCAL_CHAZHAO="${LUCI_EDITION}-${Openwrt_Version}"
 	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
+	echo "Legacy_Firmware=${Legacy_Firmware}" >> ${GITHUB_ENV}
+	echo "UEFI_Firmware=${UEFI_Firmware}" >> ${GITHUB_ENV}
+	echo "Up_Firmware=${Up_Firmware}" >> ${GITHUB_ENV}
+	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
+	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
+	echo "Github_Release=${Github_Release}" >> ${GITHUB_ENV}
 }
 
 function Diy_Part2() {
