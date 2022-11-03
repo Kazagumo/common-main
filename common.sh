@@ -1061,12 +1061,19 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
-function Diy_menu4() {
+function Diy_menu5() {
 if [[ ! "${bendi_script}" == "1" ]]; then
   Diy_prevent
 fi
 Make_defconfig
 Diy_adguardhome
+}
+
+function Diy_menu4() {
+Diy_files
+Diy_part_sh
+Diy_Language
+Diy_feeds
 }
 
 function Diy_menu3() {
@@ -1075,10 +1082,6 @@ Diy_wenjian
 Diy_${SOURCE_CODE}
 Diy_chajianyuan
 Diy_upgrade1
-Diy_files
-Diy_part_sh
-Diy_Language
-Diy_feeds
 }
 
 function Diy_menu2() {
