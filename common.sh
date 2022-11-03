@@ -495,6 +495,17 @@ if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "1
   /bin/bash ${HOME_PATH}/zh_Hans.sh
   rm -rf ${HOME_PATH}/zh_Hans.sh
 fi
+
+sed -i '/exit 0/d' "${FIN_PATH}"
+cat >>"${FIN_PATH}" <<-EOF
+uci commit network
+uci commit dhcp
+uci commit system
+uci commit firewall
+[[ -f /etc/config/ttyd ]] && uci commit ttyd
+uci commit luci
+exit 0
+EOF
 }
 
 
@@ -1050,7 +1061,7 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
-function Diy_menu5() {
+function Diy_menu4() {
 if [[ ! "${bendi_script}" == "1" ]]; then
   Diy_prevent
 fi
@@ -1058,19 +1069,16 @@ Make_defconfig
 Diy_adguardhome
 }
 
-function Diy_menu4() {
-Diy_files
-Diy_part_sh
-Diy_upgrade1
-Diy_Language
-Diy_feeds
-}
-
 function Diy_menu3() {
 Diy_clean
 Diy_wenjian
 Diy_${SOURCE_CODE}
 Diy_chajianyuan
+Diy_upgrade1
+Diy_files
+Diy_part_sh
+Diy_Language
+Diy_feeds
 }
 
 function Diy_menu2() {
