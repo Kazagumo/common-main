@@ -953,6 +953,7 @@ if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
      TIME g "打包内核: ${amlogic_kernel}"
      TIME g "分区大小: ${rootfs_size}"
   else
+     TIME b "内核版本: ${LINUX_KERNEL}"
      TIME r "自动打包: 没开启自动打包设置"
   fi
 else
