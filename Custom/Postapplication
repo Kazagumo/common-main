@@ -7,7 +7,7 @@ zzz_default() {
 
 	if [ -f "/etc/zzz-default-settings" ]; then
 		/etc/zzz-default-settings
-                   rm -rf /etc/zzz-default-settings
+                rm -rf /etc/zzz-default-settings
 	else
 		echo "No operation"
 	fi
@@ -18,8 +18,8 @@ zzz_default() {
 		uci commit luci
 		uci commit dhcp
 		uci commit system
-                   rm -rf /etc/default-setting
-                   /etc/init.d/network restart
+                rm -rf /etc/default-setting
+                /etc/init.d/network restart
 	else
 		echo "No operation"
 	fi
