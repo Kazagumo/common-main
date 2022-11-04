@@ -7,16 +7,16 @@ zzz_default() {
 
 	if [ -f "/etc/zzz-default-settings" ]; then
 		/etc/zzz-default-settings
-        sleep 2
-        rm -rf /etc/zzz-default-settings
+                sleep 2
+                rm -rf /etc/zzz-default-settings
 	else
 		echo "No operation"
 	fi
     
 	if [ -f "/etc/default-setting" ]; then
 		/etc/default-setting
-        sleep 2
-        rm -rf /etc/default-setting
+                sleep 2
+                rm -rf /etc/default-setting
 	else
 		echo "No operation"
 	fi
