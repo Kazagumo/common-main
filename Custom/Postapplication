@@ -12,6 +12,8 @@ Postapp()
     
     if [ -f "/etc/default-setting" ]; then
       /etc/default-setting
+      rm -rf /etc/default-setting
+      reboot -f
     fi
 }
 
