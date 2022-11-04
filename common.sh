@@ -466,25 +466,6 @@ else
   git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
   echo "正在使用master分支的openclash"
 fi
-
-# 晶晨CPU机型自定义机型,内核,分区
-if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
-  export amlogic_model="$(grep "amlogic_model=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
-  [[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
-  export amlogic_kernel="$(grep "amlogic_kernel=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
-  [[ -z "${amlogic_kernel}" ]] && export amlogic_kernel="5.15.50 -a true"
-  export rootfs_size="$(grep "rootfs_size=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
-  [[ -z "${rootfs_size}" ]] && export rootfs_size="960"
-else
-  export amlogic_model="s905d"
-  export amlogic_kernel="5.4.210_5.10.135_5.15.50 -a true"
-  export rootfs_size="960"
-fi
-if [[ ! ${bendi_script} == "1" ]]; then
-  echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
-  echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
-  echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
-fi
 }
 
 
@@ -492,18 +473,25 @@ function Diy_Publicarea() {
 # diy-part.sh文件的延伸
 if [[ -n "${OpenClash_branch}" ]]; then
   echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+else
+  echo "OpenClash_branch=master" >> ${GITHUB_ENV}
 fi
 
+# 晶晨CPU机型自定义机型,内核,分区
 if [[ -n "${amlogic_model}" ]]; then
   echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
+else
+  echo "amlogic_model=s905d" >> ${GITHUB_ENV}
 fi
-
 if [[ -n "${amlogic_kernel}" ]]; then
   echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+else
+  echo "amlogic_kernel=5.4.210_5.10.135_5.15.50 -a true" >> ${GITHUB_ENV}
 fi
-
 if [[ -n "${rootfs_size}" ]]; then
   echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
+else
+  echo "rootfs_size=960" >> ${GITHUB_ENV}
 fi
 }
 
