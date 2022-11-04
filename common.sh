@@ -487,15 +487,16 @@ fi
 }
 
 
+function Diy_Publicarea() {
+# 预留空间，暂时没用，diy-part.sh文件的延伸
+echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+}
+
+
 function Diy_upgrade1() {
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part1
 fi
-}
-
-
-function Diy_kkkk() {
-echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 }
 
 
