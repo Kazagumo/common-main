@@ -810,6 +810,12 @@ echo "${TARGET_PROFILE}"
 
 ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
 
+if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
+  echo "PROMPT_TING=${amlogic_model}" >> ${GITHUB_ENV}
+else
+  echo "PROMPT_TING=${TARGET_PROFILE}" >> ${GITHUB_ENV}
+fi
+
 if [[ ! ${bendi_script} == "1" ]]; then
   echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
   echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
