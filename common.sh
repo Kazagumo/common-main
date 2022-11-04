@@ -827,8 +827,7 @@ export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET
 export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 echo "${TARGET_PROFILE}"
 
-./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
-cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
+./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
 
 if [[ ! ${bendi_script} == "1" ]]; then
   echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
