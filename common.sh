@@ -157,7 +157,6 @@ echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
 function Diy_update() {
 if [[ ! ${bendi_script} == "1" ]]; then
   export INS="sudo -E apt -qq"
-  sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc
 else
   export INS="sudo apt"
 fi
@@ -172,18 +171,6 @@ rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wg
 ${INS} install -y rename
 ${INS} autoremove -y --purge
 ${INS} clean
-if [[ ! ${bendi_script} == "1" ]]; then
-  sudo -E update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 9
-  sudo -E update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 9
-  sudo timedatectl set-timezone "$TZ"
-  sudo mkdir -p /${matrixtarget}
-  sudo chown $USER:$GROUPS /${matrixtarget}
-fi
-if [[ ! ${bendi_script} == "1" ]] && [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
-docker rmi $(docker images -q)
-${INS} remove -y --purge azure-cli ghc zulu* llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
-sudo rm -rf /etc/mysql /etc/php /swapfile
-fi
 }
 
 
