@@ -8,12 +8,15 @@ Postapp()
     if [ -f "/etc/zzz-default-settings" ]; then
       /etc/zzz-default-settings
       rm -rf /etc/zzz-default-settings
+    else
+      echo "no"
     fi
     
     if [ -f "/etc/default-setting" ]; then
       /etc/default-setting
       rm -rf /etc/default-setting
-      reboot -f
+    else
+      echo "no"
     fi
 }
 
