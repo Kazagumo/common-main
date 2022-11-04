@@ -769,6 +769,11 @@ if [[ ! "${REGULAR_UPDATE}" == "true" ]] || [[ -z "${REPO_TOKEN}" ]]; then
   sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
 fi
 
+if [[ "${REGULAR_UPDATE}" == "true" ]] ]]; then
+  echo -e "\nCONFIG_PACKAGE_wget-ssl=y" >> "${HOME_PATH}/.config"
+  echo -e "\nCONFIG_PACKAGE_curl=y" >> "${HOME_PATH}/.config"
+fi
+
 if [[ "${SOURCE_CODE}" == "IMMORTALWRT" && "${REPO_BRANCH}" == "master" ]] || [[ "${SOURCE_CODE}" == "IMMORTALWRT" && "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   echo -e "\nCONFIG_PACKAGE_luci=y" >> "${HOME_PATH}/.config"
   echo -e "\nCONFIG_LUCI_LANG_zh_Hans=y" >> "${HOME_PATH}/.config"
