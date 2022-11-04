@@ -370,7 +370,6 @@ sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
 
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"Immortalwrt-${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
   
 exit 0
