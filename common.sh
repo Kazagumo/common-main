@@ -947,16 +947,14 @@ TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${MAINTAIN}"
 TIME b "内核版本: ${LINUX_KERNEL}"
 TIME b "Luci版本: ${LUCI_EDITION}"
-if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
+if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   TIME b "编译机型: 晶晨系列"
   if [[ "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
-    if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
-      TIME g "打包机型: ${amlogic_model}"
-      TIME g "打包内核: ${amlogic_kernel}"
-      TIME g "分区大小: ${rootfs_size}"
-    else
-      TIME r "打包数据：没发现打包数据文件存在，使用脚本默认数值打包"
-    fi
+     TIME g "打包机型: ${amlogic_model}"
+     TIME g "打包内核: ${amlogic_kernel}"
+     TIME g "分区大小: ${rootfs_size}"
+  else
+     TIME r "自动打包: 没开启自动打包设置"
   fi
 else
   TIME b "编译机型: ${TARGET_PROFILE}"
@@ -965,7 +963,11 @@ TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${Library}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
 TIME b "编译时间: ${Compte_Date}"
-TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_PROFILE}】固件"
+if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
+  TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${amlogic_model}】固件"
+else
+  TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_PROFILE}】固件"
+fi
 echo
 echo
 if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
