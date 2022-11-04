@@ -118,6 +118,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
   echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
+  echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
   echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
   echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
   echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
@@ -246,8 +247,8 @@ find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
 find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
   
 # 给固件LUCI做个标记
-sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   
 sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
 sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
@@ -266,13 +267,13 @@ find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
 # 给固件LUCI做个标记
 case "${REPO_BRANCH}" in
 master)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 ;;
 21.02)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   # Lienol大的21.02PW会显示缺少依赖，要修改一下
   if [[ `grep -c "KernelPackage/inet-diag" ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
     curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/libs/package/kernel/linux/modules/2102netsupport.mk > ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk
@@ -280,8 +281,8 @@ master)
 
 ;;
 19.07)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
     
   # Lienol大的19.07补丁
   sed -i 's?PATCHVER:=.*?PATCHVER:=4.14?g' target/linux/x86/Makefile
@@ -311,16 +312,16 @@ find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-
 # 给固件LUCI做个标记
 case "${REPO_BRANCH}" in
 openwrt-21.02)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
     
   export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
   
 ;;
 master)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   
   sudo rm -rf "${BASE_PATH}/etc/zzz-default-settings"
   touch "${BASE_PATH}/etc/zzz-default-settings"
@@ -332,8 +333,8 @@ master)
 
 ;;
 openwrt-18.06)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
     
   sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/*/index.htm
   sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/*/index.htm
@@ -341,8 +342,8 @@ openwrt-18.06)
 
 ;;
 openwrt-18.06-k5.4)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
     
   sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/generic/index.htm
   sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/generic/index.htm
@@ -357,7 +358,7 @@ sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-ssr-plus?g' target/li
 # 修改天灵的zzz-default-settings文件为中文
 sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-sed -i "s?DISTRIB_DESCRIPTION=.*?DISTRIB_DESCRIPTION='OpenWrt '?g" "${BASE_PATH}/etc/openwrt_release"
+sed -i "s?DISTRIB_DESCRIPTION=.*?DISTRIB_DESCRIPTION='OpenWrt '?g" "${REPAIR_PATH}"
 
 sed -i '/exit 0/d' "${FIN_PATH}"
 cat >>"${FIN_PATH}" <<-EOF
@@ -380,8 +381,8 @@ find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
 find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
   
 # 给固件LUCI做个标记
-sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
-echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
+sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 # 修复NTFS格式优盘不自动挂载
 packages=" \
@@ -488,8 +489,11 @@ fi
 
 
 function Diy_Publicarea() {
-# 预留空间，暂时没用，diy-part.sh文件的延伸
-echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+# diy-part.sh文件的延伸
+[[ -n ${OpenClash_branch} ]] && echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+[[ -n ${amlogic_model} ]] && echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
+[[ -n ${amlogic_kernel} ]] && echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+[[ -n ${rootfs_size} ]] && echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
 }
 
 
