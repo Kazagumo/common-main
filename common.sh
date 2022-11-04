@@ -456,19 +456,19 @@ else
 fi
 
 # 晶晨CPU机型自定义机型,内核,分区
-if [[ -n "${amlogic_model}" ]]; then
+if [[ -n "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
-else
+elif [[ -z "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "amlogic_model=s905d" >> ${GITHUB_ENV}
 fi
-if [[ -n "${amlogic_kernel}" ]]; then
+if [[ -n "${amlogic_kernel}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
-else
+elif [[ -z "${amlogic_kernel}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "amlogic_kernel=5.4.210_5.10.135_5.15.50 -a true" >> ${GITHUB_ENV}
 fi
-if [[ -n "${rootfs_size}" ]]; then
+if [[ -n "${rootfs_size}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
-else
+elif [[ -z "${rootfs_size}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "rootfs_size=960" >> ${GITHUB_ENV}
 fi
 }
