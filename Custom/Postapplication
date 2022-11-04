@@ -9,14 +9,16 @@ Postapp()
       /etc/zzz-default-settings
       rm -rf /etc/zzz-default-settings
     else
-      echo "no"
+      echo "No operation"
     fi
     
     if [ -f "/etc/default-setting" ]; then
       /etc/default-setting
       rm -rf /etc/default-setting
+      sleep 3
+      reboot -f
     else
-      echo "no"
+      echo "No operation"
     fi
 }
 
