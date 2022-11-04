@@ -490,10 +490,21 @@ fi
 
 function Diy_Publicarea() {
 # diy-part.sh文件的延伸
-echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
-echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
-echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
-echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
+if [[ -n "${OpenClash_branch}" ]]; then
+  echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+fi
+
+if [[ -n "${amlogic_model}" ]]; then
+  echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
+fi
+
+if [[ -n "${amlogic_kernel}" ]]; then
+  echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+fi
+
+if [[ -n "${rootfs_size}" ]]; then
+  echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
+fi
 }
 
 
