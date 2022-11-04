@@ -18,6 +18,10 @@ zzz_default() {
 		uci commit luci
 		uci commit dhcp
 		uci commit system
+		uci commit firewall
+		if [ -f /etc/config/ttyd ]; then
+		        uci commit ttyd
+		fi
                 rm -rf /etc/default-setting
                 /etc/init.d/network restart
 	else
