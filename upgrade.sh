@@ -92,9 +92,9 @@ function GET_TARGET_INFO() {
 	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 	if [[ ! ${bendi_script} == "1" ]]; then
 	  echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
-	  echo "Legacy_Firmware=${Legacy_Firmware}" >> ${GITHUB_ENV}
-	  echo "UEFI_Firmware=${UEFI_Firmware}" >> ${GITHUB_ENV}
-	  echo "Up_Firmware=${Up_Firmware}" >> ${GITHUB_ENV}
+	  [[ -n "${Legacy_Firmware}" ]] && echo "Legacy_Firmware=${Legacy_Firmware}" >> ${GITHUB_ENV}
+	  [[ -n "${UEFI_Firmware}" ]] && echo "UEFI_Firmware=${UEFI_Firmware}" >> ${GITHUB_ENV}
+	  [[ -n "${Up_Firmware}" ]] && echo "Up_Firmware=${Up_Firmware}" >> ${GITHUB_ENV}
 	  echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	  echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
 	  echo "Github_Release=${Github_Release}" >> ${GITHUB_ENV}
