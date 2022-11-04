@@ -503,17 +503,6 @@ if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "1
   /bin/bash ${HOME_PATH}/zh_Hans.sh
   rm -rf ${HOME_PATH}/zh_Hans.sh
 fi
-
-sed -i '/exit 0/d' "${FIN_PATH}"
-cat >>"${FIN_PATH}" <<-EOF
-uci commit network
-uci commit dhcp
-uci commit system
-uci commit firewall
-[[ -f /etc/config/ttyd ]] && uci commit ttyd
-uci commit luci
-exit 0
-EOF
 }
 
 
