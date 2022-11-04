@@ -23,10 +23,14 @@ zzz_default() {
 		        uci commit ttyd
 		fi
                 rm -rf /etc/default-setting
-                /etc/init.d/network restart
 	else
 		echo "No operation"
 	fi
+	
+        /etc/init.d/network restart
+	/etc/init.d/uhttpd restart
+	/etc/init.d/dnsmasq restart
+	/etc/init.d/firewall restart
 
 }
 
