@@ -359,16 +359,10 @@ sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-ssr-plus?g' target/li
 # 修改天灵的zzz-default-settings文件为中文
 sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+sed -i "s?DISTRIB_DESCRIPTION=.*?DISTRIB_DESCRIPTION='OpenWrt '?g" "${BASE_PATH}/etc/openwrt_release"
 
 sed -i '/exit 0/d' "${FIN_PATH}"
 cat >>"${FIN_PATH}" <<-EOF
-sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
-echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"Immortalwrt-${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
   
