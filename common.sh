@@ -276,7 +276,7 @@ master)
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   # Lienol大的21.02PW会显示缺少依赖，要修改一下
   if [[ `grep -c "KernelPackage/inet-diag" ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
-    curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/libs/package/kernel/linux/modules/2102netsupport.mk > ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk
+    curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/21.02/package/kernel/linux/modules/netsupport.mk > ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk
   fi
 
 ;;
