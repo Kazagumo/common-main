@@ -311,8 +311,8 @@ DISTRIB="$(grep DISTRIB_DESCRIPTION= ${ZZZ_PATH} |cut -d "=" -f2 |cut -d "'" -f2
 function Diy_IMMORTALWRT() {
 # 删除重复插件（天灵）
 find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-find . -name 'luci-app-cifs' -o -name 'luci-app-openclash' | xargs -i rm -rf {}
-find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+find . -name 'luci-app-openclash' -o -name 'luci-app-ssr-plus' -o -name 'luci-app-passwall' -o -name 'luci-app-passwall2' | xargs -i rm -rf {}
+find . -name 'luci-app-cifs' -o -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
   
 # 给固件LUCI做个标记
