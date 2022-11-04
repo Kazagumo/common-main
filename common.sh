@@ -113,6 +113,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
   echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
   echo "MAINTAIN=${MAINTAIN}" >> ${GITHUB_ENV}
+  echo "DIYWORKING=${SOURCE_CODE}${REPO_BRANCH}" >> ${GITHUB_ENV}
   
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
