@@ -264,11 +264,13 @@ find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
 find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
   
 # 给固件LUCI做个标记
-if [[ "${REPO_BRANCH}" == "master" ]]; then
+case "${REPO_BRANCH}" in
+master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
 
-elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
+;;
+21.02)
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
   # Lienol大的21.02PW会显示缺少依赖，要修改一下
@@ -276,7 +278,8 @@ elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/libs/package/kernel/linux/modules/2102netsupport.mk > ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk
   fi
 
-elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+;;
+19.07)
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
     
@@ -285,8 +288,9 @@ elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/network/utils/iproute2/Makefile > package/network/utils/iproute2/Makefile
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.mk > package/kernel/linux/modules/netsupport.mk
   rm -rf feeds/packages/libs/libcap && svn co https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap feeds/packages/libs/libcap
-fi
-  
+;;
+esac
+
 # 给源码增加passwall为默认自选
 sed -i 's/ luci-app-passwall//g' target/linux/*/Makefile
 sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-passwall?g' target/linux/*/Makefile
@@ -305,14 +309,16 @@ find . -name 'luci-app-cifs' -o -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o
 find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
   
 # 给固件LUCI做个标记
-if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+case "${REPO_BRANCH}" in
+openwrt-21.02)
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
     
   export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
   
-elif [[ "${REPO_BRANCH}" == "master" ]]; then
+;;
+master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
   
@@ -323,23 +329,26 @@ elif [[ "${REPO_BRANCH}" == "master" ]]; then
     
   export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
-  
-elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
+
+;;
+openwrt-18.06)
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
     
   sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/*/index.htm
   sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/*/index.htm
   sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/*/index.htm
-  
-elif [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
+
+;;
+openwrt-18.06-k5.4)
   sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
     
   sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/generic/index.htm
   sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/generic/index.htm
   sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/generic/index.htm
-fi
+;;
+esac
   
 # 给源码增加luci-app-ssr-plus为默认自选
 sed -i 's/ luci-app-ssr-plus//g' target/linux/*/Makefile
