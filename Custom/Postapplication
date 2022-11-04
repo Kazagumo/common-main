@@ -1,27 +1,29 @@
 #!/bin/sh /etc/rc.common
-# Copyright (C) 2008 OpenWrt.org
+# Copyright (C) 2006 OpenWrt.org
 
-START=90
+START=99
 
-Postapp()
-{
-    if [ -f "/etc/zzz-default-settings" ]; then
-      /etc/zzz-default-settings
-      rm -rf /etc/zzz-default-settings
-    else
-      echo "No operation"
-    fi
+zzz_default() {
+
+	if [ -f "/etc/zzz-default-settings" ]; then
+		/etc/zzz-default-settings
+        sleep 2
+        rm -rf /etc/zzz-default-settings
+	else
+		echo "No operation"
+	fi
     
-    if [ -f "/etc/default-setting" ]; then
-      /etc/default-setting
-      rm -rf /etc/default-setting
-      sleep 3
-      reboot -f
-    else
-      echo "No operation"
-    fi
+	if [ -f "/etc/default-setting" ]; then
+		/etc/default-setting
+        sleep 2
+        rm -rf /etc/default-setting
+	else
+		echo "No operation"
+	fi
+
 }
 
 start() {
-    Postapp
+	zzz_default
 }
+
