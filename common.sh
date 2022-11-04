@@ -945,7 +945,6 @@ TIME b "编译源码: ${SOURCE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${MAINTAIN}"
-TIME b "内核版本: ${LINUX_KERNEL}"
 TIME b "Luci版本: ${LUCI_EDITION}"
 if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   TIME b "编译机型: 晶晨系列"
@@ -957,6 +956,7 @@ if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
      TIME r "自动打包: 没开启自动打包设置"
   fi
 else
+  TIME b "内核版本: ${LINUX_KERNEL}"
   TIME b "编译机型: ${TARGET_PROFILE}"
 fi
 TIME b "固件作者: ${Author}"
