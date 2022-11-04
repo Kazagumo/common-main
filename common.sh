@@ -361,8 +361,10 @@ sed -i "s?DISTRIB_DESCRIPTION=.*?DISTRIB_DESCRIPTION='OpenWrt '?g" "${BASE_PATH}
 
 sed -i '/exit 0/d' "${FIN_PATH}"
 cat >>"${FIN_PATH}" <<-EOF
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"Immortalwrt\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"Immortalwrt-${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+echo "luciname    = \"- ${REPO_BRANCH}\"" >> /usr/lib/lua/luci/version.lua
   
 exit 0
 EOF
@@ -527,28 +529,6 @@ cd ${HOME_PATH}
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
-}
-
-
-function Package_amlogic() {
-echo "正在执行：打包N1和景晨系列固件"
-# 下载上游仓库
-cd ${GITHUB_WORKSPACE}
-git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
-[ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
-if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
-  cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
-else
-  armvirtargz="$(ls -1 "${FIRMWARE_PATH}" |grep ".*tar.gz" |awk 'END {print}')"
-  cp -Rf ${FIRMWARE_PATH}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
-fi
-
-# 开始打包
-cd ${GITHUB_WORKSPACE}/amlogic
-sudo chmod +x make
-sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
-sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
-sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 }
 
 
@@ -889,6 +869,28 @@ fi
 }
 
 
+function Package_amlogic() {
+echo "正在执行：打包N1和景晨系列固件"
+# 下载上游仓库
+cd ${GITHUB_WORKSPACE}
+git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
+[ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
+if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
+  cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+else
+  armvirtargz="$(ls -1 "${FIRMWARE_PATH}" |grep ".*tar.gz" |awk 'END {print}')"
+  cp -Rf ${FIRMWARE_PATH}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+fi
+
+# 开始打包
+cd ${GITHUB_WORKSPACE}/amlogic
+sudo chmod +x make
+sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
+sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
+sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
+}
+
+
 function Diy_upgrade3() {
 if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${FIRMWARE_PATH} ${HOME_PATH}/upgrade
@@ -908,8 +910,15 @@ fi
 for X in $(cat "${CLEAR_PATH}" |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed 's/\r//' |sed 's/ //g' |cut -d '-' -f4- |sed '/^$/d' |sed 's/^/*/g' |sed 's/$/*/g'); do
    rm -rf "${X}"
 done
-rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}/" *
+
+if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
+  rename -v "s/^openwrt/openwrt-amlogic/" *
+else
+  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}/" *
+fi
+
 sudo rm -rf "${CLEAR_PATH}"
+
 cd ${HOME_PATH}
 # 发布用的update_log.txt
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
