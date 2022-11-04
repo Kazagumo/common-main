@@ -447,34 +447,12 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
 }
 
 
-function Diy_part_sh() {
-cd ${HOME_PATH}
-# 修正连接数
-sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
-echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
-
-# openclash分支选择
-find . -name 'luci-app-openclash' | xargs -i rm -rf {}
-if [[ "${OpenClash_branch}" == "master" ]]; then
-  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用master分支的openclash"
-elif [[ "${OpenClash_branch}" == "dev" ]]; then
-  git clone -b dev --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用dev分支的openclash"
-else
-  echo "没发现该分支的openclash，默认使用master分支"
-  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用master分支的openclash"
-fi
-}
-
-
 function Diy_Publicarea() {
 # diy-part.sh文件的延伸
-if [[ -n "${OpenClash_branch}" ]]; then
-  echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
-else
+if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
   echo "OpenClash_branch=master" >> ${GITHUB_ENV}
+else
+  echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 fi
 
 # 晶晨CPU机型自定义机型,内核,分区
@@ -493,6 +471,19 @@ if [[ -n "${rootfs_size}" ]]; then
 else
   echo "rootfs_size=960" >> ${GITHUB_ENV}
 fi
+}
+
+
+function Diy_part_sh() {
+cd ${HOME_PATH}
+# 修正连接数
+sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
+echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
+
+# openclash分支选择
+find . -name 'luci-app-openclash' | xargs -i rm -rf {}
+git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+echo "正在使用"${OpenClash_branch}"分支的openclash"
 }
 
 
