@@ -23,5 +23,3 @@ if [[ `grep -c "nas_luci" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
   sed -i '/nas/d' /etc/opkg/distfeeds.conf
 fi
 
-
-exit 0
