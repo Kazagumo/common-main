@@ -5,6 +5,10 @@ START=99
 
 zzz_default() {
 
+	if [[ -f '/mnt/network' ]]; then
+		cp -Rf /mnt/network /etc/config/network
+	fi
+	
 	if [ -f "/etc/zzz-default-settings" ]; then
 		/etc/zzz-default-settings
                 rm -rf /etc/zzz-default-settings
