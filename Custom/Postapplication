@@ -27,6 +27,7 @@ zzz_default() {
 		echo "No operation"
 	fi
 	
+	rm -rf /tmp/luci-*cache*
         /etc/init.d/network restart
 	/etc/init.d/uhttpd restart
 	/etc/init.d/dnsmasq restart
