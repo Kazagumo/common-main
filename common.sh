@@ -365,14 +365,11 @@ sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 sed -i "s?DISTRIB_DESCRIPTION=.*?DISTRIB_DESCRIPTION='OpenWrt '?g" "${REPAIR_PATH}"
 
-sed -i '/exit 0/d' "${FIN_PATH}"
 cat >>"${FIN_PATH}" <<-EOF
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciversion    = \"Immortalwrt\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"- ${REPO_BRANCH}\"" >> /usr/lib/lua/luci/version.lua
-  
-exit 0
 EOF
 }
 
@@ -501,6 +498,7 @@ fi
 
 function Diy_Language() {
 sed -i '/^#/d' ${FIN_PATH}
+echo "exit 0" | tee -a ${FIN_PATH}
 if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
   cd ${HOME_PATH}
