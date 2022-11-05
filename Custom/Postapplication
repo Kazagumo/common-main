@@ -4,10 +4,6 @@
 START=99
 
 zzz_default() {
-
-	if [[ -f '/mnt/network' ]]; then
-		cp -Rf /mnt/network /etc/config/network
-	fi
 	
 	if [ -f "/etc/zzz-default-settings" ]; then
 		/etc/zzz-default-settings
@@ -25,6 +21,11 @@ zzz_default() {
 		        uci commit ttyd
 		fi
                 rm -rf /etc/default-setting
+	fi
+	
+	if [[ -f '/mnt/network' ]]; then
+		cp -Rf /mnt/network /etc/config/network
+		uci commit network
 	fi
 	
 	if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
