@@ -26,6 +26,7 @@ zzz_default() {
 	if [[ -f '/mnt/network' ]]; then
 		cp -Rf /mnt/network /etc/config/network
 		uci commit network
+		rm -rf /mnt/network
 	fi
 	
 	if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
