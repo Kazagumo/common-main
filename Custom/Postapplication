@@ -8,8 +8,6 @@ zzz_default() {
 	if [ -f "/etc/zzz-default-settings" ]; then
 		/etc/zzz-default-settings
                 rm -rf /etc/zzz-default-settings
-	else
-		echo "No operation"
 	fi
     
 	if [ -f "/etc/default-setting" ]; then
@@ -23,8 +21,11 @@ zzz_default() {
 		        uci commit ttyd
 		fi
                 rm -rf /etc/default-setting
-	else
-		echo "No operation"
+	fi
+	
+	if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
+		echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
+		/etc/init.d/cron restart
 	fi
 	
 	rm -rf /tmp/luci-*cache*
