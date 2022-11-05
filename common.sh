@@ -498,7 +498,7 @@ fi
 
 function Diy_Language() {
 sed -i '/^#/d' ${FIN_PATH}
-echo "exit 0" | tee -a ${FIN_PATH}
+echo -e "\nexit 0" >> ${FIN_PATH}
 if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
   cd ${HOME_PATH}
