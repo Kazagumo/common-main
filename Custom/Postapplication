@@ -31,6 +31,7 @@ zzz_default() {
 	/etc/init.d/uhttpd restart
 	/etc/init.d/dnsmasq restart
 	/etc/init.d/firewall restart
+	exit 0
 
 }
 
