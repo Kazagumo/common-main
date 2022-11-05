@@ -28,6 +28,12 @@ zzz_default() {
 		/etc/init.d/cron restart
 	fi
 	
+	if [[ `grep -c "Detectionnetwork" /etc/crontabs/root` -ge '1' ]]; then
+		if [[ ! -f '/mnt/Detectionnetwork' ]]; then
+			sed -i '/Detectionnetwork/d' /etc/crontabs/root
+		fi
+	fi
+	
 	rm -rf /tmp/luci-*cache*
         /etc/init.d/network restart
 	/etc/init.d/uhttpd restart
