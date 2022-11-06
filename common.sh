@@ -77,6 +77,18 @@ IMMORTALWRT)
     export LUCI_EDITION="18.06.K54"
   fi
 ;;
+XWRT)
+  export REPO_URL="https://github.com/x-wrt/x-wrt"
+  export SOURCE="xwrt"
+  export MAINTAIN="ctcgfw's"
+  if [[ "${REPO_BRANCH}" == "master" ]]; then
+    export PACKAGE_BRANCH="xwrt"
+    export LUCI_EDITION="master"
+  elif [[ "${REPO_BRANCH}" == "pr-rm-ax6000" ]]; then
+    export PACKAGE_BRANCH="xwrt"
+    export LUCI_EDITION="ax6000"
+  fi
+;;
 AMLOGIC)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Amlogic"
@@ -371,6 +383,40 @@ echo "luciversion    = \"Immortalwrt\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"- ${REPO_BRANCH}\"" >> /usr/lib/lua/luci/version.lua
 EOF
+}
+
+
+function Diy_XWRT() {
+# 删除重复插件（Lienol）
+find . -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
+find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+  
+# 给固件LUCI做个标记
+case "${REPO_BRANCH}" in
+master)
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+
+;;
+pr-rm-ax6000)
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+  
+  sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+;;
+esac
+
+# 给源码增加ssr为默认自选
+sed -i "s?DISTRIB_DESCRIPTION=.*?DISTRIB_DESCRIPTION='OpenWrt '?g" "${REPAIR_PATH}"
+
+sed -i 's/ luci luci-app-ssr-plus//g' target/linux/*/Makefile
+sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci luci-app-ssr-plus?g' target/linux/*/Makefile
+
+export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
+curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 }
 
 
@@ -735,7 +781,7 @@ if [[ ! "${REGULAR_UPDATE}" == "true" ]] || [[ -z "${REPO_TOKEN}" ]]; then
   sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
 fi
 
-if [[ "${SOURCE_CODE}" == "IMMORTALWRT" && "${REPO_BRANCH}" == "master" ]] || [[ "${SOURCE_CODE}" == "IMMORTALWRT" && "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "20" ]]; then
   echo -e "\nCONFIG_LUCI_LANG_zh_Hans=y" >> "${HOME_PATH}/.config"
 fi
 
