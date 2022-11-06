@@ -416,7 +416,8 @@ esac
 sed -i "s?DISTRIB_DESCRIPTION=.*?DISTRIB_DESCRIPTION='OpenWrt '?g" "${REPAIR_PATH}"
 
 sed -i 's/ luci luci-app-ssr-plus//g' target/linux/*/Makefile
-sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci luci-app-ssr-plus?g' target/linux/*/Makefile
+sed -i 's/ -dnsmasq//g' target/linux/*/Makefile
+sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci luci-app-ssr-plus -dnsmasq?g' target/linux/*/Makefile
 
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
 curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
