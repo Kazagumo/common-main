@@ -737,12 +737,6 @@ fi
 
 if [[ "${SOURCE_CODE}" == "IMMORTALWRT" && "${REPO_BRANCH}" == "master" ]] || [[ "${SOURCE_CODE}" == "IMMORTALWRT" && "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   echo -e "\nCONFIG_LUCI_LANG_zh_Hans=y" >> "${HOME_PATH}/.config"
-  echo -e "\nCONFIG_PACKAGE_luci-i18n-base-zh-cn=y" >> "${HOME_PATH}/.config"
-fi
-
-if [[ "${REGULAR_UPDATE}" == "true" ]]; then
-  echo -e "\nCONFIG_PACKAGE_wget-ssl=y" >> "${HOME_PATH}/.config"
-  echo -e "\nCONFIG_PACKAGE_curl=y" >> "${HOME_PATH}/.config"
 fi
 
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
