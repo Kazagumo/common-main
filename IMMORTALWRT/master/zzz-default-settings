@@ -38,4 +38,6 @@ rm -f /tmp/luci-indexcache
 
 mv /etc/openwrt_banner /etc/banner
 
+reboot -f
+
 exit 0
