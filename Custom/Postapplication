@@ -4,11 +4,6 @@
 START=99
 
 zzz_default() {
-	
-	if [ -f "/etc/zzz-default-settings" ]; then
-		/etc/zzz-default-settings
-                rm -rf /etc/zzz-default-settings
-	fi
     
 	if [ -f "/etc/default-setting" ]; then
 		/etc/default-setting
@@ -38,6 +33,11 @@ zzz_default() {
 		if [[ ! -f '/mnt/Detectionnetwork' ]]; then
 			sed -i '/Detectionnetwork/d' /etc/crontabs/root
 		fi
+	fi
+	
+	if [ -f "/etc/zzz-default-settings" ]; then
+		/etc/zzz-default-settings
+                rm -rf /etc/zzz-default-settings
 	fi
 	
 	rm -rf /tmp/luci-*cache*
