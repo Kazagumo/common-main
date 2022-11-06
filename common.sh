@@ -399,6 +399,9 @@ case "${REPO_BRANCH}" in
 master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+  
+  rm -rf ${HOME_PATH}/package/utils/ucode
+  svn co https://github.com/immortalwrt/immortalwrt/trunk/package/utils/ucode ${HOME_PATH}/package/utils/ucode
 
 ;;
 pr-rm-ax6000)
