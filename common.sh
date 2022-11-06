@@ -392,8 +392,8 @@ find . -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argo
 find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
 find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
 find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
-  
+find . -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' | xargs -i rm -rf {}
+
 # 给固件LUCI做个标记
 case "${REPO_BRANCH}" in
 master)
