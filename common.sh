@@ -420,6 +420,8 @@ sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci luci-app-ssr-plus?g' targ
 
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
 curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+
+echo "OPIPAD=$(egrep -o "192.168\.[0-9]+\.[0-9]+" "${BASE_PATH}/files/bin/config_generate")" >> ${GITHUB_ENV}
 }
 
 
