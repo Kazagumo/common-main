@@ -80,7 +80,7 @@ IMMORTALWRT)
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="xwrt"
-  export MAINTAIN="ctcgfw's"
+  export MAINTAIN="ptpt52"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="xwrt"
     export LUCI_EDITION="master"
@@ -387,7 +387,7 @@ EOF
 
 
 function Diy_XWRT() {
-# 删除重复插件（Lienol）
+# 删除重复插件（x-wrt.ptpt52）
 find . -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
 find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
 find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
