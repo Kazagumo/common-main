@@ -414,8 +414,8 @@ if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "${HOME_PATH}/include/target.m
   sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
 elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
   sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
   sed -i 's/dnsmasq \\//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
   sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full ?g' "${HOME_PATH}/include/target.mk"
 fi
 
