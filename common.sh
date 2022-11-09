@@ -423,9 +423,8 @@ elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]
   sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
 fi
 
-if [[ `grep -c "conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
-  echo "net.netfilter.nf_conntrack_helper = 1" >>${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-fi
+sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 }
 
 
@@ -455,9 +454,8 @@ elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]
   sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
 fi
 
-if [[ `grep -c "conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
-  echo "net.netfilter.nf_conntrack_helper = 1" >>${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-fi
+sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 }
 
 
@@ -498,6 +496,7 @@ sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. tran
 
 
 function Diy_chajianyuan() {
+if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
 echo "正在执行：给feeds.conf.default增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 echo "
@@ -509,6 +508,7 @@ src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
 " >> ${HOME_PATH}/feeds.conf.default
 sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
+fi
 }
 
 
@@ -536,13 +536,11 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
 
 function Diy_Publicarea() {
 # diy-part.sh文件的延伸
-if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
-  if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
-    echo "OpenClash_branch=master" >> ${GITHUB_ENV}
-  else
-    echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
-  fi
-fi
+if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
+   echo "OpenClash_branch=master" >> ${GITHUB_ENV}
+else
+   echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+ fi
 
 # 晶晨CPU机型自定义机型,内核,分区
 if [[ -n "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
@@ -570,9 +568,11 @@ sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/base-files/files
 echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
 
 # openclash分支选择
-find . -name 'luci-app-openclash' | xargs -i rm -rf {}
-git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-echo "正在使用"${OpenClash_branch}"分支的openclash"
+if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
+  find . -name 'luci-app-openclash' | xargs -i rm -rf {}
+  git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+  echo "正在使用"${OpenClash_branch}"分支的openclash"
+fi
 }
 
 
