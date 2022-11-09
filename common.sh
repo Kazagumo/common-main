@@ -53,9 +53,12 @@ LIENOL)
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     export PACKAGE_BRANCH="21.02"
     export LUCI_EDITION="21.02"
-  elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+  elif [[ "${REPO_BRANCH}" == "19.07-cannotuse" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="19.07"
+  elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+    export PACKAGE_BRANCH="19.07"
+    export LUCI_EDITION="17.01"
   fi
 ;;
 IMMORTALWRT)
@@ -74,20 +77,22 @@ IMMORTALWRT)
     export LUCI_EDITION="18.06"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
     export PACKAGE_BRANCH="openwrt-18.06"
-    export LUCI_EDITION="18.06.K54"
+    export LUCI_EDITION="18.06-K54"
   fi
 ;;
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="xwrt"
   export MAINTAIN="ptpt52"
-  if [[ "${REPO_BRANCH}" == "master" ]]; then
-    export PACKAGE_BRANCH="xwrt"
-    export LUCI_EDITION="master"
-  elif [[ "${REPO_BRANCH}" == "pr-rm-ax6000" ]]; then
-    export PACKAGE_BRANCH="xwrt"
-    export LUCI_EDITION="ax6000"
-  fi
+  export PACKAGE_BRANCH="xwrt"
+  export LUCI_EDITION="${REPO_BRANCH}"
+;;
+OFFICIAL)
+  export REPO_URL="https://github.com/openwrt/openwrt"
+  export SOURCE="official"
+  export MAINTAIN="openwrt"
+  export PACKAGE_BRANCH="official"
+  export LUCI_EDITION="${REPO_BRANCH}"
 ;;
 AMLOGIC)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
@@ -393,42 +398,46 @@ EOF
 
 
 function Diy_XWRT() {
-# 删除重复插件（x-wrt.ptpt52）
-find . -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
-find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
-find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
-
 # 给固件LUCI做个标记
-case "${REPO_BRANCH}" in
-master)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-  
-  rm -rf ${HOME_PATH}/package/utils/ucode
-  svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/utils/ucode ${HOME_PATH}/package/utils/ucode
-
-;;
-pr-rm-ax6000)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-  
-  sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
-;;
-esac
-
-# 给源码增加ssr为默认自选
-sed -i "s?DISTRIB_DESCRIPTION=.*?DISTRIB_DESCRIPTION='OpenWrt '?g" "${REPAIR_PATH}"
-
-sed -i 's/ luci luci-app-ssr-plus//g' target/linux/*/Makefile
-sed -i 's/ -dnsmasq//g' target/linux/*/Makefile
-sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci luci-app-ssr-plus -dnsmasq?g' target/linux/*/Makefile
+sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
-curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+if [ -f "${ttydjson}" ]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+fi
 
-echo "OPIPAD=$(egrep -o "192.168\.[0-9]+\.[0-9]+" "${BASE_PATH}/bin/config_generate")" >> ${GITHUB_ENV}
+sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+
+if [[ `grep -c "dnsmasq-full" "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+  sed -i 's/ dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
+else
+  sed -i '/dnsmasq/d' "${HOME_PATH}/include/target.mk"
+fi
+sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
+sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+}
+
+
+function Diy_OFFICIAL() {
+# 给固件LUCI做个标记
+sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+
+export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
+if [ -f "${ttydjson}" ]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+fi
+
+sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+
+if [[ `grep -c "dnsmasq-full" "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+  sed -i 's/ dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
+else
+  sed -i '/dnsmasq/d' "${HOME_PATH}/include/target.mk"
+fi
+sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
+sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
 }
 
 
