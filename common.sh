@@ -308,15 +308,15 @@ master)
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
     
   # Lienol大的19.07-cannotuse补丁
-  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/network/utils/iproute2/Makefile > package/network/utils/iproute2/Makefile
+  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/network/utils/iproute2/19.07-cannotuseMakefile > package/network/utils/iproute2/Makefile
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/19.07-cannotusenetsupport.mk > package/kernel/linux/modules/netsupport.mk
   rm -rf feeds/packages/libs/libcap && svn co https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap feeds/packages/libs/libcap
 ;;
 esac
 
 # 给源码增加passwall为默认自选
-sed -i 's/ luci-app-passwall//g' target/linux/*/Makefile
-sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-passwall?g' target/linux/*/Makefile
+sed -i 's/luci-app-passwall //g' include/target.mk
+sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall ?g' include/target.mk
   
 # 修改DISTRIB_DESCRIPTION
 DISTRIB="$(grep DISTRIB_DESCRIPTION= ${ZZZ_PATH} |cut -d "=" -f2 |cut -d "'" -f2)"
@@ -379,8 +379,8 @@ openwrt-18.06-k5.4)
 esac
   
 # 给源码增加luci-app-ssr-plus为默认自选
-sed -i 's/ luci-app-ssr-plus//g' target/linux/*/Makefile
-sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-ssr-plus?g' target/linux/*/Makefile
+sed -i 's/luci-app-ssr-plus //g' include/target.mk
+sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-ssr-plus ?g' include/target.mk
   
 # 修改天灵的zzz-default-settings文件为中文
 sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
