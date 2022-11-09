@@ -24,4 +24,4 @@ native Linux tools such as ss.
 endef
 
 $(eval $(call KernelPackage,inet-diag))
-' >>  $HOME_PATH/package/kernel/linux/modules/netsupport.mk
+' >>  package/kernel/linux/modules/netsupport.mk
