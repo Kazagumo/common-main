@@ -29,11 +29,13 @@ $(eval $(call KernelPackage,inet-diag))
 fi
 
 if [[ `grep -c "kmod-netlink-diag" package/network/utils/iproute2/Makefile` -eq '0' ]]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/network/utils/iproute2/netlink_diag > netlink_diag
   sed -i "/Socket statistics utility/a\danshui" package/network/utils/iproute2/Makefile
-  line_cnt="$(cat build/common/LIENOL/19.07/package/network/utils/iproute2/netlink_diag)"
+  line_cnt="$(cat ./netlink_diag)"
   sed -i "s/danshui/${line_cnt}/g" package/network/utils/iproute2/Makefile
   let Size="$(nl -ba package/network/utils/iproute2/Makefile |grep "Socket statistics utility" |sed 's/^[ ]*//g'| awk '{print $1}')+2"
   sed -i "${Size}d" package/network/utils/iproute2/Makefile
+  rm -rf ./netlink_diag
 fi
 
 exit 0
