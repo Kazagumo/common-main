@@ -25,3 +25,5 @@ endef
 
 $(eval $(call KernelPackage,inet-diag))
 ' >>  package/kernel/linux/modules/netsupport.mk
+
+exit 0
