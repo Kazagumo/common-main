@@ -412,20 +412,25 @@ sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.
 if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
   sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
   sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
   sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's/dnsmasq \\//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
   sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full ?g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full \\?g' "${HOME_PATH}/include/target.mk"
+elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
 fi
 
-if [[ `grep -c "conntrack_helper" /home/dan/openwrt/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
-  echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
+if [[ `grep -c "conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
+  echo "net.netfilter.nf_conntrack_helper = 1" >>${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 fi
 }
 
 
 function Diy_OFFICIAL() {
+# 给固件LUCI做个标记
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
@@ -439,15 +444,19 @@ sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.
 if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
   sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
   sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
   sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's/dnsmasq \\//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
   sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full ?g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full \\?g' "${HOME_PATH}/include/target.mk"
+elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
 fi
 
-if [[ `grep -c "conntrack_helper" /home/dan/openwrt/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
-  echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
+if [[ `grep -c "conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
+  echo "net.netfilter.nf_conntrack_helper = 1" >>${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 fi
 }
 
