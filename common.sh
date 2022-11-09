@@ -409,18 +409,23 @@ fi
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 
-if [[ `grep -c "dnsmasq-full" "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
-  sed -i 's/ dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
-else
-  sed -i '/dnsmasq/d' "${HOME_PATH}/include/target.mk"
+if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+  sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+  sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq \\//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full ?g' "${HOME_PATH}/include/target.mk"
 fi
-sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
-sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+
+if [[ `grep -c "conntrack_helper" /home/dan/openwrt/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
+  echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
+fi
 }
 
 
 function Diy_OFFICIAL() {
-# 给固件LUCI做个标记
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
@@ -431,13 +436,19 @@ fi
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 
-if [[ `grep -c "dnsmasq-full" "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
-  sed -i 's/ dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
-else
-  sed -i '/dnsmasq/d' "${HOME_PATH}/include/target.mk"
+if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+  sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+  sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq \\//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full ?g' "${HOME_PATH}/include/target.mk"
 fi
-sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
-sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+
+if [[ `grep -c "conntrack_helper" /home/dan/openwrt/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
+  echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
+fi
 }
 
 
@@ -516,10 +527,12 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
 
 function Diy_Publicarea() {
 # diy-part.sh文件的延伸
-if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
-  echo "OpenClash_branch=master" >> ${GITHUB_ENV}
-else
-  echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
+  if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
+    echo "OpenClash_branch=master" >> ${GITHUB_ENV}
+  else
+    echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+  fi
 fi
 
 # 晶晨CPU机型自定义机型,内核,分区
