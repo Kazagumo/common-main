@@ -86,6 +86,7 @@ XWRT)
   export MAINTAIN="ptpt52"
   export PACKAGE_BRANCH="xwrt"
   export LUCI_EDITION="${REPO_BRANCH}"
+  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
@@ -93,6 +94,7 @@ OFFICIAL)
   export MAINTAIN="openwrt"
   export PACKAGE_BRANCH="official"
   export LUCI_EDITION="${REPO_BRANCH}"
+  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
 AMLOGIC)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
@@ -376,6 +378,9 @@ openwrt-21.02)
   
 ;;
 master)
+  find . -name 'default-settings' | xargs -i rm -rf {}
+  svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings
+  
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   
