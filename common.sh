@@ -687,20 +687,28 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ ! 
 fi
 
 if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
-echo "4"
+
    sed -i "s/${ipaddr}/${IPv4_ipaddr}/g" "${GENE_PATH}" 
 fi
 
-if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
-echo "5"
-   sed -i "s#${netmas}#${Netmask_netm}#g" "${GENE_PATH}"
-fi
 
 if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]]; then
 echo "6"
    sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
 fi
 
+
+if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
+   sed -i "$lan\set network.lan.gateway=''${Router_gateway}''" "${GENE_PATH}"
+fi
+  
+if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
+   sed -i "$lan\set network.lan.dns=''${Lan_DNS}''" "${GENE_PATH}"
+fi
+  
+if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
+   sed -i "$lan\set network.lan.broadcast=''${IPv4_Broadcast}''" "${GENE_PATH}"
+fi
 
 
   
@@ -719,7 +727,7 @@ fi
 if [[ "${filter_aaaa}" == "1" ]]; then
    sed -i "$lan\set dhcp.@dnsmasq[0].filter_aaaa='1'" "${GENE_PATH}"
 fi
-
+echo "4"
 
 if [[ "${Confidentiality_free}" == "1" ]]; then
    sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
