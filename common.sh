@@ -414,6 +414,9 @@ EOF
 
 function Diy_XWRT() {
 # 给固件LUCI做个标记
+find . -name 'default-settings' | xargs -i rm -rf {}
+svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings
+
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
@@ -445,6 +448,9 @@ echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linu
 
 function Diy_OFFICIAL() {
 # 给固件LUCI做个标记
+find . -name 'default-settings' | xargs -i rm -rf {}
+svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings
+
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
