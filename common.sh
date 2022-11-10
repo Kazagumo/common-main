@@ -459,6 +459,10 @@ if [ -f "${ttydjson}" ]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 fi
 
+if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+fi
+
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 
 if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
