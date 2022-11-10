@@ -691,18 +691,40 @@ if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ ! ${bendi_script} == "1" ]]; then
-  echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
+if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]]; then
+  export Kernel_Pat="$(echo ${Kernel_Patchver} |egrep -o "[0-9]+\.[0-9]+")"
+  if [[ -n "${Kernel_Pat}" ]] && [[ ! ${bendi_script} == "1" ]]; then
+     echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
+   else
+     echo "Kernel_Patchver=0" >> ${GITHUB_ENV}
+   fi
+  if [[ -n "${Kernel_Pat}" ]] && [[ ${bendi_script} == "1" ]]; then
+     export Kernel_Patchver=${Kernel_Patchver}
+   else
+     echo "Kernel_Patchver=0" >> ${GITHUB_ENV}
+   fi
 fi
 
-if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]] && [[ -n "${ipadd}" ]]; then
-   sed -i "s/${ipadd}/${IPv4_ipaddr}/g" "${GENE_PATH}" 
+if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
+  export Kernel_Pat="$(echo ${Kernel_Patchver} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  export ipadd_Pat="$(echo ${Kernel_Patchver} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
+     sed -i "s/${ipadd}/${IPv4_ipaddr}/g" "${GENE_PATH}"
+   else
+     echo "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确"
+   fi
 fi
 
-if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]] && [[ -n "${netmas}" ]]; then
-
-   sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}" 
+if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
+  export Kernel_netm="$(echo ${Netmask_netm} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  export ipadd_mas="$(echo ${netmas} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${Kernel_netm}" ]] && [[ -n "${ipadd_mas}" ]]; then
+     sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
+   else
+     echo "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确"
+   fi
 fi
+
 
 if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
    sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
@@ -1122,7 +1144,7 @@ if [[ "${Delete_NotRequired}" == "1" ]]; then
 fi
 
 export patchverl="$(grep "KERNEL_PATCHVER" "target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
-if [[ -n "${Kernel_Patchver}" ]] && [[ -n "${patchverl}" ]]; then
+if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${patchverl}" ]]; then
   sed -i "s/${patchverl}/${Kernel_Patchver}/g" target/linux/${TARGET_BOARD}/Makefile
 fi
 
