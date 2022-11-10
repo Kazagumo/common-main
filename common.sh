@@ -675,7 +675,7 @@ if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; t
    sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
 fi
  
-if [[ ! "${Delete_NotRequired}" == "0" ]] && [[ -n "${Delete_NotRequired}" ]] && [[ ! ${bendi_script} == "1" ]]; then
+if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
 fi
  
@@ -708,22 +708,34 @@ if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
    sed -i "$lan\set network.lan.broadcast=''${IPv4_Broadcast}''" "${GENE_PATH}"
 fi
   
-if [[ ! "${Close_DHCP}" == "0" ]] && [[ -n "${Close_DHCP}" ]]; then
+if [[ "${Close_DHCP}" == "1" ]]; then
    sed -i "$lan\set dhcp.lan.ignore='1'" "${GENE_PATH}"
 fi
 
-if [[ ! "${Delete_Bridge}" == "0" ]] && [[ -n "${Delete_Bridge}" ]]; then
+if [[ "${Delete_Bridge}" == "1" ]]; then
    sed -i "$lan\delete network.lan.type" "${GENE_PATH}"
 fi
 
-if [[ ! "${ttyd_Nopassword}" == "0" ]] && [[ -n "${ttyd_Nopassword}" ]]; then
+if [[ "${ttyd_Nopassword}" == "1" ]]; then
    sed -i "$lan\set ttyd.@ttyd[0].command='/bin/login -f root'" "${GENE_PATH}"
 fi
 
-if [[ ! "${filter_aaaa}" == "0" ]] && [[ -n "${filter_aaaa}" ]]; then
+if [[ "${filter_aaaa}" == "1" ]]; then
    sed -i "$lan\set dhcp.@dnsmasq[0].filter_aaaa='1'" "${GENE_PATH}"
 fi
 
+
+if [[ "${Confidentiality_free}" == "1" ]]; then
+   sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
+fi
+
+if [[ "${Remove_Firewall}" == "1" ]]; then
+   sed -i '/to-ports 53/d' "${ZZZ_PATH}"
+fi
+
+if [[ "${Cancel running}" == "1" ]]; then
+   echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${FIN_PATH}"
+fi
 
 # 晶晨CPU机型自定义机型,内核,分区
 if [[ -n "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
