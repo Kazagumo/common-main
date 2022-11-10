@@ -16,14 +16,14 @@ uci set fstab.@global[0].anon_mount=1
 uci commit fstab
 
 #关闭 IPv6
-uci delete network.globals.ula_prefix
-uci delete network.lan.ip6assign
-uci delete network.wan6
-uci delete dhcp.lan.ra
-uci delete dhcp.lan.ra_management
-uci delete dhcp.lan.dhcpv6
-uci delete dhcp.lan.ndp
-uci commit dhcp
+#uci delete network.globals.ula_prefix
+#uci delete network.lan.ip6assign
+#uci delete network.wan6
+#uci delete dhcp.lan.ra
+#uci delete dhcp.lan.ra_management
+#uci delete dhcp.lan.dhcpv6
+#uci delete dhcp.lan.ndp
+#uci commit dhcp
 
 
 ln -sf /sbin/ip /usr/bin/ip
@@ -37,17 +37,12 @@ sed -i '/set wireless.radio${devidx}.disabled/d' /lib/wifi/mac80211.sh
 [ ! -f '/usr/bin/wget-ssl' ] && [ -f '/usr/bin/wget' ] && ln -sf /usr/bin/wget /usr/bin/wget-ssl
 
 
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='R22.11.11'" >> /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-
-
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 
 
 rm -rf /tmp/luci-modulecache/
 rm -f /tmp/luci-indexcache
+
 
 exit 0
