@@ -672,7 +672,18 @@ exit 0
 " >> "${ZZZ_PATH}"
 fi
  
+ if [[ ! "${Required_Topic}" == "0" ]]; then
+   sed -i "s/luci-theme-bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
+ fi
  
+ if [[ ! "${Personal_Signature}" == "0" ]]; then
+   sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
+ fi
+ 
+ if [[ ! "${Delete_NotRequired}" == "0" ]]; then
+   echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
+ fi
+
 
 # 晶晨CPU机型自定义机型,内核,分区
 if [[ -n "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
@@ -1025,6 +1036,10 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
   echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
   echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
+fi
+
+if [[ "${Delete_NotRequired}" == "1" ]]; then
+  sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" target/linux/${TARGET_BOARD}/image/Makefile
 fi
 }
 
