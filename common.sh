@@ -680,9 +680,13 @@ fi
    sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
  fi
  
- if [[ ! "${Delete_NotRequired}" == "0" ]]; then
+ if [[ ! "${Delete_NotRequired}" == "0" ]] && [[ ! ${bendi_script} == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
  fi
+ 
+ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ ! ${bendi_script} == "1" ]]; then
+  echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
+fi
 
 
 # 晶晨CPU机型自定义机型,内核,分区
@@ -1040,6 +1044,11 @@ fi
 
 if [[ "${Delete_NotRequired}" == "1" ]]; then
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" target/linux/${TARGET_BOARD}/image/Makefile
+fi
+
+export patchverl="$(grep "KERNEL_PATCHVER" "target/linux/${TARGET_BOARD}/image/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
+if [[ ! "${Kernel_Patchver}" == "0" ]]; then
+  sed -i "s/${patchverl}/${Kernel_Patchver}/g" target/linux/${TARGET_BOARD}/image/Makefile
 fi
 }
 
