@@ -818,13 +818,11 @@ cd ${HOME_PATH}
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
   export themee=luci-theme-${Required_Topic}
-  find ${HOME_PATH} -name ${themee} |tee theme
+  find . -name ${themee} -type d |tee theme
   if [[ -s "theme" ]]; then
     sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
-    rm -rf theme
   else
     echo "没有${themee}此主题存在,不进行替换主题操作"
-    rm -rf theme
   fi
 fi
 }
