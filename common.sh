@@ -1285,16 +1285,12 @@ echo "${Plug_in2}" >Plug-in
 sed -i '/luci-app-qbittorrent-simple_dynamic/d' Plug-in > /dev/null 2>&1
 
 if [[ `ls -1 ${HOME_PATH}/include | egrep -c "kernel-[0-9]+\.[0-9]+"` -ge '1' ]]; then
-  export KERNEL_PATC=""
-  export KERNEL_PATC="$(egrep KERNEL_PATCHVER:=[0-9]+\.[0-9]+ ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
-  [[ -z ${KERNEL_PATC} ]] && export KERNEL_PATC="$(egrep KERNEL_PATCHVER=[0-9]+\.[0-9]+ ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
-  [[ -n ${KERNEL_PATC} ]] && export LINUX_KERNEL="$(egrep -o LINUX_KERNEL_HASH-${KERNEL_PATC}\.[0-9]+ ${HOME_PATH}/include/kernel-${KERNEL_PATC} |cut -d "-" -f2)"
+  export KERNEL_PATC="$(grep "KERNEL_PATCHVER" "target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
+  export LINUX_KERNEL="$(grep "LINUX_KERNEL_HASH" "include/kernel-${KERNEL_PATC}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")"
   [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
 else
-  export KERNEL_PATC=""
-  export KERNEL_PATC="$(egrep KERNEL_PATCHVER:=[0-9]+\.[0-9]+ ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
-  [[ -z ${KERNEL_PATC} ]] && export KERNEL_PATC="$(egrep KERNEL_PATCHVER=[0-9]+\.[0-9]+ ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
-  [[ -n ${KERNEL_PATC} ]] && export LINUX_KERNEL="$(egrep -o LINUX_KERNEL_HASH-${KERNEL_PATC}\.[0-9]+ ${HOME_PATH}/include/kernel-version.mk |cut -d "-" -f2)"
+  export KERNEL_PATC="$(grep "KERNEL_PATCHVER" "target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
+  export LINUX_KERNEL="$(grep "LINUX_KERNEL_HASH" "include/kernel-version.mk" |egrep -o "${KERNEL_PATC}\.[0-9]+")"
   [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
 fi
 
