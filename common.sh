@@ -668,7 +668,7 @@ exit 0
 fi
  
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
-   sed -i "s/luci-theme-bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
+   sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
 fi
  
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
