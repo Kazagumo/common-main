@@ -379,7 +379,12 @@ openwrt-21.02)
 ;;
 master)
   find . -name 'default-settings' | xargs -i rm -rf {}
-  svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings
+  svn export https://github.com/281677160/common-main/trunk/IMMORTALWRT/default-settings  ${HOME_PATH}/package/emortal/default-settings
+  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/default-settings/files/openwrt_banner > ${BASE_PATH}/etc/openwrt_banner
+  if [[ `grep -c 'DEFAULT_PACKAGES.router:=default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+    sed -i 's/default-settings-chn//g' "${HOME_PATH}/include/target.mk"
+    sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings?g' "${HOME_PATH}/include/target.mk"
+  fi
   
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
