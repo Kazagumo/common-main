@@ -618,6 +618,10 @@ export lan="/set network.\$1.netmask/a"
 export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
+echo "$lan"
+echo "$ipadd"
+echo "$netmas"
+echo "$opname"
 
 
 if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
@@ -686,13 +690,13 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ ! 
   echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
+if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]] && [[ -n "${ipadd}" ]]; then
 
-   sed -i "s/${ipaddr}/${IPv4_ipaddr}/g" "${GENE_PATH}" 
+   sed -i "s/${ipadd}/${IPv4_ipaddr}/g" "${GENE_PATH}" 
 fi
 
 
-if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]]; then
+if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
 echo "6"
    sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
 fi
