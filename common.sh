@@ -633,7 +633,7 @@ if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" 
 else
    echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 fi
- 
+
 if [[ "${Create_IPV6_interface}" == "1" ]] && [[ `grep -c "lan.ra_management" ${ZZZ_PATH}` -eq '0' ]]; then
   export Remove_IPv6="0"
   sed -i '/exit 0/d' "${ZZZ_PATH}"
@@ -657,8 +657,7 @@ uci commit
 exit 0
 " >> "${ZZZ_PATH}"
 fi
- 
- 
+
 if [[ "${Remove_IPv6}" == "1" ]] && [[ `grep -c "lan.ra_management" ${ZZZ_PATH}` -eq '0' ]]; then
   sed -i '/exit 0/d' "${ZZZ_PATH}"
 echo "
@@ -674,7 +673,7 @@ uci commit
 exit 0
 " >> "${ZZZ_PATH}"
 fi
- 
+
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
    sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
 fi
@@ -682,15 +681,15 @@ fi
 if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
    sed -i "$lan\set luci.main.mediaurlbase='/luci-static/${Default_Theme}'" "${GENE_PATH}"
 fi
- 
+
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
    sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
 fi
- 
+
 if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
 fi
- 
+
 if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ ! ${bendi_script} == "1" ]]; then
   echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
 fi
@@ -708,21 +707,18 @@ if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]];
    sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
 fi
 
-
 if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
    sed -i "$lan\set network.lan.gateway='${Router_gateway}'" "${GENE_PATH}"
 fi
-  
+
 if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
    sed -i "$lan\set network.lan.dns='${Lan_DNS}'" "${GENE_PATH}"
 fi
-  
+
 if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
    sed -i "$lan\set network.lan.broadcast='${IPv4_Broadcast}'" "${GENE_PATH}"
 fi
 
-
-  
 if [[ "${Close_DHCP}" == "1" ]]; then
    sed -i "$lan\set dhcp.lan.ignore='1'" "${GENE_PATH}"
 fi
@@ -796,6 +792,10 @@ function Diy_Language() {
 sed -i '/^#/d' ${FIN_PATH}
 sed -i '/exit 0/d' "${FIN_PATH}"
 echo -e "\nexit 0" >> ${FIN_PATH}
+sed -i '/^#/d' ${ZZZ_PATH}
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+echo -e "\nexit 0" >> ${ZZZ_PATH}
+
 if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
   cd ${HOME_PATH}
