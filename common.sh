@@ -693,7 +693,7 @@ fi
 
 if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
 echo "5"
-   sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
+   sed -i "s#${netmas}#${Netmask_netm}#g" "${GENE_PATH}"
 fi
 
 if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]]; then
