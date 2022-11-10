@@ -427,13 +427,17 @@ function Diy_XWRT() {
 # 给固件LUCI做个标记
 find . -name 'default-settings' | xargs -i rm -rf {}
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings
+svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/packageluci-theme-argon
+svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/packageluci-app-argon-config
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
-if [ -f "${ttydjson}" ]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+[[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+
+if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
+  sed -i '/attendedsysupgrade/d' "feeds/luci/collections/luci/Makefile"
 fi
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
@@ -478,13 +482,17 @@ function Diy_OFFICIAL() {
 # 给固件LUCI做个标记
 find . -name 'default-settings' | xargs -i rm -rf {}
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings
+svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/packageluci-theme-argon
+svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/packageluci-app-argon-config
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
-if [ -f "${ttydjson}" ]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+[[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+
+if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
+  sed -i '/attendedsysupgrade/d' "feeds/luci/collections/luci/Makefile"
 fi
 
 if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
