@@ -219,23 +219,6 @@ TIME r ""
 
 function Diy_wenjian() {
 # 拉取源码之后增加应用文件
-sed -i '/lan.gateway=/d' "${GENE_PATH}"
-sed -i '/lan.dns=/d' "${GENE_PATH}"
-sed -i '/lan.broadcast=/d' "${GENE_PATH}"
-sed -i '/lan.ignore=/d' "${GENE_PATH}"
-sed -i '/lan.type/d' "${GENE_PATH}"
-sed -i '/set ttyd/d' "${GENE_PATH}"
-export lan="/set network.\$1.netmask/a"
-export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
-if [[ ! ${bendi_script} == "1" ]]; then
-  echo "lan=${lan}t" >> ${GITHUB_ENV}
-  echo "ipadd=${ipadd}" >> ${GITHUB_ENV}
-  echo "netmas=${netmas}" >> ${GITHUB_ENV}
-  echo "PACKAGE_BRANCH=${PACKAGE_BRANCH}" >> ${GITHUB_ENV}
-  echo "opname=${opname}" >> ${GITHUB_ENV}
-fi
 
 rm -rf "${FIN_PATH}"
 touch "${FIN_PATH}"
@@ -625,6 +608,18 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
 
 function Diy_Publicarea() {
 # diy-part.sh文件的延伸
+sed -i '/lan.gateway=/d' "${GENE_PATH}"
+sed -i '/lan.dns=/d' "${GENE_PATH}"
+sed -i '/lan.broadcast=/d' "${GENE_PATH}"
+sed -i '/lan.ignore=/d' "${GENE_PATH}"
+sed -i '/lan.type/d' "${GENE_PATH}"
+sed -i '/set ttyd/d' "${GENE_PATH}"
+export lan="/set network.\$1.netmask/a"
+export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
+
+
 if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
    echo "OpenClash_branch=master" >> ${GITHUB_ENV}
 else
@@ -672,20 +667,48 @@ exit 0
 " >> "${ZZZ_PATH}"
 fi
  
- if [[ ! "${Required_Topic}" == "0" ]]; then
+if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
    sed -i "s/luci-theme-bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
- fi
+fi
  
- if [[ ! "${Personal_Signature}" == "0" ]]; then
+if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
    sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
- fi
+fi
  
- if [[ ! "${Delete_NotRequired}" == "0" ]] && [[ ! ${bendi_script} == "1" ]]; then
+if [[ ! "${Delete_NotRequired}" == "0" ]] && [[ -n "${Delete_NotRequired}" ]] && [[ ! ${bendi_script} == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
- fi
+fi
  
- if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ ! ${bendi_script} == "1" ]]; then
+if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ ! ${bendi_script} == "1" ]]; then
   echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
+fi
+
+
+
+
+
+if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
+   sed -i "$lan\set network.lan.gateway=''${Router_gateway}''" "${GENE_PATH}"
+fi
+  
+if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
+   sed -i "$lan\set network.lan.dns=''${Lan_DNS}''" "${GENE_PATH}"
+fi
+  
+if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
+   sed -i "$lan\set network.lan.broadcast=''${IPv4_Broadcast}''" "${GENE_PATH}"
+fi
+  
+if [[ ! "${Close_DHCP}" == "0" ]] && [[ -n "${Close_DHCP}" ]]; then
+   sed -i "$lan\set dhcp.lan.ignore='1'" "${GENE_PATH}"
+fi
+
+if [[ ! "${Delete_Bridge}" == "0" ]] && [[ -n "${Delete_Bridge}" ]]; then
+   sed -i "$lan\delete network.lan.type" "${GENE_PATH}"
+fi
+
+if [[ ! "${ttyd_Nopassword}" == "0" ]] && [[ -n "${ttyd_Nopassword}" ]]; then
+   sed -i "$lan\set ttyd.@ttyd[0].command='/bin/login -f root'" "${GENE_PATH}"
 fi
 
 
