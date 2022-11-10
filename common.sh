@@ -1095,7 +1095,7 @@ if [[ "${Delete_NotRequired}" == "1" ]]; then
 fi
 
 export patchverl="$(grep "KERNEL_PATCHVER" "target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
-if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${patchverl}" ]]; then
+if [[ -n "${Kernel_Patchver}" ]] && [[ -n "${patchverl}" ]]; then
   sed -i "s/${patchverl}/${Kernel_Patchver}/g" target/linux/${TARGET_BOARD}/Makefile
 fi
 }
