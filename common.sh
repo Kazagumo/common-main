@@ -217,7 +217,12 @@ TIME r ""
 
 function Diy_wenjian() {
 # 拉取源码之后增加应用文件
-
+sed -i '/lan.gateway=/d' "${GENE_PATH}"
+sed -i '/lan.dns=/d' "${GENE_PATH}"
+sed -i '/lan.broadcast=/d' "${GENE_PATH}"
+sed -i '/lan.ignore=/d' "${GENE_PATH}"
+sed -i '/lan.type/d' "${GENE_PATH}"
+sed -i '/set ttyd/d' "${GENE_PATH}"
 export lan="/set network.\$1.netmask/a"
 export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
