@@ -140,6 +140,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
   echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
   echo "AMLOGIC_SH_PATH=${GITHUB_WORKSPACE}/openwrt/amlogic_openwrt" >> ${GITHUB_ENV}
+  echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/bin/config_generate" >> ${GITHUB_ENV}
   echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
   echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> ${GITHUB_ENV}
   echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
@@ -216,6 +217,18 @@ TIME r ""
 
 function Diy_wenjian() {
 # 拉取源码之后增加应用文件
+
+export lan="/set network.\$1.netmask/a"
+export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
+if [[ ! ${bendi_script} == "1" ]]; then
+  echo "lan=${lan}t" >> ${GITHUB_ENV}
+  echo "ipadd=${ipadd}" >> ${GITHUB_ENV}
+  echo "netmas=${netmas}" >> ${GITHUB_ENV}
+  echo "PACKAGE_BRANCH=${PACKAGE_BRANCH}" >> ${GITHUB_ENV}
+  echo "opname=${opname}" >> ${GITHUB_ENV}
+fi
 
 rm -rf "${FIN_PATH}"
 touch "${FIN_PATH}"
@@ -1201,8 +1214,8 @@ Diy_feeds
 }
 
 function Diy_menu3() {
-Diy_clean
 Diy_wenjian
+Diy_clean
 Diy_${SOURCE_CODE}
 Diy_chajianyuan
 Diy_upgrade1
