@@ -696,17 +696,7 @@ if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]]; then
 fi
 
 
-if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
-   sed -i "$lan\set network.lan.gateway=''${Router_gateway}''" "${GENE_PATH}"
-fi
-  
-if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
-   sed -i "$lan\set network.lan.dns=''${Lan_DNS}''" "${GENE_PATH}"
-fi
-  
-if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
-   sed -i "$lan\set network.lan.broadcast=''${IPv4_Broadcast}''" "${GENE_PATH}"
-fi
+
   
 if [[ "${Close_DHCP}" == "1" ]]; then
    sed -i "$lan\set dhcp.lan.ignore='1'" "${GENE_PATH}"
