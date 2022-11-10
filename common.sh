@@ -389,15 +389,7 @@ master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   
-  sed -i 's/ luci//g' target/linux/*/Makefile
-  sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci?g' target/linux/*/Makefile
-  
   sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
-  
-  sudo rm -rf "${BASE_PATH}/etc/zzz-default-settings"
-  touch "${BASE_PATH}/etc/zzz-default-settings"
-  cp ${HOME_PATH}/build/common/IMMORTALWRT/master/zzz-default-settings "${BASE_PATH}/etc/zzz-default-settings"
-  sudo chmod +x "${BASE_PATH}/etc/zzz-default-settings"
     
   export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
@@ -427,15 +419,23 @@ sed -i 's/luci-app-ssr-plus //g' include/target.mk
 sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-ssr-plus ?g' include/target.mk
   
 # 修改天灵的zzz-default-settings文件为中文
-sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-sed -i "s?DISTRIB_DESCRIPTION=.*?DISTRIB_DESCRIPTION='OpenWrt '?g" "${REPAIR_PATH}"
 
-cat >>"${FIN_PATH}" <<-EOF
+sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+cat >>"${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
+echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciversion    = \"Immortalwrt\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"- ${REPO_BRANCH}\"" >> /usr/lib/lua/luci/version.lua
+echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+exit 0
 EOF
 }
 
@@ -471,6 +471,23 @@ fi
 
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+
+sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+cat >>"${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
+echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"x-wrt\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+exit 0
+EOF
 }
 
 
@@ -509,6 +526,23 @@ fi
 
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+
+sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+cat >>"${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
+echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"official\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+exit 0
+EOF
 }
 
 
