@@ -683,8 +683,17 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ ! 
   echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
 fi
 
+if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
+   sed -i "s/${ipaddr}/${IPv4_ipaddr}/g" "${GENE_PATH}" 
+fi
 
+if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
+   sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
+fi
 
+if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]]; then
+   sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
+fi
 
 
 if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
@@ -709,6 +718,10 @@ fi
 
 if [[ ! "${ttyd_Nopassword}" == "0" ]] && [[ -n "${ttyd_Nopassword}" ]]; then
    sed -i "$lan\set ttyd.@ttyd[0].command='/bin/login -f root'" "${GENE_PATH}"
+fi
+
+if [[ ! "${filter_aaaa}" == "0" ]] && [[ -n "${filter_aaaa}" ]]; then
+   sed -i "$lan\set dhcp.@dnsmasq[0].filter_aaaa='1'" "${GENE_PATH}"
 fi
 
 
