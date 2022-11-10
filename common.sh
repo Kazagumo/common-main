@@ -675,11 +675,22 @@ exit 0
 fi
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
-   sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
+  find . -name "luci-theme-${Required_Topic}" |tee theme
+  if [[ -s "theme" ]]; then
+    sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
+    rm -rf theme
+  else
+    echo "没有luci-theme-${Required_Topic}此主题存在,不进行替换主题操作"
+    rm -rf theme
+  fi
 fi
 
 if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
+  if [[ `grep -c "CONFIG_PACKAGE_luci-theme-${Required_Topic}=y" ${HOME_PATH}/.config` -eq '1' ]]; then
    sed -i "$lan\set luci.main.mediaurlbase='/luci-static/${Default_Theme}'" "${GENE_PATH}"
+  else
+    echo "没有选择luci-theme-${Required_Topic}此主题,设置成默认主题失败"
+  fi
 fi
 
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
