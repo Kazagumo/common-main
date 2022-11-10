@@ -668,14 +668,17 @@ exit 0
 fi
  
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
+echo "1"
    sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
 fi
  
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
+echo "2"
    sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
 fi
  
 if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
+echo "3"
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
 fi
  
@@ -684,14 +687,17 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ ! 
 fi
 
 if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
+echo "4"
    sed -i "s/${ipaddr}/${IPv4_ipaddr}/g" "${GENE_PATH}" 
 fi
 
 if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
+echo "5"
    sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
 fi
 
 if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]]; then
+echo "6"
    sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
 fi
 
