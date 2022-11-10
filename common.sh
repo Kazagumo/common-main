@@ -674,24 +674,13 @@ exit 0
 " >> "${ZZZ_PATH}"
 fi
 
-if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
-  export themee=luci-theme-${Required_Topic}
-  find ${HOME_PATH} -name ${themee} |tee theme
-  if [[ -s "theme" ]]; then
-    sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
-    rm -rf theme
-  else
-    echo "没有${themee}此主题存在,不进行替换主题操作"
-    rm -rf theme
-  fi
+
+if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]] && [[ ! ${bendi_script} == "1" ]]; then
+  echo "Required_Topic=${Required_Topic}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
-  if [[ `grep -c "CONFIG_PACKAGE_luci-theme-${Required_Topic}=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-   sed -i "$lan\set luci.main.mediaurlbase='/luci-static/${Default_Theme}'" "${GENE_PATH}"
-  else
-    echo "没有选择luci-theme-${Required_Topic}此主题,设置成默认主题失败"
-  fi
+if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]] && [[ ! ${bendi_script} == "1" ]]; then
+  echo "Default_Theme=${Default_Theme}" >> ${GITHUB_ENV}
 fi
 
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
@@ -826,6 +815,18 @@ cd ${HOME_PATH}
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
+
+if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
+  export themee=luci-theme-${Required_Topic}
+  find ${HOME_PATH} -name ${themee} |tee theme
+  if [[ -s "theme" ]]; then
+    sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
+    rm -rf theme
+  else
+    echo "没有${themee}此主题存在,不进行替换主题操作"
+    rm -rf theme
+  fi
+fi
 }
 
 
@@ -1123,6 +1124,15 @@ fi
 export patchverl="$(grep "KERNEL_PATCHVER" "target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
 if [[ -n "${Kernel_Patchver}" ]] && [[ -n "${patchverl}" ]]; then
   sed -i "s/${patchverl}/${Kernel_Patchver}/g" target/linux/${TARGET_BOARD}/Makefile
+fi
+
+if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
+  export defaultt=CONFIG_PACKAGE_luci-theme-${Default_Theme}=y
+  if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
+   sed -i "$lan\set luci.main.mediaurlbase='/luci-static/${Default_Theme}'" "${GENE_PATH}"
+  else
+    echo "没有选择luci-theme-${Default_Theme}此主题,${Default_Theme}设置成默认主题的操作失败"
+  fi
 fi
 }
 
