@@ -618,10 +618,6 @@ export lan="/set network.\$1.netmask/a"
 export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
-echo "$lan"
-echo "$ipadd"
-echo "$netmas"
-echo "$opname"
 
 
 if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
@@ -673,6 +669,10 @@ fi
  
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
    sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
+fi
+
+if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
+   sed -i "$lan\set luci.main.mediaurlbase='/luci-static/${Default_Theme}'" "${GENE_PATH}"
 fi
  
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
