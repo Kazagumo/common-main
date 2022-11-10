@@ -676,7 +676,7 @@ fi
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
   export themee=luci-theme-${Required_Topic}
-  find . -name ${themee} |tee theme
+  find ${HOME_PATH} -name ${themee} |tee theme
   if [[ -s "theme" ]]; then
     sed -i "s/bootstrap/${Required_Topic}/g" feeds/luci/collections/luci/Makefile
     rm -rf theme
