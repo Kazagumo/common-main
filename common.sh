@@ -1161,7 +1161,7 @@ fi
 if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
   export defaultt=CONFIG_PACKAGE_luci-theme-${Default_Theme}=y
   if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
-   sed -i "$lan\set luci.main.mediaurlbase='/luci-static/${Default_Theme}'" "${GENE_PATH}"
+   sed -i "/exit 0/i\uci set luci.main.mediaurlbase='/luci-static/${Default_Theme}' && uci commit" "${FIN_PATH}"
   else
     TIME r "没有选择luci-theme-${Default_Theme}此主题,将${Default_Theme}设置成默认主题的操作失败"
   fi
