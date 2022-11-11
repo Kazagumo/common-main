@@ -681,7 +681,7 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]]; then
 fi
 
 if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
-  export Kernel_Pat="$(echo ${Kernel_Patchver} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  export Kernel_Pat="$(echo ${IPv4_ipaddr} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   export ipadd_Pat="$(echo ${ipadd} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
      sed -i "s/${ipadd}/${IPv4_ipaddr}/g" "${GENE_PATH}"
