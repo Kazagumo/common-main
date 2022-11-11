@@ -251,9 +251,12 @@ function Diy_clean() {
 case "${SOURCE_CODE}" in
 OFFICIAL)
   if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
+    rm -rf ${GITHUB_WORKSPACE}/build
+    mv -f ${HOME_PATH}/build ${GITHUB_WORKSPACE}/build
     export LUCI_EDITION="$(git tag| awk 'END {print}')"
-    git checkout -f ${LUCI_EDITION}
+    git checkout ${LUCI_EDITION}
     git switch -c ${LUCI_EDITION}
+    mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
   else
     export LUCI_EDITION="${REPO_BRANCH}"
   fi
