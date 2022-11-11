@@ -7,21 +7,8 @@ zzz_default() {
     
 	if [ -f "/etc/default-setting" ]; then
 		/etc/default-setting
-		uci commit network
-		uci commit luci
-		uci commit dhcp
-		uci commit system
-		uci commit firewall
-		if [ -f /etc/config/ttyd ]; then
-		        uci commit ttyd
-		fi
+		uci commit
                 rm -rf /etc/default-setting
-	fi
-	
-	if [[ -f '/mnt/network' ]]; then
-		cp -Rf /mnt/network /etc/config/network
-		uci commit network
-		rm -rf /mnt/network
 	fi
 	
 	if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
@@ -35,16 +22,11 @@ zzz_default() {
 		fi
 	fi
 	
-	if [ -f "/etc/zzz-default-settings" ]; then
-		/etc/zzz-default-settings
-                rm -rf /etc/zzz-default-settings
-	fi
-	
 	rm -rf /tmp/luci-*cache*
+        rm -rf /tmp/luci-modulecache/
+        rm -f /tmp/luci-indexcache
         /etc/init.d/network restart
 	/etc/init.d/uhttpd restart
-	/etc/init.d/dnsmasq restart
-	/etc/init.d/firewall restart
 	exit 0
 
 }
