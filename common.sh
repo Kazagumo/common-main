@@ -1057,7 +1057,10 @@ if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
 else
   rm -rf CHONGTU
 fi
-make defconfig > /dev/null 2>&1
+cd ${HOME_PATH}
+./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
+cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
+make defconfig
 echo
 echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
@@ -1095,9 +1098,6 @@ if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
 else
   echo "PROMPT_TING=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 fi
-
-./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
- cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
 
 if [[ ! ${bendi_script} == "1" ]]; then
   echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
