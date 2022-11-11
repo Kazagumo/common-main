@@ -465,10 +465,10 @@ EOF
 
 function Diy_OFFICIAL() {
 # 给固件LUCI做个标记
-#find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-#svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
-#svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
-#svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
+find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
+svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
@@ -482,6 +482,8 @@ fi
 
 if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
+  sed -i "s?+luci-lib-base?+luci-base'zh_cn'?g" ${HOME_PATH}/package/default-settings/Makefile
 fi
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
@@ -503,6 +505,22 @@ fi
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 
+sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+cat >>"${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
+echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"official\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+exit 0
+EOF
 }
 
 
@@ -601,6 +619,45 @@ else
    echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 fi
 
+if [[ "${Create_IPV6_interface}" == "1" ]] && [[ `grep -c "lan.ra_management" ${ZZZ_PATH}` -eq '0' ]]; then
+  export Remove_IPv6="0"
+  sed -i '/exit 0/d' "${ZZZ_PATH}"
+echo "
+uci delete network.globals.ula_prefix
+uci delete network.lan.ip6assign
+uci delete network.wan6
+uci delete dhcp.lan.ra
+uci delete dhcp.lan.ra_management
+uci delete dhcp.lan.dhcpv6
+uci delete dhcp.lan.ndp
+uci delete dhcp.@dnsmasq[0].filter_aaaa
+uci set network.ipv6=interface
+uci set network.ipv6.proto='dhcpv6'
+uci set network.ipv6.ifname='@lan'
+uci set network.ipv6.reqaddress='try'
+uci set network.ipv6.reqprefix='auto'
+uci set firewall.@zone[0].network='lan ipv6'
+uci commit
+/etc/init.d/network restart
+exit 0
+" >> "${ZZZ_PATH}"
+fi
+
+if [[ "${Remove_IPv6}" == "1" ]] && [[ `grep -c "lan.ra_management" ${ZZZ_PATH}` -eq '0' ]]; then
+  sed -i '/exit 0/d' "${ZZZ_PATH}"
+echo "
+uci delete network.globals.ula_prefix
+uci delete network.lan.ip6assign
+uci delete network.wan6
+uci delete dhcp.lan.ra
+uci delete dhcp.lan.ra_management
+uci delete dhcp.lan.dhcpv6
+uci delete dhcp.lan.ndp
+uci commit
+/etc/init.d/network restart
+exit 0
+" >> "${ZZZ_PATH}"
+fi
 
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]] && [[ ! ${bendi_script} == "1" ]]; then
@@ -611,9 +668,9 @@ if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]] && [[ ! ${be
   echo "Default_Theme=${Default_Theme}" >> ${GITHUB_ENV}
 fi
 
-#if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
-#   sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
-#fi
+if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
+   sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
+fi
 
 if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
@@ -691,13 +748,13 @@ if [[ "${filter_aaaa}" == "1" ]]; then
    sed -i "$lan\set dhcp.@dnsmasq[0].filter_aaaa='1'" "${GENE_PATH}"
 fi
 
-#if [[ "${Confidentiality_free}" == "1" ]]; then
-#   sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
-#fi
+if [[ "${Confidentiality_free}" == "1" ]]; then
+   sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
+fi
 
-#if [[ "${Remove_Firewall}" == "1" ]]; then
-#   sed -i '/to-ports 53/d' "${ZZZ_PATH}"
-#fi
+if [[ "${Remove_Firewall}" == "1" ]]; then
+   sed -i '/to-ports 53/d' "${ZZZ_PATH}"
+fi
 
 if [[ "${Cancel_running}" == "1" ]]; then
    echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${FIN_PATH}"
