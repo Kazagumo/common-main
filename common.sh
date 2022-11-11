@@ -465,10 +465,10 @@ EOF
 
 function Diy_OFFICIAL() {
 # 给固件LUCI做个标记
-find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
-svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
-svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
+#find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+#svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+#svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
+#svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
@@ -482,8 +482,6 @@ fi
 
 if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
-  sed -i "s?+luci-lib-base?+luci-base'zh_cn'?g" ${HOME_PATH}/package/default-settings/Makefile
 fi
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
