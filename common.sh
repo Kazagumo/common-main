@@ -503,22 +503,6 @@ fi
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 
-sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
-sed -i '/exit 0/d' "${ZZZ_PATH}"
-sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-cat >>"${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
-echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"official\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-exit 0
-EOF
 }
 
 
