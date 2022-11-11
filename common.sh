@@ -283,10 +283,6 @@ find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
 # 给固件LUCI做个标记
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-  
-sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
-sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
-sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
 }
 
 
@@ -358,7 +354,6 @@ openwrt-21.02)
 master)
   find . -name 'default-settings' | xargs -i rm -rf {}
   svn export https://github.com/281677160/common-main/trunk/IMMORTALWRT/default-settings  ${HOME_PATH}/package/emortal/default-settings > /dev/null 2>&1
-  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/default-settings/files/openwrt_banner > ${BASE_PATH}/etc/openwrt_banner
   if [[ `grep -c 'DEFAULT_PACKAGES.router:=default-settings luci' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i 's/default-settings-chn//g' "${HOME_PATH}/include/target.mk"
     sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings luci?g' "${HOME_PATH}/include/target.mk"
@@ -376,19 +371,12 @@ master)
 openwrt-18.06)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-    
-  sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/*/index.htm
-  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/*/index.htm
-  sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/*/index.htm
 
 ;;
 openwrt-18.06-k5.4)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-    
-  sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/generic/index.htm
-  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/generic/index.htm
-  sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/generic/index.htm
+
 ;;
 esac
   
@@ -513,10 +501,6 @@ done
 # 修改cpufreq和autocore一些代码适配amlogic
 sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' ${HOME_PATH}/feeds/luci/applications/luci-app-cpufreq/Makefile
 sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/package/lean/autocore/Makefile
-  
-sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
-sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
-sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
 }
 
 
