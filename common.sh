@@ -612,6 +612,7 @@ echo "
 uci delete network.globals.ula_prefix
 uci delete network.lan.ip6assign
 uci delete network.wan6
+uci set network.lan.delegate='0'
 uci commit network
 uci delete dhcp.lan.ra
 uci delete dhcp.lan.ra_management
@@ -638,6 +639,7 @@ echo "
 uci delete network.globals.ula_prefix
 uci delete network.lan.ip6assign
 uci delete network.wan6
+uci set network.lan.delegate='0' 
 uci commit network
 uci delete dhcp.lan.ra
 uci delete dhcp.lan.ra_management
