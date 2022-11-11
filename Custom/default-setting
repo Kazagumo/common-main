@@ -22,7 +22,7 @@ fi
 
 sed -i 's/distversion)%>/distversion)%><!--/g' /usr/lib/lua/luci/view/admin_status/index.htm
 sed -i 's/luciversion)%>)/luciversion)%>)-->/g' /usr/lib/lua/luci/view/admin_status/index.htm
-sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' /usr/lib/lua/luci/view/admin_status/index.htm
+sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' /usr/lib/lua/luci/view/admin_status/index.htm
 
 
 exit 0
