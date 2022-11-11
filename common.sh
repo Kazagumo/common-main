@@ -505,6 +505,7 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 
 
 function Diy_distrib() {
+if [ ! "${SOURCE_CODE}" == "COOLSNOWWOLF" ]; then
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
 sed -i '/luciversion/d' "${ZZZ_PATH}"
@@ -522,6 +523,7 @@ sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
 exit 0
 EOF
+fi
 }
 
 
