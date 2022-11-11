@@ -483,6 +483,20 @@ fi
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 
+if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+  sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci?g' "${HOME_PATH}/include/target.mk"
+elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
+  sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci \\?g' "${HOME_PATH}/include/target.mk"
+elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci?g' "${HOME_PATH}/include/target.mk"
+fi
+
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 
