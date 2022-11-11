@@ -692,22 +692,12 @@ if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
 fi
 
 if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]]; then
-  export Kernel_Pat="$(echo ${Kernel_Patchver} |egrep -o "[0-9]+\.[0-9]+")"
-  if [[ -n "${Kernel_Pat}" ]] && [[ ! ${bendi_script} == "1" ]]; then
-     echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
-   else
-     echo "Kernel_Patchver=0" >> ${GITHUB_ENV}
-   fi
-  if [[ -n "${Kernel_Pat}" ]] && [[ ${bendi_script} == "1" ]]; then
-     export Kernel_Patchver=${Kernel_Patchver}
-   else
-     echo "Kernel_Patchver=0" >> ${GITHUB_ENV}
-   fi
+  echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
 fi
 
 if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
   export Kernel_Pat="$(echo ${Kernel_Patchver} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  export ipadd_Pat="$(echo ${Kernel_Patchver} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  export ipadd_Pat="$(echo ${ipadd} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
      sed -i "s/${ipadd}/${IPv4_ipaddr}/g" "${GENE_PATH}"
    else
@@ -721,7 +711,7 @@ if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
   if [[ -n "${Kernel_netm}" ]] && [[ -n "${ipadd_mas}" ]]; then
      sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
    else
-     echo "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确"
+     echo "因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确"
    fi
 fi
 
@@ -731,15 +721,30 @@ if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]];
 fi
 
 if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
-   sed -i "$lan\set network.lan.gateway='${Router_gateway}'" "${GENE_PATH}"
+   export Router_gat="$(echo ${Router_gateway} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+   if [[ -n "${Router_gat}" ]]; then
+     sed -i "$lan\set network.lan.gateway='${Router_gateway}'" "${GENE_PATH}"
+   else
+     echo "因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确"
+   fi
 fi
 
 if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
-   sed -i "$lan\set network.lan.dns='${Lan_DNS}'" "${GENE_PATH}"
+  export ipa_dns="$(echo ${Lan_DNS} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${ipa_dns}" ]]; then
+     sed -i "$lan\set network.lan.dns='${Lan_DNS}'" "${GENE_PATH}"
+   else
+     echo "因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确"
+   fi
 fi
 
 if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
-   sed -i "$lan\set network.lan.broadcast='${IPv4_Broadcast}'" "${GENE_PATH}"
+  export IPv4_Bro="$(echo ${IPv4_Broadcast} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${IPv4_Bro}" ]]; then
+     sed -i "$lan\set network.lan.broadcast='${IPv4_Broadcast}'" "${GENE_PATH}"
+   else
+     echo "因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确"
+   fi
 fi
 
 if [[ "${Close_DHCP}" == "1" ]]; then
@@ -1140,12 +1145,17 @@ if [[ ! ${bendi_script} == "1" ]]; then
 fi
 
 if [[ "${Delete_NotRequired}" == "1" ]]; then
-  sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" target/linux/${TARGET_BOARD}/image/Makefile
+  sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
 fi
 
-export patchverl="$(grep "KERNEL_PATCHVER" "target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
+export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
 if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${patchverl}" ]]; then
-  sed -i "s/${patchverl}/${Kernel_Patchver}/g" target/linux/${TARGET_BOARD}/Makefile
+  export Kernel_Pat="$(echo ${Kernel_Patchver} |egrep -o "[0-9]+\.[0-9]+")"
+  if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
+    sed -i "s/${patchverl}/${Kernel_Patchver}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
+  else
+    echo "没发现源码内存在${Kernel_Patchver}内核，替换内核操作失败，保持默认内核继续编译"
+  fi
 fi
 
 if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
