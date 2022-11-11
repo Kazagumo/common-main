@@ -221,15 +221,14 @@ cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
 
 rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
 touch "${BASE_PATH}/etc/init.d/Postapplication"
-sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
 cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
-
+sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
 
 [[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir ${BASE_PATH}/usr/bin
 rm -rf "${BASE_PATH}/usr/bin/openwrt"
 touch "${BASE_PATH}/usr/bin/openwrt"
-sudo chmod +x "${BASE_PATH}/usr/bin/openwrt"
 cp ${BUILD_PATH}/openwrt.sh "${BASE_PATH}/usr/bin/openwrt"
+sudo chmod +x "${BASE_PATH}/usr/bin/openwrt"
 
 rm -rf "${DELETE}"
 touch "${DELETE}"
@@ -274,7 +273,7 @@ fi
 
 
 function Diy_COOLSNOWWOLF() {
-  # 删除重复插件（LEDE）
+# 删除重复插件（LEDE）
 find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
 find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
 find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
@@ -714,7 +713,6 @@ if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
      TIME r "因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确"
    fi
 fi
-
 
 if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
    sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
