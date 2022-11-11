@@ -1,13 +1,12 @@
 #!/bin/sh /etc/rc.common
 # Copyright (C) 2006 OpenWrt.org
 
-START=100
+START=99
 
 zzz_default() {
     
 	if [ -f "/etc/default-setting" ]; then
 		/etc/default-setting
-		uci commit
                 rm -rf /etc/default-setting
 	fi
 	
