@@ -253,20 +253,6 @@ EOF
 
 
 function Diy_clean() {
-case "${SOURCE_CODE}" in
-OFFICIAL)
-  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
-    export LUCI_EDITION="$(git tag| awk 'END {print}')"
-    git switch -c ${LUCI_EDITION}
-  else
-    export LUCI_EDITION="${REPO_BRANCH}"
-  fi
-;;
-esac
-if [[ ! ${bendi_script} == "1" ]]; then
-  echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
-fi
-
 ./scripts/feeds clean
 ./scripts/feeds update -a > /dev/null 2>&1
 }
@@ -361,7 +347,7 @@ openwrt-21.02)
 ;;
 master)
   find . -name 'default-settings' | xargs -i rm -rf {}
-  svn export https://github.com/281677160/common-main/trunk/IMMORTALWRT/default-settings  ${HOME_PATH}/package/emortal/default-settings
+  svn export https://github.com/281677160/common-main/trunk/IMMORTALWRT/default-settings  ${HOME_PATH}/package/emortal/default-settings > /dev/null 2>&1
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/default-settings/files/openwrt_banner > ${BASE_PATH}/etc/openwrt_banner
   if [[ `grep -c 'DEFAULT_PACKAGES.router:=default-settings luci' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i 's/default-settings-chn//g' "${HOME_PATH}/include/target.mk"
@@ -425,9 +411,9 @@ EOF
 function Diy_XWRT() {
 # 给固件LUCI做个标记
 find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings
-svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon
-svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config
+svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
+svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
@@ -480,9 +466,9 @@ EOF
 function Diy_OFFICIAL() {
 # 给固件LUCI做个标记
 find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings
-svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon
-svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config
+svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
+svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
