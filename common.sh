@@ -730,13 +730,13 @@ if [[ "${filter_aaaa}" == "1" ]]; then
    sed -i "$lan\set dhcp.@dnsmasq[0].filter_aaaa='1'" "${GENE_PATH}"
 fi
 
-if [[ "${Confidentiality_free}" == "1" ]]; then
-   sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
-fi
+#if [[ "${Confidentiality_free}" == "1" ]]; then
+#   sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
+#fi
 
-if [[ "${Remove_Firewall}" == "1" ]]; then
-   sed -i '/to-ports 53/d' "${ZZZ_PATH}"
-fi
+#if [[ "${Remove_Firewall}" == "1" ]]; then
+#   sed -i '/to-ports 53/d' "${ZZZ_PATH}"
+#fi
 
 if [[ "${Cancel_running}" == "1" ]]; then
    echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${FIN_PATH}"
