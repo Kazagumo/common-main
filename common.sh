@@ -1147,8 +1147,8 @@ if [[ "${Delete_NotRequired}" == "1" ]]; then
 fi
 
 export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
+export KERNEL_patc="patches-${patchverl}"
 if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ -n "${patchverl}" ]]; then
-  export Kernel_Pat="$(echo ${Kernel_Patchver} |egrep -o "[0-9]+\.[0-9]+")"
   if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
     sed -i "s/${patchverl}/${Kernel_Patchver}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
   else
