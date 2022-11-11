@@ -257,7 +257,6 @@ case "${SOURCE_CODE}" in
 OFFICIAL)
   if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
     export LUCI_EDITION="$(git tag| awk 'END {print}')"
-    git checkout ${LUCI_EDITION}
     git switch -c ${LUCI_EDITION}
   else
     export LUCI_EDITION="${REPO_BRANCH}"
