@@ -771,7 +771,7 @@ if [[ "${Remove_Firewall}" == "1" ]]; then
 fi
 
 if [[ "${Cancel_running}" == "1" ]]; then
-   echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${FIN_PATH}"
+   sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "${FIN_PATH}"
 fi
 
 # 晶晨CPU机型自定义机型,内核,分区
