@@ -14,7 +14,7 @@ function Diy_Part1() {
     cp $BUILD_PATH/replace.sh $BASE_PATH/usr/bin/replace
     sudo chmod +x $BASE_PATH/usr/bin/replace
     sudo chmod +x $BASE_PATH/usr/bin/AutoUpdate
-    if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/.config` -eq '0' ]]; then
+    if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
       sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
     fi
     [[ -d $HOME_PATH/package/luci-app-autoupdate ]] && echo "增加定时更新固件的插件成功"
