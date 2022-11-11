@@ -10,14 +10,13 @@ function Diy_Part1() {
     find . -name 'luci-app-autoupdate' | xargs -i rm -rf {}
     git clone https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
     [[ ! -d "$BASE_PATH/usr/bin" ]] && mkdir $BASE_PATH/usr/bin
-    touch $BASE_PATH/usr/bin/AutoUpdate
-    touch $BASE_PATH/usr/bin/replace
-    sudo chmod +x $BASE_PATH/usr/bin/AutoUpdate $BASE_PATH/usr/bin/replace
     cp $BUILD_PATH/AutoUpdate.sh $BASE_PATH/usr/bin/AutoUpdate
     cp $BUILD_PATH/replace.sh $BASE_PATH/usr/bin/replace
-    sed  -i  's/ luci-app-ttyd//g' ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
-    sed  -i  's/ luci-app-autoupdate//g' ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
-    sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd?g' ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
+    sudo chmod +x $BASE_PATH/usr/bin/replace
+    sudo chmod +x $BASE_PATH/usr/bin/AutoUpdate
+    if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/.config` -eq '0' ]]; then
+      sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
+    fi
     [[ -d $HOME_PATH/package/luci-app-autoupdate ]] && echo "增加定时更新固件的插件成功"
   else
     echo "没发现AutoUpdate.sh文件存在，不能增加在线升级固件程序"
