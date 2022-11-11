@@ -192,7 +192,7 @@ ${INS} clean
 
 
 function Diy_checkout() {
-${GITHUB_WORKSPACE}/openwrt
+cd ${GITHUB_WORKSPACE}/openwrt
 case "${SOURCE_CODE}" in
 OFFICIAL)
   if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
