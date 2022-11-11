@@ -191,6 +191,30 @@ ${INS} clean
 }
 
 
+function Diy_checkout() {
+${GITHUB_WORKSPACE}/openwrt
+case "${SOURCE_CODE}" in
+OFFICIAL)
+  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
+    rm -rf ${GITHUB_WORKSPACE}/build
+    mv -f ${HOME_PATH}/build ${GITHUB_WORKSPACE}/build
+    export LUCI_EDITION="$(git tag| awk 'END {print}')"
+    git checkout -f ${LUCI_EDITION}
+    git switch -c ${LUCI_EDITION}
+    mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
+    chmod -R +x ${HOME_PATH}/build
+    export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/v//')"
+    TIME g "正在使用${LUCI_EDITION}版本源码进行编译"
+  else
+    export LUCI_EDITION="${REPO_BRANCH}"
+  fi
+;;
+esac
+if [[ ! ${bendi_script} == "1" ]]; then
+  echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
+fi
+}
+
 function Diy_Notice() {
 export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
 export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
@@ -246,27 +270,6 @@ EOF
 
 
 function Diy_clean() {
-case "${SOURCE_CODE}" in
-OFFICIAL)
-  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
-    rm -rf ${GITHUB_WORKSPACE}/build
-    mv -f ${HOME_PATH}/build ${GITHUB_WORKSPACE}/build
-    export LUCI_EDITION="$(git tag| awk 'END {print}')"
-    git checkout -f ${LUCI_EDITION}
-    git switch -c ${LUCI_EDITION}
-    mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
-    chmod -R +x ${HOME_PATH}/build
-    export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/v//')"
-    TIME g "正在使用${LUCI_EDITION}版本源码进行编译"
-  else
-    export LUCI_EDITION="${REPO_BRANCH}"
-  fi
-;;
-esac
-if [[ ! ${bendi_script} == "1" ]]; then
-  echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
-fi
-
 ./scripts/feeds clean
 ./scripts/feeds update -a > /dev/null 2>&1
 }
