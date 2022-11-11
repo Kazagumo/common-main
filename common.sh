@@ -258,7 +258,7 @@ OFFICIAL)
     git switch -c ${LUCI_EDITION}
     mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
     chmod -R +x ${HOME_PATH}/build
-    export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/V//')"
+    export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/v//')"
   else
     export LUCI_EDITION="${REPO_BRANCH}"
   fi
