@@ -633,44 +633,59 @@ else
    echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${Create_IPV6_interface}" == "1" ]] && [[ `grep -c "lan.ra_management" ${ZZZ_PATH}` -eq '0' ]]; then
+
+sed -i '/globals.ula_prefix/d' "${FIN_PATH}"
+sed -i '/lan.ip6assign/d' "${FIN_PATH}"
+sed -i '/uci delete network.wan6/d' "${FIN_PATH}"
+sed -i '/delete dhcp.lan.ra/d' "${FIN_PATH}"
+sed -i '/ipv6/d' "${FIN_PATH}"
+sed -i '/network restart/d' "${FIN_PATH}"
+sed -i '/filter_aaaa/d' "${FIN_PATH}"
+sed -i '/uci commit/d' "${FIN_PATH}"
+
+
+if [[ "${Create_IPV6_interface}" == "1" ]]; then
   export Remove_IPv6="0"
-  sed -i '/exit 0/d' "${ZZZ_PATH}"
+  sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
 uci delete network.globals.ula_prefix
 uci delete network.lan.ip6assign
 uci delete network.wan6
+uci commit network
 uci delete dhcp.lan.ra
 uci delete dhcp.lan.ra_management
 uci delete dhcp.lan.dhcpv6
 uci delete dhcp.lan.ndp
 uci delete dhcp.@dnsmasq[0].filter_aaaa
+uci commit dhcp
 uci set network.ipv6=interface
 uci set network.ipv6.proto='dhcpv6'
 uci set network.ipv6.ifname='@lan'
 uci set network.ipv6.reqaddress='try'
 uci set network.ipv6.reqprefix='auto'
+uci commit network
 uci set firewall.@zone[0].network='lan ipv6'
-uci commit
+uci commit firewall
 /etc/init.d/network restart
 exit 0
-" >> "${ZZZ_PATH}"
+" >> ""${FIN_PATH}""
 fi
 
-if [[ "${Remove_IPv6}" == "1" ]] && [[ `grep -c "lan.ra_management" ${ZZZ_PATH}` -eq '0' ]]; then
-  sed -i '/exit 0/d' "${ZZZ_PATH}"
+if [[ "${Remove_IPv6}" == "1" ]]; then
+  sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
 uci delete network.globals.ula_prefix
 uci delete network.lan.ip6assign
 uci delete network.wan6
+uci commit network
 uci delete dhcp.lan.ra
 uci delete dhcp.lan.ra_management
 uci delete dhcp.lan.dhcpv6
 uci delete dhcp.lan.ndp
-uci commit
-/etc/init.d/network restart
+uci delete dhcp.@dnsmasq[0].filter_aaaa
+uci commit dhcp
 exit 0
-" >> "${ZZZ_PATH}"
+" >> ""${FIN_PATH}""
 fi
 
 
@@ -770,6 +785,7 @@ if [[ "${Remove_Firewall}" == "1" ]]; then
 fi
 
 if [[ "${Cancel_running}" == "1" ]]; then
+   sed -i '/coremark/d' "${FIN_PATH}"
    sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "${FIN_PATH}"
 fi
 
@@ -815,13 +831,6 @@ fi
 
 
 function Diy_Language() {
-sed -i '/^#/d' ${FIN_PATH}
-sed -i '/exit 0/d' "${FIN_PATH}"
-echo -e "\nexit 0" >> ${FIN_PATH}
-sed -i '/^#/d' ${ZZZ_PATH}
-sed -i '/exit 0/d' "${ZZZ_PATH}"
-echo -e "\nexit 0" >> ${ZZZ_PATH}
-
 if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
   cd ${HOME_PATH}
@@ -1159,9 +1168,10 @@ fi
 if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
   export defaultt=CONFIG_PACKAGE_luci-theme-${Default_Theme}=y
   if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
-   sed -i "/exit 0/i\uci set luci.main.mediaurlbase='/luci-static/${Default_Theme}' && uci commit" "${FIN_PATH}"
+    sed -i '/mediaurlbase/d' "${FIN_PATH}"
+    sed -i "/exit 0/i\uci set luci.main.mediaurlbase='/luci-static/${Default_Theme}' && uci commit luci" "${FIN_PATH}"
   else
-    TIME r "没有选择luci-theme-${Default_Theme}此主题,将${Default_Theme}设置成默认主题的操作失败"
+     TIME r "没有选择luci-theme-${Default_Theme}此主题,将${Default_Theme}设置成默认主题的操作失败"
   fi
 fi
 }
@@ -1212,6 +1222,13 @@ fi
 
 
 function Diy_upgrade2() {
+sed -i '/^#/d' ${FIN_PATH}
+sed -i '/exit 0/d' "${FIN_PATH}"
+echo -e "\nexit 0" >> ${FIN_PATH}
+sed -i '/^#/d' ${ZZZ_PATH}
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+echo -e "\nexit 0" >> ${ZZZ_PATH}
+
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part2
 fi
