@@ -601,45 +601,6 @@ else
    echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${Create_IPV6_interface}" == "1" ]] && [[ `grep -c "lan.ra_management" ${ZZZ_PATH}` -eq '0' ]]; then
-  export Remove_IPv6="0"
-  sed -i '/exit 0/d' "${ZZZ_PATH}"
-echo "
-uci delete network.globals.ula_prefix
-uci delete network.lan.ip6assign
-uci delete network.wan6
-uci delete dhcp.lan.ra
-uci delete dhcp.lan.ra_management
-uci delete dhcp.lan.dhcpv6
-uci delete dhcp.lan.ndp
-uci delete dhcp.@dnsmasq[0].filter_aaaa
-uci set network.ipv6=interface
-uci set network.ipv6.proto='dhcpv6'
-uci set network.ipv6.ifname='@lan'
-uci set network.ipv6.reqaddress='try'
-uci set network.ipv6.reqprefix='auto'
-uci set firewall.@zone[0].network='lan ipv6'
-uci commit
-/etc/init.d/network restart
-exit 0
-" >> "${ZZZ_PATH}"
-fi
-
-if [[ "${Remove_IPv6}" == "1" ]] && [[ `grep -c "lan.ra_management" ${ZZZ_PATH}` -eq '0' ]]; then
-  sed -i '/exit 0/d' "${ZZZ_PATH}"
-echo "
-uci delete network.globals.ula_prefix
-uci delete network.lan.ip6assign
-uci delete network.wan6
-uci delete dhcp.lan.ra
-uci delete dhcp.lan.ra_management
-uci delete dhcp.lan.dhcpv6
-uci delete dhcp.lan.ndp
-uci commit
-/etc/init.d/network restart
-exit 0
-" >> "${ZZZ_PATH}"
-fi
 
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]] && [[ ! ${bendi_script} == "1" ]]; then
