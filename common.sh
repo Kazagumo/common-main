@@ -1096,6 +1096,9 @@ else
   echo "PROMPT_TING=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 fi
 
+./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
+ cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
+
 if [[ ! ${bendi_script} == "1" ]]; then
   echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
   echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
