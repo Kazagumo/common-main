@@ -254,9 +254,10 @@ OFFICIAL)
     rm -rf ${GITHUB_WORKSPACE}/build
     mv -f ${HOME_PATH}/build ${GITHUB_WORKSPACE}/build
     export LUCI_EDITION="$(git tag| awk 'END {print}')"
-    git checkout ${LUCI_EDITION}
+    git checkout -f ${LUCI_EDITION}
     git switch -c ${LUCI_EDITION}
     mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
+    chmod -R +x ${HOME_PATH}/build
   else
     export LUCI_EDITION="${REPO_BRANCH}"
   fi
