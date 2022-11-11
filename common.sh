@@ -618,7 +618,7 @@ uci delete dhcp.lan.ra
 uci delete dhcp.lan.ra_management
 uci delete dhcp.lan.dhcpv6
 uci delete dhcp.lan.ndp
-uci delete dhcp.@dnsmasq[0].filter_aaaa
+uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 uci commit dhcp
 uci set network.ipv6=interface
 uci set network.ipv6.proto='dhcpv6'
@@ -645,7 +645,7 @@ uci delete dhcp.lan.ra
 uci delete dhcp.lan.ra_management
 uci delete dhcp.lan.dhcpv6
 uci delete dhcp.lan.ndp
-uci delete dhcp.@dnsmasq[0].filter_aaaa
+uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci commit dhcp
 exit 0
 " >> ""${FIN_PATH}""
