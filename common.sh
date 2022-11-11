@@ -105,7 +105,7 @@ AMLOGIC)
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
 ;;
 *)
-  TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT和AMLOGIC"
+  TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL和AMLOGIC"
   exit 1
 ;;
 esac
