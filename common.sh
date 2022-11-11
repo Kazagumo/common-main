@@ -1294,7 +1294,7 @@ Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/=m/d' |sed
 echo "${Plug_in2}" >Plug-in
 sed -i '/luci-app-qbittorrent-simple_dynamic/d' Plug-in > /dev/null 2>&1
 
-export KERNEL_PATCH="$(grep "KERNEL_PATCHVER" "target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
+export KERNEL_PATCH="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
 export KERNEL_patc="kernel-${KERNEL_PATCH}"
 if [[ `ls -1 "${HOME_PATH}/include" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
   export LINUX_KERNEL="$(grep "LINUX_KERNEL_HASH" "${HOME_PATH}/include/${KERNEL_patc}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")"
