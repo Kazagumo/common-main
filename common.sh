@@ -258,6 +258,7 @@ OFFICIAL)
     mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
     chmod -R +x ${HOME_PATH}/build
     export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/v//')"
+    TIME g "正在使用${LUCI_EDITION}版本源码进行编译"
   else
     export LUCI_EDITION="${REPO_BRANCH}"
   fi
