@@ -1060,7 +1060,7 @@ fi
 cd ${HOME_PATH}
 ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
 cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
-make defconfig
+make defconfig;make oldconfig
 echo
 echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
