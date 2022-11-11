@@ -478,7 +478,7 @@ fi
 if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
-  sed -i "s?+luci-lib-base?+luci-base'zh_cn'?g" ${HOME_PATH}/package/default-settings/Makefile
+  sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
 fi
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
