@@ -82,7 +82,7 @@ IMMORTALWRT)
 ;;
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
-  export SOURCE="xwrt"
+  export SOURCE="Xwrt"
   export MAINTAIN="ptpt52"
   export PACKAGE_BRANCH="xwrt"
   export LUCI_EDITION="${REPO_BRANCH}"
@@ -90,7 +90,7 @@ XWRT)
 ;;
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
-  export SOURCE="official"
+  export SOURCE="Official"
   export MAINTAIN="openwrt"
   export PACKAGE_BRANCH="official"
   export LUCI_EDITION="${REPO_BRANCH}"
@@ -335,10 +335,6 @@ esac
 # 给源码增加passwall为默认自选
 sed -i 's/luci-app-passwall //g' include/target.mk
 sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall ?g' include/target.mk
-  
-# 修改DISTRIB_DESCRIPTION
-DISTRIB="$(grep DISTRIB_DESCRIPTION= ${ZZZ_PATH} |cut -d "=" -f2 |cut -d "'" -f2)"
-[[ -n "${DISTRIB}" ]] && sed -i "s?${DISTRIB}?OpenWrt ?g" "${ZZZ_PATH}"
 }
 
 
@@ -399,26 +395,6 @@ esac
 # 给源码增加luci-app-ssr-plus为默认自选
 sed -i 's/luci-app-ssr-plus //g' include/target.mk
 sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-ssr-plus ?g' include/target.mk
-  
-# 修改天灵的zzz-default-settings文件为中文
-sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-
-sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
-sed -i '/exit 0/d' "${ZZZ_PATH}"
-sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-cat >>"${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
-echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"Immortalwrt\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-exit 0
-EOF
 }
 
 
@@ -457,23 +433,6 @@ fi
 
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-
-sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
-sed -i '/exit 0/d' "${ZZZ_PATH}"
-sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-cat >>"${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
-echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"x-wrt\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-exit 0
-EOF
 }
 
 
@@ -518,23 +477,6 @@ fi
 
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-
-sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
-sed -i '/exit 0/d' "${ZZZ_PATH}"
-sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-cat >>"${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
-echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"official\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-exit 0
-EOF
 }
 
 
@@ -571,6 +513,27 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
 sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
 sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
+}
+
+
+function Diy_distrib() {
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
+sed -i '/luciversion/d' "${ZZZ_PATH}"
+sed -i '/luciname/d' "${ZZZ_PATH}"
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+
+cat >>"${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+exit 0
+EOF
 }
 
 
@@ -633,7 +596,6 @@ else
    echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 fi
 
-
 sed -i '/globals.ula_prefix/d' "${FIN_PATH}"
 sed -i '/lan.ip6assign/d' "${FIN_PATH}"
 sed -i '/uci delete network.wan6/d' "${FIN_PATH}"
@@ -642,7 +604,6 @@ sed -i '/ipv6/d' "${FIN_PATH}"
 sed -i '/network restart/d' "${FIN_PATH}"
 sed -i '/filter_aaaa/d' "${FIN_PATH}"
 sed -i '/uci commit/d' "${FIN_PATH}"
-
 
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
   export Remove_IPv6="0"
@@ -1119,6 +1080,7 @@ if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
 fi
 }
 
+
 function Make_defconfig() {
 echo "正在执行：识别源码编译为何机型"
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
@@ -1218,7 +1180,6 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
   fi
 fi
 }
-
 
 
 function Diy_upgrade2() {
@@ -1462,6 +1423,7 @@ function Diy_menu3() {
 Diy_wenjian
 Diy_clean
 Diy_${SOURCE_CODE}
+Diy_distrib
 Diy_chajianyuan
 Diy_upgrade1
 }
