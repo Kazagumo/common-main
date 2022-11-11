@@ -701,7 +701,7 @@ if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
   if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
      sed -i "s/${ipadd}/${IPv4_ipaddr}/g" "${GENE_PATH}"
    else
-     echo "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确"
+     TIME r "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确"
    fi
 fi
 
@@ -711,7 +711,7 @@ if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
   if [[ -n "${Kernel_netm}" ]] && [[ -n "${ipadd_mas}" ]]; then
      sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
    else
-     echo "因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确"
+     TIME r "因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确"
    fi
 fi
 
@@ -725,7 +725,7 @@ if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
    if [[ -n "${Router_gat}" ]]; then
      sed -i "$lan\set network.lan.gateway='${Router_gateway}'" "${GENE_PATH}"
    else
-     echo "因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确"
+     TIME r "因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确"
    fi
 fi
 
@@ -734,7 +734,7 @@ if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
   if [[ -n "${ipa_dns}" ]]; then
      sed -i "$lan\set network.lan.dns='${Lan_DNS}'" "${GENE_PATH}"
    else
-     echo "因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确"
+     TIME r "因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确"
    fi
 fi
 
@@ -743,7 +743,7 @@ if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
   if [[ -n "${IPv4_Bro}" ]]; then
      sed -i "$lan\set network.lan.broadcast='${IPv4_Broadcast}'" "${GENE_PATH}"
    else
-     echo "因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确"
+     TIME r "因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确"
    fi
 fi
 
@@ -851,7 +851,7 @@ if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
     rm -rf themeuci
   else
     rm -rf themeuci
-    echo "没有${themee}此主题存在,不进行替换bootstrap主题操作"
+    TIME r "没有${themee}此主题存在,不进行替换bootstrap主题操作"
   fi
 fi
 }
@@ -1154,7 +1154,7 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${patchverl}" ]]; then
   if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
     sed -i "s/${patchverl}/${Kernel_Patchver}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
   else
-    echo "没发现源码内存在${Kernel_Patchver}内核，替换内核操作失败，保持默认内核继续编译"
+    TIME r "没发现源码内存在${Kernel_Patchver}内核，替换内核操作失败，保持默认内核继续编译"
   fi
 fi
 
@@ -1163,7 +1163,7 @@ if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
   if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
    sed -i "$lan\set luci.main.mediaurlbase='/luci-static/${Default_Theme}'" "${GENE_PATH}"
   else
-    echo "没有选择luci-theme-${Default_Theme}此主题,${Default_Theme}设置成默认主题的操作失败"
+    TIME r "没有选择luci-theme-${Default_Theme}此主题,将${Default_Theme}设置成默认主题的操作失败"
   fi
 fi
 }
