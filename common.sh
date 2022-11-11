@@ -650,9 +650,9 @@ if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]] && [[ ! ${be
   echo "Default_Theme=${Default_Theme}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
-   sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
-fi
+#if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
+#   sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
+#fi
 
 if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
