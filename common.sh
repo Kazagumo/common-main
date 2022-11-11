@@ -248,6 +248,21 @@ EOF
 
 
 function Diy_clean() {
+case "${SOURCE_CODE}" in
+OFFICIAL)
+  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
+    export LUCI_EDITION="$(git tag| awk 'END {print}')"
+    git checkout ${LUCI_EDITION}
+    git switch -c ${LUCI_EDITION}
+  else
+    export LUCI_EDITION="${REPO_BRANCH}"
+  fi
+;;
+esac
+if [[ ! ${bendi_script} == "1" ]]; then
+  echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
+fi
+
 ./scripts/feeds clean
 ./scripts/feeds update -a > /dev/null 2>&1
 }
