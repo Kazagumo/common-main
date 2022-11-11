@@ -1090,8 +1090,6 @@ export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET
 export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 echo "${TARGET_PROFILE}"
 
-./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config.txt
-
 if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
   echo "PROMPT_TING=${amlogic_model}" >> ${GITHUB_ENV}
 else
