@@ -19,7 +19,6 @@ if [[ `grep -c "passwall" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
   sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 fi
 
-
 sed -i 's/distversion)%>/distversion)%><!--/g' /usr/lib/lua/luci/view/admin_status/index.htm
 sed -i 's/luciversion)%>)/luciversion)%>)-->/g' /usr/lib/lua/luci/view/admin_status/index.htm
 sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' /usr/lib/lua/luci/view/admin_status/index.htm
