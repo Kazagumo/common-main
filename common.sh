@@ -556,6 +556,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
 
 function Diy_Publicarea() {
 # diy-part.sh文件的延伸
+rm -rf ${HOME_PATH}/CHONGTU && touch ${HOME_PATH}/CHONGTU
 sed -i '/lan.gateway=/d' "${GENE_PATH}"
 sed -i '/lan.dns=/d' "${GENE_PATH}"
 sed -i '/lan.broadcast=/d' "${GENE_PATH}"
@@ -660,7 +661,7 @@ if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
   if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
      sed -i "s/${ipadd}/${IPv4_ipaddr}/g" "${GENE_PATH}"
    else
-     TIME r "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确"
+     echo "TIME r \"因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
    fi
 fi
 
@@ -670,7 +671,7 @@ if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
   if [[ -n "${Kernel_netm}" ]] && [[ -n "${ipadd_mas}" ]]; then
      sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
    else
-     TIME r "因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确"
+     echo "TIME r \"因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
    fi
 fi
 
@@ -683,7 +684,7 @@ if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
    if [[ -n "${Router_gat}" ]]; then
      sed -i "$lan\set network.lan.gateway='${Router_gateway}'" "${GENE_PATH}"
    else
-     TIME r "因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确"
+     echo "TIME r \"因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
    fi
 fi
 
@@ -692,7 +693,7 @@ if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
   if [[ -n "${ipa_dns}" ]]; then
      sed -i "$lan\set network.lan.dns='${Lan_DNS}'" "${GENE_PATH}"
    else
-     TIME r "因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确"
+     echo "TIME r \"因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确\"" >> ${HOME_PATH}/CHONGTU
    fi
 fi
 
@@ -701,7 +702,7 @@ if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
   if [[ -n "${IPv4_Bro}" ]]; then
      sed -i "$lan\set network.lan.broadcast='${IPv4_Broadcast}'" "${GENE_PATH}"
    else
-     TIME r "因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确"
+     echo "TIME r \"因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确\"" >> ${HOME_PATH}/CHONGTU
    fi
 fi
 
@@ -799,7 +800,7 @@ if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
     rm -rf themeuci
   else
     rm -rf themeuci
-    TIME r "没有${themee}此主题存在,不进行替换bootstrap主题操作"
+    echo "TIME r \"没有${themee}此主题存在,不进行替换bootstrap主题操作\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 }
@@ -826,8 +827,6 @@ function Diy_prevent() {
 Diy_IPv6helper
 echo "正在执行：判断插件有否冲突减少编译错误"
 make defconfig > /dev/null 2>&1
-echo "TIME b \"					插件冲突信息\"" > ${HOME_PATH}/CHONGTU
-
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-server=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-vpnd=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-ipsec-vpnd=y/# CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set/g' ${HOME_PATH}/.config
@@ -1033,28 +1032,14 @@ if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]];
   if [[ "${PARTSIZE}" -lt "950" ]];then
     sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
     echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=950" >> ${HOME_PATH}/.config
-    echo "" > ${HOME_PATH}/EXT4
-    echo "TIME r \"EXT4提示：请注意，您选择了ext4安装的固件格式,而检测到您的分配的固件系统分区过小\"" >> ${HOME_PATH}/EXT4
-    echo "TIME y \"为避免编译出错,建议修改成950或者以上比较好,已自动帮您修改成950M\"" >> ${HOME_PATH}/EXT4
+    echo "TIME r \"EXT4提示：请注意，您选择了ext4安装的固件格式,而检测到您的分配的固件系统分区过小\"" >> ${HOME_PATH}/CHONGTU
+    echo "TIME y \"为避免编译出错,已自动帮您修改成950M\"" >> ${HOME_PATH}/CHONGTU
+    echo "" >> ${HOME_PATH}/CHONGTU
   fi
 fi
-echo "TIME y \"  插件冲突会导致编译失败，以上操作如非您所需，请关闭此次编译，重新开始编译，避开冲突重新选择插件\"" >>CHONGTU
-echo "" >>CHONGTU
 cd ${HOME_PATH}
 ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
 cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
-echo
-echo
-if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
-  chmod -R +x ${HOME_PATH}/EXT4
-  source ${HOME_PATH}/EXT4
-  echo
-fi
-if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
-  chmod -R +x ${HOME_PATH}/CHONGTU
-  source ${HOME_PATH}/CHONGTU
-  echo
-fi
 }
 
 
@@ -1098,7 +1083,7 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ -n
   if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
     sed -i "s/${patchverl}/${Kernel_Patchver}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
   else
-    TIME r "没发现源码有[ ${Kernel_Patchver} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译"
+    echo "TIME r \"没发现源码有[ ${Kernel_Patchver} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
@@ -1108,7 +1093,7 @@ if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
     sed -i '/mediaurlbase/d' "${FIN_PATH}"
     sed -i "/exit 0/i\uci set luci.main.mediaurlbase='/luci-static/${Default_Theme}' && uci commit luci" "${FIN_PATH}"
   else
-     TIME r "没有选择luci-theme-${Default_Theme}此主题,将${Default_Theme}设置成默认主题的操作失败"
+     echo "TIME r \"没有选择luci-theme-${Default_Theme}此主题,将${Default_Theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 }
@@ -1362,23 +1347,13 @@ TIME z " 系统空间      类型   总数  已用  可用 使用率"
 cd ../ && df -hT $PWD && cd ${HOME_PATH}
 echo
 echo
-if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
-  chmod -R +x ${HOME_PATH}/EXT4
-  source ${HOME_PATH}/EXT4
+
+if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
+  TIME b "					 错误信息"
   echo
-fi
-if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
   chmod -R +x ${HOME_PATH}/CHONGTU
   source ${HOME_PATH}/CHONGTU
-  echo
-fi
-rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
-if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
-  TIME r "	      已选插件列表"
-  chmod -R +x ${HOME_PATH}/Plug-in
-  source ${HOME_PATH}/Plug-in
-  rm -rf ${HOME_PATH}/{Plug-in,Plug-2}
-  echo
+  rm -rf ${HOME_PATH}/CHONGTU
 fi
 }
 
