@@ -1268,6 +1268,11 @@ Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/=m/d' |sed
 echo "${Plug_in2}" >Plug-in
 sed -i '/luci-app-qbittorrent-simple_dynamic/d' Plug-in > /dev/null 2>&1
 
+if [[ `grep -c "# CONFIG_GRUB_EFI_IMAGES is not set" ${HOME_PATH}/.config` -eq '1' ]]; then
+  export EFI_NO="1"
+fi
+
+
 export KERNEL_PATCH="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
 export KERNEL_patc="kernel-${KERNEL_PATCH}"
 if [[ `ls -1 "${HOME_PATH}/include" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
@@ -1359,8 +1364,8 @@ elif [[ "${REGULAR_UPDATE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; then
   TIME l "定时自动更新信息"
   TIME z "插件版本: ${AutoUpdate_Version}"
   if [[ ${Firmware_SFX} == ".img.gz" ]]; then
-    [[ -n "${Legacy_Firmware}" ]] && TIME b "传统固件: ${Legacy_Firmware}"
-    [[ -n "${UEFI_Firmware}" ]] && TIME b "UEFI固件: ${UEFI_Firmware}"
+    TIME b "传统固件: ${Legacy_Firmware}"
+    [[ ! "${EFI_NO}" == "1" ]] && TIME b "UEFI固件: ${UEFI_Firmware}"
     TIME b "固件后缀: ${Firmware_SFX}"
   else
     TIME b "固件名称: ${Up_Firmware}"
