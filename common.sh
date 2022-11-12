@@ -589,7 +589,7 @@ fi
 
 
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
-  echo "${Create_IPV6_interface}=1" >> ${GITHUB_ENV}
+  echo "Create_IPV6_interface=1" >> ${GITHUB_ENV}
   export Remove_IPv6="0"
   sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
