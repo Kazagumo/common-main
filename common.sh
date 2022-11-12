@@ -242,7 +242,7 @@ echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /u
 cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
 sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
 
-[[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir ${BASE_PATH}/usr/bin
+[[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir -p ${BASE_PATH}/usr/bin
 cp ${HOME_PATH}/build/common/Custom/openwrt.sh "${BASE_PATH}/usr/bin/openwrt"
 sudo chmod +x "${BASE_PATH}/usr/bin/openwrt"
 
