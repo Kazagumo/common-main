@@ -1359,8 +1359,8 @@ elif [[ "${REGULAR_UPDATE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; then
   TIME l "定时自动更新信息"
   TIME z "插件版本: ${AutoUpdate_Version}"
   if [[ ${Firmware_SFX} == ".img.gz" ]]; then
-    TIME b "传统固件: ${Legacy_Firmware}"
-    TIME b "UEFI固件: ${UEFI_Firmware}"
+    [[ -n "${Legacy_Firmware}" ]] && TIME b "传统固件: ${Legacy_Firmware}"
+    [[ -n "${UEFI_Firmware}" ]] && TIME b "UEFI固件: ${UEFI_Firmware}"
     TIME b "固件后缀: ${Firmware_SFX}"
   else
     TIME b "固件名称: ${Up_Firmware}"
