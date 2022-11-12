@@ -31,6 +31,6 @@ elif [[ `grep -c "pcdata(ver.distversion)%>" "${luci_web}"` -eq '1' ]] && [[ `gr
 fi
 
 sed -i '/= "OpenWrt"/d' /usr/lib/lua/luci/version.lua
-sed -i 's?Development Snapshot?OpenWrt ?g' /usr/lib/lua/luci/version.lua
+
 
 exit 0
