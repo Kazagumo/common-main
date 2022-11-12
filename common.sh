@@ -1349,7 +1349,9 @@ echo
 echo
 
 if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
-  TIME b "					 错误信息"
+  echo
+  echo
+  TIME b "			错误信息"
   echo
   chmod -R +x ${HOME_PATH}/CHONGTU
   source ${HOME_PATH}/CHONGTU
