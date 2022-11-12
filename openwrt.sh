@@ -90,19 +90,23 @@ function xiugai_ip() {
 }
 
 function qingkong_mima() {
-read -p " 是否清空密码?按[Y/n]：" YN
+while :; do
+read -p 请输入[Y/n]选择是否清空密码： YN
 case ${YN} in
 [Yy]) 
     passwd -d root
     judge
+break
 ;;
 [Nn])
     ECHOR "您已跳过清空密码"
+break
 ;;
 *)
-    ECHOR "请输入正确的选择，[Y/n]"
+    ECHOR ""
 ;;
 esac
+done
 }
 
 function first_boot() {
