@@ -355,9 +355,10 @@ openwrt-21.02)
 master)
   find . -name 'default-settings' | xargs -i rm -rf {}
   svn export https://github.com/281677160/common-main/trunk/IMMORTALWRT/default-settings  ${HOME_PATH}/package/emortal/default-settings > /dev/null 2>&1
-  if [[ `grep -c 'DEFAULT_PACKAGES.router:=default-settings luci' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+  if [[ `grep -c 'DEFAULT_PACKAGES.router:=default-settings luci luci-lib-ipkg' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i 's/default-settings-chn//g' "${HOME_PATH}/include/target.mk"
-    sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings luci?g' "${HOME_PATH}/include/target.mk"
+    sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
+    sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings luci luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
   fi
   
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
