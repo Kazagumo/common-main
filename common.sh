@@ -235,21 +235,15 @@ TIME r ""
 function Diy_wenjian() {
 # 拉取源码之后增加应用文件
 
-rm -rf "${FIN_PATH}"
-touch "${FIN_PATH}"
-sudo chmod +x "${FIN_PATH}"
 cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
+sudo chmod +x "${FIN_PATH}"
 echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${FIN_PATH}"
 
-rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
-touch "${BASE_PATH}/etc/init.d/Postapplication"
 cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
 sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
 
 [[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir ${BASE_PATH}/usr/bin
-rm -rf "${BASE_PATH}/usr/bin/openwrt"
-touch "${BASE_PATH}/usr/bin/openwrt"
-cp ${BUILD_PATH}/openwrt.sh "${BASE_PATH}/usr/bin/openwrt"
+cp ${HOME_PATH}/build/common/Custom/openwrt.sh "${BASE_PATH}/usr/bin/openwrt"
 sudo chmod +x "${BASE_PATH}/usr/bin/openwrt"
 
 rm -rf "${DELETE}"
