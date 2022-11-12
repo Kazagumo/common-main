@@ -613,6 +613,7 @@ uci commit dhcp
 uci set network.ipv6=interface
 uci set network.ipv6.proto='dhcpv6'
 uci set network.ipv6.ifname='@lan'
+uci set network.ipv6.device='@lan'
 uci set network.ipv6.reqaddress='try'
 uci set network.ipv6.reqprefix='auto'
 uci commit network
