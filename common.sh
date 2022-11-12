@@ -643,8 +643,8 @@ if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]] && [[ ! ${be
 fi
 
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
-   sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
-   sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${FIN_PATH}"
+   sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${ZZZ_PATH}"
+   sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${FIN_PATH}"
 fi
 
 if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
