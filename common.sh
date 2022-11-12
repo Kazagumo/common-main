@@ -574,11 +574,19 @@ else
    echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 fi
 
+
 if [[ "${Package_IPv6helper}" == "1" ]]; then
   export Create_IPV6_interface="0"
   export Remove_IPv6="0"
   echo "${Package_IPv6helper}=1" >> ${GITHUB_ENV}
+  sed -i '/exit 0/d' ""${FIN_PATH}""
+echo "
+uci set dhcp.@dnsmasq[0].filter_aaaa='0'
+uci commit dhcp
+exit 0
+" >> "${FIN_PATH}"
 fi
+
 
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
   echo "${Create_IPV6_interface}=1" >> ${GITHUB_ENV}
@@ -604,7 +612,7 @@ uci set firewall.@zone[0].network='lan ipv6'
 uci commit firewall
 /etc/init.d/network restart
 exit 0
-" >> ""${FIN_PATH}""
+" >> "${FIN_PATH}"
 fi
 
 if [[ "${Remove_IPv6}" == "1" ]]; then
@@ -622,7 +630,7 @@ uci delete dhcp.lan.ndp
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci commit dhcp
 exit 0
-" >> ""${FIN_PATH}""
+" >> "${FIN_PATH}"
 fi
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]] && [[ ! ${bendi_script} == "1" ]]; then
