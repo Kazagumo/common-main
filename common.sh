@@ -653,6 +653,7 @@ fi
 
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
    sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${ZZZ_PATH}"
+   sed -i "s/OpenWrt /${Personal_Signature} @ OpenWrt /g" "${FIN_PATH}"
 fi
 
 if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
@@ -724,10 +725,6 @@ fi
 
 if [[ "${ttyd_Nopassword}" == "1" ]]; then
    sed -i "$lan\set ttyd.@ttyd[0].command='/bin/login -f root'" "${GENE_PATH}"
-fi
-
-if [[ "${filter_aaaa}" == "1" ]]; then
-   sed -i "$lan\set dhcp.@dnsmasq[0].filter_aaaa='1'" "${GENE_PATH}"
 fi
 
 if [[ "${Confidentiality_free}" == "1" ]]; then
