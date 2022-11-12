@@ -110,45 +110,42 @@ AMLOGIC)
 ;;
 esac
 
-
-if [[ ! ${bendi_script} == "1" ]]; then
-  echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
-  echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
-  echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
-  echo "PACKAGE_BRANCH=${PACKAGE_BRANCH}" >> ${GITHUB_ENV}
-  echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
-  echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
-  echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
-  echo "UPLOAD_CONFIG=${UPLOAD_CONFIG}" >> ${GITHUB_ENV}
-  echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> ${GITHUB_ENV}
-  echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
-  echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> ${GITHUB_ENV}
-  echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> ${GITHUB_ENV}
-  echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> ${GITHUB_ENV}
-  echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> ${GITHUB_ENV}
-  echo "BY_INFORMATION=${BY_INFORMATION}" >> ${GITHUB_ENV}
-  echo "Library=${Warehouse##*/}" >> ${GITHUB_ENV}
-  echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
-  echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
-  echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
-  echo "MAINTAIN=${MAINTAIN}" >> ${GITHUB_ENV}
-  echo "DIYWORKING=${matrixtarget}${REPO_BRANCH}" >> ${GITHUB_ENV}
+echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
+echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
+echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
+echo "PACKAGE_BRANCH=${PACKAGE_BRANCH}" >> ${GITHUB_ENV}
+echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
+echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
+echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
+echo "UPLOAD_CONFIG=${UPLOAD_CONFIG}" >> ${GITHUB_ENV}
+echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> ${GITHUB_ENV}
+echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
+echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> ${GITHUB_ENV}
+echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> ${GITHUB_ENV}
+echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> ${GITHUB_ENV}
+echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> ${GITHUB_ENV}
+echo "BY_INFORMATION=${BY_INFORMATION}" >> ${GITHUB_ENV}
+echo "Library=${Warehouse##*/}" >> ${GITHUB_ENV}
+echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
+echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
+echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
+echo "MAINTAIN=${MAINTAIN}" >> ${GITHUB_ENV}
+echo "DIYWORKING=${matrixtarget}${REPO_BRANCH}" >> ${GITHUB_ENV}
   
-  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-  echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
-  echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
-  echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
-  echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
-  echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
-  echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
-  echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/bin/config_generate" >> ${GITHUB_ENV}
-  echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
-  echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> ${GITHUB_ENV}
-  echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
-  echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
-  echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
-  echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
-fi
+echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
+echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
+echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
+echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
+echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
+echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
+echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/bin/config_generate" >> ${GITHUB_ENV}
+echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
+echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> ${GITHUB_ENV}
+echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
+echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
+echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
+echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 }
 
 
@@ -206,9 +203,7 @@ OFFICIAL)
   fi
 ;;
 esac
-if [[ ! ${bendi_script} == "1" ]]; then
-  echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
-fi
+echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 }
 
 
@@ -638,11 +633,11 @@ exit 0
 " >> "${FIN_PATH}"
 fi
 
-if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]] && [[ ! ${bendi_script} == "1" ]]; then
+if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
   echo "Required_Topic=${Required_Topic}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]] && [[ ! ${bendi_script} == "1" ]]; then
+if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
   echo "Default_Theme=${Default_Theme}" >> ${GITHUB_ENV}
 fi
 
@@ -651,7 +646,7 @@ if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; t
    sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${FIN_PATH}"
 fi
 
-if [[ "${Delete_NotRequired}" == "1" ]] && [[ ! ${bendi_script} == "1" ]]; then
+if [[ "${Delete_NotRequired}" == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
 fi
 
@@ -1061,7 +1056,7 @@ else
 fi
 export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-echo "${TARGET_PROFILE}"
+echo "正在编译：${TARGET_PROFILE}"
 
 if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
   echo "PROMPT_TING=${amlogic_model}" >> ${GITHUB_ENV}
@@ -1069,15 +1064,14 @@ else
   echo "PROMPT_TING=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! ${bendi_script} == "1" ]]; then
-  echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
-  echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
-  echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
-  echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
-fi
+echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
+echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
+echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
+echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 
 if [[ "${Delete_NotRequired}" == "1" ]]; then
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
+  echo "${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile"
 fi
 
 export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
