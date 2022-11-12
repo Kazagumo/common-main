@@ -816,8 +816,6 @@ if [[ "${Package_IPv6helper}" == "1" ]] || [[ "${Create_IPV6_interface}" == "1" 
 echo '
 CONFIG_PACKAGE_ipv6helper=y
 CONFIG_PACKAGE_ip6tables=y
-# CONFIG_PACKAGE_ip6tables-extra is not set
-# CONFIG_PACKAGE_ip6tables-mod-nat is not set
 CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
 CONFIG_PACKAGE_odhcp6c=y
 CONFIG_PACKAGE_odhcpd-ipv6only=y
