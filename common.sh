@@ -588,6 +588,11 @@ exit 0
 " >> "${FIN_PATH}"
 fi
 
+if [[ "${${SOURCE_CODE}}" == "LIENOL" ]] && [[ "${${REPO_BRANCH}}" == "master" ]]; then
+  export ifname="device"
+else
+  export ifname="ifname"
+fi
 
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
   echo "Create_IPV6_interface=1" >> ${GITHUB_ENV}
@@ -605,8 +610,7 @@ uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 uci commit dhcp
 uci set network.ipv6=interface
 uci set network.ipv6.proto='dhcpv6'
-uci set network.ipv6.ifname='@lan'
-uci set network.ipv6.device='@lan'
+uci set network.ipv6.${ifname}='@lan'
 uci set network.ipv6.reqaddress='try'
 uci set network.ipv6.reqprefix='auto'
 uci commit network
