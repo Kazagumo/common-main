@@ -1359,8 +1359,8 @@ if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
   echo
   chmod -R +x ${HOME_PATH}/CHONGTU
   source ${HOME_PATH}/CHONGTU
-  rm -rf ${HOME_PATH}/CHONGTU
 fi
+rm -rf ${HOME_PATH}/CHONGTU
 }
 
 function Diy_menu5() {
