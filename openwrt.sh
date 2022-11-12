@@ -62,8 +62,8 @@ function xiugai_ip() {
   echo
   ipadd="$(grep "ipaddr" "/etc/config/network" | grep -v 127.0.0.1 |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   ECHOG "您当前使用IP为：${ipadd}"
+  echo
   export YUMING="请输入您想要更改成的后台IP"
-  ECHOYY "${YUMING}"
   echo
   while :; do
   domainy=""
