@@ -77,8 +77,8 @@ function xiugai_ip() {
     uci set network.lan.ipaddr="${domain}"
     uci commit network
     ECHOG "您的IP为：${domain}"
-    passwd -d root
     ECHOY "正在为您清空密码"
+    passwd -d root
     judge
   break
   ;;
@@ -90,8 +90,19 @@ function xiugai_ip() {
 }
 
 function qingkong_mima() {
-passwd -d root
-judge
+read -p " 是否清空密码?按[Y/n]：" YN
+case ${YN} in
+[Yy]) 
+    passwd -d root
+    judge
+;;
+[Nn])
+    ECHOR "您已跳过清空密码"
+;;
+*)
+    ECHOR "请输入正确的选择，[Y/n]"
+;;
+esac
 }
 
 function first_boot() {
@@ -106,8 +117,8 @@ menu() {
   clear
   echo  
   ECHOB "  请选择执行命令编码"
-  ECHOY " 1. 修改后台IP和清空密码"
-  ECHOYY " 2. 清空密码(Clear password)"
+  ECHOYY " 1. 修改后台IP和清空密码"
+  ECHOY " 2. 清空密码(Clear password)"
   ECHOYY " 3. 恢复出厂设置(Restore factory settings)"
   ECHOY " 4. 退出菜单(EXIT)"
   echo
