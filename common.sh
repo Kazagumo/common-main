@@ -588,7 +588,7 @@ exit 0
 " >> "${FIN_PATH}"
 fi
 
-if [[ "${${SOURCE_CODE}}" == "LIENOL" ]] && [[ "${${REPO_BRANCH}}" == "master" ]]; then
+if [[ "${SOURCE_CODE}" == "LIENOL" && "${REPO_BRANCH}" == "master" ]]; then
   export ifname="device"
 else
   export ifname="ifname"
