@@ -414,6 +414,7 @@ elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]]
   sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
   sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  \\?g' "${HOME_PATH}/include/target.mk"
 elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
   sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
   sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  ?g' "${HOME_PATH}/include/target.mk"
 fi
@@ -455,6 +456,7 @@ elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]]
   sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
   sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  \\?g' "${HOME_PATH}/include/target.mk"
 elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
   sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
   sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  ?g' "${HOME_PATH}/include/target.mk"
 fi
