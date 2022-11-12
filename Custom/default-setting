@@ -30,4 +30,7 @@ elif [[ `grep -c "pcdata(ver.distversion)%>" "${luci_web}"` -eq '1' ]] && [[ `gr
   sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' /usr/lib/lua/luci/view/admin_status/index.htm
 fi
 
+sed -i '/= "OpenWrt"/d' /usr/lib/lua/luci/version.lua
+sed -i 's?Development Snapshot?OpenWrt ?g' /usr/lib/lua/luci/version.lua
+
 exit 0
