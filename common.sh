@@ -578,7 +578,7 @@ fi
 if [[ "${Package_IPv6helper}" == "1" ]]; then
   export Create_IPV6_interface="0"
   export Remove_IPv6="0"
-  echo "${Package_IPv6helper}=1" >> ${GITHUB_ENV}
+  echo "Package_IPv6helper=1" >> ${GITHUB_ENV}
   sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
 uci set dhcp.@dnsmasq[0].filter_aaaa='0'
