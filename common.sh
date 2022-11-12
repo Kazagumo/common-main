@@ -593,9 +593,6 @@ if [[ "${Create_IPV6_interface}" == "1" ]]; then
   export Remove_IPv6="0"
   sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
-uci delete network.globals.ula_prefix
-uci delete network.lan.ip6assign
-uci delete network.wan6
 uci set network.lan.delegate='0'
 uci commit network
 uci delete dhcp.lan.ra
