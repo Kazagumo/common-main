@@ -590,6 +590,7 @@ sed -i '/filter_aaaa/d' "${FIN_PATH}"
 sed -i '/uci commit/d' "${FIN_PATH}"
 
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
+  echo "${Create_IPV6_interface}=1" >> ${GITHUB_ENV}
   export Remove_IPv6="0"
   sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
@@ -633,6 +634,9 @@ exit 0
 " >> ""${FIN_PATH}""
 fi
 
+if [[ "${Package_IPv6helper}" == "1" ]]; then
+  echo "${Package_IPv6helper}=1" >> ${GITHUB_ENV}
+fi
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]] && [[ ! ${bendi_script} == "1" ]]; then
   echo "Required_Topic=${Required_Topic}" >> ${GITHUB_ENV}
@@ -806,7 +810,25 @@ fi
 }
 
 
+function Diy_IPv6helper() {
+if [[ "${Package_IPv6helper}" == "1" ]] || [[ "${Create_IPV6_interface}" == "1" ]]; then
+echo '
+CONFIG_PACKAGE_ipv6helper=y
+CONFIG_PACKAGE_ip6tables=y
+# CONFIG_PACKAGE_ip6tables-extra is not set
+# CONFIG_PACKAGE_ip6tables-mod-nat is not set
+CONFIG_PACKAGE_odhcp6c=y
+CONFIG_PACKAGE_odhcpd-ipv6only=y
+CONFIG_IPV6=y
+CONFIG_PACKAGE_6rd=y
+CONFIG_PACKAGE_6to4=y
+' >> ${HOME_PATH}/.config
+fi
+}
+
+
 function Diy_prevent() {
+Diy_IPv6helper
 echo "正在执行：判断插件有否冲突减少编译错误"
 make defconfig > /dev/null 2>&1
 echo "TIME b \"					插件冲突信息\"" > ${HOME_PATH}/CHONGTU
@@ -1385,9 +1407,7 @@ fi
 }
 
 function Diy_menu5() {
-if [[ ! "${bendi_script}" == "1" ]]; then
-  Diy_prevent
-fi
+Diy_prevent
 Make_defconfig
 Diy_adguardhome
 Diy_upgrade2
@@ -1398,6 +1418,7 @@ Diy_files
 Diy_part_sh
 Diy_Language
 Diy_feeds
+Diy_IPv6helper
 }
 
 function Diy_menu3() {
