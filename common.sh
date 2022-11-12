@@ -253,7 +253,6 @@ sudo chmod +x "${DELETE}"
 
 # 给固件保留配置更新固件的保留项目
 cat >>"${KEEPD}" <<-EOF
-/mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background
