@@ -832,8 +832,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-server=y" ${HOME_PATH}/.config` -e
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-vpnd=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-ipsec-vpnd=y/# CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-app-ipsec-vpnd和luci-app-ipsec-server，插件有冲突，相同功能插件只能二选一，已删除luci-app-ipsec-vpnd\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -842,8 +841,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-docker=y" ${HOME_PATH}/.config` -eq '1' 
     sed -i 's/CONFIG_PACKAGE_luci-app-docker=y/# CONFIG_PACKAGE_luci-app-docker is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_luci-i18n-docker-zh-cn=y/# CONFIG_PACKAGE_luci-i18n-docker-zh-cn is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-app-docker和luci-app-dockerman，插件有冲突，相同功能插件只能二选一，已删除luci-app-docker\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -853,8 +851,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-qbittorrent=y" ${HOME_PATH}/.config` -eq
     sed -i 's/CONFIG_PACKAGE_luci-i18n-qbittorrent-simple-zh-cn=y/# CONFIG_PACKAGE_luci-i18n-qbittorrent-simple-zh-cn is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_qbittorrent=y/# CONFIG_PACKAGE_qbittorrent is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-app-qbittorrent和luci-app-qbittorrent-simple，插件有冲突，相同功能插件只能二选一，已删除luci-app-qbittorrent-simple\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -862,8 +859,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-advanced=y" ${HOME_PATH}/.config` -eq '1
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-fileassistant=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-fileassistant=y/# CONFIG_PACKAGE_luci-app-fileassistant is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-app-advanced和luci-app-fileassistant，luci-app-advanced已附带luci-app-fileassistant，所以删除了luci-app-fileassistant\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
    fi
 fi
 
@@ -873,8 +869,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adblock-plus=y" ${HOME_PATH}/.config` -e
     sed -i 's/CONFIG_PACKAGE_adblock=y/# CONFIG_PACKAGE_adblock is not set/g' ${HOME_PATH}/.config
     sed -i '/luci-i18n-adblock/d' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-app-adblock-plus和luci-app-adblock，插件有依赖冲突，只能二选一，已删除luci-app-adblock\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -886,8 +881,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-kodexplorer=y" ${HOME_PATH}/.config` -eq
     sed -i 's/CONFIG_PACKAGE_libgd=y/# CONFIG_PACKAGE_libgd is not set/g' ${HOME_PATH}/.config
     sed -i '/luci-i18n-vnstat/d' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-app-kodexplorer和luci-app-vnstat，插件有依赖冲突，只能二选一，已删除luci-app-vnstat\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -897,8 +891,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-ssr-plus=y" ${HOME_PATH}/.config` -ge '1
     sed -i 's/CONFIG_PACKAGE_cshark=y/# CONFIG_PACKAGE_cshark is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_libustream-mbedtls=y/# CONFIG_PACKAGE_libustream-mbedtls is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-app-ssr-plus和luci-app-cshark，插件有依赖冲突，只能二选一，已删除luci-app-cshark\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -931,8 +924,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-samba4=y" ${HOME_PATH}/.config` -eq '1' 
     sed -i 's/CONFIG_PACKAGE_luci-i18n-samba-zh-cn=y/# CONFIG_PACKAGE_luci-i18n-samba-zh-cn is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_samba36-server=y/# CONFIG_PACKAGE_samba36-server is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-app-samba和luci-app-samba4，插件有冲突，相同功能插件只能二选一，已删除luci-app-samba\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -947,8 +939,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1'
   if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon_new=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-theme-argon_new=y/# CONFIG_PACKAGE_luci-theme-argon_new is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-theme-argon和luci-theme-argon_new，插件有冲突，相同功能插件只能二选一，已删除luci-theme-argon_new\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -965,8 +956,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-sfe=y" ${HOME_PATH}/.config` -eq '1' ]];
     sed -i 's/CONFIG_PACKAGE_luci-app-flowoffload=y/# CONFIG_PACKAGE_luci-app-flowoffload is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_luci-i18n-flowoffload-zh-cn=y/# CONFIG_PACKAGE_luci-i18n-flowoffload-zh-cn is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"提示：您同时选择了luci-app-sfe和luci-app-flowoffload，两个ACC网络加速，已删除luci-app-flowoffload\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -975,8 +965,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-ssl=y" ${HOME_PATH}/.config` -eq '1' ]]; the
     sed -i 's/CONFIG_PACKAGE_luci-ssl=y/# CONFIG_PACKAGE_luci-ssl is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_libustream-wolfssl=y/CONFIG_PACKAGE_libustream-wolfssl=m/g' ${HOME_PATH}/.config
     echo "TIME r \"您选择了luci-ssl会自带libustream-wolfssl，会和libustream-openssl冲突导致编译错误，已删除luci-ssl\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -984,14 +973,12 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-unblockneteasemusic=y" ${HOME_PATH}/.con
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-unblockneteasemusic-go=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-unblockneteasemusic-go=y/# CONFIG_PACKAGE_luci-app-unblockneteasemusic-go is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您选择了luci-app-unblockneteasemusic-go，会和luci-app-unblockneteasemusic冲突导致编译错误，已删除luci-app-unblockneteasemusic-go\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-unblockmusic=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-unblockmusic=y/# CONFIG_PACKAGE_luci-app-unblockmusic is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您选择了luci-app-unblockmusic，会和luci-app-unblockneteasemusic冲突导致编译错误，已删除luci-app-unblockmusic\"" >>CHONGTU
-    echo "TIME z \"\"" >>CHONGTU
-    echo "TIME b \"插件冲突信息\"" > ${HOME_PATH}/Chajianlibiao
+    echo "" >>CHONGTU
   fi
 fi
 
@@ -1041,28 +1028,18 @@ if [[ ! "${REGULAR_UPDATE}" == "true" ]] || [[ -z "${REPO_TOKEN}" ]]; then
   sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
 fi
 
-if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "20" ]]; then
-  echo -e "\nCONFIG_LUCI_LANG_zh_Hans=y" >> "${HOME_PATH}/.config"
-fi
-
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   PARTSIZE="$(egrep -o "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
   if [[ "${PARTSIZE}" -lt "950" ]];then
     sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
     echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=950" >> ${HOME_PATH}/.config
-    echo "TIME g \" \"" > ${HOME_PATH}/EXT4
+    echo "" > ${HOME_PATH}/EXT4
     echo "TIME r \"EXT4提示：请注意，您选择了ext4安装的固件格式,而检测到您的分配的固件系统分区过小\"" >> ${HOME_PATH}/EXT4
     echo "TIME y \"为避免编译出错,建议修改成950或者以上比较好,已自动帮您修改成950M\"" >> ${HOME_PATH}/EXT4
-    echo "TIME g \" \"" >> ${HOME_PATH}/EXT4
   fi
 fi
-
-if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
-  echo "TIME y \"  插件冲突会导致编译失败，以上操作如非您所需，请关闭此次编译，重新开始编译，避开冲突重新选择插件\"" >>CHONGTU
-  echo "TIME z \"\"" >>CHONGTU
-else
-  rm -rf CHONGTU
-fi
+echo "TIME y \"  插件冲突会导致编译失败，以上操作如非您所需，请关闭此次编译，重新开始编译，避开冲突重新选择插件\"" >>CHONGTU
+echo "" >>CHONGTU
 cd ${HOME_PATH}
 ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/${CONFIG_FILE}
 cp -Rf ${GITHUB_WORKSPACE}/${CONFIG_FILE} ${GITHUB_WORKSPACE}/config.txt
@@ -1121,7 +1098,7 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ -n
   if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
     sed -i "s/${patchverl}/${Kernel_Patchver}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
   else
-    TIME r "没发现源码有[ ${Kernel_Patchver} ]内核存在，替换内核操作失败，保持默认内核继续编译"
+    TIME r "没发现源码有[ ${Kernel_Patchver} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译"
   fi
 fi
 
@@ -1388,15 +1365,14 @@ echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
   chmod -R +x ${HOME_PATH}/EXT4
   source ${HOME_PATH}/EXT4
-  rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
   echo
 fi
 if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
   chmod -R +x ${HOME_PATH}/CHONGTU
   source ${HOME_PATH}/CHONGTU
-  rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao}
   echo
 fi
+rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
 if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
   TIME r "	      已选插件列表"
   chmod -R +x ${HOME_PATH}/Plug-in
