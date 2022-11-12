@@ -408,7 +408,7 @@ sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.
 
 if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' && grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0']]; then
   sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "${HOME_PATH}/include/target.mk"
 elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' && grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
   sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
   sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  \\?g' "${HOME_PATH}/include/target.mk"
@@ -449,7 +449,7 @@ sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.
 
 if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' && grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0']]; then
   sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "${HOME_PATH}/include/target.mk"
 elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' && grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
   sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
   sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  \\?g' "${HOME_PATH}/include/target.mk"
