@@ -239,7 +239,7 @@ rm -rf "${FIN_PATH}"
 touch "${FIN_PATH}"
 sudo chmod +x "${FIN_PATH}"
 cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
-echo "sed -i 's?Development Snapshot?OpenWrt ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${FIN_PATH}"
+echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${FIN_PATH}"
 
 rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
 touch "${BASE_PATH}/etc/init.d/Postapplication"
