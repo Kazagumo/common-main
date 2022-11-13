@@ -574,7 +574,6 @@ if [[ "${Package_IPv6helper}" == "1" ]]; then
   export Create_IPV6_interface="0"
   export Remove_IPv6="0"
   echo "Package_IPv6helper=1" >> ${GITHUB_ENV}
-  sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
 uci set network.lan.ip6assign='64'
 uci commit network
@@ -588,15 +587,13 @@ uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 uci commit dhcp
 /etc/init.d/dnsmasq restart
 /etc/init.d/odhcpd restart
-exit 0
 " >> "${FIN_PATH}"
 fi
 
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
   echo "Create_IPV6_interface=1" >> ${GITHUB_ENV}
   export Remove_IPv6="0"
-  sed -i '/exit 0/d' ""${FIN_PATH}""
-echo "
+echo '
 uci delete network.lan.ip6assign
 uci set network.lan.delegate='0'
 uci commit network
@@ -618,12 +615,10 @@ uci commit firewall
 /etc/init.d/network restart
 /etc/init.d/dnsmasq restart
 /etc/init.d/odhcpd restart
-exit 0
-" >> "${FIN_PATH}"
+' >> "${FIN_PATH}"
 fi
 
 if [[ "${Remove_IPv6}" == "1" ]]; then
-  sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
 uci delete network.globals.ula_prefix
 uci delete network.lan.ip6assign
@@ -640,7 +635,6 @@ uci commit dhcp
 /etc/init.d/network restart
 /etc/init.d/dnsmasq restart
 /etc/init.d/odhcpd restart
-exit 0
 " >> "${FIN_PATH}"
 fi
 
@@ -737,8 +731,7 @@ if [[ "${Remove_Firewall}" == "1" ]]; then
 fi
 
 if [[ "${Cancel_running}" == "1" ]]; then
-   sed -i '/coremark/d' "${FIN_PATH}"
-   sed -i "/exit 0/i\sed -i '/coremark/d' /etc/crontabs/root" "${FIN_PATH}"
+   echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${FIN_PATH}"
 fi
 
 # 晶晨CPU机型自定义机型,内核,分区
@@ -1099,7 +1092,10 @@ if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
   export defaultt=CONFIG_PACKAGE_luci-theme-${Default_Theme}=y
   if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i '/mediaurlbase/d' "${FIN_PATH}"
-    sed -i "/exit 0/i\uci set luci.main.mediaurlbase='/luci-static/${Default_Theme}' && uci commit luci" "${FIN_PATH}"
+    echo "
+      uci set luci.main.mediaurlbase='/luci-static/${Default_Theme}'
+      uci commit luci
+    " >> "${FIN_PATH}"
   else
      echo "TIME r \"没有选择luci-theme-${Default_Theme}此主题,将${Default_Theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
   fi
