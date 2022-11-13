@@ -230,10 +230,11 @@ TIME r ""
 function Diy_wenjian() {
 # 拉取源码之后增加应用文件
 
-cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
+rm -rf "${FIN_PATH}" && cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
 sudo chmod +x "${FIN_PATH}"
 echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${FIN_PATH}"
 
+rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
 cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
 sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
 
@@ -1091,7 +1092,6 @@ fi
 if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
   export defaultt=CONFIG_PACKAGE_luci-theme-${Default_Theme}=y
   if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
-    sed -i '/mediaurlbase/d' "${FIN_PATH}"
     echo "
       uci set luci.main.mediaurlbase='/luci-static/${Default_Theme}'
       uci commit luci
