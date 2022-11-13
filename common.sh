@@ -591,6 +591,12 @@ export lan="/set network.\$1.netmask/a"
 export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
+if [[ `grep -c "add network device" "${GENE_PATH}"` -ge '1' ]]; then
+  export ifname="device"
+else
+  export ifname="ifname"
+fi
+
 
 
 if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
@@ -623,7 +629,7 @@ fi
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
   echo "Create_IPV6_interface=1" >> ${GITHUB_ENV}
   export Remove_IPv6="0"
-echo '
+echo "
 uci delete network.lan.ip6assign
 uci set network.lan.delegate='0'
 uci commit network
@@ -645,7 +651,7 @@ uci commit firewall
 /etc/init.d/network restart
 /etc/init.d/dnsmasq restart
 /etc/init.d/odhcpd restart
-' >> "${FIN_PATH}"
+" >> "${FIN_PATH}"
 fi
 
 if [[ "${Remove_IPv6}" == "1" ]]; then
