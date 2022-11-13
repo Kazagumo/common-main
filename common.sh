@@ -576,6 +576,7 @@ if [[ "${Package_IPv6helper}" == "1" ]]; then
   echo "Package_IPv6helper=1" >> ${GITHUB_ENV}
   sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
+uci set network.lan.ip6assign='64'
 uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 uci commit dhcp
 exit 0
