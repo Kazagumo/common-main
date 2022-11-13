@@ -40,6 +40,7 @@ COOLSNOWWOLF)
   export LUCI_EDITION="18.06"
   export MAINTAIN="Lede's"
   export PACKAGE_BRANCH="master"
+  export DIY_WORK="${matrixtarget}MASTER"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
 ;;
 LIENOL)
@@ -50,15 +51,19 @@ LIENOL)
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="master"
+    export DIY_WORK="${matrixtarget}MASTER"
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     export PACKAGE_BRANCH="21.02"
     export LUCI_EDITION="21.02"
+    export DIY_WORK="${matrixtarget}2102"
   elif [[ "${REPO_BRANCH}" == "19.07-cannotuse" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="19.07"
+    export DIY_WORK="${matrixtarget}CANNO"
   elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="17.01"
+    export DIY_WORK="${matrixtarget}1907"
   fi
 ;;
 IMMORTALWRT)
@@ -69,15 +74,19 @@ IMMORTALWRT)
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     export PACKAGE_BRANCH="openwrt-21.02"
     export LUCI_EDITION="21.02"
+    export DIY_WORK="${matrixtarget}2102"
   elif [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="openwrt-21.02"
     export LUCI_EDITION="master"
+    export DIY_WORK="${matrixtarget}MASTER"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
     export PACKAGE_BRANCH="openwrt-18.06"
     export LUCI_EDITION="18.06"
+    export DIY_WORK="${matrixtarget}1806"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
     export PACKAGE_BRANCH="openwrt-18.06"
     export LUCI_EDITION="18.06-K54"
+    export DIY_WORK="${matrixtarget}K54"
   fi
 ;;
 XWRT)
@@ -86,6 +95,13 @@ XWRT)
   export MAINTAIN="ptpt52"
   export PACKAGE_BRANCH="xwrt"
   export LUCI_EDITION="${REPO_BRANCH}"
+  if [[ "${REPO_BRANCH}" == "21.02" ]]; then
+    export DIY_WORK="${matrixtarget}2102"
+  elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
+    export DIY_WORK="${matrixtarget}2203"
+  else
+    export DIY_WORK="${matrixtarget}${REPO_BRANCH}"
+  fi
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
 OFFICIAL)
@@ -94,6 +110,17 @@ OFFICIAL)
   export MAINTAIN="openwrt"
   export PACKAGE_BRANCH="official"
   export LUCI_EDITION="${REPO_BRANCH}"
+  if [[ "${REPO_BRANCH}" == "master" ]]; then
+    export DIY_WORK="${matrixtarget}MASTER"
+  elif [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+    export DIY_WORK="${matrixtarget}1907"
+  elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+    export DIY_WORK="${matrixtarget}2102"
+  elif [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
+    export DIY_WORK="${matrixtarget}2203"
+  else
+    export DIY_WORK="${matrixtarget}${REPO_BRANCH}"
+  fi
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
 AMLOGIC)
@@ -102,6 +129,7 @@ AMLOGIC)
   export LUCI_EDITION="18.06"
   export MAINTAIN="Lede's"
   export PACKAGE_BRANCH="master"
+  export DIY_WORK="${matrixtarget}AMLOGIC"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
 ;;
 *)
@@ -112,6 +140,7 @@ esac
 
 echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
+echo "DIY_WORK=${DIY_WORK}" >> ${GITHUB_ENV}
 echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
 echo "PACKAGE_BRANCH=${PACKAGE_BRANCH}" >> ${GITHUB_ENV}
 echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
