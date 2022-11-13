@@ -600,7 +600,9 @@ else
   export set_add="uci set firewall.@zone[0].network='lan ipv6'"
 fi
 
-
+if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+  export devicee="uci set network.ipv6.device='@lan'"
+fi
 
 if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
    echo "OpenClash_branch=master" >> ${GITHUB_ENV}
@@ -645,6 +647,7 @@ uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 uci commit dhcp
 uci set network.ipv6=interface
 uci set network.ipv6.proto='dhcpv6'
+${devicee}
 ${ifnamee}
 uci set network.ipv6.reqaddress='try'
 uci set network.ipv6.reqprefix='auto'
