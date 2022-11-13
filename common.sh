@@ -591,7 +591,7 @@ export lan="/set network.\$1.netmask/a"
 export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
-if [[ `grep -c "add network device" "${GENE_PATH}"` -ge '1' ]]; then
+if [[ `grep -c "set network.\${1}6.device" "${GENE_PATH}"` -ge '1' ]]; then
   export ifname="device"
 else
   export ifname="ifname"
