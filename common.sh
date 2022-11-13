@@ -607,8 +607,8 @@ uci delete network.lan.ip6assign
 uci set network.lan.delegate='0'
 uci commit network
 uci delete dhcp.lan.ra
-uci set dhcp.lan.ra_management='0'
-uci set dhcp.lan.ra_default='0'
+uci delete dhcp.lan.ra_management
+uci delete dhcp.lan.ra_default
 uci delete dhcp.lan.dhcpv6
 uci delete dhcp.lan.ndp
 uci set dhcp.@dnsmasq[0].filter_aaaa='0'
@@ -637,8 +637,8 @@ uci delete network.wan6
 uci set network.lan.delegate='0' 
 uci commit network
 uci delete dhcp.lan.ra
-uci set dhcp.lan.ra_management='0'
-uci set dhcp.lan.ra_default='0'
+uci delete dhcp.lan.ra_management
+uci delete dhcp.lan.ra_default
 uci delete dhcp.lan.dhcpv6
 uci delete dhcp.lan.ndp
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
