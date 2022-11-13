@@ -39,4 +39,3 @@ fi
 sed -i '/= "OpenWrt"/d' /usr/lib/lua/luci/version.lua
 
 
-exit 0
