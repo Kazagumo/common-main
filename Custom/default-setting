@@ -30,6 +30,12 @@ elif [[ `grep -c "pcdata(ver.distversion)%>" "${luci_web}"` -eq '1' ]] && [[ `gr
   sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' /usr/lib/lua/luci/view/admin_status/index.htm
 fi
 
+if [[ `grep -c "option device 'br-lan'" /etc/config/network` -eq '1' ]]; then
+  export ifname="device"
+else
+  export ifname="ifname"
+fi
+
 sed -i '/= "OpenWrt"/d' /usr/lib/lua/luci/version.lua
 
 
