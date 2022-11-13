@@ -577,8 +577,17 @@ if [[ "${Package_IPv6helper}" == "1" ]]; then
   sed -i '/exit 0/d' ""${FIN_PATH}""
 echo "
 uci set network.lan.ip6assign='64'
+uci commit network
+uci set dhcp.lan.ra='server'
+uci set dhcp.lan.dhcpv6='server'
+uci set dhcp.lan.ra_management='1'
+uci set dhcp.lan.ra_default='1'
+uci set dhcp.@dnsmasq[0].localservice=0
+uci set dhcp.@dnsmasq[0].nonwildcard=0
 uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 uci commit dhcp
+/etc/init.d/dnsmasq restart
+/etc/init.d/odhcpd restart
 exit 0
 " >> "${FIN_PATH}"
 fi
@@ -598,7 +607,8 @@ uci delete network.lan.ip6assign
 uci set network.lan.delegate='0'
 uci commit network
 uci delete dhcp.lan.ra
-uci delete dhcp.lan.ra_management
+uci set dhcp.lan.ra_management='0'
+uci set dhcp.lan.ra_default='0'
 uci delete dhcp.lan.dhcpv6
 uci delete dhcp.lan.ndp
 uci set dhcp.@dnsmasq[0].filter_aaaa='0'
@@ -612,6 +622,8 @@ uci commit network
 uci set firewall.@zone[0].network='lan ipv6'
 uci commit firewall
 /etc/init.d/network restart
+/etc/init.d/dnsmasq restart
+/etc/init.d/odhcpd restart
 exit 0
 " >> "${FIN_PATH}"
 fi
@@ -625,7 +637,8 @@ uci delete network.wan6
 uci set network.lan.delegate='0' 
 uci commit network
 uci delete dhcp.lan.ra
-uci delete dhcp.lan.ra_management
+uci set dhcp.lan.ra_management='0'
+uci set dhcp.lan.ra_default='0'
 uci delete dhcp.lan.dhcpv6
 uci delete dhcp.lan.ndp
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
