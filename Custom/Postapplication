@@ -25,6 +25,8 @@ zzz_default() {
         rm -rf /tmp/luci-modulecache/
         rm -f /tmp/luci-indexcache
         /etc/init.d/network restart
+	/etc/init.d/network restart
+        /etc/init.d/dnsmasq restart
 	/etc/init.d/uhttpd restart
 	/etc/init.d/system restart
 	exit 0
