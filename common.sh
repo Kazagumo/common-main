@@ -643,6 +643,9 @@ uci delete dhcp.lan.dhcpv6
 uci delete dhcp.lan.ndp
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci commit dhcp
+/etc/init.d/network restart
+/etc/init.d/dnsmasq restart
+/etc/init.d/odhcpd restart
 exit 0
 " >> "${FIN_PATH}"
 fi
