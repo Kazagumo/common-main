@@ -4,9 +4,8 @@ touch /etc/crontabs/root
 
 chmod -R 0775 /etc/init.d /usr/share
 
-if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
-  export DISTRIB_TA="$(grep DISTRIB_TARGET= /etc/openwrt_release |sed "s/'//g" |cut -d "=" -f2)"
-  sed -i "s?x86_64?${DISTRIB_TA}?g" /etc/banner
+if [[ "$(. /etc/openwrt_release && echo "$DISTRIB_ARCH")" == "x85_64" ]]; then
+  sed -i "s?x86_64?${DISTRIB_TARGET}?g" /etc/banner
 fi
 
 if [[ `grep -c "danshui" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
