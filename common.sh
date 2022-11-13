@@ -592,9 +592,9 @@ export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+
 export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
 if [[ `grep -c "set network.\${1}6.device" "${GENE_PATH}"` -ge '1' ]]; then
-  export ifname="device"
+  export ifnamee="device"
 else
-  export ifname="ifname"
+  export ifnamee="ifname"
 fi
 
 
@@ -642,7 +642,7 @@ uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 uci commit dhcp
 uci set network.ipv6=interface
 uci set network.ipv6.proto='dhcpv6'
-uci set network.ipv6.${ifname}='@lan'
+uci set network.ipv6.${ifnamee}='@lan'
 uci set network.ipv6.reqaddress='try'
 uci set network.ipv6.reqprefix='auto'
 uci commit network
