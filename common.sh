@@ -592,12 +592,6 @@ exit 0
 " >> "${FIN_PATH}"
 fi
 
-if [[ "${SOURCE_CODE}" == "LIENOL" ]] && [[ "${REPO_BRANCH}" == "master" ]]; then
-  export ifname="device"
-else
-  export ifname="ifname"
-fi
-
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
   echo "Create_IPV6_interface=1" >> ${GITHUB_ENV}
   export Remove_IPv6="0"
