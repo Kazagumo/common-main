@@ -592,9 +592,11 @@ export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+
 export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
 if [[ `grep -c "set network.\${1}6.device" "${GENE_PATH}"` -ge '1' ]]; then
-  export ifnamee="device"
+  export ifnamee="uci set network.ipv6.device='@lan'"
+  export set_add="uci add_list firewall.@zone[0].network='ipv6'"
 else
-  export ifnamee="ifname"
+  export ifnamee="uci set network.ipv6.ifname='@lan'"
+  export set_add="uci set firewall.@zone[0].network='lan ipv6'"
 fi
 
 
@@ -642,11 +644,11 @@ uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 uci commit dhcp
 uci set network.ipv6=interface
 uci set network.ipv6.proto='dhcpv6'
-uci set network.ipv6.${ifnamee}='@lan'
+${ifnamee}
 uci set network.ipv6.reqaddress='try'
 uci set network.ipv6.reqprefix='auto'
 uci commit network
-uci set firewall.@zone[0].network='lan ipv6'
+${set_add}
 uci commit firewall
 /etc/init.d/network restart
 /etc/init.d/dnsmasq restart
