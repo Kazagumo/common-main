@@ -4,7 +4,8 @@ touch /etc/crontabs/root
 
 chmod -R 0775 /etc/init.d /usr/share
 
-if [[ ! "$(. /etc/openwrt_release && echo "$DISTRIB_ARCH")" == "x85_64" ]]; then
+source /etc/openwrt_release
+if [[ ! "${DISTRIB_ARCH}" == "x85_64" ]]; then
   sed -i "s?x85_64?${DISTRIB_TARGET}?g" /etc/banner
 fi
 
