@@ -592,7 +592,7 @@ export lan="/set network.\$1.netmask/a"
 export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
-if [[ `grep -c "set network.\${1}6.device" "${GENE_PATH}"` -ge '1' ]]; then
+if [[ `grep -c 'set network.${1}6.device' "${GENE_PATH}"` -ge '1' ]]; then
   export ifnamee="uci set network.ipv6.device='@lan'"
   export set_add="uci add_list firewall.@zone[0].network='ipv6'"
 else
