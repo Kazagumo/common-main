@@ -411,6 +411,9 @@ fi
 function Diy_XWRT() {
 # 给固件LUCI做个标记
 find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+find . -name 'adguardhome' -o -name 'luci-app-adguardhome' | xargs -i rm -rf {}
+find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
@@ -439,6 +442,9 @@ fi
 function Diy_OFFICIAL() {
 # 给固件LUCI做个标记
 find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+find . -name 'adguardhome' -o -name 'luci-app-adguardhome' | xargs -i rm -rf {}
+find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
