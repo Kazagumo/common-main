@@ -465,6 +465,23 @@ if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
 elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
   svn co https://github.com/Hyy2001X/AutoBuild-Packages/trunk/luci-app-shutdown package/luci-app-shutdown
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-filetransfer package/luci-app-filetransfer
+svn co https://github.com/immortalwrt/luci/trunk/libs/luci-lib-fs package/luci-lib-fs
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-socat package/luci-app-socat
+svn co https://github.com/immortalwrt/packages/trunk/net/socat package/socat
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-fileassistant package/luci-app-fileassistant
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-softether package/luci-app-softether
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-softethervpn package/luci-app-softethervpn
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-softethervpn5 package/luci-app-softethervpn5
+svn co https://github.com/immortalwrt/packages/trunk/net/softethervpn package/softethervpn
+svn co https://github.com/immortalwrt/packages/trunk/net/softethervpn package/softethervpn5
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-unblockmusic package/luci-app-unblockmusic
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-unblockneteasemusic-go package/luci-app-unblockneteasemusic-go
+svn co https://github.com/immortalwrt-collections/luci-app-unblockneteasemusic/trunk package/luci-app-unblockneteasemusic
+svn co https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMusic-Go package/UnblockNeteaseMusic-Go
+svn co https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMusic package/UnblockNeteaseMusic
+svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-smartdns package/luci-app-smartdns
+svn co https://github.com/immortalwrt/packages/trunk/net/smartdns package/smartdns
 fi
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
