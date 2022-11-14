@@ -219,20 +219,7 @@ ${INS} clean
 
 function Diy_checkout() {
 cd ${GITHUB_WORKSPACE}/openwrt
-case "${SOURCE_CODE}" in
-OFFICIAL)
-  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
-    export LUCI_EDITION="$(git tag| awk 'END {print}')"
-    git checkout ${LUCI_EDITION}
-    git switch -c ${LUCI_EDITION}
-    export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/v//')"
-    echo "正在使用${LUCI_EDITION}版本源码进行编译"
-  else
-    export LUCI_EDITION="${REPO_BRANCH}"
-  fi
-;;
-esac
-echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
+
 }
 
 
