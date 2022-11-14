@@ -1119,7 +1119,6 @@ echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 
 if [[ "${Delete_NotRequired}" == "1" ]]; then
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
-  echo "${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile"
 fi
 
 export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
@@ -1177,7 +1176,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
     fi
     mkdir -p ${HOME_PATH}/files/usr/bin
     if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
-      mv -f ${HOME_PATH}/AdGuardHome/AdGuardHome ${HOME_PATH}/files/usr/bin
+      mv -f ${HOME_PATH}/AdGuardHome/AdGuardHome ${HOME_PATH}/files/usr/bin/
       chmod 777 ${HOME_PATH}/files/usr/bin/AdGuardHome
       echo "解压核心包成功,完成增加AdGuardHome核心工作"
     else
