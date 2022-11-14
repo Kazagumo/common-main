@@ -411,6 +411,23 @@ function Diy_XWRT() {
 # 给固件LUCI做个标记
 find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+
+sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+
+if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/default-settings//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base?g' "include/target.mk"
+elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq \\//g' "include/target.mk"
+  sed -i 's/dnsmasq//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  \\?g' "include/target.mk"
+elif [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq-full//g' "include/target.mk"
+  sed -i 's/dnsmasq \\//g' "include/target.mk"  
+  sed -i 's/dnsmasq//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  ?g' "include/target.mk"
+fi
+
 svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
 svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
 
@@ -424,20 +441,6 @@ if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Ma
   sed -i '/attendedsysupgrade/d' "feeds/luci/collections/luci/Makefile"
 fi
 
-sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-
-if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "${HOME_PATH}/include/target.mk"
-elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  \\?g' "${HOME_PATH}/include/target.mk"
-elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  ?g' "${HOME_PATH}/include/target.mk"
-fi
-
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 }
@@ -447,6 +450,23 @@ function Diy_OFFICIAL() {
 # 给固件LUCI做个标记
 find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+
+if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/default-settings//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base?g' "include/target.mk"
+elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq \\//g' "include/target.mk"
+  sed -i 's/dnsmasq//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  \\?g' "include/target.mk"
+elif [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq-full//g' "include/target.mk"
+  sed -i 's/dnsmasq \\//g' "include/target.mk"  
+  sed -i 's/dnsmasq//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  ?g' "include/target.mk"
+fi
+
+
 svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
 svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
 
@@ -483,20 +503,6 @@ svn co https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMu
 svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-smartdns package/luci-app-smartdns
 svn co https://github.com/immortalwrt/packages/trunk/net/smartdns package/smartdns
 svn co https://github.com/immortalwrt/immortalwrt/trunk/package/utils/ucode package/ucode
-fi
-
-sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-
-if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/default-settings//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "${HOME_PATH}/include/target.mk"
-elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  \\?g' "${HOME_PATH}/include/target.mk"
-elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-  sed -i 's/dnsmasq-full//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's/dnsmasq//g' "${HOME_PATH}/include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg  ?g' "${HOME_PATH}/include/target.mk"
 fi
 
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
