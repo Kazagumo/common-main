@@ -93,7 +93,7 @@ XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
   export MAINTAIN="ptpt52"
-  export PACKAGE_BRANCH="xwrt"
+  export PACKAGE_BRANCH="official"
   export LUCI_EDITION="${REPO_BRANCH}"
   if [[ "${REPO_BRANCH}" == "21.02" ]]; then
     export DIY_WORK="${matrixtarget}2102"
@@ -544,9 +544,12 @@ fi
 
 
 function Diy_chajianyuan() {
-if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
 echo "正在执行：给feeds.conf.default增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
+echo "
+src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
+" >> ${HOME_PATH}/feeds.conf.default
+if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
 echo "
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
 src-git helloworld https://github.com/fw876/helloworld
@@ -554,9 +557,9 @@ src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
 src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
 " >> ${HOME_PATH}/feeds.conf.default
+fi
 sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
-fi
 }
 
 
