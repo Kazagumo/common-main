@@ -226,7 +226,7 @@ OFFICIAL)
     git checkout ${LUCI_EDITION}
     git switch -c ${LUCI_EDITION}
     export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/v//')"
-    TIME g "正在使用${LUCI_EDITION}版本源码进行编译"
+    echo "正在使用${LUCI_EDITION}版本源码进行编译"
   else
     export LUCI_EDITION="${REPO_BRANCH}"
   fi
@@ -462,6 +462,8 @@ if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
+  mkdir -p feeds/packages/devel/packr
+  curl -fsSL https://raw.githubusercontent.com/immortalwrt/packages/master/devel/packr/Makefile > feeds/packages/devel/packr/Makefile
 fi
 
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
