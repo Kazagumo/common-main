@@ -219,7 +219,20 @@ ${INS} clean
 
 function Diy_checkout() {
 cd ${GITHUB_WORKSPACE}/openwrt
-
+case "${SOURCE_CODE}" in
+OFFICIAL)
+  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
+    export LUCI_EDITION="$(git tag| awk 'END {print}')"
+    git checkout ${LUCI_EDITION}
+    git switch -c ${LUCI_EDITION}
+    export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/v//')"
+    TIME g "正在使用${LUCI_EDITION}版本源码进行编译"
+  else
+    export LUCI_EDITION="${REPO_BRANCH}"
+  fi
+;;
+esac
+echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 }
 
 
@@ -231,7 +244,8 @@ export RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
 TIME r ""
 TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
 TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
-TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
+TIME r "修改IP、DNS、网关，请输入命令：openwrt"
+TIME r "如果您的机子在线更新固件可用，而又编译了，也可请输入命令查看在线更新操作：openwrt"
 TIME r ""
 TIME r ""
 TIME g "CPU性能：8370C > 8272CL > 8171M > E5系列"
@@ -400,8 +414,18 @@ svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-setti
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 
-if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
+if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/default-settings//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base?g' "include/target.mk"
+elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq \\//g' "include/target.mk"
+  sed -i 's/dnsmasq//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  \\?g' "include/target.mk"
+elif [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq-full//g' "include/target.mk"
+  sed -i 's/dnsmasq \\//g' "include/target.mk"  
+  sed -i 's/dnsmasq//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  ?g' "include/target.mk"
 fi
 
 svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
@@ -428,9 +452,20 @@ find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-a
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 
-if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
+if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/default-settings//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base?g' "include/target.mk"
+elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq \\//g' "include/target.mk"
+  sed -i 's/dnsmasq//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  \\?g' "include/target.mk"
+elif [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
+  sed -i 's/dnsmasq-full//g' "include/target.mk"
+  sed -i 's/dnsmasq \\//g' "include/target.mk"  
+  sed -i 's/dnsmasq//g' "include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  ?g' "include/target.mk"
 fi
+
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
@@ -511,6 +546,9 @@ fi
 function Diy_chajianyuan() {
 echo "正在执行：给feeds.conf.default增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
+echo "
+src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
+" >> ${HOME_PATH}/feeds.conf.default
 if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
 echo "
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
@@ -828,6 +866,8 @@ CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
 CONFIG_PACKAGE_odhcp6c=y
 CONFIG_PACKAGE_odhcpd-ipv6only=y
 CONFIG_IPV6=y
+CONFIG_PACKAGE_6rd=y
+CONFIG_PACKAGE_6to4=y
 ' >> ${HOME_PATH}/.config
 fi
 }
