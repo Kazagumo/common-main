@@ -448,7 +448,7 @@ find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
-  if [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '1' ]]; then
+  if [[ `grep -c 'dnsmasq-full' "include/target.mk"` -ge '1' ]]; then
     sed -i 's/dnsmasq-full//g' "include/target.mk"
   fi
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
@@ -470,6 +470,11 @@ elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
   mkdir -p feeds/packages/devel/packr
   curl -fsSL https://raw.githubusercontent.com/immortalwrt/packages/master/devel/packr/Makefile > feeds/packages/devel/packr/Makefile
+fi
+
+if [[ ! -d "package/utils/ucode" ]]; then
+  mkdir -p package/utils/ucode
+  curl -fsSL https://raw.githubusercontent.com/openwrt/openwrt/master/package/utils/ucode/Makefile > package/utils/ucode/Makefile
 fi
 
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
