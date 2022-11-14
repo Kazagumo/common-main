@@ -528,6 +528,9 @@ fi
 function Diy_chajianyuan() {
 echo "正在执行：给feeds.conf.default增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
+sed -i '/danshui/d' "${HOME_PATH}/feeds.conf.default"
+sed -i '/helloworld/d' "${HOME_PATH}/feeds.conf.default"
+sed -i '/passwall/d' "${HOME_PATH}/feeds.conf.default"
 echo "
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
 " >> ${HOME_PATH}/feeds.conf.default
@@ -828,12 +831,9 @@ cd ${HOME_PATH}
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
   export themee=luci-theme-${Required_Topic}
-  find . -name ${themee} -type d |tee themeuci
-  if [[ -s "themeuci" ]]; then
+  if [[ `find . -name "${themee}" -type d |grep -c "${themee}"` -ge '1' ]]; then
     sed -i "s/bootstrap/${Required_Topic}/g" ${HOME_PATH}/feeds/luci/collections/luci/Makefile
-    rm -rf themeuci
   else
-    rm -rf themeuci
     echo "TIME r \"没有${themee}此主题存在,不进行替换bootstrap主题操作\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
@@ -1267,7 +1267,6 @@ sed -i '/luci-app-qbittorrent-simple_dynamic/d' Plug-in > /dev/null 2>&1
 if [[ `grep -c "# CONFIG_GRUB_EFI_IMAGES is not set" ${HOME_PATH}/.config` -eq '1' ]]; then
   export EFI_NO="1"
 fi
-
 
 export KERNEL_PATCH="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |egrep -o "[0-9]+\.[0-9]+")"
 export KERNEL_patc="kernel-${KERNEL_PATCH}"
