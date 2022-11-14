@@ -348,8 +348,9 @@ master)
 esac
 
 # 给源码增加passwall为默认自选
-sed -i 's/luci-app-passwall //g' include/target.mk
-sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall ?g' include/target.mk
+if [[ `grep -c "luci-app-passwall" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall ?g' include/target.mk
+fi
 }
 
 
@@ -401,8 +402,9 @@ openwrt-18.06-k5.4)
 esac
   
 # 给源码增加luci-app-ssr-plus为默认自选
-sed -i 's/luci-app-ssr-plus //g' include/target.mk
-sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-ssr-plus ?g' include/target.mk
+if [[ `grep -c "luci-app-ssr-plus" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-ssr-plus ?g' ${HOME_PATH}/include/target.mk
+fi
 }
 
 
@@ -418,9 +420,6 @@ if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
 fi
 
-svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
-svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
-
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
@@ -431,8 +430,9 @@ if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Ma
   sed -i '/attendedsysupgrade/d' "feeds/luci/collections/luci/Makefile"
 fi
 
-sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
+  echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+fi
 }
 
 
@@ -446,10 +446,6 @@ if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default
     sed -i 's/dnsmasq-full//g' "include/target.mk"
   fi
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
-fi
-
-if [[ -d "package/utils/ucode" ]]; then
-  svn co https://github.com/openwrt/openwrt/trunk/package/utils/ucode package/utils/ucode
 fi
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
@@ -468,8 +464,9 @@ elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
 fi
 
-sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
+  echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+fi
 }
 
 
@@ -789,8 +786,9 @@ fi
 function Diy_part_sh() {
 cd ${HOME_PATH}
 # 修正连接数
-sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
-echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
+if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
+  echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
+fi
 
 # openclash分支选择
 if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
