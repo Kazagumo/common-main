@@ -469,6 +469,25 @@ fi
 
 svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
 svn export https://github.com/281677160/luci-theme-argon/branches/argon-config ${HOME_PATH}/package/luci-app-argon-config > /dev/null 2>&1
+svn export https://github.com/Hyy2001X/AutoBuild-Packages/trunk/luci-app-shutdown package/luci-app-shutdown
+svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-filetransfer package/luci-app-filetransfer
+svn export https://github.com/immortalwrt/luci/trunk/libs/luci-lib-fs package/luci-lib-fs
+svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-socat package/luci-app-socat
+svn export https://github.com/immortalwrt/packages/trunk/net/socat package/socat
+svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-fileassistant package/luci-app-fileassistant
+svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-softether package/luci-app-softether
+svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-softethervpn package/luci-app-softethervpn
+svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-softethervpn5 package/luci-app-softethervpn5
+svn export https://github.com/immortalwrt/packages/trunk/net/softethervpn package/softethervpn
+svn export https://github.com/immortalwrt/packages/trunk/net/softethervpn package/softethervpn5
+svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-unblockmusic package/luci-app-unblockmusic
+svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-unblockneteasemusic-go package/luci-app-unblockneteasemusic-go
+svn export https://github.com/immortalwrt-collections/luci-app-unblockneteasemusic/trunk package/luci-app-unblockneteasemusic
+svn export https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMusic-Go package/UnblockNeteaseMusic-Go
+svn export https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMusic package/UnblockNeteaseMusic
+svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-smartdns package/luci-app-smartdns
+svn export https://github.com/immortalwrt/packages/trunk/net/smartdns package/smartdns
+svn export https://github.com/immortalwrt/immortalwrt/branches/master/package/utils package/ucode
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
@@ -484,25 +503,6 @@ if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
-  svn co https://github.com/Hyy2001X/AutoBuild-Packages/trunk/luci-app-shutdown package/luci-app-shutdown
-svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-filetransfer package/luci-app-filetransfer
-svn co https://github.com/immortalwrt/luci/trunk/libs/luci-lib-fs package/luci-lib-fs
-svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-socat package/luci-app-socat
-svn co https://github.com/immortalwrt/packages/trunk/net/socat package/socat
-svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-fileassistant package/luci-app-fileassistant
-svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-softether package/luci-app-softether
-svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-softethervpn package/luci-app-softethervpn
-svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-softethervpn5 package/luci-app-softethervpn5
-svn co https://github.com/immortalwrt/packages/trunk/net/softethervpn package/softethervpn
-svn co https://github.com/immortalwrt/packages/trunk/net/softethervpn package/softethervpn5
-svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-unblockmusic package/luci-app-unblockmusic
-svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-unblockneteasemusic-go package/luci-app-unblockneteasemusic-go
-svn co https://github.com/immortalwrt-collections/luci-app-unblockneteasemusic/trunk package/luci-app-unblockneteasemusic
-svn co https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMusic-Go package/UnblockNeteaseMusic-Go
-svn co https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMusic package/UnblockNeteaseMusic
-svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-smartdns package/luci-app-smartdns
-svn co https://github.com/immortalwrt/packages/trunk/net/smartdns package/smartdns
-svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/utils package/ucode
 fi
 
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
