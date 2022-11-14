@@ -545,9 +545,6 @@ fi
 function Diy_chajianyuan() {
 echo "正在执行：给feeds.conf.default增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
-echo "
-src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
-" >> ${HOME_PATH}/feeds.conf.default
 if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
 echo "
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
