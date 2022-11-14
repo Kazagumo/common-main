@@ -411,21 +411,12 @@ function Diy_XWRT() {
 # 给固件LUCI做个标记
 find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings  ${HOME_PATH}/package/default-settings > /dev/null 2>&1
-
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-
-if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/default-settings//g' "include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base?g' "include/target.mk"
-elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/dnsmasq \\//g' "include/target.mk"
-  sed -i 's/dnsmasq//g' "include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  \\?g' "include/target.mk"
-elif [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/dnsmasq-full//g' "include/target.mk"
-  sed -i 's/dnsmasq \\//g' "include/target.mk"  
-  sed -i 's/dnsmasq//g' "include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  ?g' "include/target.mk"
+if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
+  if [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '1' ]]; then
+    sed -i 's/dnsmasq-full//g' "include/target.mk"
+  fi
+  sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
 fi
 
 svn export https://github.com/281677160/luci-theme-argon/branches/21.02 ${HOME_PATH}/package/luci-theme-argon > /dev/null 2>&1
@@ -451,19 +442,11 @@ function Diy_OFFICIAL() {
 find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-
-if [[ `grep -c 'DEFAULT_PACKAGES.router:=dnsmasq' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/default-settings//g' "include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=dnsmasq?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base?g' "include/target.mk"
-elif [[ `grep -c 'DEFAULT_PACKAGES.router:=\\\\' "include/target.mk"` -eq '1' ]] && [[ `grep -c 'default-settings dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/dnsmasq \\//g' "include/target.mk"
-  sed -i 's/dnsmasq//g' "include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=\\?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  \\?g' "include/target.mk"
-elif [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's/dnsmasq-full//g' "include/target.mk"
-  sed -i 's/dnsmasq \\//g' "include/target.mk"  
-  sed -i 's/dnsmasq//g' "include/target.mk"
-  sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-base  ?g' "include/target.mk"
+if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
+  if [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '1' ]]; then
+    sed -i 's/dnsmasq-full//g' "include/target.mk"
+  fi
+  sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
 fi
 
 
