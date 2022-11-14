@@ -226,7 +226,7 @@ OFFICIAL)
     git checkout ${LUCI_EDITION}
     git switch -c ${LUCI_EDITION}
     export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/v//')"
-    TIME g "正在使用${LUCI_EDITION}版本源码进行编译"
+    echo "正在使用${LUCI_EDITION}版本源码进行编译"
   else
     export LUCI_EDITION="${REPO_BRANCH}"
   fi
