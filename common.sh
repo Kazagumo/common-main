@@ -482,6 +482,7 @@ svn co https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMu
 svn co https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMusic package/UnblockNeteaseMusic
 svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-smartdns package/luci-app-smartdns
 svn co https://github.com/immortalwrt/packages/trunk/net/smartdns package/smartdns
+svn co https://github.com/immortalwrt/immortalwrt/trunk/package/utils/ucode package/ucode
 fi
 
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
