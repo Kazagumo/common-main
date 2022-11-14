@@ -502,7 +502,7 @@ svn co https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMu
 svn co https://github.com/immortalwrt/packages/trunk/multimedia/UnblockNeteaseMusic package/UnblockNeteaseMusic
 svn co https://github.com/immortalwrt/luci/trunk/applications/luci-app-smartdns package/luci-app-smartdns
 svn co https://github.com/immortalwrt/packages/trunk/net/smartdns package/smartdns
-svn co https://github.com/immortalwrt/immortalwrt/trunk/package/utils/ucode package/ucode
+svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/utils package/ucode
 fi
 
 sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
