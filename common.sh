@@ -448,6 +448,9 @@ if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
 fi
 
+if [[ -d "package/utils/ucode" ]]; then
+  svn co https://github.com/openwrt/openwrt/trunk/package/utils/ucode package/utils/ucode
+fi
 
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
