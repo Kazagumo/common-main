@@ -262,6 +262,7 @@ function Diy_wenjian() {
 rm -rf "${FIN_PATH}" && cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
 sudo chmod +x "${FIN_PATH}"
 echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${FIN_PATH}"
+sed -i 's/root:::0:99999:7:::/root::0:0:99999:7:::/g' ${HOME_PATH}/package/base-files/files/etc/shadow
 
 rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
 cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
