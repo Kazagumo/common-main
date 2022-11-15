@@ -292,13 +292,14 @@ function Diy_clean() {
 
 
 function Diy_COOLSNOWWOLF() {
-# 删除重复插件（LEDE）
-find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
-find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
-  
+if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+  # 删除重复插件（LEDE）
+  find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
+  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
+  find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+  find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+fi
 # 给固件LUCI做个标记
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
@@ -306,12 +307,14 @@ echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${R
 
 
 function Diy_LIENOL() {
-# 删除重复插件（Lienol）
-find . -name 'luci-app-ttyd' -o -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' -o -name 'luci-app-frpc' | xargs -i rm -rf {}
-find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
-find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+  # 删除重复插件（Lienol）
+  find . -name 'luci-app-ttyd' -o -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+  find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' -o -name 'luci-app-frpc' | xargs -i rm -rf {}
+  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+  find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+  find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+fi
   
 # 给固件LUCI做个标记
 case "${REPO_BRANCH}" in
@@ -357,12 +360,13 @@ fi
 
 
 function Diy_IMMORTALWRT() {
-# 删除重复插件（天灵）
-find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-find . -name 'luci-app-openclash' -o -name 'luci-app-ssr-plus' -o -name 'luci-app-passwall' -o -name 'luci-app-passwall2' | xargs -i rm -rf {}
-find . -name 'luci-app-cifs' -o -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
-  
+if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+  # 删除重复插件（天灵）
+  find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
+  find . -name 'luci-app-openclash' -o -name 'luci-app-ssr-plus' -o -name 'luci-app-passwall' -o -name 'luci-app-passwall2' | xargs -i rm -rf {}
+  find . -name 'luci-app-cifs' -o -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
+fi
 # 给固件LUCI做个标记
 case "${REPO_BRANCH}" in
 openwrt-21.02)
@@ -370,10 +374,12 @@ openwrt-21.02)
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
     
   export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
-  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+  [[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
   
 ;;
 master)
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   find . -name 'default-settings' | xargs -i rm -rf {}
   svn export https://github.com/281677160/common-main/trunk/IMMORTALWRT/default-settings  ${HOME_PATH}/package/emortal/default-settings > /dev/null 2>&1
   if [[ `grep -c 'DEFAULT_PACKAGES.router:=default-settings luci luci-lib-ipkg' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
@@ -382,13 +388,10 @@ master)
     sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings luci luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
   fi
   
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-  
   sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
     
   export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
-  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+  [[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 
 ;;
 openwrt-18.06)
@@ -411,11 +414,19 @@ fi
 
 
 function Diy_XWRT() {
+if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+  # 删除重复插件（X-WRT）
+  find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+  find . -name 'adguardhome' -o -name 'luci-app-adguardhome' | xargs -i rm -rf {}
+  find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+  find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+fi
+find . -name 'default-settings' | xargs -i rm -rf {}
+
 # 给固件LUCI做个标记
-find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-find . -name 'adguardhome' -o -name 'luci-app-adguardhome' | xargs -i rm -rf {}
-find . -name 'mosdns' -o -name 'luci-app-mosdns' -o -name 'v2ray-geodata' | xargs -i rm -rf {}
-find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+  
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
@@ -424,9 +435,6 @@ if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default
   fi
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
 fi
-
-sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
 [[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
@@ -446,11 +454,19 @@ fi
 
 
 function Diy_OFFICIAL() {
+if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+  # 删除重复插件（X-WRT）
+  find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+  find . -name 'adguardhome' -o -name 'luci-app-adguardhome' | xargs -i rm -rf {}
+  find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+  find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+fi
+find . -name 'default-settings' | xargs -i rm -rf {}
+
 # 给固件LUCI做个标记
-find . -name 'default-settings' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-find . -name 'adguardhome' -o -name 'luci-app-adguardhome' | xargs -i rm -rf {}
-find . -name 'mosdns' -o -name 'luci-app-mosdns' -o -name 'v2ray-geodata' | xargs -i rm -rf {}
-find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
@@ -459,9 +475,6 @@ if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default
   fi
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
 fi
-
-sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
 [[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
@@ -487,12 +500,14 @@ fi
 
 
 function Diy_AMLOGIC() {
-# 删除重复插件（LEDE - N1等）
-find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
-find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+  # 删除重复插件（LEDE - N1等）
+  find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
+  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
+  find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+  find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
+fi
   
 # 给固件LUCI做个标记
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
