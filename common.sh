@@ -434,8 +434,7 @@ if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Ma
 fi
 
 if [[ ! -d "package/utils/ucode" ]]; then
-  mkdir -p package/utils/ucode
-  curl -fsSL https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/package/utils/ucode/Makefile > package/utils/ucode/Makefile
+  mkdir -p package/utils/ucode && curl -fsSL https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/package/utils/ucode/Makefile > package/utils/ucode/Makefile
 fi
 
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
@@ -473,16 +472,12 @@ if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
-  mkdir -p feeds/packages/devel/packr
-  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-  curl -fsSL https://raw.githubusercontent.com/immortalwrt/packages/master/devel/packr/Makefile > feeds/packages/devel/packr/Makefile
+  mkdir -p feeds/packages/devel/packr && curl -fsSL https://raw.githubusercontent.com/immortalwrt/packages/master/devel/packr/Makefile > feeds/packages/devel/packr/Makefile
   rm -rf feeds/packages/libs/libcap && svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libcap feeds/packages/libs/libcap
-  
 fi
 
 if [[ ! -d "package/utils/ucode" ]]; then
-  mkdir -p package/utils/ucode
-  curl -fsSL https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/package/utils/ucode/Makefile > package/utils/ucode/Makefile
+  mkdir -p package/utils/ucode && curl -fsSL https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/package/utils/ucode/Makefile > package/utils/ucode/Makefile
 fi
 
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
