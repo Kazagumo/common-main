@@ -472,8 +472,9 @@ if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
-  mkdir -p feeds/packages/devel/packr && curl -fsSL https://raw.githubusercontent.com/immortalwrt/packages/master/devel/packr/Makefile > feeds/packages/devel/packr/Makefile
+  rm -rf feeds/packages/devel/packr && svn export https://github.com/281677160/common-main/tree/main/OFFICIAL/1907/packr feeds/packages/devel/packr
   rm -rf feeds/packages/libs/libcap && svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libcap feeds/packages/libs/libcap
+  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/coolsnowwolf/lede/trunk/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
 fi
 
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
