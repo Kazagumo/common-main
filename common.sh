@@ -1145,24 +1145,48 @@ fi
 
 
 function Diy_adguardhome() {
+if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="amd64"
+  Archclash="amd64"
+  echo "amd64架构"
+elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="i386"
+  Archclash="386"
+  echo "X86 32位架构"
+elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="arm64"
+  Archclash="armv8"
+  echo "arm64架构"
+elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="armv7"
+  Archclash="armv7"
+  echo "armv7架构"
+else
+  echo "This model does not support automatic core download"
+fi
+
+if [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  echo "正在执行：给openclash下载核心"
+  if [[ "${Archclash}" =~ (amd64|386|armv7|armv8) ]]; then
+    rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
+    cd ${HOME_PATH}/clash-neihe
+    wget -q https://github.com/vernesong/OpenClash/releases/download/Clash/clash-linux-${Archclash}.tar.gz
+    tar -zxvf clash-linux-${Archclash}.tar.gz
+    if [[ -f "${HOME_PATH}/clash-neihe/clash" ]]; then
+      mkdir -p ${HOME_PATH}/files/etc/openclash/core
+      mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
+      echo "OpenClash增加内核成功"
+    else
+      echo "OpenClash增加内核失败"
+    fi
+    cd ${HOME_PATH}
+    rm -rf ${HOME_PATH}/clash-neihe
+  fi
+fi
+
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "正在执行：给adguardhome下载核心"
-  if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-    Arch="amd64"
-    echo "X86_64"
-  elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-    Arch="i386"
-    echo "X86_32"
-  elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-    Arch="arm64"
-    echo "armv8"
-  elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-    Arch="armv7"
-    echo "armv7"
-  else
-    echo "This model does not support automatic core download"
-  fi
-	
+  rm -rf ${HOME_PATH}/AdGuardHome
   if [[ "${Arch}" =~ (amd64|i386|arm64|armv7) ]]; then
     downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
     latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
