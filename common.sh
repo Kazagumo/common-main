@@ -474,7 +474,10 @@ if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
 elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
   mkdir -p feeds/packages/devel/packr
+  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
   curl -fsSL https://raw.githubusercontent.com/immortalwrt/packages/master/devel/packr/Makefile > feeds/packages/devel/packr/Makefile
+  rm -rf feeds/packages/libs/libcap && svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libcap feeds/packages/libs/libcap
+  
 fi
 
 if [[ ! -d "package/utils/ucode" ]]; then
