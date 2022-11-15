@@ -476,10 +476,6 @@ elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   rm -rf feeds/packages/libs/libcap && svn co https://github.com/coolsnowwolf/lede/trunk/package/libs/libcap feeds/packages/libs/libcap
 fi
 
-if [[ ! -d "package/utils/ucode" ]]; then
-  mkdir -p package/utils/ucode && curl -fsSL https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/package/utils/ucode/Makefile > package/utils/ucode/Makefile
-fi
-
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
   echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 fi
