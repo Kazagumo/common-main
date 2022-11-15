@@ -1169,6 +1169,7 @@ fi
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "正在执行：给openclash下载核心"
   if [[ "${Archclash}" =~ (amd64|386|armv7|armv8) ]]; then
+    rm -rf ${HOME_PATH}/files/etc/openclash/core
     rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
     cd ${HOME_PATH}/clash-neihe
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/dev/clash-linux-${Archclash}.tar.gz
@@ -1179,7 +1180,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '
     if [[ -f "${HOME_PATH}/clash-neihe/clash" ]]; then
       mkdir -p ${HOME_PATH}/files/etc/openclash/core
       mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
-      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
+      chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
       echo "OpenClash增加内核成功"
     else
       echo "OpenClash增加内核失败"
@@ -1191,7 +1192,7 @@ fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "正在执行：给adguardhome下载核心"
-  rm -rf ${HOME_PATH}/AdGuardHome
+  rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
   if [[ "${Arch}" =~ (amd64|i386|arm64|armv7) ]]; then
     downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
     latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
