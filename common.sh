@@ -1175,6 +1175,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '
     if [[ -f "${HOME_PATH}/clash-neihe/clash" ]]; then
       mkdir -p ${HOME_PATH}/files/etc/openclash/core
       mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
+      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
       echo "OpenClash增加内核成功"
     else
       echo "OpenClash增加内核失败"
