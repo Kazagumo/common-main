@@ -9,11 +9,11 @@ function Diy_Part1() {
     echo "正在执行：给源码增加定时更新固件插件和设置插件和ttyd成默认自选"
     find . -name 'luci-app-autoupdate' | xargs -i rm -rf {}
     git clone https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
-    [[ ! -d "$BASE_PATH/usr/bin" ]] && mkdir $BASE_PATH/usr/bin
-    cp $BUILD_PATH/AutoUpdate.sh $BASE_PATH/usr/bin/AutoUpdate
-    cp $BUILD_PATH/replace.sh $BASE_PATH/usr/bin/replace
-    sudo chmod +x $BASE_PATH/usr/bin/replace
-    sudo chmod +x $BASE_PATH/usr/bin/AutoUpdate
+    [[ ! -d "$FILES_PATH/usr/bin" ]] && mkdir $FILES_PATH/usr/bin
+    cp $BUILD_PATH/AutoUpdate.sh $FILES_PATH/usr/bin/AutoUpdate
+    cp $BUILD_PATH/replace.sh $FILES_PATH/usr/bin/replace
+    sudo chmod +x $FILES_PATH/usr/bin/replace
+    sudo chmod +x $FILES_PATH/usr/bin/AutoUpdate
     if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
       sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
     fi
@@ -76,17 +76,17 @@ function GET_TARGET_INFO() {
 	;;
 	esac
 	
-	if [[ -f "$BASE_PATH/usr/bin/AutoUpdate" ]]; then
-	  export AutoUpdate_Version=$(egrep -o "Version=V[0-9]\.[0-9]" $BASE_PATH/usr/bin/AutoUpdate |cut -d "=" -f2 | sed 's/^.//g')
+	if [[ -f "$FILES_PATH/usr/bin/AutoUpdate" ]]; then
+	  export AutoUpdate_Version=$(egrep -o "Version=V[0-9]\.[0-9]" $FILES_PATH/usr/bin/AutoUpdate |cut -d "=" -f2 | sed 's/^.//g')
 	else
 	  export AutoUpdate_Version="7.1"
 	fi
-	export In_Firmware_Info="$BASE_PATH/bin/openwrt_info"
+	export In_Firmware_Info="$FILES_PATH/bin/openwrt_info"
 	export Github_Release="${Github}/releases/tag/AutoUpdate"
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
-	export Github_API1="https://api.github.com/repos/${Warehouse}/releases/tags/AutoUpdate"
+	export Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/AutoUpdate"
 	export Github_API2="${Github}/releases/download/AutoUpdate/ZZZ_Api"
-	export Release_download="https://github.com/${Warehouse}/releases/download/AutoUpdate"
+	export Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/AutoUpdate"
 	export LOCAL_CHAZHAO="${LUCI_EDITION}-${Openwrt_Version}"
 	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 	if [[ ! ${bendi_script} == "1" ]]; then
@@ -106,9 +106,9 @@ touch ${In_Firmware_Info}
 sudo chmod +x ${In_Firmware_Info}
 cat >${In_Firmware_Info} <<-EOF
 Github=${Github}
-Author=${Author}
-Library=${Library}
-Warehouse=${Warehouse}
+MANUFACTURER=${MANUFACTURER}
+WAREHOUSE_MAN=${WAREHOUSE_MAN}
+GIT_REPOSITORY=${GIT_REPOSITORY}
 SOURCE=${SOURCE}
 LUCI_EDITION=${LUCI_EDITION}
 DEFAULT_Device=${TARGET_PROFILE}
