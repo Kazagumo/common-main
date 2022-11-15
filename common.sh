@@ -1409,10 +1409,9 @@ if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
   source ${HOME_PATH}/CHONGTU
 fi
 rm -rf ${HOME_PATH}/CHONGTU
-echo
-echo
-
 if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
+  echo
+  echo
   TIME r "	      已选插件列表"
   chmod -R +x ${HOME_PATH}/Plug-in
   source ${HOME_PATH}/Plug-in
