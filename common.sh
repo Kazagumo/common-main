@@ -1,7 +1,7 @@
 #!/bin/bash
 # https://github.com/281677160/build-actions
 # common Module by 28677160
-# matrix.target=${matrixtarget}
+# matrix.target=${FOLDER_NAME}
 
 function TIME() {
 Compte=$(date +%Y年%m月%d号%H时%M分)
@@ -25,11 +25,11 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 function Diy_variable() {
 if [[ ! ${bendi_script} == "1" ]]; then
-  if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini" 2>/dev/null)" ]; then
-    TIME r "错误提示：编译脚本缺少[settings.ini]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
+  if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini" 2>/dev/null)" ]; then
+    TIME r "错误提示：编译脚本缺少[settings.ini]名称的配置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
     exit 1
   else
-    source "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini"
+    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
   fi
 fi
 
@@ -38,88 +38,88 @@ COOLSNOWWOLF)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Lede"
   export LUCI_EDITION="18.06"
-  export MAINTAIN="Lede's"
+  export SOURCE_OWNER="Lede's"
   export PACKAGE_BRANCH="master"
-  export DIY_WORK="${matrixtarget}MASTER"
+  export DIY_WORK="${FOLDER_NAME}MASTER"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
-  export MAINTAIN="Lienol's"
+  export SOURCE_OWNER="Lienol's"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="master"
-    export DIY_WORK="${matrixtarget}MASTER"
+    export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     export PACKAGE_BRANCH="21.02"
     export LUCI_EDITION="21.02"
-    export DIY_WORK="${matrixtarget}2102"
+    export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "19.07-cannotuse" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="19.07"
-    export DIY_WORK="${matrixtarget}CANNO"
+    export DIY_WORK="${FOLDER_NAME}CANNO"
   elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="17.01"
-    export DIY_WORK="${matrixtarget}1907"
+    export DIY_WORK="${FOLDER_NAME}1907"
   fi
 ;;
 IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
-  export MAINTAIN="ctcgfw's"
+  export SOURCE_OWNER="ctcgfw's"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings"
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     export PACKAGE_BRANCH="openwrt-21.02"
     export LUCI_EDITION="21.02"
-    export DIY_WORK="${matrixtarget}2102"
+    export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="openwrt-21.02"
     export LUCI_EDITION="master"
-    export DIY_WORK="${matrixtarget}MASTER"
+    export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
     export PACKAGE_BRANCH="openwrt-18.06"
     export LUCI_EDITION="18.06"
-    export DIY_WORK="${matrixtarget}1806"
+    export DIY_WORK="${FOLDER_NAME}1806"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
     export PACKAGE_BRANCH="openwrt-18.06"
     export LUCI_EDITION="18.06-K54"
-    export DIY_WORK="${matrixtarget}K54"
+    export DIY_WORK="${FOLDER_NAME}K54"
   fi
 ;;
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
-  export MAINTAIN="ptpt52"
+  export SOURCE_OWNER="ptpt52"
   export PACKAGE_BRANCH="official"
   export LUCI_EDITION="${REPO_BRANCH}"
   if [[ "${REPO_BRANCH}" == "21.02" ]]; then
-    export DIY_WORK="${matrixtarget}2102"
+    export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
-    export DIY_WORK="${matrixtarget}2203"
+    export DIY_WORK="${FOLDER_NAME}2203"
   else
-    export DIY_WORK="${matrixtarget}${REPO_BRANCH}"
+    export DIY_WORK="${FOLDER_NAME}${REPO_BRANCH}"
   fi
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
-  export MAINTAIN="openwrt"
+  export SOURCE_OWNER="openwrt"
   export PACKAGE_BRANCH="official"
   export LUCI_EDITION="${REPO_BRANCH}"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
-    export DIY_WORK="${matrixtarget}MASTER"
+    export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    export DIY_WORK="${matrixtarget}1907"
+    export DIY_WORK="${FOLDER_NAME}1907"
   elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-    export DIY_WORK="${matrixtarget}2102"
+    export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
-    export DIY_WORK="${matrixtarget}2203"
+    export DIY_WORK="${FOLDER_NAME}2203"
   else
-    export DIY_WORK="${matrixtarget}${REPO_BRANCH}"
+    export DIY_WORK="${FOLDER_NAME}${REPO_BRANCH}"
   fi
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
@@ -127,9 +127,9 @@ AMLOGIC)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Amlogic"
   export LUCI_EDITION="18.06"
-  export MAINTAIN="Lede's"
+  export SOURCE_OWNER="Lede's"
   export PACKAGE_BRANCH="master"
-  export DIY_WORK="${matrixtarget}AMLOGIC"
+  export DIY_WORK="${FOLDER_NAME}AMLOGIC"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
 ;;
 *)
@@ -149,25 +149,25 @@ echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
 echo "UPLOAD_CONFIG=${UPLOAD_CONFIG}" >> ${GITHUB_ENV}
 echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> ${GITHUB_ENV}
 echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
-echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> ${GITHUB_ENV}
-echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> ${GITHUB_ENV}
-echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> ${GITHUB_ENV}
-echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> ${GITHUB_ENV}
-echo "BY_INFORMATION=${BY_INFORMATION}" >> ${GITHUB_ENV}
-echo "Library=${Warehouse##*/}" >> ${GITHUB_ENV}
+echo "INFORMATION_NOTICE=${INFORMATION_NOTICE}" >> ${GITHUB_ENV}
+echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+echo "CACHEWRTBUILD_SWITCH=${CACHEWRTBUILD_SWITCH}" >> ${GITHUB_ENV}
+echo "PACKAGING_FIRMWARE=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
+echo "COMPILATION_INFORMATION=${COMPILATION_INFORMATION}" >> ${GITHUB_ENV}
+echo "WAREHOUSE_MAN=${GIT_REPOSITORY##*/}" >> ${GITHUB_ENV}
 echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
-echo "MAINTAIN=${MAINTAIN}" >> ${GITHUB_ENV}
-echo "DIYWORKING=${matrixtarget}${REPO_BRANCH}" >> ${GITHUB_ENV}
+echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
+echo "DIYWORKING=${FOLDER_NAME}${REPO_BRANCH}" >> ${GITHUB_ENV}
   
 echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
-echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
+echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_ENV}
+echo "FILES_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
 echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
 echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
-echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
-echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
+echo "DEFAULT_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
+echo "KEEPD_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
 echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/bin/config_generate" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
 echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> ${GITHUB_ENV}
@@ -181,21 +181,21 @@ echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 function Diy_settings() {
 echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
   [[ -d "${OP_DIY}" ]] && {
-    if [ -z "$(ls -A "${OP_DIY}/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[${OP_DIY}/${matrixtarget}]文件夹内补齐"
+    if [ -z "$(ls -A "${OP_DIY}/${FOLDER_NAME}/${CONFIG_FILE}" 2>/dev/null)" ]; then
+      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[${OP_DIY}/${FOLDER_NAME}]文件夹内补齐"
       exit 1
     fi
-    if [ -z "$(ls -A "${OP_DIY}/${matrixtarget}/${DIY_PART_SH}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[${OP_DIY}/${matrixtarget}]文件夹内补齐"
+    if [ -z "$(ls -A "${OP_DIY}/${FOLDER_NAME}/${DIY_PART_SH}" 2>/dev/null)" ]; then
+      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[${OP_DIY}/${FOLDER_NAME}]文件夹内补齐"
       exit 1
     fi
   } || {
-    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
+    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${CONFIG_FILE}" 2>/dev/null)" ]; then
+      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
       exit 1
     fi
-    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/${DIY_PART_SH}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${matrixtarget}]文件夹内补齐"
+    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${DIY_PART_SH}" 2>/dev/null)" ]; then
+      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
       exit 1
     fi
   }
@@ -258,18 +258,18 @@ TIME r ""
 function Diy_wenjian() {
 # 拉取源码之后增加应用文件
 
-rm -rf "${FIN_PATH}" && cp ${HOME_PATH}/build/common/Custom/default-setting "${FIN_PATH}"
-sudo chmod +x "${FIN_PATH}"
-echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${FIN_PATH}"
+rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
+sudo chmod +x "${DEFAULT_PATH}"
+echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${DEFAULT_PATH}"
 sed -i 's/root:::0:99999:7:::/root::0:0:99999:7:::/g' ${HOME_PATH}/package/base-files/files/etc/shadow
 
-rm -rf "${BASE_PATH}/etc/init.d/Postapplication"
-cp ${HOME_PATH}/build/common/Custom/Postapplication "${BASE_PATH}/etc/init.d/Postapplication"
-sudo chmod +x "${BASE_PATH}/etc/init.d/Postapplication"
+rm -rf "${FILES_PATH}/etc/init.d/Postapplication"
+cp ${HOME_PATH}/build/common/custom/Postapplication "${FILES_PATH}/etc/init.d/Postapplication"
+sudo chmod +x "${FILES_PATH}/etc/init.d/Postapplication"
 
-[[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir -p ${BASE_PATH}/usr/bin
-cp ${HOME_PATH}/build/common/Custom/openwrt.sh "${BASE_PATH}/usr/bin/openwrt"
-sudo chmod +x "${BASE_PATH}/usr/bin/openwrt"
+[[ ! -d "${FILES_PATH}/usr/bin" ]] && mkdir -p ${FILES_PATH}/usr/bin
+cp ${HOME_PATH}/build/common/custom/openwrt.sh "${FILES_PATH}/usr/bin/openwrt"
+sudo chmod +x "${FILES_PATH}/usr/bin/openwrt"
 
 rm -rf "${DELETE}"
 touch "${DELETE}"
@@ -277,7 +277,7 @@ sudo chmod +x "${DELETE}"
 
 
 # 给固件保留配置更新固件的保留项目
-cat >>"${KEEPD}" <<-EOF
+cat >>"${KEEPD_PATH}" <<-EOF
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background
@@ -292,7 +292,7 @@ function Diy_clean() {
 
 
 function Diy_COOLSNOWWOLF() {
-if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（LEDE）
   find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
@@ -307,7 +307,7 @@ echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${R
 
 
 function Diy_LIENOL() {
-if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（Lienol）
   find . -name 'luci-app-ttyd' -o -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' -o -name 'luci-app-frpc' | xargs -i rm -rf {}
@@ -362,7 +362,7 @@ fi
 
 
 function Diy_IMMORTALWRT() {
-if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（天灵）
   find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
   find . -name 'luci-app-openclash' -o -name 'luci-app-ssr-plus' -o -name 'luci-app-passwall' -o -name 'luci-app-passwall2' | xargs -i rm -rf {}
@@ -416,7 +416,7 @@ fi
 
 
 function Diy_XWRT() {
-if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（X-WRT）
   find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' | xargs -i rm -rf {}
@@ -456,7 +456,7 @@ fi
 
 
 function Diy_OFFICIAL() {
-if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（X-WRT）
   find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' | xargs -i rm -rf {}
@@ -502,7 +502,7 @@ fi
 
 
 function Diy_AMLOGIC() {
-if [[ "${ADDITIONAL_PACKAGES}" == "true" ]]; then
+if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（LEDE - N1等）
   find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
@@ -559,7 +559,7 @@ fi
 
 
 function Diy_chajianyuan() {
-case "${ADDITIONAL_PACKAGES}" in
+case "${COLLECTED_PACKAGES}" in
 true)
 echo "正在执行：给feeds.conf.default增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
@@ -569,7 +569,7 @@ sed -i '/passwall/d' "${HOME_PATH}/feeds.conf.default"
 echo "
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
 " >> ${HOME_PATH}/feeds.conf.default
-if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
+if [[ "$(. ${FILES_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
 echo "
 src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
@@ -587,7 +587,7 @@ esac
 function Diy_files() {
 echo "正在执行：files大法，设置固件无烦恼"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* ${BUILD_PATH}
+  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${FOLDER_NAME}/* ${BUILD_PATH}
 fi
 
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
@@ -661,7 +661,7 @@ uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 uci commit dhcp
 /etc/init.d/dnsmasq restart
 /etc/init.d/odhcpd restart
-" >> "${FIN_PATH}"
+" >> "${DEFAULT_PATH}"
 fi
 
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
@@ -690,7 +690,7 @@ uci commit firewall
 /etc/init.d/network restart
 /etc/init.d/dnsmasq restart
 /etc/init.d/odhcpd restart
-" >> "${FIN_PATH}"
+" >> "${DEFAULT_PATH}"
 fi
 
 if [[ "${Remove_IPv6}" == "1" ]]; then
@@ -710,7 +710,7 @@ uci commit dhcp
 /etc/init.d/network restart
 /etc/init.d/dnsmasq restart
 /etc/init.d/odhcpd restart
-" >> "${FIN_PATH}"
+" >> "${DEFAULT_PATH}"
 fi
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
@@ -723,7 +723,7 @@ fi
 
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
    sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${ZZZ_PATH}"
-   sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${FIN_PATH}"
+   sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${DEFAULT_PATH}"
 fi
 
 if [[ "${Delete_NotRequired}" == "1" ]]; then
@@ -806,7 +806,7 @@ if [[ "${Remove_Firewall}" == "1" ]]; then
 fi
 
 if [[ "${Cancel_running}" == "1" ]]; then
-   echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${FIN_PATH}"
+   echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${DEFAULT_PATH}"
 fi
 
 # 晶晨CPU机型自定义机型,内核,分区
@@ -838,14 +838,14 @@ fi
 
 
 function Diy_upgrade1() {
-if [[ "${REGULAR_UPDATE}" == "true" ]]; then
+if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part1
 fi
 }
 
 
 function Diy_Language() {
-if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
+if [[ "$(. ${FILES_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
   cd ${HOME_PATH}
   cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
@@ -1080,8 +1080,8 @@ fi
 
 if [[ `grep -c "CONFIG_TARGET_armvirt=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
-  export REGULAR_UPDATE="false"
-  echo "REGULAR_UPDATE=false" >> ${GITHUB_ENV}
+  export UPDATE_FIRMWARE_ONLINE="false"
+  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
   sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${HOME_PATH}/.config"
   echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${HOME_PATH}/.config"
 fi
@@ -1091,7 +1091,7 @@ if [[ `grep -c "CONFIG_PACKAGE_odhcp6c=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   sed -i '/CONFIG_PACKAGE_odhcpd_full_ext_cer_id=0/d' "${HOME_PATH}/.config"
 fi
 
-if [[ ! "${REGULAR_UPDATE}" == "true" ]] || [[ -z "${REPO_TOKEN}" ]]; then
+if [[ ! "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] || [[ -z "${REPO_TOKEN}" ]]; then
   sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
 fi
 
@@ -1128,7 +1128,7 @@ export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET
 export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 echo "正在编译：${TARGET_PROFILE}"
 
-if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
+if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
   echo "PROMPT_TING=${amlogic_model}" >> ${GITHUB_ENV}
 else
   echo "PROMPT_TING=${TARGET_PROFILE}" >> ${GITHUB_ENV}
@@ -1159,7 +1159,7 @@ if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
     echo "
       uci set luci.main.mediaurlbase='/luci-static/${Default_Theme}'
       uci commit luci
-    " >> "${FIN_PATH}"
+    " >> "${DEFAULT_PATH}"
   else
      echo "TIME r \"没有选择luci-theme-${Default_Theme}此主题,将${Default_Theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
   fi
@@ -1240,14 +1240,14 @@ fi
 
 
 function Diy_upgrade2() {
-sed -i '/^#/d' ${FIN_PATH}
-sed -i '/exit 0/d' "${FIN_PATH}"
-echo -e "\nexit 0" >> ${FIN_PATH}
+sed -i '/^#/d' ${DEFAULT_PATH}
+sed -i '/exit 0/d' "${DEFAULT_PATH}"
+echo -e "\nexit 0" >> ${DEFAULT_PATH}
 sed -i '/^#/d' ${ZZZ_PATH}
 sed -i '/exit 0/d' "${ZZZ_PATH}"
 echo -e "\nexit 0" >> ${ZZZ_PATH}
 
-if [[ "${REGULAR_UPDATE}" == "true" ]]; then
+if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part2
 fi
 }
@@ -1276,7 +1276,7 @@ sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 
 
 function Diy_upgrade3() {
-if [ "${REGULAR_UPDATE}" == "true" ]; then
+if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
   cp -Rf ${FIRMWARE_PATH} ${HOME_PATH}/upgrade
   source ${BUILD_PATH}/upgrade.sh && Diy_Part3
 fi
@@ -1308,7 +1308,7 @@ cd ${HOME_PATH}
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
   echo "#### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
 fi
-if [ "${REGULAR_UPDATE}" == "true" ]; then
+if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
   echo "#### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/AutoUpdate_log.txt
 fi
 }
@@ -1345,11 +1345,11 @@ echo
 TIME b "编译源码: ${SOURCE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
-TIME b "源码作者: ${MAINTAIN}"
+TIME b "源码作者: ${SOURCE_OWNER}"
 TIME b "Luci版本: ${LUCI_EDITION}"
 if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   TIME b "编译机型: 晶晨系列"
-  if [[ "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
+  if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
      TIME g "打包机型: ${amlogic_model}"
      TIME g "打包内核: ${amlogic_kernel}"
      TIME g "分区大小: ${rootfs_size}"
@@ -1361,14 +1361,14 @@ else
   TIME b "内核版本: ${LINUX_KERNEL}"
   TIME b "编译机型: ${TARGET_PROFILE}"
 fi
-TIME b "固件作者: ${Author}"
+TIME b "固件作者: ${MANUFACTURER}"
 TIME b "仓库地址: ${Github}"
-TIME b "启动编号: #${Run_number}（${Library}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
+TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${RUN_WORKFLOW}]工作流程）"
 TIME b "编译时间: ${Compte_Date}"
-if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
-  TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${amlogic_model}】固件"
+if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
+  TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${amlogic_model}】固件"
 else
-  TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_PROFILE}】固件"
+  TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${TARGET_PROFILE}】固件"
 fi
 echo
 echo
@@ -1397,27 +1397,27 @@ if [[ ${UPLOAD_RELEASE} == "true" ]]; then
 else
   TIME r "发布固件: 关闭"
 fi
-if [[ ${SERVERCHAN_SCKEY} == "true" ]]; then
+if [[ ${INFORMATION_NOTICE} == "true" ]]; then
   TIME y "微信/电报通知: 开启"
 else
   TIME r "微信/电报通知: 关闭"
 fi
-if [[ ${BY_INFORMATION} == "true" ]]; then
+if [[ ${COMPILATION_INFORMATION} == "true" ]]; then
   TIME y "编译信息显示: 开启"
 fi
-if [[ ${REGULAR_UPDATE} == "true" ]]; then
+if [[ ${UPDATE_FIRMWARE_ONLINE} == "true" ]]; then
   TIME y "把定时自动更新插件编译进固件: 开启"
 else
   TIME r "把定时自动更新插件编译进固件: 关闭"
 fi
 
-if [[ "${REGULAR_UPDATE}" == "true" ]] && [[ -z "${REPO_TOKEN}" ]]; then
+if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -z "${REPO_TOKEN}" ]]; then
   echo
   echo
   TIME r "您虽然开启了编译在线更新固件操作,但是您的[REPO_TOKEN]密匙为空,"
   TIME r "无法将固件发布至云端,已为您自动关闭了编译在线更新固件"
   echo
-elif [[ "${REGULAR_UPDATE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; then
+elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; then
   echo
   TIME l "定时自动更新信息"
   TIME z "插件版本: ${AutoUpdate_Version}"

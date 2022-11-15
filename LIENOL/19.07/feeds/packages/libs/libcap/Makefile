@@ -15,7 +15,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=@KERNEL/linux/libs/security/linux-privs/libcap2
 PKG_HASH:=5048c849bdbbe24d2ca59463142cb279abec5edf3ab6731ab35a596bcf538a49
 
-PKG_MAINTAINER:=Paul Wassi <p.wassi@gmx.at>
+PKG_SOURCE_OWNERER:=Paul Wassi <p.wassi@gmx.at>
 PKG_LICENSE:=GPL-2.0-only
 PKG_LICENSE_FILES:=License
 

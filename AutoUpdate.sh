@@ -132,8 +132,8 @@ Github 地址:		${Github}
 解析 API 地址:		${Github_API1}
 固件下载地址:		${Github_Release}
 更新运行日志:		${AutoUpdate_Log_Path}/AutoUpdate.log
-固件作者:		${Author}
-作者仓库:		${Library}
+固件作者:		${MANUFACTURER}
+作者仓库:		${WAREHOUSE_MAN}
 固件名称:		${LOCAL_Version}
 固件格式:		${BOOT_Type}${Firmware_SFX}
 
@@ -278,7 +278,7 @@ echo
 echo -e "\n本地版本：${LOCAL_Version}"
 echo "云端版本：${CLOUD_Version}"
 echo "设备名称：${CURRENT_Device}"
-echo "固件作者：${Author}"
+echo "固件作者：${MANUFACTURER}"
 if [[ "${Firmware_SFX}" =~ "(.img.gz|.img)" ]]; then
   echo "引导模式：${BOOT_Type}"
 fi
@@ -411,9 +411,9 @@ if [[ "${AutoUpdate_Mode}" == "1" ]]; then
     chmod 775 "/etc/deletefile"
     source /etc/deletefile
   fi
-  curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork > /mnt/Detectionnetwork
+  curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/281677160/common/main/custom/Detectionnetwork > /mnt/Detectionnetwork
   if [[ $? -ne 0 ]]; then
-    wget -P /mnt https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork -O /mnt/Detectionnetwork
+    wget -P /mnt https://raw.githubusercontent.com/281677160/common/main/custom/Detectionnetwork -O /mnt/Detectionnetwork
   fi
   if [[ $? -eq 0 ]]; then
     chmod 775 "/mnt/Detectionnetwork"
@@ -528,9 +528,9 @@ else
       done
       export Github_uci="$(uci get autoupdate.@login[0].github 2>/dev/null)"
       if [[ -n "${Github_uci}" ]] && [[ ! "${Github_uci}" == "${Input_Other}" ]]; then
-        export ApAuthor="${Input_Other%.git*}"
-        export custm_github_url="${ApAuthor##*com/}"
-        export curret_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
+        export ApMANUFACTURER="${Input_Other%.git*}"
+        export custm_github_url="${ApMANUFACTURER##*com/}"
+        export curret_github_url="$(grep GIT_REPOSITORY= /bin/openwrt_info | cut -d "=" -f2)"
         sed -i "s?${curret_github_url}?${custm_github_url}?g" /bin/openwrt_info
         export Input_Other="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
         uci set autoupdate.@login[0].github=${Input_Other}

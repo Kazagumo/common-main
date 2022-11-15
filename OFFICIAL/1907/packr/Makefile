@@ -18,7 +18,7 @@ PKG_MIRROR_HASH:=fe199299e6b7236cf9538c06d27ab1a4efd93cda2b3ea85bab9154be364760c
 
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE.txt
-PKG_MAINTAINER:=Jeffery To <jeffery.to@gmail.com>
+PKG_SOURCE_OWNERER:=Jeffery To <jeffery.to@gmail.com>
 
 HOST_BUILD_DEPENDS:=golang/host
 HOST_BUILD_PARALLEL:=1
