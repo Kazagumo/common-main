@@ -616,10 +616,19 @@ if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07
   export devicee="uci set network.ipv6.device='@lan'"
 fi
 
-if [[ "${OpenClash_branch}" != "master" ]] || [[ "${OpenClash_branch}" != "dev" ]]; then
-   echo "OpenClash_branch=master" >> ${GITHUB_ENV}
+# openclash分支选择
+if [[ "${OpenClash_branch}" != "master" ]] && [[ "${OpenClash_branch}" != "dev" ]]; then
+   git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+   echo "因没发现正确分支数据，正在使用master分支的openclash"
 else
-   echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+   git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+   echo "正在使用"${OpenClash_branch}"分支的openclash"
+fi
+
+
+  find . -name 'luci-app-openclash' | xargs -i rm -rf {}
+  git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+  echo "正在使用"${OpenClash_branch}"分支的openclash"
 fi
 
 
@@ -812,13 +821,6 @@ cd ${HOME_PATH}
 # 修正连接数
 if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
   echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
-fi
-
-# openclash分支选择
-if [[ "$(. ${BASE_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "21" ]]; then
-  find . -name 'luci-app-openclash' | xargs -i rm -rf {}
-  git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用"${OpenClash_branch}"分支的openclash"
 fi
 }
 
