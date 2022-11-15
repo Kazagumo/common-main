@@ -1171,7 +1171,10 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '
   if [[ "${Archclash}" =~ (amd64|386|armv7|armv8) ]]; then
     rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
     cd ${HOME_PATH}/clash-neihe
-    wget -q https://github.com/vernesong/OpenClash/releases/download/Clash/clash-linux-${Archclash}.tar.gz
+    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/dev/clash-linux-${Archclash}.tar.gz
+    if [[ $? -ne 0 ]];then
+      wget -q https://github.com/vernesong/OpenClash/releases/download/Clash/clash-linux-${Archclash}.tar.gz
+    fi
     tar -zxvf clash-linux-${Archclash}.tar.gz
     if [[ -f "${HOME_PATH}/clash-neihe/clash" ]]; then
       mkdir -p ${HOME_PATH}/files/etc/openclash/core
