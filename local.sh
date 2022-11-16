@@ -276,6 +276,7 @@ fi
 function Bendi_DownloadDLFile() {
 ECHOG "下载DL文件，请耐心等候..."
 cd ${HOME_PATH}
+make defconfig
 make -j8 download |tee ${HOME_PATH}/build.log
 find dl -size -1024c -exec ls -l {} \;
 find dl -size -1024c -exec rm -f {} \;
