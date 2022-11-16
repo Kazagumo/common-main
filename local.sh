@@ -72,9 +72,9 @@ judge() {
 }
 
 # 变量
-BENDI_VERSION="1.1"
-GITHUB_WORKSPACE="$PWD"
-GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
+export BENDI_VERSION="1.1"
+export GITHUB_WORKSPACE="$PWD"
+export GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
 echo '#!/bin/bash' > ${GITHUB_ENV}
 chmod +x ${GITHUB_ENV}
 source /etc/os-release
