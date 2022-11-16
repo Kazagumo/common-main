@@ -24,13 +24,10 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 
 function Diy_variable() {
-if [[ ! ${bendi_script} == "1" ]]; then
-  if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini" 2>/dev/null)" ]; then
-    TIME r "错误提示：编译脚本缺少[settings.ini]名称的配置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
-    exit 1
-  else
-    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
-  fi
+if [[ -n "${BENDI_VERSION}" ]]; then
+  source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
+else
+  source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
 fi
 
 case "${SOURCE_CODE}" in
