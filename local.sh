@@ -153,14 +153,6 @@ else
 fi
 }
 
-function Bendi_Variable() {
-echo "读取变量"
-cd ${GITHUB_WORKSPACE}
-source common.sh && Diy_variable
-source ${GITHUB_ENV}
-rm -rf common.sh
-}
-
 function Bendi_EveryInquiry() {
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   clear
@@ -182,6 +174,14 @@ if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   esac
   done
 fi
+}
+
+function Bendi_Variable() {
+echo "读取变量"
+cd ${GITHUB_WORKSPACE}
+source common.sh && Diy_variable
+source ${GITHUB_ENV}
+rm -rf common.sh
 }
 
 function Bendi_MainProgram() {
@@ -318,8 +318,8 @@ function Bendi_menu() {
 FOLDER_NAME="Official"
 Bendi_Dependent
 Bendi_DiySetup
-Bendi_Variable
 Bendi_EveryInquiry
+Bendi_Variable
 Bendi_MainProgram
 Bendi_Download
 Bendi_UpdateSource
