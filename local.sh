@@ -34,13 +34,16 @@ source ${BUILD_PATH}/common.sh && Diy_menu4
 source ${BUILD_PATH}/common.sh && Diy_menu5
 source ${BUILD_PATH}/common.sh && Diy_xinxi
 
+cd ${HOME_PATH}
 make defconfig
 make download -j8
 find dl -size -1024c -exec ls -l {} \;
 find dl -size -1024c -exec rm -f {} \;
 
+cd ${HOME_PATH}
 make -j$(($(nproc) + 1)) || make -j1 V=s
 
+cd ${HOME_PATH}
 source ${BUILD_PATH}/common.sh && Diy_firmware
 
 
