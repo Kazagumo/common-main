@@ -205,6 +205,7 @@ mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 function Bendi_UpdateSource() {
 echo "正在更新源和读取自定义文件,请稍后"
 cd ${HOME_PATH}
+source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu3
 source $BUILD_PATH/$DIY_PART_SH
 source build/${FOLDER_NAME}/common.sh && Diy_Publicarea
@@ -243,11 +244,13 @@ fi
 function Bendi_Configuration() {
 echo "确认固件配置"
 cd ${HOME_PATH}
+source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu5
 }
 
 function Bendi_ErrorMessage() {
 cd ${HOME_PATH}
+source ${GITHUB_ENV}
 if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
   echo
   TIME b "			错误信息"
@@ -311,6 +314,7 @@ make V=s -j$(nproc)
 
 function Bendi_Arrangement() {
 cd ${HOME_PATH}
+source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_firmware
 }
 
