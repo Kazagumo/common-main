@@ -373,6 +373,8 @@ Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
 Bendi_MainProgram
+rm -rf ${HOME_PATH}/build
+mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 Bendi_UpdateSource
 Bendi_Menuconfig
 Bendi_Configuration
