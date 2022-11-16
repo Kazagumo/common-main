@@ -18,25 +18,6 @@ RedBG="\033[41;37m"
 OK="${Green}[OK]${Font}"
 ERROR="${Red}[ERROR]${Font}"
 
-# 变量
-export Version="1.1"
-export GITHUB_WORKSPACE="$PWD"
-export OP_DIY="${GITHUB_WORKSPACE}/OP_DIY"
-export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
-export LOCAL_Build="${HOME_PATH}/build"
-export COMMON_SH="${HOME_PATH}/build/common/common.sh"
-export BASE_PATH="${HOME_PATH}/package/base-files/files"
-export NETIP="${HOME_PATH}/package/base-files/files/etc/networkip"
-export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
-export FIN_PATH="${HOME_PATH}/package/base-files/files/etc/FinishIng.sh"
-export KEEPD="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
-export AMLOGIC_SH_PATH="${GITHUB_WORKSPACE}/openwrt/amlogic_openwrt"
-export CLEAR_PATH="${GITHUB_WORKSPACE}/openwrt/Clear"
-export Author="$(grep "syslog" "/etc/group"|awk 'NR==1' |cut -d "," -f2)"
-export REPO_TOKEN="REPO_TOKEN"
-export date1="$(date +'%m-%d')"
-export bendi_script="1"
-
 function print_ok() {
   echo
   echo -e " ${OK} ${Blue} $1 ${Font}"
@@ -90,6 +71,23 @@ judge() {
   fi
 }
 
+# 变量
+export Version="1.1"
+export OP_DIY="${GITHUB_WORKSPACE}/OP_DIY"
+export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
+export LOCAL_Build="${HOME_PATH}/build"
+export COMMON_SH="${HOME_PATH}/build/common/common.sh"
+export BASE_PATH="${HOME_PATH}/package/base-files/files"
+export NETIP="${HOME_PATH}/package/base-files/files/etc/networkip"
+export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
+export FIN_PATH="${HOME_PATH}/package/base-files/files/etc/FinishIng.sh"
+export KEEPD="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
+export AMLOGIC_SH_PATH="${GITHUB_WORKSPACE}/openwrt/amlogic_openwrt"
+export CLEAR_PATH="${GITHUB_WORKSPACE}/openwrt/Clear"
+export Author="$(grep "syslog" "/etc/group"|awk 'NR==1' |cut -d "," -f2)"
+export REPO_TOKEN="REPO_TOKEN"
+export date1="$(date +'%m-%d')"
+export bendi_script="1"
 export Ubname=`cat /etc/issue`
 export xtname="Ubuntu"
 export xtbit=`getconf LONG_BIT`
@@ -106,16 +104,6 @@ if [ ! "$Google_Check" == 301 ];then
   print_error "提醒：编译之前请自备梯子，编译全程都需要稳定梯子~~"
   exit 0
 fi
-if [[ "$(echo ${GITHUB_WORKSPACE} |grep -c 'openwrt')" -ge '1' ]]; then
-  print_error "请注意命令的执行路径,并非在openwrt文件夹内执行,如果您ubuntu或机器就叫openwrt的话,恭喜您,就是不给您用,改名吧少年!"
-  exit 0
-fi
-if [[ `ls -1 /mnt/* | grep -c "Windows"` -ge '1' ]] || [[ `ls -1 /mnt | grep -c "wsl"` -ge '1' ]]; then
-  export WSL_ubuntu="YES"
-  export PATH=$PATH:'/mnt/c/windows'
-else
-  export WSL_ubuntu="NO"
-fi
 
 
 function op_common_sh() {
@@ -130,7 +118,7 @@ function op_common_sh() {
   ECHORR "|                                           |"
   ECHOGG "|*******************************************|"
   echo
-  if [[ `sudo grep -c "NOPASSWD:ALL" /etc/sudoers` == '0' ]]; then
+  if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` == '0' ]]; then
     sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
   fi
   clear
@@ -140,6 +128,8 @@ function op_common_sh() {
     sudo sh -c 'echo ClientAliveInterval 30 >> /etc/ssh/sshd_config'
     sudo sh -c 'echo ClientAliveCountMax 6 >> /etc/ssh/sshd_config'
     sudo service ssh restart
+  else
+    
   fi
   curl -L https://raw.githubusercontent.com/281677160/common/main/common.sh > common.sh
   if [[ $? -ne 0 ]];then
