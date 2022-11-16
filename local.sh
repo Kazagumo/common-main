@@ -10,9 +10,9 @@ chmod +x ${GITHUB_ENV}
 
 if [[ ! -d "${GITHUB_WORKSPACE}/build" ]]; then
   svn export https://github.com/281677160/autobuild/trunk/build ${GITHUB_WORKSPACE}/build
-  svn export https://github.com/281677160/common-main ${GITHUB_WORKSPACE}/build/common
+  svn export https://github.com/281677160/common-main/trunk ${GITHUB_WORKSPACE}/build/common
 else
-  rm -rf ${GITHUB_WORKSPACE}/build/common && svn export https://github.com/281677160/common-main ${GITHUB_WORKSPACE}/build/common
+  rm -rf ${GITHUB_WORKSPACE}/build/common && svn export https://github.com/281677160/common-main/trunk ${GITHUB_WORKSPACE}/build/common
 fi
 
 FOLDER_NAME="Official"
