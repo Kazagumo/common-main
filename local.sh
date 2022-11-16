@@ -100,22 +100,6 @@ if [[ `sudo grep -c "NOPASSWD:ALL" /etc/sudoers` == '0' ]]; then
   sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
 fi
 
-function Bendi_Variable() {
-echo "读取变量"
-curl -L https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
-if [[ $? -ne 0 ]];then
-  wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/common.sh
-fi
-if [[ $? -eq 0 ]];then
-  sudo chmod +x common.sh
-  source common.sh && Diy_variable
-  sudo rm -rf common.sh
-else
-  ECHOR "common.sh下载失败，请检测网络后再用一键命令试试!"
-  exit 1
-fi
-source ${GITHUB_ENV}
-}
 
 function Bendi_Dependent() {
 source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_update
@@ -155,6 +139,23 @@ if [ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]; then
 else
   source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 fi
+}
+
+function Bendi_Variable() {
+echo "读取变量"
+curl -L https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
+if [[ $? -ne 0 ]];then
+  wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/common.sh
+fi
+if [[ $? -eq 0 ]];then
+  sudo chmod +x common.sh
+  source common.sh && Diy_variable
+  sudo rm -rf common.sh
+else
+  ECHOR "common.sh下载失败，请检测网络后再用一键命令试试!"
+  exit 1
+fi
+source ${GITHUB_ENV}
 }
 
 function Bendi_EveryInquiry() {
@@ -312,10 +313,10 @@ source ${BUILD_PATH}/common.sh && Diy_firmware
 
 function Bendi_menu() {
 FOLDER_NAME="Official"
-Bendi_Variable
-Bendi_DiySetup
-Bendi_EveryInquiry
 Bendi_Dependent
+Bendi_DiySetup
+Bendi_Variable
+Bendi_EveryInquiry
 Bendi_MainProgram
 Bendi_Download
 Bendi_UpdateSource
