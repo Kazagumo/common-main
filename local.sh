@@ -228,14 +228,14 @@ judge "源码微调"
 }
 
 function Bendi_UpdateSource() {
-ECHOGG "更新源和读取自定义文件"
+ECHOGG "读取自定义文件"
 cd ${HOME_PATH}
 source ${BUILD_PATH}/$DIY_PART_SH
 source ${BUILD_PATH}/common.sh && Diy_Publicarea
-judge "更新源和读取自定义文件"
-ECHOGG "更新源,files,语言,更新源"
+judge "读取自定义文件"
+ECHOGG "加载files,语言,更新源"
 source ${BUILD_PATH}/common.sh && Diy_menu4
-judge "更新源,files,语言,更新源"
+judge "加载files,语言,更新源"
 }
 
 function Bendi_Menuconfig() {
