@@ -357,6 +357,7 @@ fi
 }
 
 function Bendi_Arrangement() {
+ECHOGG "整理固件"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_firmware
