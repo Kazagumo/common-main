@@ -32,7 +32,7 @@ cd ${HOME_PATH}
 source build/${FOLDER_NAME}/common.sh && Diy_menu2
 source ${BUILD_PATH}/common.sh && Diy_menu3
 source $BUILD_PATH/$DIY_PART_SH
-source build/${{matrix.target}}/common.sh && Diy_Publicarea
+source build/${FOLDER_NAME}/common.sh && Diy_Publicarea
 source ${BUILD_PATH}/common.sh && Diy_menu4
 
 make menuconfig
