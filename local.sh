@@ -124,8 +124,8 @@ for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name "settings.ini"); do
   sed -i '/INFORMATION_NOTICE/d' "${X}"
   sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
   sed -i '/COMPILATION_INFORMATION/d' "${X}"
-  sed -i '/COLLECTED_PACKAGES/d' "${X}"
-  echo 'EVERY_INQUIRY="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
+  sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
+  echo 'MODIFY_CONFIGURATION="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
 done
 }
 
@@ -159,7 +159,7 @@ source ${GITHUB_ENV}
 }
 
 function Bendi_EveryInquiry() {
-if [[ "${EVERY_INQUIRY}" == "true" ]]; then
+if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   clear
   echo
   echo
