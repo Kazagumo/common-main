@@ -363,6 +363,20 @@ source ${BUILD_PATH}/common.sh && Diy_firmware
 judge
 }
 
+
+function Bendi_menu2() {
+FOLDER_NAME="Official"
+Bendi_Dependent
+Bendi_DiySetup
+Bendi_EveryInquiry
+Bendi_Variable
+source $BUILD_PATH/$DIY_PART_SH
+source ${BUILD_PATH}/common.sh && Diy_Publicarea
+source ${BUILD_PATH}/common.sh && Diy_menu4
+source ${BUILD_PATH}/common.sh && Diy_menu5
+source ${BUILD_PATH}/common.sh && Diy_firmware
+}
+
 function Bendi_menu() {
 FOLDER_NAME="Official"
 Bendi_Dependent
@@ -379,4 +393,4 @@ Bendi_DownloadDLFile
 Bendi_Compile
 Bendi_Arrangement
 }
-Bendi_menu "$@"
+Bendi_menu2 "$@"
