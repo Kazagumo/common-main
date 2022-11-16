@@ -229,8 +229,9 @@ judge
 
 function Bendi_UpdateSource() {
 ECHOGG "更新源和读取自定义文件"
-source $BUILD_PATH/$DIY_PART_SH
-source build/${FOLDER_NAME}/common.sh && Diy_Publicarea
+cd ${HOME_PATH}
+source ${$BUILD_PATH}/$DIY_PART_SH
+source ${$BUILD_PATH}/common.sh && Diy_Publicarea
 judge
 ECHOGG "files,语言,更新源"
 source ${BUILD_PATH}/common.sh && Diy_menu4
