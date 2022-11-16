@@ -187,6 +187,7 @@ fi
 function Bendi_MainProgram() {
 echo "下载编译文件"
 cd ${GITHUB_WORKSPACE}
+source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 rm -rf build && cp -Rf DIY-SETUP build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
 mv -f build/common/*.sh build/${FOLDER_NAME}/
