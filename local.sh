@@ -34,6 +34,9 @@ source ${BUILD_PATH}/common.sh && Diy_menu3
 source $BUILD_PATH/$DIY_PART_SH
 source build/${{matrix.target}}/common.sh && Diy_Publicarea
 source ${BUILD_PATH}/common.sh && Diy_menu4
+
+make menuconfig
+
 source ${BUILD_PATH}/common.sh && Diy_menu5
 source ${BUILD_PATH}/common.sh && Diy_xinxi
 
