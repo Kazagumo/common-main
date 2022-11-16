@@ -37,6 +37,7 @@ source ${BUILD_PATH}/common.sh && Diy_menu4
 
 make menuconfig
 
+cd ${HOME_PATH}
 source ${BUILD_PATH}/common.sh && Diy_menu5
 source ${BUILD_PATH}/common.sh && Diy_xinxi
 
