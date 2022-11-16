@@ -72,9 +72,9 @@ judge() {
 }
 
 # 变量
-export BENDI_VERSION="1.1"
-export GITHUB_WORKSPACE="$PWD"
-export GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
+BENDI_VERSION="1.1"
+GITHUB_WORKSPACE="$PWD"
+GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
 echo '#!/bin/bash' > ${GITHUB_ENV}
 chmod +x ${GITHUB_ENV}
 source /etc/os-release
@@ -102,7 +102,19 @@ fi
 
 
 function Bendi_Dependent() {
-source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_update
+echo "安装依赖"
+cd ${GITHUB_WORKSPACE}
+curl -L https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
+if [[ $? -ne 0 ]];then
+  wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/common.sh
+fi
+if [[ $? -eq 0 ]];then
+  sudo chmod +x common.sh
+  source common.sh && Diy_update
+else
+  ECHOR "common.sh下载失败，请检测网络后再用一键命令试试!"
+  exit 1
+fi
 }
 
 function Bendi_RefreshFile() {
@@ -143,19 +155,10 @@ fi
 
 function Bendi_Variable() {
 echo "读取变量"
-curl -L https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
-if [[ $? -ne 0 ]];then
-  wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/common.sh
-fi
-if [[ $? -eq 0 ]];then
-  sudo chmod +x common.sh
-  source common.sh && Diy_variable
-  sudo rm -rf common.sh
-else
-  ECHOR "common.sh下载失败，请检测网络后再用一键命令试试!"
-  exit 1
-fi
+cd ${GITHUB_WORKSPACE}
+source common.sh && Diy_variable
 source ${GITHUB_ENV}
+rm -rf common.sh
 }
 
 function Bendi_EveryInquiry() {
