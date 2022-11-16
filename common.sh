@@ -1149,7 +1149,7 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ -n
   if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
     sed -i "s/${patchverl}/${Kernel_Patchver}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
   else
-    echo "TIME r \"${TARGET_PROFILE}源码没发现[ ${Kernel_Patchver} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译\"" >> ${HOME_PATH}/CHONGTU
+    echo "TIME r \"${TARGET_PROFILE}机型源码没发现[ ${Kernel_Patchver} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
