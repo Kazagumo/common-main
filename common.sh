@@ -155,8 +155,11 @@ echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> ${GITHUB_ENV}
 echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
 echo "INFORMATION_NOTICE=${INFORMATION_NOTICE}" >> ${GITHUB_ENV}
 echo "CACHEWRTBUILD_SWITCH=${CACHEWRTBUILD_SWITCH}" >> ${GITHUB_ENV}
-echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
-echo "PACKAGING_FIRMWARE=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
+if [[ ${SOURCE_CODE} == "AMLOGIC" ]]; then
+  echo "PACKAGING_FIRMWARE=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
+else
+  echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+fi
 echo "COMPILATION_INFORMATION=${COMPILATION_INFORMATION}" >> ${GITHUB_ENV}
 echo "COLLECTED_PACKAGES=${COLLECTED_PACKAGES}" >> ${GITHUB_ENV}
 echo "WAREHOUSE_MAN=${GIT_REPOSITORY##*/}" >> ${GITHUB_ENV}
@@ -1300,17 +1303,7 @@ if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
 else
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}/" *
 fi
-
 sudo rm -rf "${CLEAR_PATH}"
-
-cd ${HOME_PATH}
-# 发布用的update_log.txt
-if [ "${UPLOAD_RELEASE}" == "true" ]; then
-  echo "#### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
-fi
-if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
-  echo "#### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/AutoUpdate_log.txt
-fi
 }
 
 
