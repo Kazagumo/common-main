@@ -854,7 +854,7 @@ if [[ "$(. ${FILES_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "
   echo "正在执行：把插件语言转换成zh_Hans"
   cd ${HOME_PATH}
   cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  chmod +x ${HOME_PATH}/zh_Hans.sh
+  sudo chmod +x ${HOME_PATH}/zh_Hans.sh
   /bin/bash ${HOME_PATH}/zh_Hans.sh
   rm -rf ${HOME_PATH}/zh_Hans.sh
 fi
@@ -1207,7 +1207,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '
     if [[ -f "${HOME_PATH}/clash-neihe/clash" ]]; then
       mkdir -p ${HOME_PATH}/files/etc/openclash/core
       mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
-      chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
+      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
       echo "OpenClash增加内核成功"
     else
       echo "OpenClash增加内核失败"
@@ -1233,7 +1233,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
     mkdir -p ${HOME_PATH}/files/usr/bin
     if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
       mv -f ${HOME_PATH}/AdGuardHome/AdGuardHome ${HOME_PATH}/files/usr/bin/
-      chmod 777 ${HOME_PATH}/files/usr/bin/AdGuardHome
+      sudo chmod +x ${HOME_PATH}/files/usr/bin/AdGuardHome
       echo "解压核心包成功,完成增加AdGuardHome核心工作"
     else
       echo "解压核心包失败,没能增加AdGuardHome核心"
