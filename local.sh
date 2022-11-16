@@ -288,16 +288,15 @@ if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
   read -t 30 -p " [如需重新编译请输入[ Y/y ]按回车，任意键则为继续编译](不作处理话,30后秒继续编译)： " Bendi_Error
   case ${Bendi_Error} in
   [Yy])
-     rm -rf ${HOME_PATH}/CHONGTU
      sleep 2
      exit 1
   ;;
   *)
-    rm -rf ${HOME_PATH}/CHONGTU
     ECHOG "继续编译中...！"
   ;;
   esac
 fi
+rm -rf ${HOME_PATH}/CHONGTU
 }
 
 function Bendi_DownloadDLFile() {
