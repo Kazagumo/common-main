@@ -311,7 +311,7 @@ fi
 
 function Bendi_Compile() {
 cd ${HOME_PATH}
-if [[ "$(nproc)" -ge "12" ]];then
+if [[ "$(nproc)" -le "12" ]];then
   echo "使用$(nproc)线程编译固件"
   make V=s -j$(nproc)
 else
