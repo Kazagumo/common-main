@@ -370,6 +370,7 @@ Bendi_Dependent
 Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
+Bendi_MainProgram
 source $BUILD_PATH/$DIY_PART_SH
 source ${BUILD_PATH}/common.sh && Diy_Publicarea
 source ${BUILD_PATH}/common.sh && Diy_menu4
