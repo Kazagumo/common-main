@@ -369,6 +369,8 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   find . -name 'luci-app-openclash' -o -name 'luci-app-ssr-plus' -o -name 'luci-app-passwall' -o -name 'luci-app-passwall2' | xargs -i rm -rf {}
   find . -name 'luci-app-cifs' -o -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
   find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
+else
+  find . -name 'luci-app-argon-config' -o -name 'luci-theme-argonv3' | xargs -i rm -rf {}
 fi
 # 给固件LUCI做个标记
 case "${REPO_BRANCH}" in
@@ -581,6 +583,9 @@ src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
 fi
 sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
+;;
+*)
+  echo "没有启用作者收集的插件源包"
 ;;
 esac
 }
