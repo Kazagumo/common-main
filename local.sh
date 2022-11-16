@@ -282,7 +282,7 @@ if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
   echo
   TIME b "		错误提示"
   echo
-  chmod +x ${HOME_PATH}/CHONGTU
+  sudo chmod +x ${HOME_PATH}/CHONGTU
   source ${HOME_PATH}/CHONGTU
   echo
   read -t 30 -p " [如需重新编译请输入[ Y/y ]按回车，任意键则为继续编译](不作处理话,30后秒继续编译)： " Bendi_Error
