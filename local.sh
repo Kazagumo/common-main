@@ -315,7 +315,7 @@ if [[ "$(nproc)" -le "12" ]];then
   echo "使用$(nproc)线程编译固件"
   make V=s -j$(nproc)
 else
-  echo "使用16线程编译固件"
+  echo "强制使用16线程编译固件"
   make V=s -j16
 fi
 }
