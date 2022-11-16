@@ -184,25 +184,20 @@ echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 
 function Diy_settings() {
 echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
-  [[ -d "${OP_DIY}" ]] && {
-    if [ -z "$(ls -A "${OP_DIY}/${FOLDER_NAME}/${CONFIG_FILE}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[${OP_DIY}/${FOLDER_NAME}]文件夹内补齐"
-      exit 1
-    fi
-    if [ -z "$(ls -A "${OP_DIY}/${FOLDER_NAME}/${DIY_PART_SH}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[${OP_DIY}/${FOLDER_NAME}]文件夹内补齐"
-      exit 1
-    fi
-  } || {
-    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${CONFIG_FILE}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
-      exit 1
-    fi
-    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${DIY_PART_SH}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
-      exit 1
-    fi
-  }
+if [[ -n "${BENDI_VERSION}" ]]; then
+  export GIT_BUILD=${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}
+else
+  export GIT_BUILD=${GITHUB_WORKSPACE}/build/${FOLDER_NAME}
+fi
+
+if [ -z "$(ls -A "${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
+  exit 1
+fi
+if [ -z "$(ls -A "${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
+  exit 1
+fi
 }
 
 
@@ -595,8 +590,9 @@ esac
 
 function Diy_files() {
 echo "正在执行：files大法，设置固件无烦恼"
-if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${FOLDER_NAME}/* ${BUILD_PATH}
+if [[ -n "${BENDI_VERSION}" ]]; then
+  cp -Rf ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/* ${BUILD_PATH}/
+  chmod -R x ${BUILD_PATH}
 fi
 
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
@@ -611,7 +607,7 @@ if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
   cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
 fi
 chmod -R 775 ${HOME_PATH}/files
-rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
+rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
 }
 
 
