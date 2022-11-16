@@ -219,14 +219,16 @@ source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_checkout
 mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 }
 
-function Bendi_UpdateSource() {
-ECHOGG "更新源和读取自定义文件"
+function Bendi_SourceClean() {
+ECHOGG "源码微调"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
-ECHOGG "源码微调"
 source ${BUILD_PATH}/common.sh && Diy_menu3
 judge
-ECHOGG "读取自定义$DIY_PART_SH文件"
+}
+
+function Bendi_UpdateSource() {
+ECHOGG "更新源和读取自定义文件"
 source $BUILD_PATH/$DIY_PART_SH
 source build/${FOLDER_NAME}/common.sh && Diy_Publicarea
 judge
@@ -371,11 +373,13 @@ Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
 Bendi_MainProgram
-source $BUILD_PATH/$DIY_PART_SH
-source ${BUILD_PATH}/common.sh && Diy_Publicarea
-source ${BUILD_PATH}/common.sh && Diy_menu4
-source ${BUILD_PATH}/common.sh && Diy_menu5
-source ${BUILD_PATH}/common.sh && Diy_firmware
+Bendi_UpdateSource
+Bendi_Menuconfig
+Bendi_Configuration
+Bendi_ErrorMessage
+Bendi_DownloadDLFile
+Bendi_Compile
+Bendi_Arrangement
 }
 
 function Bendi_menu() {
@@ -386,6 +390,7 @@ Bendi_EveryInquiry
 Bendi_Variable
 Bendi_MainProgram
 Bendi_Download
+Bendi_SourceClean
 Bendi_UpdateSource
 Bendi_Menuconfig
 Bendi_Configuration
