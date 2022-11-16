@@ -62,7 +62,6 @@ judge() {
     echo
     print_ok "$1 完成"
     echo
-    sleep 1
   else
     echo
     print_error "$1 失败"
@@ -119,6 +118,7 @@ fi
 
 function Bendi_RefreshFile() {
 cd ${GITHUB_WORKSPACE}
+echo "将云编译的配置文件修改成本地适用文件"
 rm -rf ${GITHUB_WORKSPACE}/DIY-SETUP/*/start-up
 for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name ".config" |sed 's/\/.config//g'); do 
   mv "${X}/.config" "${X}/config"
@@ -146,7 +146,9 @@ cd ${GITHUB_WORKSPACE}
 if [ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]; then
   ECHOR "缺少DIY-SETUP自定义配置文件,正在下载中..."
   rm -rf DIY-SETUP && svn export https://github.com/281677160/autobuild/trunk/build DIY-SETUP
+  judge
   Bendi_RefreshFile
+  judge
   source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
   source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
@@ -180,6 +182,7 @@ function Bendi_Variable() {
 echo "读取变量"
 cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
+judge
 source ${GITHUB_ENV}
 rm -rf common.sh
 }
@@ -190,6 +193,7 @@ cd ${GITHUB_WORKSPACE}
 source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 rm -rf build && cp -Rf DIY-SETUP build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
+judge
 mv -f build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
 }
@@ -198,6 +202,7 @@ function Bendi_Download() {
 echo "下载${SOURCE_CODE}-${REPO_BRANCH}源码中,请稍后..."
 rm -rf ${HOME_PATH}
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
+judge
 source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_checkout
 mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 }
@@ -206,10 +211,16 @@ function Bendi_UpdateSource() {
 echo "正在更新源和读取自定义文件,请稍后"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
+echo "源码微调"
 source ${BUILD_PATH}/common.sh && Diy_menu3
+judge
+echo "读取自定义$DIY_PART_SH文件"
 source $BUILD_PATH/$DIY_PART_SH
 source build/${FOLDER_NAME}/common.sh && Diy_Publicarea
+judge
+echo "files,语言,更新源..."
 source ${BUILD_PATH}/common.sh && Diy_menu4
+judge
 }
 
 function Bendi_Menuconfig() {
@@ -246,6 +257,7 @@ echo "检测配置,生成配置"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu5
+judge
 }
 
 function Bendi_ErrorMessage() {
@@ -318,12 +330,24 @@ else
   echo "强制使用16线程编译固件"
   make V=s -j16
 fi
+
+if [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immortalwrt"` -ge '1' ]]; then
+  rename -v "s/^immortalwrt/openwrt/" ${FIRMWARE_PATH}/*
+fi
+
+if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
+  print_error "编译失败~~!"
+  exit 1
+else
+  print_ok "编译成功"
+fi
 }
 
 function Bendi_Arrangement() {
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_firmware
+judge
 }
 
 function Bendi_menu() {
