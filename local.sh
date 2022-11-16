@@ -1,12 +1,128 @@
 #!/bin/bash
 
+#====================================================
+#	System Request:Ubuntu 18.04+/20.04+
+#	Author:	281677160
+#	Dscription: openwrt onekey Management
+#	github: https://github.com/281677160
+#====================================================
+
+# 字体颜色配置
+Green="\033[32m"
+Red="\033[31m"
+Yellow="\033[33m"
+Blue="\033[36m"
+Font="\033[0m"
+GreenBG="\033[42;37m"
+RedBG="\033[41;37m"
+OK="${Green}[OK]${Font}"
+ERROR="${Red}[ERROR]${Font}"
+
+function print_ok() {
+  echo
+  echo -e " ${OK} ${Blue} $1 ${Font}"
+  echo
+}
+function print_error() {
+  echo
+  echo -e "${ERROR} ${RedBG} $1 ${Font}"
+  echo
+}
+function ECHOY() {
+  echo
+  echo -e "${Yellow} $1 ${Font}"
+  echo
+}
+function ECHOG() {
+  echo
+  echo -e "${Green} $1 ${Font}"
+  echo
+}
+function ECHOB() {
+  echo
+  echo -e "${Blue} $1 ${Font}"
+  echo
+}
+  function ECHOR() {
+  echo
+  echo -e "${Red} $1 ${Font}"
+  echo
+}
+function ECHOYY() {
+  echo -e "${Yellow} $1 ${Font}"
+}
+function ECHOGG() {
+  echo -e "${Green} $1 ${Font}"
+}
+  function ECHORR() {
+  echo -e "${Red} $1 ${Font}"
+}
+judge() {
+  if [[ 0 -eq $? ]]; then
+    echo
+    print_ok "$1 完成"
+    echo
+    sleep 1
+  else
+    echo
+    print_error "$1 失败"
+    echo
+    exit 1
+  fi
+}
+
+# 变量
+BENDI_VERSION="1.1"
 GITHUB_WORKSPACE="$PWD"
 GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
-
 echo '#!/bin/bash' > ${GITHUB_ENV}
 chmod +x ${GITHUB_ENV}
+source /etc/os-release
+case "${UBUNTU_CODENAME}" in
+"bionic"|"focal"|"jammy")
+  echo "${PRETTY_NAME}"
+;;
+*)
+  print_error "请使用Ubuntu 64位系统，推荐 Ubuntu 20.04 LTS 或 Ubuntu 22.04 LTS"
+exit 1
+;;
+esac
+if [[ "$USER" == "root" ]]; then
+  print_error "警告：请勿使用root用户编译，换一个普通用户吧~~"
+  exit 1
+fi
+Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
+if [ ! "$Google_Check" == 301 ];then
+  print_error "提醒：编译之前请自备梯子，编译全程都需要稳定翻墙的梯子~~"
+  exit 0
+fi
+if [[ `sudo grep -c "NOPASSWD:ALL" /etc/sudoers` == '0' ]]; then
+  sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
+fi
+
 
 FOLDER_NAME="Official"
+
+function Bendi_Variable() {
+echo "读取变量"
+curl -L https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
+if [[ $? -ne 0 ]];then
+  wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/common.sh
+fi
+if [[ $? -eq 0 ]];then
+  sudo chmod +x common.sh
+  source common.sh && Diy_variable
+  sudo rm -rf common.sh
+else
+  ECHOR "common.sh下载失败，请检测网络后再用一键命令试试!"
+  exit 1
+fi
+source ${GITHUB_ENV}
+}
+
+function Bendi_Dependent() {
+source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_update
+}
 
 function Bendi_MainProgram() {
 echo "下载编译文件"
@@ -15,13 +131,6 @@ svn export https://github.com/281677160/autobuild/trunk/build ${GITHUB_WORKSPACE
 git clone -b main --depth 1 https://github.com/281677160/common-main ${GITHUB_WORKSPACE}/build/common
 mv -f build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
-}
-
-function Bendi_Variable() {
-echo "读取变量"
-source build/${FOLDER_NAME}/common.sh && Diy_menu1
-source ${GITHUB_ENV}
-source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_update
 }
 
 function Bendi_Download() {
@@ -68,6 +177,7 @@ if [[ "${Menuconfig}" == "true" ]]; then
     done
   fi
 fi
+}
 
 function Bendi_Configuration() {
 echo "确认固件配置"
