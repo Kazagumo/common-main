@@ -195,7 +195,7 @@ sudo chmod -R +x build
 }
 
 function Bendi_Download() {
-echo "下载源码中,请稍后"
+echo "下载${SOURCE_CODE}-${REPO_BRANCH}源码中,请稍后..."
 rm -rf ${HOME_PATH}
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
 source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_checkout
@@ -242,7 +242,7 @@ fi
 }
 
 function Bendi_Configuration() {
-echo "确认固件配置"
+echo "检测配置,生成配置"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu5
@@ -274,7 +274,8 @@ fi
 }
 
 function Bendi_DownloadDLFile() {
-ECHOG "下载DL文件，请耐心等候..."
+echo
+echo "下载DL文件，请耐心等候..."
 cd ${HOME_PATH}
 make defconfig
 make -j8 download |tee ${HOME_PATH}/build.log
@@ -310,7 +311,13 @@ fi
 
 function Bendi_Compile() {
 cd ${HOME_PATH}
-make V=s -j$(nproc)
+if [[ "$(nproc)" -ge "12" ]];then
+  echo "使用$(nproc)线程编译固件"
+  make V=s -j$(nproc)
+else
+  echo "使用16线程编译固件"
+  make V=s -j16
+fi
 }
 
 function Bendi_Arrangement() {
