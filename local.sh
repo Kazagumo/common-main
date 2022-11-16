@@ -183,10 +183,12 @@ fi
 
 function Bendi_MainProgram() {
 echo "下载编译文件"
-rm -rf ${GITHUB_WORKSPACE}/build
-svn export https://github.com/281677160/autobuild/trunk/build ${GITHUB_WORKSPACE}/build
-cp -Rf ${GITHUB_WORKSPACE}/DIY-SETUP/* ${GITHUB_WORKSPACE}/build/
-git clone -b main --depth 1 https://github.com/281677160/common-main ${GITHUB_WORKSPACE}/build/common
+cd ${GITHUB_WORKSPACE}
+rm -rf autobuild
+git clone -b main --depth 1 https://github.com/281677160/autobuild
+mv autobuild/build ${GITHUB_WORKSPACE}/build
+cp -Rf DIY-SETUP/* build/
+git clone -b main --depth 1 https://github.com/281677160/common-main build/common
 mv -f build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
 }
