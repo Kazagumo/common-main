@@ -323,6 +323,7 @@ fi
 
 function Bendi_Compile() {
 cd ${HOME_PATH}
+source ${GITHUB_ENV}
 if [[ "$(nproc)" -le "12" ]];then
   echo "使用$(nproc)线程编译固件"
   make V=s -j$(nproc)
