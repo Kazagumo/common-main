@@ -72,7 +72,7 @@ BENDI_VERSION="1.1"
 GITHUB_WORKSPACE="$PWD"
 GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
 echo '#!/bin/bash' > ${GITHUB_ENV}
-chmod +x ${GITHUB_ENV}
+sudo chmod +x ${GITHUB_ENV}
 source /etc/os-release
 case "${UBUNTU_CODENAME}" in
 "bionic"|"focal"|"jammy")
