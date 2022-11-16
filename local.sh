@@ -305,7 +305,6 @@ make -j8 download |tee ${HOME_PATH}/build.log
 find dl -size -1024c -exec ls -l {} \;
 find dl -size -1024c -exec rm -f {} \;
 if [[ `grep -c "make with -j1 V=s or V=sc" ${HOME_PATH}/build.log` -eq '0' ]] || [[ `grep -c "ERROR" ${HOME_PATH}/build.log` -eq '0' ]]; then
-  rm -rf ${HOME_PATH}/build.log
   print_ok "DL文件下载成功"
 else
   clear
@@ -338,10 +337,10 @@ cd ${HOME_PATH}
 source ${GITHUB_ENV}
 if [[ "$(nproc)" -le "12" ]];then
   ECHOGG "使用$(nproc)线程编译固件"
-  make V=s -j$(nproc)
+  make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
 else
   ECHOGG "强制使用16线程编译固件"
-  make V=s -j16
+  make V=s -j16 |tee ${HOME_PATH}/build.log
 fi
 
 if [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immortalwrt"` -ge '1' ]]; then
