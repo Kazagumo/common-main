@@ -93,7 +93,7 @@ XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
   export SOURCE_OWNER="ptpt52"
-  export PACKAGE_BRANCH="official"
+  export PACKAGE_BRANCH="official-master"
   export LUCI_EDITION="${REPO_BRANCH}"
   if [[ "${REPO_BRANCH}" == "21.02" ]]; then
     export DIY_WORK="${FOLDER_NAME}2102"
@@ -108,15 +108,18 @@ OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
   export SOURCE_OWNER="openwrt"
-  export PACKAGE_BRANCH="official"
   export LUCI_EDITION="${REPO_BRANCH}"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
+    export PACKAGE_BRANCH="official-master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+    export PACKAGE_BRANCH="official-19.07"
     export DIY_WORK="${FOLDER_NAME}1907"
   elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+    export PACKAGE_BRANCH="official-master"
     export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
+    export PACKAGE_BRANCH="official-master"
     export DIY_WORK="${FOLDER_NAME}2203"
   else
     export DIY_WORK="${FOLDER_NAME}${REPO_BRANCH}"
