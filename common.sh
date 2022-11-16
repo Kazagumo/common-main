@@ -592,7 +592,7 @@ function Diy_files() {
 echo "正在执行：files大法，设置固件无烦恼"
 if [[ -n "${BENDI_VERSION}" ]]; then
   cp -Rf ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/* ${BUILD_PATH}/
-  chmod -R +x ${BUILD_PATH}
+  sudo chmod -R +x ${BUILD_PATH}
 fi
 
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
@@ -606,7 +606,7 @@ fi
 if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
   cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
 fi
-chmod -R 775 ${HOME_PATH}/files
+sudo chmod -R 775 ${HOME_PATH}/files
 rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
 }
 
