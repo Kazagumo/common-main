@@ -205,13 +205,13 @@ echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
 
 function Diy_update() {
 if [[ ! ${bendi_script} == "1" ]]; then
-  export INS="sudo -E apt -qq"
+  export INS="sudo -E apt-get -qq"
 else
-  export INS="sudo apt"
+  export INS="sudo apt-get"
 fi
 ${INS} update -y
 ${INS} full-upgrade -y
-sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
+${INS} -y install build-essential asciidoc binutils bzip2 curl gawk gettext git libncurses5-dev libz-dev patch python3.5 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf
 ${INS} install -y rename
 ${INS} autoremove -y --purge
 ${INS} clean
