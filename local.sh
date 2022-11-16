@@ -22,8 +22,11 @@ source ${GITHUB_ENV}
 
 source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_update
 
-git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+rm -rf ${HOME_PATH}
+git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
 source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_checkout
+
+mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 
 cd ${HOME_PATH}
 source build/${FOLDER_NAME}/common.sh && Diy_menu2
