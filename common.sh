@@ -284,8 +284,13 @@ EOF
 
 
 function Diy_clean() {
-./scripts/feeds clean
-./scripts/feeds update -a > /dev/null 2>&1
+if [[ -n "${BENDI_VERSION}" ]]; then
+  ./scripts/feeds clean
+  ./scripts/feeds update -a
+else
+  ./scripts/feeds clean
+  ./scripts/feeds update -a > /dev/null 2>&1
+fi
 }
 
 
