@@ -211,7 +211,7 @@ echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
 
 function Diy_update() {
 sudo -E apt-get -y -qq update
-sudo -E apt-get -y -qq install $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
+sudo -E apt-get -y -qq install $(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/ubuntu.sh)
 sudo -E apt-get -y -qq install rename
 sudo -E apt-get -y -qq autoremove --purge
 sudo -E apt-get -y -qq clean
