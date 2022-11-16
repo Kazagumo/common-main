@@ -143,7 +143,6 @@ for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name "settings.ini"); do
   sed -i '/COLLECTED_PACKAGES/d' "${X}"
   echo 'EVERY_INQUIRY="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
 done
-fi
 }
 
 function Bendi_DiySetup() {
