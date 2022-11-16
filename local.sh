@@ -194,7 +194,7 @@ function Bendi_Variable() {
 ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
-judge
+judge "变量读取"
 source ${GITHUB_ENV}
 rm -rf common.sh
 }
@@ -205,7 +205,7 @@ cd ${GITHUB_WORKSPACE}
 source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 rm -rf build && cp -Rf DIY-SETUP build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
-judge
+judge "扩展文件下载"
 mv -f build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
 }
@@ -214,7 +214,7 @@ function Bendi_Download() {
 ECHOGG "下载${SOURCE_CODE}-${REPO_BRANCH}源码"
 rm -rf ${HOME_PATH}
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
-judge
+judge "源码下载"
 source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_checkout
 mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 }
@@ -224,7 +224,7 @@ ECHOGG "源码微调"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu3
-judge
+judge "源码微调"
 }
 
 function Bendi_UpdateSource() {
@@ -235,7 +235,7 @@ source ${$BUILD_PATH}/common.sh && Diy_Publicarea
 judge
 ECHOGG "files,语言,更新源"
 source ${BUILD_PATH}/common.sh && Diy_menu4
-judge
+judge "更新源和读取自定义文件"
 }
 
 function Bendi_Menuconfig() {
@@ -272,7 +272,7 @@ ECHOGG "检测配置,生成配置"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu5
-judge
+judge "检测配置,生成配置"
 }
 
 function Bendi_ErrorMessage() {
@@ -363,7 +363,7 @@ ECHOGG "整理固件"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_firmware
-judge
+judge "整理固件"
 }
 
 
