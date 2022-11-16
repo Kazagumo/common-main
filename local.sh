@@ -100,9 +100,6 @@ if [[ `sudo grep -c "NOPASSWD:ALL" /etc/sudoers` == '0' ]]; then
   sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
 fi
 
-
-FOLDER_NAME="Official"
-
 function Bendi_Variable() {
 echo "读取变量"
 curl -L https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
@@ -124,10 +121,71 @@ function Bendi_Dependent() {
 source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_update
 }
 
+function Bendi_RefreshFile() {
+cd ${GITHUB_WORKSPACE}
+rm -rf ${GITHUB_WORKSPACE}/DIY-SETUP/*/start-up
+for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name ".config" |sed 's/\/.config//g'); do 
+  mv "${X}/.config" "${X}/config"
+  mkdir -p "${X}/version"
+  echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/version/bendi_version"
+  echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/version/README.md"
+done
+for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name "settings.ini"); do
+  sed -i 's/.config/config/g' "${X}"
+  sed -i '/SSH_ACTIONS/d' "${X}"
+  sed -i '/UPLOAD_CONFIG/d' "${X}"
+  sed -i '/UPLOAD_FIRMWARE/d' "${X}"
+  sed -i '/UPLOAD_WETRANSFER/d' "${X}"
+  sed -i '/UPLOAD_RELEASE/d' "${X}"
+  sed -i '/INFORMATION_NOTICE/d' "${X}"
+  sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
+  sed -i '/COMPILATION_INFORMATION/d' "${X}"
+  sed -i '/COLLECTED_PACKAGES/d' "${X}"
+  echo 'EVERY_INQUIRY="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
+done
+fi
+}
+
+function Bendi_DiySetup() {
+cd ${GITHUB_WORKSPACE}
+if [ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]; then
+  ECHOR "缺少DIY-SETUP自定义配置文件,正在下载中..."
+  rm -rf DIY-SETUP && svn export https://github.com/281677160/autobuild/trunk/build DIY-SETUP
+  Bendi_RefreshFile
+  source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
+else
+  source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
+fi
+}
+
+function Bendi_EveryInquiry() {
+if [[ "${EVERY_INQUIRY}" == "true" ]]; then
+  clear
+  echo
+  echo
+  ECHOYY "请在 DIY-SETUP/${FOLDER_NAME} 里面设置好自定义文件"
+  ECHOY "设置完毕后，按[W/w]回车继续编译"
+  ZDYSZ="请输入您的选择"
+  while :; do
+  read -p " ${ZDYSZ}： " ZDYSZU
+  case $ZDYSZU in
+  [Ww])
+    echo
+  break
+  ;;
+  *)
+    ZDYSZ="提醒：确认设置完毕后，请按[W/w]回车继续编译"
+  ;;
+  esac
+  done
+fi
+}
+
 function Bendi_MainProgram() {
 echo "下载编译文件"
 rm -rf ${GITHUB_WORKSPACE}/build
 svn export https://github.com/281677160/autobuild/trunk/build ${GITHUB_WORKSPACE}/build
+cp -Rf ${GITHUB_WORKSPACE}/DIY-SETUP/* ${GITHUB_WORKSPACE}/build/
 git clone -b main --depth 1 https://github.com/281677160/common-main ${GITHUB_WORKSPACE}/build/common
 mv -f build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
@@ -253,4 +311,20 @@ cd ${HOME_PATH}
 source ${BUILD_PATH}/common.sh && Diy_firmware
 }
 
-
+function Bendi_menu() {
+FOLDER_NAME="Official"
+Bendi_Variable
+Bendi_DiySetup
+Bendi_EveryInquiry
+Bendi_Dependent
+Bendi_MainProgram
+Bendi_Download
+Bendi_UpdateSource
+Bendi_Menuconfig
+Bendi_Configuration
+Bendi_ErrorMessage
+Bendi_DownloadDLFile
+Bendi_Compile
+Bendi_Arrangement
+}
+Bendi_menu "$@"
