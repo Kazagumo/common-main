@@ -113,7 +113,7 @@ OFFICIAL)
     export PACKAGE_BRANCH="official-19.07"
     export DIY_WORK="${FOLDER_NAME}1907"
   elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-    export PACKAGE_BRANCH="official-master"
+    export PACKAGE_BRANCH="official-19.07"
     export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
     export PACKAGE_BRANCH="official-master"
