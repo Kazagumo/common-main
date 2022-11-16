@@ -233,15 +233,15 @@ if [[ "${Menuconfig}" == "true" ]]; then
     ECHOG "请调整SSH工具窗口分辨率后按[Y/y]继续,或者按[N/n]退出编译"
     XUANMA="请输入您的选择"
     while :; do
-    read -p " ${XUANMA}：" Make
-    case $Make in
+    read -p " ${XUANMA}：" Bendi_Menu
+    case ${Bendi_Menu} in
     [Yy])
-	    op_menuconfig
-	  break
+      Bendi_Menuconfig
+    break
     ;;
     [Nn])
-	    exit 1
-	  break
+      exit 1
+    break
     ;;
     *)
       XUANMA="输入错误,请输入[Y/n]"
@@ -265,13 +265,13 @@ cd ${HOME_PATH}
 source ${GITHUB_ENV}
 if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
   echo
-  TIME b "			错误信息"
+  TIME b "		错误提示"
   echo
-  chmod -R +x ${HOME_PATH}/CHONGTU
+  chmod +x ${HOME_PATH}/CHONGTU
   source ${HOME_PATH}/CHONGTU
   echo
-  read -t 30 -p " [如需重新编译请按输入[ Y/y ]回车确认，直接回车则为否](不作处理话,30秒自动跳过)： " CTCL
-  case $CTCL in
+  read -t 30 -p " [如需重新编译请按输入[ Y/y ]回车确认，任意键则为否](不作处理话,30秒自动跳过)： " Bendi_Error
+  case ${Bendi_Error} in
   [Yy])
      rm -rf ${HOME_PATH}/CHONGTU
      sleep 2
@@ -294,6 +294,7 @@ make -j8 download |tee ${HOME_PATH}/build.log
 find dl -size -1024c -exec ls -l {} \;
 find dl -size -1024c -exec rm -f {} \;
 if [[ `grep -c "make with -j1 V=s or V=sc" ${HOME_PATH}/build.log` -eq '0' ]] || [[ `grep -c "ERROR" ${HOME_PATH}/build.log` -eq '0' ]]; then
+  rm -rf ${HOME_PATH}/build.log
   print_ok "DL文件下载成功"
 else
   clear
@@ -301,23 +302,23 @@ else
   print_error "下载DL失败，更换节点后再尝试下载？"
   QLMEUN="请更换节点后按[Y/y]回车继续尝试下载DL，或输入[N/n]回车,退出编译"
   while :; do
-    read -p " [${QLMEUN}]： " XZDLE
-    case $XZDLE in
+    read -p " [${QLMEUN}]： " Bendi_DownloadDL
+    case ${Bendi_DownloadDL} in
   [Yy])
-    op_download
+    Bendi_DownloadDLFile
   break
   ;;
   [Nn])
     ECHOR "退出编译程序!"
     sleep 1
     exit 1
-   break
-   ;;
-   *)
-     QLMEUN="请更换节点后按[Y/y]回车继续尝试下载DL，或现在输入[N/n]回车,退出编译"
-   ;;
-   esac
-   done
+  break
+  ;;
+  *)
+    QLMEUN="请更换节点后按[Y/y]回车继续尝试下载DL，或现在输入[N/n]回车,退出编译"
+  ;;
+  esac
+  done
 fi
 }
 
