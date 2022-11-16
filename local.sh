@@ -19,7 +19,6 @@ OK="${Green}[OK]${Font}"
 ERROR="${Red}[ERROR]${Font}"
 
 function print_ok() {
-  echo
   echo -e " ${OK} ${Blue} $1 ${Font}"
   echo
 }
@@ -59,11 +58,9 @@ function ECHOGG() {
 }
 judge() {
   if [[ 0 -eq $? ]]; then
-    echo
     print_ok "$1 完成"
     echo
   else
-    echo
     print_error "$1 失败"
     echo
     exit 1
@@ -101,7 +98,7 @@ fi
 
 
 function Bendi_Dependent() {
-echo "安装依赖"
+ECHOGG "下载common.sh运行文件"
 cd ${GITHUB_WORKSPACE}
 curl -L https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
 if [[ $? -ne 0 ]];then
@@ -109,16 +106,18 @@ if [[ $? -ne 0 ]];then
 fi
 if [[ $? -eq 0 ]];then
   sudo chmod +x common.sh
+  ECHOGG "安装依赖"
   source common.sh && Diy_update
+  judge
 else
-  ECHOR "common.sh下载失败，请检测网络后再用一键命令试试!"
+  print_error "common.sh下载失败，请检测网络后再用一键命令试试!"
   exit 1
 fi
 }
 
 function Bendi_RefreshFile() {
 cd ${GITHUB_WORKSPACE}
-echo "将云编译的配置文件修改成本地适用文件"
+ECHOGG "将云编译的配置文件修改成本地适用文件"
 rm -rf ${GITHUB_WORKSPACE}/DIY-SETUP/*/start-up
 for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name ".config" |sed 's/\/.config//g'); do 
   mv "${X}/.config" "${X}/config"
@@ -144,7 +143,7 @@ done
 function Bendi_DiySetup() {
 cd ${GITHUB_WORKSPACE}
 if [ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]; then
-  ECHOR "缺少DIY-SETUP自定义配置文件,正在下载中..."
+  ECHOR "下载DIY-SETUP自定义配置文件"
   rm -rf DIY-SETUP && svn export https://github.com/281677160/autobuild/trunk/build DIY-SETUP
   judge
   Bendi_RefreshFile
@@ -176,10 +175,23 @@ if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   esac
   done
 fi
+
+ECHOGG "是否需要选择机型和增删插件?"
+read -t 30 -p " [输入[ Y/y ]回车确认，直接回车则为否](不作处理,30秒自动跳过)： " Bendi_Diy
+case ${Bendi_Diy} in
+[Yy])
+  Menuconfig_Config="true"
+  ECHOYY "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
+;;
+*)
+  Menuconfig_Config="false"
+  ECHORR "您已关闭选择机型和增删插件设置！"
+;;
+esac
 }
 
 function Bendi_Variable() {
-echo "读取变量"
+ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
 judge
@@ -188,7 +200,7 @@ rm -rf common.sh
 }
 
 function Bendi_MainProgram() {
-echo "下载编译文件"
+ECHOGG "下载扩展文件"
 cd ${GITHUB_WORKSPACE}
 source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 rm -rf build && cp -Rf DIY-SETUP build
@@ -199,7 +211,7 @@ sudo chmod -R +x build
 }
 
 function Bendi_Download() {
-echo "下载${SOURCE_CODE}-${REPO_BRANCH}源码中,请稍后..."
+ECHOGG "下载${SOURCE_CODE}-${REPO_BRANCH}源码"
 rm -rf ${HOME_PATH}
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
 judge
@@ -208,25 +220,25 @@ mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 }
 
 function Bendi_UpdateSource() {
-echo "正在更新源和读取自定义文件,请稍后"
+ECHOGG "更新源和读取自定义文件"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
-echo "源码微调"
+ECHOGG "源码微调"
 source ${BUILD_PATH}/common.sh && Diy_menu3
 judge
-echo "读取自定义$DIY_PART_SH文件"
+ECHOGG "读取自定义$DIY_PART_SH文件"
 source $BUILD_PATH/$DIY_PART_SH
 source build/${FOLDER_NAME}/common.sh && Diy_Publicarea
 judge
-echo "files,语言,更新源..."
+ECHOGG "files,语言,更新源"
 source ${BUILD_PATH}/common.sh && Diy_menu4
 judge
 }
 
 function Bendi_Menuconfig() {
 cd ${HOME_PATH}
-if [[ "${Menuconfig}" == "true" ]]; then
-  echo "配置机型，插件等..."
+if [[ "${Menuconfig_Config}" == "true" ]]; then
+  ECHOGG "配置机型，插件等..."
   make menuconfig
   if [[ $? -ne 0 ]]; then
     ECHOY "SSH工具窗口分辨率太小，无法弹出设置机型或插件的窗口"
@@ -253,7 +265,7 @@ fi
 }
 
 function Bendi_Configuration() {
-echo "检测配置,生成配置"
+ECHOGG "检测配置,生成配置"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu5
@@ -270,7 +282,7 @@ if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
   chmod +x ${HOME_PATH}/CHONGTU
   source ${HOME_PATH}/CHONGTU
   echo
-  read -t 30 -p " [如需重新编译请按输入[ Y/y ]回车确认，任意键则为否](不作处理话,30秒自动跳过)： " Bendi_Error
+  read -t 30 -p " [如需重新编译请输入[ Y/y ]按回车，任意键则为继续编译](不作处理话,30后秒继续编译)： " Bendi_Error
   case ${Bendi_Error} in
   [Yy])
      rm -rf ${HOME_PATH}/CHONGTU
@@ -286,8 +298,7 @@ fi
 }
 
 function Bendi_DownloadDLFile() {
-echo
-echo "下载DL文件，请耐心等候..."
+ECHOGG "下载DL文件，请耐心等候..."
 cd ${HOME_PATH}
 make defconfig
 make -j8 download |tee ${HOME_PATH}/build.log
@@ -326,10 +337,10 @@ function Bendi_Compile() {
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 if [[ "$(nproc)" -le "12" ]];then
-  echo "使用$(nproc)线程编译固件"
+  ECHOGG "使用$(nproc)线程编译固件"
   make V=s -j$(nproc)
 else
-  echo "强制使用16线程编译固件"
+  ECHOGG "强制使用16线程编译固件"
   make V=s -j16
 fi
 
