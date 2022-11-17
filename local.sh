@@ -417,6 +417,24 @@ source ${BUILD_PATH}/common.sh && Diy_firmware
 judge "整理固件"
 }
 
+function Bendi_Change() {
+if [[ ! "${REPO_BRANCH2}" == "${REPO_BRANCH}" ]]; then
+ECHOR "编译分支发生改变,需要重新下载源码,下载源码中..."
+sleep 5
+Bendi_Download
+elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
+ECHOR "您的自定义出现更改不需要作者收集的插件包,正在清理插件中..."
+sleep 5
+./scripts/feeds clean
+./scripts/feeds update -a
+fi
+}
+
+function Bendi_Restore() {
+rm -rf ${HOME_PATH}/build
+mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
+sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
+}
 
 function Bendi_menu2() {
 FOLDER_NAME="${FOLDER_NAME2}"
@@ -425,18 +443,9 @@ Bendi_Dependent
 Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
-if [[ ! "${REPO_BRANCH2}" == "${REPO_BRANCH}" ]]; then
-  ECHOR "编译分支发生改变,需要重新下载源码,下载源码中..."
-  Bendi_Download
-elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
-  ECHOR "您的自定义出现更改不需要作者收集的插件包,正在清理插件中..."
-  ./scripts/feeds clean
-  ./scripts/feeds update -a
-fi
+Bendi_Change
 Bendi_MainProgram
-rm -rf ${HOME_PATH}/build
-mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
-sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
+Bendi_Restore
 Bendi_UpdateSource
 Bendi_Menuconfig
 Bendi_Configuration
