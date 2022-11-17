@@ -545,44 +545,6 @@ mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
 
-function Bendi_menu2() {
-FOLDER_NAME="${FOLDER_NAME2}"
-Bendi_WslPath
-Bendi_Dependent
-Bendi_DiySetup
-Bendi_EveryInquiry
-Bendi_Variable
-Bendi_Change
-Bendi_MainProgram
-Bendi_Restore
-Bendi_UpdateSource
-Bendi_Menuconfig
-Bendi_Configuration
-Bendi_ErrorMessage
-Bendi_DownloadDLFile
-Bendi_Compile
-Bendi_Arrangement
-}
-
-function Bendi_menu() {
-FOLDER_NAME="${FOLDER_NAME3}"
-Bendi_WslPath
-Bendi_Dependent
-Bendi_DiySetup
-Bendi_EveryInquiry
-Bendi_Variable
-Bendi_MainProgram
-Bendi_Download
-Bendi_SourceClean
-Bendi_UpdateSource
-Bendi_Menuconfig
-Bendi_Configuration
-Bendi_ErrorMessage
-Bendi_DownloadDLFile
-Bendi_Compile
-Bendi_Arrangement
-}
-
 function Bendi_xuanzhe() {
   cd ${GITHUB_WORKSPACE}
   if [[ ! -d "DIY-SETUP" ]]; then
@@ -643,6 +605,43 @@ function Bendi_xuanzhe() {
   done
 }
 
+function Bendi_menu2() {
+FOLDER_NAME="${FOLDER_NAME2}"
+Bendi_WslPath
+Bendi_Dependent
+Bendi_DiySetup
+Bendi_EveryInquiry
+Bendi_Variable
+Bendi_Change
+Bendi_MainProgram
+Bendi_Restore
+Bendi_UpdateSource
+Bendi_Menuconfig
+Bendi_Configuration
+Bendi_ErrorMessage
+Bendi_DownloadDLFile
+Bendi_Compile
+Bendi_Arrangement
+}
+
+function Bendi_menu() {
+FOLDER_NAME="${FOLDER_NAME3}"
+Bendi_WslPath
+Bendi_Dependent
+Bendi_DiySetup
+Bendi_EveryInquiry
+Bendi_Variable
+Bendi_MainProgram
+Bendi_Download
+Bendi_SourceClean
+Bendi_UpdateSource
+Bendi_Menuconfig
+Bendi_Configuration
+Bendi_ErrorMessage
+Bendi_DownloadDLFile
+Bendi_Compile
+Bendi_Arrangement
+}
 
 function menu2() {
   clear
