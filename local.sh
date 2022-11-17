@@ -599,8 +599,9 @@ function Bendi_xuanzhe() {
   ls -1 "DIY-SETUP" |awk '$0=NR" "$0' |tee GITHUB_ENV
   XYZDSZ="$(cat GITHUB_ENV | awk 'END {print}' |awk '{print $(1)}')"
   echo
-  ECHOG "请输入您要编译的源码，选择前面对应的数值,输入[0]为退出程序"
-  echo -e "${Blue}当前使用源码${Font}"
+  echo
+  echo -e "${Blue}请输入您要编译的源码，选择前面对应的数值,输入[0]为退出程序${Font}"
+  echo
   export YUMINGIP="请输入前面对应的数值"
   while :; do
   YMXZ=""
