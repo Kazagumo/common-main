@@ -212,8 +212,6 @@ esac
 function Bendi_Variable() {
 ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
-echo '#!/bin/bash' > ${GITHUB_ENV}
-sudo chmod +x ${GITHUB_ENV}
 source common.sh && Diy_variable
 judge "变量读取"
 source ${GITHUB_ENV}
@@ -561,8 +559,8 @@ function Bendi_xuanzhe() {
   echo 
   echo
   ls -1 "DIY-SETUP" |awk '$0=NR"、"$0'
-  ls -1 "DIY-SETUP" |awk '$0=NR" "$0' > GITHUB_ENV
-  XYZDSZ="$(cat GITHUB_ENV | awk 'END {print}' |awk '{print $(1)}')"
+  ls -1 "DIY-SETUP" |awk '$0=NR" "$0' > GITHUB_ENN
+  XYZDSZ="$(cat GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
   echo
   echo
   echo -e "${Blue}请输入您要编译的源码，选择前面对应的数值,输入[0]则为退出程序${Font}"
@@ -588,13 +586,15 @@ function Bendi_xuanzhe() {
   fi
   case $CUrrenty in
   Y)
-    FOLDER_NAME3="$(grep "${YMXZ}" GITHUB_ENV |awk '{print $(2)}')"
+    FOLDER_NAME3="$(grep "${YMXZ}" GITHUB_ENN |awk '{print $(2)}')"
     ECHOY "您选择了使用 ${FOLDER_NAME3} 编译固件,5秒后将进行启动编译"
+    rm -rf GITHUB_ENN
     sleep 5
     Bendi_menu
   break
   ;;
   N)
+    rm -rf GITHUB_ENN
     exit 0
   break
   ;;
