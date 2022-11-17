@@ -654,7 +654,7 @@ fi
 
 # openclash分支选择
 if [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
-  OpenClash_branch= "0"
+  OpenClash_branch="0"
   echo "TIME r \"因没开作者收集的插件包，对openclash的分支选择无效\"" >> ${HOME_PATH}/CHONGTU
 fi
 
