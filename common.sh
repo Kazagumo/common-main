@@ -193,10 +193,14 @@ fi
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[${GIT_BUILD}]文件夹内补齐"
   exit 1
+else
+  echo "${GIT_BUILD}/${CONFIG_FILE}文件存在"
 fi
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[${GIT_BUILD}]文件夹内补齐"
   exit 1
+else
+  echo "${GIT_BUILD}/${DIY_PART_SH}文件存在"
 fi
 }
 
@@ -206,17 +210,17 @@ echo "安装依赖"
 sudo apt-get -y update
 if [[ ! -f "/etc/oprelyon" ]]; then
   sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
+  sudo -E apt-get -y -qq autoremove --purge
+  sudo -E apt-get -y -qq clean
   if [[ $? -ne 0 ]];then
     TIME r "依赖安装失败，请检测网络后再用试试!"
     exit 1
   else
+    sudo -E apt-get -y -qq install rename
     sudo sh -c 'echo openwrt > /etc/oprelyon'
     TIME b "依赖安装完成"
   fi
 fi
-sudo -E apt-get -y -qq install rename
-sudo -E apt-get -y -qq autoremove --purge
-sudo -E apt-get -y -qq clean
 }
 
 
