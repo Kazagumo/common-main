@@ -97,19 +97,19 @@ if [[ `sudo grep -c "NOPASSWD:ALL" /etc/sudoers` == '0' ]]; then
 fi
 
 
-function Bendi_DownloadDLFile() {
+function Bendi_WslPath() {
 if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
   clear
   ECHOR "您的ubuntu为Windows子系统,是否一次性解决路径问题,还是使用临时路径编译?"
   while :; do
-  read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒自动跳过)： " Bendi_Diy
-  case ${Bendi_Diy} in
+  read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒自动跳过)： " Bendi_Wsl
+  case ${Bendi_Wsl} in
   [Yy])
     ECHOYY "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
     exit 0
   ;;
   *)
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    echo "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" >> ${GITHUB_ENV}
     ECHOYY "正在使用临时路径解决编译问题！"
   ;;
   esac
@@ -389,6 +389,7 @@ judge "整理固件"
 
 function Bendi_menu2() {
 FOLDER_NAME="Official"
+Bendi_WslPath
 Bendi_Dependent
 Bendi_DiySetup
 Bendi_EveryInquiry
@@ -408,6 +409,7 @@ Bendi_Arrangement
 
 function Bendi_menu() {
 FOLDER_NAME="Official"
+Bendi_WslPath
 Bendi_Dependent
 Bendi_DiySetup
 Bendi_EveryInquiry
