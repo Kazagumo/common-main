@@ -517,7 +517,7 @@ function menu2() {
   break
   ;;
   2)
-    Bendi_menu
+    Bendi_xuanzhe
   break
   ;;
   3)
