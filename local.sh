@@ -377,6 +377,7 @@ Bendi_Variable
 Bendi_MainProgram
 rm -rf ${HOME_PATH}/build
 mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
+sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 Bendi_UpdateSource
 Bendi_Menuconfig
 Bendi_Configuration
