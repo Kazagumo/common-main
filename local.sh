@@ -521,7 +521,7 @@ function menu2() {
   break
   ;;
   3)
-    gengxin_opdiy
+    menu
   break
   ;;
   4)
