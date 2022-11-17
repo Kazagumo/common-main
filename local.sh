@@ -419,7 +419,7 @@ judge "整理固件"
 
 
 function Bendi_menu2() {
-FOLDER_NAME="FOLDER_NAME2"
+FOLDER_NAME="${FOLDER_NAME2}"
 Bendi_WslPath
 Bendi_Dependent
 Bendi_DiySetup
@@ -601,8 +601,8 @@ esac
 done
 }
 
-if [[ -d "${HOME_PATH}/package" && -d "${HOME_PATH}/target" && -d "${HOME_PATH}/toolchain" && -d "${GITHUB_WORKSPACE}/DIY-SETUP" && -f "${HOME_PATH}/diysete" ]]; then
-  source ${HOME_PATH}/diysete
+if [[ -d "${HOME_PATH}/package" && -d "${HOME_PATH}/target" && -d "${HOME_PATH}/toolchain" && -d "${GITHUB_WORKSPACE}/DIY-SETUP" && -f "${HOME_PATH}/diysetup" ]]; then
+  source ${HOME_PATH}/diysetup
   if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
     if [[ `grep -c "CONFIG_TARGET_x86_64=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config"` -eq '1' ]]; then
       TARGET_PROFILE3="x86-64"
