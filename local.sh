@@ -106,7 +106,6 @@ if [[ $? -ne 0 ]];then
 fi
 if [[ $? -eq 0 ]];then
   sudo chmod +x common.sh
-  ECHOGG "安装依赖"
   source common.sh && Diy_update
 else
   print_error "common.sh下载失败，请检测网络后再用一键命令试试!"
