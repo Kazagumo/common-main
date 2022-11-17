@@ -199,11 +199,11 @@ read -t 30 -p " [输入[ Y/y ]回车确认，直接回车则为否](不作处理
 case ${Bendi_Diy} in
 [Yy])
   Menuconfig_Config="true"
-  ECHOYY "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
+  ECHOY "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
 ;;
 *)
   Menuconfig_Config="false"
-  ECHORR "您已关闭选择机型和增删插件设置！"
+  ECHOR "您已关闭选择机型和增删插件设置！"
 ;;
 esac
 }
@@ -223,6 +223,7 @@ source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 rm -rf build && cp -Rf DIY-SETUP build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
 judge "扩展文件下载"
+ECHOGG "检测是否缺少文件"
 source common.sh && Diy_settings
 rm -rf common.sh
 mv -f build/common/*.sh build/${FOLDER_NAME}/
