@@ -357,10 +357,19 @@ fi
 function Bendi_Compile() {
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
+export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
+export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
+export RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
+export RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
+echo
+ECHOGG "您现在编译所用的服务器CPU型号为[ ${Model_Name} ]"
+ECHOGG "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
+ECHOGG "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
+
 [[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
 if [[ "$(nproc)" -le "12" ]];then
   ECHOYY "3秒后，将使用$(nproc)线程进行编译固件"
-  sleep 3
+  sleep 5
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
   else
@@ -368,7 +377,7 @@ if [[ "$(nproc)" -le "12" ]];then
   fi
 else
   ECHOGG "您的CPU线程超过或等于16线程，强制使用16线程进行编译固件"
-  sleep 3
+  sleep 5
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |tee ${HOME_PATH}/build.log
   else
