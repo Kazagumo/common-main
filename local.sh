@@ -337,6 +337,7 @@ fi
 function Bendi_Compile() {
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
+[[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
 if [[ "$(nproc)" -le "12" ]];then
   ECHOGG "使用$(nproc)线程编译固件"
   make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
