@@ -212,7 +212,6 @@ function Bendi_Variable() {
 ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
-source common.sh && Diy_wenjian
 judge "变量读取"
 source ${GITHUB_ENV}
 }
@@ -226,6 +225,7 @@ git clone -b main --depth 1 https://github.com/281677160/common-main build/commo
 judge "扩展文件下载"
 ECHOGG "检测是否缺少文件"
 source common.sh && Diy_settings
+[[ -f "${DEFAULT_PATH}" ]] && source common.sh && Diy_wenjian
 echo
 rm -rf common.sh
 mv -f build/common/*.sh build/${FOLDER_NAME}/
