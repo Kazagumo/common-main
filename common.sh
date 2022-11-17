@@ -105,21 +105,22 @@ OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
   export SOURCE_OWNER="openwrt"
-  export LUCI_EDITION="${REPO_BRANCH}"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="official-master"
+    export LUCI_EDITION="master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
     export PACKAGE_BRANCH="official-19.07"
+    export LUCI_EDITION="19.07"
     export DIY_WORK="${FOLDER_NAME}1907"
   elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     export PACKAGE_BRANCH="official-19.07"
+    export LUCI_EDITION="21.02"
     export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
     export PACKAGE_BRANCH="official-master"
+    export LUCI_EDITION="22.03"
     export DIY_WORK="${FOLDER_NAME}2203"
-  else
-    export DIY_WORK="${FOLDER_NAME}${REPO_BRANCH}"
   fi
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
@@ -229,17 +230,14 @@ cd ${GITHUB_WORKSPACE}/openwrt
 case "${SOURCE_CODE}" in
 OFFICIAL)
   if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
-    export LUCI_EDITION="$(git tag| awk 'END {print}')"
-    git checkout ${LUCI_EDITION}
-    git switch -c ${LUCI_EDITION}
-    export LUCI_EDITION="$(echo ${LUCI_EDITION} |sed 's/v//')"
-    echo "正在使用${LUCI_EDITION}版本源码进行编译"
-  else
-    export LUCI_EDITION="${REPO_BRANCH}"
+    export LUCI_CHECKUT="$(git tag| awk 'END {print}')"
+    git checkout ${LUCI_CHECKUT}
+    git switch -c ${LUCI_CHECKUT}
+    export LUCI_CHECKUT="$(echo ${LUCI_CHECKUT} |sed 's/v//')"
+    echo "正在使用${LUCI_CHECKUT}版本源码进行编译"
   fi
 ;;
 esac
-echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 }
 
 
