@@ -402,7 +402,7 @@ else
   REPO_BRANCH2="${REPO_BRANCH}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
   " > ${HOME_PATH}/diysetup
-  sed -i 's/[[:space:]]//g' ${HOME_PATH}/diysetup
+  sed -i 's/^[ ]*//g' ${HOME_PATH}/diysetup
   sudo chmod +x ${HOME_PATH}/diysetup
   print_ok "编译固件成功"
   print_ok "已为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}里"
