@@ -203,7 +203,15 @@ fi
 
 function Diy_update() {
 sudo -E apt-get -y -qq update
-sudo -E apt-get -y -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+if [[ ! -d "/etc/oprelyon" ]]; then
+  sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
+  if [[ $? -ne 0 ]];then
+    TIME r "依赖安装失败，请检测网络后再用试试!"
+    exit 1
+  else
+    sudo sh -c 'echo openwrt > /etc/oprelyon'
+  fi
+fi
 sudo -E apt-get -y -qq install rename
 sudo -E apt-get -y -qq autoremove --purge
 sudo -E apt-get -y -qq clean
