@@ -212,6 +212,7 @@ function Bendi_Variable() {
 ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
+source common.sh && Diy_wenjian
 judge "变量读取"
 source ${GITHUB_ENV}
 }
