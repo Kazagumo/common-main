@@ -596,11 +596,11 @@ function Bendi_xuanzhe() {
   clear
   echo 
   echo
-  ls -1 "DIY-SETUP" |awk '$0=NR" "$0' |tee GITHUB_ENV
+  ls -1 "DIY-SETUP" |awk '$0=NR"、"$0' |tee GITHUB_ENV
   XYZDSZ="$(cat GITHUB_ENV | awk 'END {print}' |awk '{print $(1)}')"
   echo
   echo
-  echo -e "${Blue}请输入您要编译的源码，选择前面对应的数值,输入[0]为退出程序${Font}"
+  echo -e "${Blue}请输入您要编译的源码，选择前面对应的数值,输入[0]则为退出程序${Font}"
   echo
   export YUMINGIP="请输入前面对应的数值"
   while :; do
