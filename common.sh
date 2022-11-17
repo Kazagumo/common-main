@@ -740,6 +740,7 @@ if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
 fi
 
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
+   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt ' >> /etc/openwrt_release?g" "${ZZZ_PATH}"
    sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${ZZZ_PATH}"
    sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${DEFAULT_PATH}"
 fi
