@@ -144,9 +144,9 @@ cd ${GITHUB_WORKSPACE}
 if [ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]; then
   ECHOR "下载DIY-SETUP自定义配置文件"
   rm -rf DIY-SETUP && svn export https://github.com/281677160/autobuild/trunk/build DIY-SETUP
-  judge
+  judge "DIY-SETUP自定义配置文件下载"
   Bendi_RefreshFile
-  judge
+  judge "将云编译的配置文件修改成本地适用文件"
   source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
   source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
@@ -212,6 +212,7 @@ sudo chmod -R +x build
 
 function Bendi_Download() {
 ECHOGG "下载${SOURCE_CODE}-${REPO_BRANCH}源码"
+cd ${GITHUB_WORKSPACE}
 rm -rf ${HOME_PATH}
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
 judge "源码下载"
