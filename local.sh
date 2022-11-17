@@ -108,7 +108,6 @@ if [[ $? -eq 0 ]];then
   sudo chmod +x common.sh
   ECHOGG "安装依赖"
   source common.sh && Diy_update
-  judge "依赖安装"
 else
   print_error "common.sh下载失败，请检测网络后再用一键命令试试!"
   exit 1
