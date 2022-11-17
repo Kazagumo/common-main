@@ -355,7 +355,8 @@ if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
   exit 1
 else
   cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
-  print_ok "编译成功"
+  print_ok "编译固件成功"
+  print_ok "已经为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}上"
 fi
 }
 
