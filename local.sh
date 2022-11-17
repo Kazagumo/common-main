@@ -603,6 +603,12 @@ function Bendi_xuanzhe() {
   echo -e "${Blue}请输入您要编译的源码，选择前面对应的数值,输入[0]则为退出程序${Font}"
   echo
   echo -e "${Yellow}跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用${Font}"
+  if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+    echo
+    echo -e "${Yellow}您使用的为WSL系统,若要自行建立文件夹${Font}"
+    echo -e "${Yellow}请勿直接打开Windows文件夹进行修改,这样修改出来的文件很经常是有问题的${Font}"
+    echo -e "${Yellow}请用WinSCP或者其他工具进行连接,然后建立机型文件夹${Font}"
+  fi
   echo
   export YUMINGIP="请输入前面对应的数值"
   while :; do
