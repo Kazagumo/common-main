@@ -461,23 +461,26 @@ function Bendi_xuanzhe() {
       Bendi_DiySetup
     fi
   fi
+  XYZDSZ="$(cat GITHUB_ENV | awk 'END {print}' |awk '{print $(1)}')"
   clear
   echo 
   echo
   ls -1 "DIY-SETUP" |awk '$0=NR" "$0' |tee GITHUB_ENV
-  XYZDSZ="$(cat GITHUB_ENV | awk 'END {print}' |awk '{print $(1)}')"
-  echo -e "\033[33m 请输入请选择您要编译的源码，选择前面对应的数值] \033[0m"
+  echo
+  ECHOG "请输入请选择您要编译的源码，选择前面对应的数值"
   export YUMINGIP="请输入"
   while :; do
   YMXZ=""
-  read -p " ${YUMINGIP}：" YMXZ
-  if [[ -n "${YMXZ}" ]] && [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
+  read -p "${YUMINGIP}：" YMXZ
+  if [[ ! "${YMXZ}" == "0" ]] && [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
     CUrrenty="Y"
   fi
   case $CUrrenty in
   Y)
     FOLDER_NAME3="$(grep "${YMXZ}" GITHUB_ENV |awk '{print $(2)}')"
-    echo -e "\033[32m 您选择了使用 FOLDER_NAME3 编译固件] \033[0m"
+    ECHOY "您选择了使用 ${FOLDER_NAME3} 编译固件,5秒后将进行启动编译"
+    sleep 5
+    Bendi_menu
   break
   ;;
   *)
