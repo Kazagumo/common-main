@@ -228,7 +228,6 @@ ECHOGG "检测是否缺少文件"
 source common.sh && Diy_settings
 [[ -f "${DEFAULT_PATH}" ]] && source common.sh && Diy_wenjian
 echo
-rm -rf common.sh
 mv -f build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
 }
@@ -367,6 +366,7 @@ echo
 ECHOGG "您现在编译所用的服务器CPU型号为[ ${Model_Name} ]"
 ECHOGG "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
 ECHOGG "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
+[[ -f "${GITHUB_WORKSPACE}/common.sh" ]] && rm -rf ${GITHUB_WORKSPACE}/common.sh
 
 [[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
 if [[ "$(nproc)" -le "12" ]];then
@@ -505,11 +505,25 @@ ECHOR "编译分支发生改变,需要重新下载源码,下载源码中..."
 sleep 5
 Bendi_Download
 elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
-ECHOR "您的自定义设置更改为不需要作者收集的插件包,正在清理插件中..."
-sleep 5
-cd ${HOME_PATH}
-./scripts/feeds clean
-./scripts/feeds update -a
+  if [[ `grep -c "danshui" feeds.conf.default` -ge '1' ]]; then
+    ECHOR "您的自定义设置更改为不需要作者收集的插件包,正在清理插件中..."
+    sleep 5
+    sed -i '/danshui/d' feeds.conf.default
+    sed -i '/helloworld/d' feeds.conf.default
+    sed -i '/passwall/d' feeds.conf.default
+    ./scripts/feeds clean
+    ./scripts/feeds update -a
+  fi
+elif [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
+  if [[ `grep -c "danshui" feeds.conf.default` -eq '0' ]]; then
+    ECHOR "您的自定义设置更改为需要作者收集的插件包,正在增加插件中..."
+    sleep 5
+    sed -i '/danshui/d' feeds.conf.default
+    sed -i '/helloworld/d' feeds.conf.default
+    sed -i '/passwall/d' feeds.conf.default
+    ./scripts/feeds clean
+    ./scripts/feeds update -a
+  fi
 fi
 }
 
