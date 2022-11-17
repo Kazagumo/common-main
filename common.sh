@@ -210,6 +210,7 @@ if [[ ! -d "/etc/oprelyon" ]]; then
     exit 1
   else
     sudo sh -c 'echo openwrt > /etc/oprelyon'
+    TIME r "依赖安装完成"
   fi
 fi
 sudo -E apt-get -y -qq install rename
