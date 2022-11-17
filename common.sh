@@ -35,7 +35,7 @@ COOLSNOWWOLF)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Lede"
   export LUCI_EDITION="18.06"
-  export SOURCE_OWNER="Lede's"
+  export SOURCE_OWNER="Lede"
   export PACKAGE_BRANCH="master"
   export DIY_WORK="${FOLDER_NAME}MASTER"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
@@ -43,7 +43,7 @@ COOLSNOWWOLF)
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
-  export SOURCE_OWNER="Lienol's"
+  export SOURCE_OWNER="Lienol"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="19.07"
@@ -66,7 +66,7 @@ LIENOL)
 IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
-  export SOURCE_OWNER="ctcgfw's"
+  export SOURCE_OWNER="ctcgfw"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings"
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     export PACKAGE_BRANCH="openwrt-21.02"
@@ -840,17 +840,17 @@ fi
 if [[ -n "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
 elif [[ -z "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  echo "amlogic_model=s905d" >> ${GITHUB_ENV}
+  echo "amlogic_model='s905d'" >> ${GITHUB_ENV}
 fi
 if [[ -n "${amlogic_kernel}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
 elif [[ -z "${amlogic_kernel}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  echo "amlogic_kernel=5.4.210_5.10.135_5.15.50 -a true" >> ${GITHUB_ENV}
+  echo "amlogic_kernel='5.4.210_5.10.135_5.15.50 -a true'" >> ${GITHUB_ENV}
 fi
 if [[ -n "${rootfs_size}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
 elif [[ -z "${rootfs_size}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  echo "rootfs_size=960" >> ${GITHUB_ENV}
+  echo "rootfs_size='960'" >> ${GITHUB_ENV}
 fi
 }
 
