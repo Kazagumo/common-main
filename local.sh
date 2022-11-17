@@ -354,6 +354,7 @@ if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
   print_error "编译失败~~!"
   exit 1
 else
+  cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
   print_ok "编译成功"
 fi
 }
