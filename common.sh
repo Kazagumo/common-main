@@ -1267,12 +1267,14 @@ fi
 
 
 function Diy_upgrade2() {
-sed -i '/^#/d' ${DEFAULT_PATH}
+sed -i '/#\!\/bin\//d' "${DEFAULT_PATH}"
+sed -i '1i\#!/bin/sh' "${DEFAULT_PATH}"
 sed -i '/exit 0/d' "${DEFAULT_PATH}"
-echo -e "\nexit 0" >> ${DEFAULT_PATH}
-sed -i '/^#/d' ${ZZZ_PATH}
+sed -i '$a\exit 0' "${DEFAULT_PATH}"
+sed -i '/#\!\/bin\//d' "${ZZZ_PATH}"
+sed -i '1i\#!/bin/sh' "${ZZZ_PATH}"
 sed -i '/exit 0/d' "${ZZZ_PATH}"
-echo -e "\nexit 0" >> ${ZZZ_PATH}
+sed -i '$a\exit 0' "${ZZZ_PATH}" 
 
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part2
