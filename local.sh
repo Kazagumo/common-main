@@ -90,12 +90,32 @@ fi
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "$Google_Check" == 301 ];then
   print_error "提醒：编译之前请自备梯子，编译全程都需要稳定翻墙的梯子~~"
-  exit 0
+  exit 1
 fi
 if [[ `sudo grep -c "NOPASSWD:ALL" /etc/sudoers` == '0' ]]; then
   sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
 fi
 
+
+function Bendi_DownloadDLFile() {
+if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+  clear
+  ECHOR "您的ubuntu为Windows子系统,是否一次性解决路径问题,还是使用临时路径编译?"
+  while :; do
+  read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒自动跳过)： " Bendi_Diy
+  case ${Bendi_Diy} in
+  [Yy])
+    ECHOYY "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
+    exit 0
+  ;;
+  *)
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    ECHOYY "正在使用临时路径解决编译问题！"
+  ;;
+  esac
+  done
+fi
+}
 
 function Bendi_Dependent() {
 ECHOGG "下载common.sh运行文件"
@@ -338,10 +358,10 @@ source ${GITHUB_ENV}
 [[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
 if [[ "$(nproc)" -le "12" ]];then
   ECHOGG "使用$(nproc)线程编译固件"
-  make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
+  ${PATH} make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
 else
   ECHOGG "强制使用16线程编译固件"
-  make V=s -j16 |tee ${HOME_PATH}/build.log
+  ${PATH} make V=s -j16 |tee ${HOME_PATH}/build.log
 fi
 
 if [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immortalwrt"` -ge '1' ]]; then
