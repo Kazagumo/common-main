@@ -195,7 +195,6 @@ cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
 judge "变量读取"
 source ${GITHUB_ENV}
-rm -rf common.sh
 }
 
 function Bendi_MainProgram() {
@@ -206,6 +205,7 @@ rm -rf build && cp -Rf DIY-SETUP build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
 judge "扩展文件下载"
 source common.sh && Diy_settings
+rm -rf common.sh
 mv -f build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
 }
