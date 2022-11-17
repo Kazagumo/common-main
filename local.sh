@@ -602,6 +602,8 @@ function Bendi_xuanzhe() {
   echo
   echo -e "${Blue}请输入您要编译的源码，选择前面对应的数值,输入[0]则为退出程序${Font}"
   echo
+  echo -e "${Yellow}跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用${Font}"
+  echo
   export YUMINGIP="请输入前面对应的数值"
   while :; do
   YMXZ=""
