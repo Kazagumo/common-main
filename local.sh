@@ -596,7 +596,8 @@ function Bendi_xuanzhe() {
   clear
   echo 
   echo
-  ls -1 "DIY-SETUP" |awk '$0=NR"、"$0' |tee GITHUB_ENV
+  ls -1 "DIY-SETUP" |awk '$0=NR"、"$0'
+  ls -1 "DIY-SETUP" |awk '$0=NR" "$0' > GITHUB_ENV
   XYZDSZ="$(cat GITHUB_ENV | awk 'END {print}' |awk '{print $(1)}')"
   echo
   echo
