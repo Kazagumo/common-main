@@ -238,8 +238,14 @@ cd ${GITHUB_WORKSPACE}
 rm -rf ${HOME_PATH}
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
 judge "源码下载"
-source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_checkout
-mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
+if [[ -d "${GITHUB_WORKSPACE}/build" ]]; then
+  cd ${HOME_PATH}
+  source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_checkout
+  mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
+else
+  cd ${HOME_PATH}
+  source common.sh && Diy_checkout
+fi
 }
 
 function Bendi_SourceClean() {
