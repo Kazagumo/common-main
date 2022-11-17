@@ -613,10 +613,10 @@ if [[ -d "${HOME_PATH}/package" && -d "${HOME_PATH}/target" && -d "${HOME_PATH}/
     else
       TARGET_PROFILE3="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
     fi
-    menu2 "$@"
+    menu2
   else
-    menu "$@"
+    menu
   fi
 else
-  menu "$@"
+  menu
 fi
