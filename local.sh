@@ -212,6 +212,8 @@ esac
 function Bendi_Variable() {
 ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
+echo '#!/bin/bash' > ${GITHUB_ENV}
+sudo chmod +x ${GITHUB_ENV}
 source common.sh && Diy_variable
 judge "变量读取"
 source ${GITHUB_ENV}
