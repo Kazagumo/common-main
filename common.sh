@@ -886,6 +886,9 @@ fi
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
+export DIUQI_ZT="$(egrep -o "luci-theme-.*" "${HOME_PATH}/feeds/luci/collections/luci/Makefile" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
+sed -i "s/${DIUQI_ZT}/luci-theme-bootstrap/g" ${HOME_PATH}/feeds/luci/collections/luci/Makefile
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
