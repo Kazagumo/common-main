@@ -472,8 +472,12 @@ function Bendi_xuanzhe() {
   while :; do
   YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
-  if [[ ! "${YMXZ}" == "0" ]] && [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
+  if [[ "${YMXZ}" == "0" ]]; then
+    CUrrenty="N"
+  elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
     CUrrenty="Y"
+  else
+    CUrrenty=""
   fi
   case $CUrrenty in
   Y)
@@ -481,6 +485,10 @@ function Bendi_xuanzhe() {
     ECHOY "您选择了使用 ${FOLDER_NAME3} 编译固件,5秒后将进行启动编译"
     sleep 5
     Bendi_menu
+  break
+  ;;
+  N)
+    exit 0
   break
   ;;
   *)
