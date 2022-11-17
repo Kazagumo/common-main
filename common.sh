@@ -202,7 +202,8 @@ fi
 
 
 function Diy_update() {
-sudo -E apt-get -y -qq update
+echo "安装依赖"
+sudo apt-get -y update
 if [[ ! -d "/etc/oprelyon" ]]; then
   sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
   if [[ $? -ne 0 ]];then
@@ -210,7 +211,7 @@ if [[ ! -d "/etc/oprelyon" ]]; then
     exit 1
   else
     sudo sh -c 'echo openwrt > /etc/oprelyon'
-    TIME r "依赖安装完成"
+    TIME b "依赖安装完成"
   fi
 fi
 sudo -E apt-get -y -qq install rename
