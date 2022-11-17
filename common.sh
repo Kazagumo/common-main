@@ -185,17 +185,17 @@ echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 function Diy_settings() {
 echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
 if [[ -n "${BENDI_VERSION}" ]]; then
-  export GIT_BUILD=${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}
+  export GIT_BUILD=DIY-SETUP/${FOLDER_NAME}
 else
-  export GIT_BUILD=${GITHUB_WORKSPACE}/build/${FOLDER_NAME}
+  export GIT_BUILD=build/${FOLDER_NAME}
 fi
 
-if [ -z "$(ls -A "${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
-  TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[${GIT_BUILD}]文件夹内补齐"
   exit 1
 fi
-if [ -z "$(ls -A "${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
-  TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${FOLDER_NAME}]文件夹内补齐"
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[${GIT_BUILD}]文件夹内补齐"
   exit 1
 fi
 }
