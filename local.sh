@@ -225,6 +225,7 @@ git clone -b main --depth 1 https://github.com/281677160/common-main build/commo
 judge "扩展文件下载"
 ECHOGG "检测是否缺少文件"
 source common.sh && Diy_settings
+echo
 rm -rf common.sh
 mv -f build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
