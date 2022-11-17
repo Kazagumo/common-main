@@ -449,11 +449,50 @@ Bendi_Compile
 Bendi_Arrangement
 }
 
+function Bendi_menu() {
+  cd ${GITHUB_WORKSPACE}
+  if [[ ! -d "DIY-SETUP" ]]; then
+    echo "没有主要编译程序存在,正在下载中,请稍后..."
+    Bendi_DiySetup
+  else
+    YY="$(ls -1 "DIY-SETUP")"
+    if [[ -z "${YY}" ]]; then
+      echo "没有主要编译程序存在,正在下载中,请稍后..."
+      Bendi_DiySetup
+    fi
+  fi
+  clear
+  echo 
+  echo
+  ls -1 "DIY-SETUP" |awk '$0=NR" "$0' |tee GITHUB_ENV
+  XYZDSZ="$(cat GITHUB_ENV | awk 'END {print}' |awk '{print $(1)}')"
+  echo -e "\033[33m 请输入请选择您要编译的源码，选择前面对应的数值] \033[0m"
+  export YUMINGIP="请输入"
+  while :; do
+  YMXZ=""
+  read -p " ${YUMINGIP}：" YMXZ
+  if [[ -n "${YMXZ}" ]] && [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
+    CUrrenty="Y"
+  fi
+  case $CUrrenty in
+  Y)
+    FOLDER_NAME3="$(grep "${YMXZ}" GITHUB_ENV |awk '{print $(2)}')"
+    echo -e "\033[32m 您选择了使用 FOLDER_NAME3 编译固件] \033[0m"
+  break
+  ;;
+  *)
+    export YUMINGIP="敬告,请输入正确数值"
+  ;;
+  esac
+  done
+}
+
+
 function menu2() {
   clear
   echo
   echo
-  echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
+  echo -e " ${Blue}请选择您要编译的源码${Font},${Yellow}选择前面对应的数值${Font}"
   echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
   echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
   echo
