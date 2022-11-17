@@ -105,7 +105,7 @@ if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
   read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒自动跳过)： " Bendi_Wsl
   case ${Bendi_Wsl} in
   [Yy])
-    ECHOYY "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
+    ECHOYY "请到 https://github.com/281677160/bendi 查看说明"
     exit 0
   ;;
   *)
@@ -358,10 +358,18 @@ source ${GITHUB_ENV}
 [[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
 if [[ "$(nproc)" -le "12" ]];then
   ECHOGG "使用$(nproc)线程编译固件"
-  ${PATH} make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
+  if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
+  else
+     make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
+  fi
 else
   ECHOGG "强制使用16线程编译固件"
-  ${PATH} make V=s -j16 |tee ${HOME_PATH}/build.log
+  if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |tee ${HOME_PATH}/build.log
+  else
+     make V=s -16 |tee ${HOME_PATH}/build.log
+  fi
 fi
 
 if [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immortalwrt"` -ge '1' ]]; then
