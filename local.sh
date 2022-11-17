@@ -449,13 +449,107 @@ Bendi_Compile
 Bendi_Arrangement
 }
 
+function menu2() {
+  clear
+  echo
+  echo
+  echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
+  echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
+  echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+  echo
+  echo
+  echo -e " 1${Red}.${Font}${Green}保留缓存,再次编译${Font}"
+  echo
+  echo -e " 2${Red}.${Font}${Green}重新选择源码编译${Font}"
+  echo
+  echo -e " 3${Red}.${Font}${Green}同步上游OP_DIY文件(不覆盖config配置文件)${Font}"
+  echo
+  echo -e " 4${Red}.${Font}${Green}打包N1和晶晨系列CPU固件${Font}"
+  echo
+  echo -e " 5${Red}.${Font}${Green}退出${Font}"
+  echo
+  echo
+  XUANZop="请输入数字"
+  while :; do
+  read -p " ${XUANZop}：" menu_num
+  case $menu_num in
+  1)
+    Bendi_menu2
+  break
+  ;;
+  2)
+    Bendi_menu
+  break
+  ;;
+  3)
+    gengxin_opdiy
+  break
+  ;;
+  4)
+    menu
+  break
+  ;;
+  5)
+    echo
+    exit 0
+  break
+  ;;
+  *)
+    XUANZop="请输入正确的数字编号!"
+  ;;
+  esac
+  done
+}
+
+function menu() {
+cd ${GITHUB_WORKSPACE}
+clear
+echo
+ECHOY " 1. 进行选择编译源码文件"
+ECHOYY " 2. 单独打包晶晨系列固件(前提是您要有armvirt的.tar.gz固件)"
+ECHOY " 3. 退出编译程序"
+echo
+XUANZHEOP="请输入数字"
+while :; do
+read -p " ${XUANZHEOP}： " CHOOSE
+case $CHOOSE in
+1)
+  openwrt_new
+break
+;;
+2)
+  openwrt_new
+break
+;;
+3)
+  ECHOR "您选择了退出编译程序"
+  echo
+  exit 0
+break
+;;
+*)
+   XUANZHEOP="请输入正确的数字编号!"
+;;
+esac
+done
+}
+
 if [[ -d "${HOME_PATH}/package" && -d "${HOME_PATH}/target" && -d "${HOME_PATH}/toolchain" && -d "${GITHUB_WORKSPACE}/DIY-SETUP" && -f "${HOME_PATH}/diysete" ]]; then
   source ${HOME_PATH}/diysete
   if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
-    Bendi_menu2 "$@"
+    if [[ `grep -c "CONFIG_TARGET_x86_64=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config"` -eq '1' ]]; then
+      TARGET_PROFILE3="x86-64"
+    elif [[ `grep -c "CONFIG_TARGET_x86=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config"` == '1' ]]; then
+      TARGET_PROFILE3="x86_32"
+    elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config"` -eq '1' ]]; then
+      TARGET_PROFILE3="Armvirt_64"
+    else
+      TARGET_PROFILE3="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+    fi
+    menu2 "$@"
   else
-    Bendi_menu "$@"
+    menu "$@"
   fi
 else
-  Bendi_menu "$@"
+  menu "$@"
 fi
