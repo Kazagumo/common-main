@@ -886,9 +886,6 @@ fi
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
-export DIUQI_ZT="$(egrep -o "luci-theme-.*" "${HOME_PATH}/feeds/luci/collections/luci/Makefile" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
-sed -i "s/${DIUQI_ZT}/luci-theme-bootstrap/g" ${HOME_PATH}/feeds/luci/collections/luci/Makefile
-
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
@@ -896,7 +893,7 @@ sed -i "s/${DIUQI_ZT}/luci-theme-bootstrap/g" ${HOME_PATH}/feeds/luci/collection
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
   export themee=luci-theme-${Required_Topic}
-  if [[ `find . -name "${themee}" -type d |grep -c "${themee}"` -ge '1' ]]; then
+  if [[ `find . -name "${themee}" -type d |grep -v build_dir |grep -c "${themee}"` -ge '1' ]]; then
     sed -i "s/bootstrap/${Required_Topic}/g" ${HOME_PATH}/feeds/luci/collections/luci/Makefile
   else
     echo "TIME r \"没有${themee}此主题存在,不进行替换bootstrap主题操作\"" >> ${HOME_PATH}/CHONGTU
