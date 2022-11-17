@@ -359,14 +359,16 @@ cd ${HOME_PATH}
 source ${GITHUB_ENV}
 [[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
 if [[ "$(nproc)" -le "12" ]];then
-  ECHOGG "使用$(nproc)线程编译固件"
+  ECHOYY "3秒后，将使用$(nproc)线程进行编译固件"
+  sleep 3
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
   else
      make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
   fi
 else
-  ECHOGG "强制使用16线程编译固件"
+  ECHOGG "您的CPU线程超过或等于16线程，强制使用16线程进行编译固件"
+  sleep 3
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |tee ${HOME_PATH}/build.log
   else
