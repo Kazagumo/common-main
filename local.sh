@@ -70,6 +70,7 @@ judge() {
 # 变量
 BENDI_VERSION="1.1"
 GITHUB_WORKSPACE="$PWD"
+HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
 echo '#!/bin/bash' > ${GITHUB_ENV}
 sudo chmod +x ${GITHUB_ENV}
@@ -448,3 +449,9 @@ Bendi_Compile
 Bendi_Arrangement
 }
 Bendi_menu2 "$@"
+
+if [[ -d "${HOME_PATH}/package" && -d "${HOME_PATH}/target" && -d "${HOME_PATH}/toolchain" && -d "${HOME_PATH}/build" && -d "${GITHUB_WORKSPACE}/OP_DIY" && -n "$(ls -A "${HOME_PATH}" |egrep ".*_core" 2>/dev/null)" ]]; then
+	menuop "$@"
+else
+	menu "$@"
+fi
