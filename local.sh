@@ -393,11 +393,19 @@ fi
 
 if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
   print_error "编译失败~~!"
+  ECHOGG "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
   exit 1
 else
   cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
+  echo "
+  FOLDER_NAME2="${FOLDER_NAME}"
+  REPO_BRANCH2="${REPO_BRANCH}"
+  TARGET_PROFILE2="${TARGET_PROFILE}"
+  " > ${HOME_PATH}/diysetup
+  sed -i 's/[[:space:]]//g' ${HOME_PATH}/diysetup
+  sudo chmod +x ${HOME_PATH}/diysetup
   print_ok "编译固件成功"
-  print_ok "已经为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}上"
+  print_ok "已为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}里"
 fi
 }
 
