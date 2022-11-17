@@ -368,7 +368,7 @@ ECHOGG "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_av
 
 [[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
 if [[ "$(nproc)" -le "12" ]];then
-  ECHOYY "3秒后，将使用$(nproc)线程进行编译固件"
+  ECHOYY "即将使用$(nproc)线程进行编译固件"
   sleep 8
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
