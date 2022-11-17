@@ -1274,6 +1274,7 @@ function Package_amlogic() {
 echo "正在执行：打包N1和景晨系列固件"
 # 下载上游仓库
 cd ${GITHUB_WORKSPACE}
+[[ -d "${GITHUB_WORKSPACE}/amlogic" ]] && sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
 [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
 if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
@@ -1283,12 +1284,18 @@ else
   cp -Rf ${FIRMWARE_PATH}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 fi
 
-# 开始打包
+echo "开始打包"
 cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
 sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
+if [[ 0 -eq $? ]]; then
+  echo "固件打包完成"
+else
+  echo "固件打包失败"
+fi
 sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
 sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
+echo "已将固件存入${FIRMWARE_PATH}文件夹内"
 }
 
 
