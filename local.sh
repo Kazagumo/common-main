@@ -108,7 +108,7 @@ if [[ $? -eq 0 ]];then
   sudo chmod +x common.sh
   ECHOGG "安装依赖"
   source common.sh && Diy_update
-  judge
+  judge "依赖安装"
 else
   print_error "common.sh下载失败，请检测网络后再用一键命令试试!"
   exit 1
@@ -206,6 +206,7 @@ source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 rm -rf build && cp -Rf DIY-SETUP build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
 judge "扩展文件下载"
+source common.sh && Diy_settings
 mv -f build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
 }
