@@ -448,10 +448,14 @@ Bendi_DownloadDLFile
 Bendi_Compile
 Bendi_Arrangement
 }
-Bendi_menu2 "$@"
 
-if [[ -d "${HOME_PATH}/package" && -d "${HOME_PATH}/target" && -d "${HOME_PATH}/toolchain" && -d "${HOME_PATH}/build" && -d "${GITHUB_WORKSPACE}/OP_DIY" && -n "$(ls -A "${HOME_PATH}" |egrep ".*_core" 2>/dev/null)" ]]; then
-	menuop "$@"
+if [[ -d "${HOME_PATH}/package" && -d "${HOME_PATH}/target" && -d "${HOME_PATH}/toolchain" && -d "${GITHUB_WORKSPACE}/DIY-SETUP" && -f "${HOME_PATH}/diysete" ]]; then
+  source ${HOME_PATH}/diysete
+  if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
+    Bendi_menu2 "$@"
+  else
+    Bendi_menu "$@"
+  fi
 else
-	menu "$@"
+  Bendi_menu "$@"
 fi
