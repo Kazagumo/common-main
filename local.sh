@@ -160,10 +160,15 @@ for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini"); do
   echo 'MODIFY_CONFIGURATION="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
   [[ "${WSL_windows}" == "1" ]] && echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
 done
+if[[ "${tongbushangyou}" == "1" ]]; then
+  ECHOG "同步上游DIY-SETUP文件完成，请到DIY-SETUP对比文件完成设置"
+  exit 0
+fi
 }
 
 function Bendi_DiySetup() {
 cd ${GITHUB_WORKSPACE}
+tongbushangyou="0"
 if [ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]; then
   ECHOG "下载DIY-SETUP自定义配置文件"
   rm -rf DIY-SETUP && svn export https://github.com/281677160/autobuild/trunk/build DIY-SETUP
@@ -189,6 +194,7 @@ for X in $(grep "\"IMMORTALWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "set
 for X in $(grep "\"XWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
 for X in $(grep "\"OFFICIAL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
 for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
+tongbushangyou="1"
 }
 
 
