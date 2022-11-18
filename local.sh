@@ -557,15 +557,19 @@ sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 function Bendi_xuanzhe() {
   cd ${GITHUB_WORKSPACE}
   if [[ ! -f "/etc/oprelyon" ]]; then
+    ECHOG "您首次使用本脚本，需要先安装依赖，5秒后开始安装依赖"
+    sleep 5
     Bendi_Dependent
   fi
   if [[ ! -d "DIY-SETUP" ]]; then
-    echo "没有主要编译程序存在,正在下载中,请稍后..."
+    ECHOG "没有主要编译程序存在,正在下载中,请稍后..."
+    sleep 3
     Bendi_DiySetup
   else
     YY="$(ls -1 "DIY-SETUP")"
     if [[ -z "${YY}" ]]; then
-      echo "没有主要编译程序存在,正在下载中,请稍后..."
+      ECHOG "没有主要编译程序存在,正在下载中,请稍后..."
+      sleep 3
       Bendi_DiySetup
     fi
   fi
