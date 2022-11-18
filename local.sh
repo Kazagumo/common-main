@@ -72,7 +72,7 @@ BENDI_VERSION="1.1"
 GITHUB_WORKSPACE="$PWD"
 HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 GITHUB_ENV="/etc/GITHUB_ENV"
-sudo sh -c 'echo #!/bin/bash > /etc/GITHUB_ENV'
+sudo sh -c 'echo #!/bin/bash >/etc/GITHUB_ENV'
 sudo chmod +x ${GITHUB_ENV}
 source /etc/os-release
 case "${UBUNTU_CODENAME}" in
