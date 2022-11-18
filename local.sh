@@ -369,7 +369,7 @@ export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cu
 export RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
 export RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
 echo
-ECHOGG "您现在编译所用的服务器CPU型号为[ ${Model_Name} ]"
+ECHOGG "您的机器CPU型号为[ ${Model_Name} ]"
 ECHOGG "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
 ECHOGG "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
 [[ -f "${GITHUB_WORKSPACE}/common.sh" ]] && rm -rf ${GITHUB_WORKSPACE}/common.sh
@@ -441,7 +441,7 @@ judge "整理固件"
 
 function Bendi_Packaging() {
   cd ${GITHUB_WORKSPACE}
-  if [[ `ls -1 "${HOME_PATH}/bin/targets/armvirt/64" | grep -c "tar.gz"` == '0' ]]; then
+  if [[ `ls -1 "${HOME_PATH}/bin/targets/armvirt/64" | grep -c "tar.gz"` -eq '0' ]]; then
     mkdir -p "${HOME_PATH}/bin/targets/armvirt/64"
     clear
     echo
@@ -453,7 +453,7 @@ function Bendi_Packaging() {
     exit 1
   fi
   if [[ -d "${GITHUB_WORKSPACE}/amlogic" ]]; then
-    if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` == '0' ]]; then
+    if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
       sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
     fi
     clear
@@ -483,7 +483,7 @@ function Bendi_Packaging() {
   echo
   ECHOGG "设置打包的内核版本[直接回车则默认 5.15.xx 和 5.10.xx ，xx为当前最新版本]"
   read -p " 请输入您要设置的内核：" amlogic_kernel
-  export amlogic_kernel=${amlogic_kernel:-"5.15.77_5.10.153"}
+  export amlogic_kernel=${amlogic_kernel:-"5.15.25_5.10.100 -a true"}
   if [[ "${amlogic_kernel}" == "5.15.25_5.10.100 -a true" ]]; then
     ECHOYY "您设置的内核版本为：5.15.xx 和 5.10.xx "
   else
