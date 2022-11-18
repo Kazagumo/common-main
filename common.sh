@@ -211,10 +211,10 @@ fi
 
 
 function Diy_update() {
-echo "安装依赖"
 sudo -E apt-get -y -qq update
 sudo -E apt-get -y -qq install rename
 if [[ ! -f "/etc/oprelyon" ]]; then
+  echo "安装依赖"
   sudo apt-get -y update
   sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
   if [[ $? -ne 0 ]];then
