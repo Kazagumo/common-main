@@ -139,14 +139,14 @@ fi
 function Bendi_RefreshFile() {
 cd ${GITHUB_WORKSPACE}
 ECHOGG "将云编译的配置文件修改成本地适用文件"
-rm -rf ${GITHUB_WORKSPACE}/DIYSETUP/*/start-up
-for X in $(find ${GITHUB_WORKSPACE}/DIYSETUP -name "settings.ini" |sed 's/\/settings.ini//g'); do 
+rm -rf ${GITHUB_WORKSPACE}/DIY-SETUP/*/start-up
+for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do 
   [[ -f "${X}/.config" ]] && mv "${X}/.config" "${X}/config"
   mkdir -p "${X}/version"
   echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/version/bendi_version"
   echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/version/README.md"
 done
-for X in $(find ${GITHUB_WORKSPACE}/DIYSETUP -name "settings.ini"); do
+for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini"); do
   sed -i 's/.config/config/g' "${X}"
   sed -i '/SSH_ACTIONS/d' "${X}"
   sed -i '/UPLOAD_CONFIG/d' "${X}"
@@ -181,14 +181,14 @@ cd ${GITHUB_WORKSPACE}
 rm -rf shangyou
 git clone -b main https://github.com/281677160/autobuild shangyou
 rm -rf /shangyou/build/*/.config
-for X in $(find ${GITHUB_WORKSPACE}/DIYSETUP -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
-for X in $(find ${GITHUB_WORKSPACE}/DIYSETUP -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
-for X in $(grep "\"COOLSNOWWOLF\"" -rl "${GITHUB_WORKSPACE}/DIYSETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
-for X in $(grep "\"LIENOL\"" -rl "${GITHUB_WORKSPACE}/DIYSETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
-for X in $(grep "\"IMMORTALWRT\"" -rl "${GITHUB_WORKSPACE}/DIYSETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
-for X in $(grep "\"XWRT\"" -rl "${GITHUB_WORKSPACE}/DIYSETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
-for X in $(grep "\"OFFICIAL\"" -rl "${GITHUB_WORKSPACE}/DIYSETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
-for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIYSETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
+for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
+for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
+for X in $(grep "\"COOLSNOWWOLF\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
+for X in $(grep "\"LIENOL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
+for X in $(grep "\"IMMORTALWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
+for X in $(grep "\"XWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
+for X in $(grep "\"OFFICIAL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
+for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
 }
 
 
