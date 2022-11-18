@@ -774,7 +774,8 @@ function menu() {
 cd ${GITHUB_WORKSPACE}
 echo
 ECHOY " 1. 进行选择编译源码文件"
-ECHOYY " 2. 单独打包晶晨系列固件(前提是您要有armvirt的.tar.gz固件)"
+ECHOY " 2. 同步上游DIY-SETUP文件(不覆盖config配置文件)"
+ECHOYY " 3. 单独打包晶晨系列固件(前提是您要有armvirt的.tar.gz固件)"
 ECHOY " 3. 退出编译程序"
 echo
 XUANZHEOP="请输入数字"
@@ -786,11 +787,15 @@ case $CHOOSE in
 break
 ;;
 2)
+  Bendi_UPDIYSETUP
+break
+;;
+3)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
   Bendi_Packaging
 break
 ;;
-3)
+4)
   ECHOR "您选择了退出编译程序"
   echo
   exit 0
