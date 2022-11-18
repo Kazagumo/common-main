@@ -466,12 +466,12 @@ function Bendi_Packaging() {
     ECHOY "正在下载打包所需的程序,请耐心等候~~~"
     git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
     judge "内核运行文件下载"
-    rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,LICENSE,README.cn.md,README.md,.github,.git}
+    rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,*README*,LICENSE}
   else
     ECHOY "正在下载打包所需的程序,请耐心等候~~~"
     git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
     judge "内核运行文件下载"
-    rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,LICENSE,README.cn.md,README.md,.github,.git}
+    rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,*README*,LICENSE}
   fi
   [[ -z "${FIRMWARE_PATH}" ]] && export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
   [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
