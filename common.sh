@@ -662,14 +662,23 @@ if [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
   echo "TIME r \"因没开作者收集的插件包，对openclash的分支选择无效\"" >> ${HOME_PATH}/CHONGTU
 fi
 
-if [[ "${OpenClash_branch}" != "0" ]]; then
+jiance_clash="${HOME_PATH}/package/luci-app-openclash/clash_branch"
+if [[ -f "${OpenClash_branch}" ]]; then
+  clash_branch="$(cat ${jiance_clash})"
+else
+  clash_branch="clash_branch"
+fi
+
+if [[ "${OpenClash_branch}" != "0" ]] && [[ "${OpenClash_branch}" != "${clash_branch}" ]]; then
   find . -name 'luci-app-openclash' | xargs -i rm -rf {}
   if [[ "${OpenClash_branch}" != "master" ]] && [[ "${OpenClash_branch}" != "dev" ]]; then
-     git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-     echo "因没发现正确分支数据，正在使用master分支的openclash"
+    git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+    echo "master" > "${jiance_clash}"
+    echo "因没发现正确分支数据，正在使用master分支的openclash"
   else
-     git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
-     echo "正在使用"${OpenClash_branch}"分支的openclash"
+    git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
+    echo "${OpenClash_branch}" > "${jiance_clash}"
+    echo "正在使用"${OpenClash_branch}"分支的openclash"
   fi
 fi
 
