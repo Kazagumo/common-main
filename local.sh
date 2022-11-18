@@ -214,7 +214,7 @@ ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
 judge "变量读取"
-bash ${GITHUB_ENV}
+source ${GITHUB_ENV}
 }
 
 function Bendi_MainProgram() {
