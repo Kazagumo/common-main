@@ -160,7 +160,7 @@ for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini"); do
   echo 'MODIFY_CONFIGURATION="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
   [[ "${WSL_windows}" == "1" ]] && echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
 done
-if[[ "${tongbushangyou}" == "1" ]]; then
+if [[ "${tongbushangyou}" == "1" ]]; then
   ECHOG "同步上游DIY-SETUP文件完成，请到DIY-SETUP对比文件完成设置"
   exit 0
 fi
@@ -169,7 +169,7 @@ fi
 function Bendi_DiySetup() {
 cd ${GITHUB_WORKSPACE}
 tongbushangyou="0"
-if [ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]; then
+if [[ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]]; then
   ECHOG "下载DIY-SETUP自定义配置文件"
   rm -rf DIY-SETUP && svn export https://github.com/281677160/autobuild/trunk/build DIY-SETUP
   judge "DIY-SETUP自定义配置文件下载"
