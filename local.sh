@@ -108,6 +108,7 @@ if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒自动跳过)： " Bendi_Wsl
     case ${Bendi_Wsl} in
     [Yy])
+      WSL_windows="0"
       ECHOYY "请到 https://github.com/281677160/bendi 查看说明"
       exit 0
     ;;
