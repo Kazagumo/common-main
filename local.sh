@@ -813,8 +813,10 @@ FOLDERSX=`echo $FOLDERS | sed 's/ /、/g'`;echo $FOLDERSX
 rm -rf {UpdateList.txt,Update.txt}
 fi
 
-if [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
-  source ${HOME_PATH}/diysetup
+[[ -f "${HOME_PATH}/diysetup" ]] && source ${HOME_PATH}/diysetup
+[[ -f "${HOME_PATH}/shibaisetup" ]] && source ${HOME_PATH}/shibaisetup
+
+if [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/diysetup" ]] && [[ -f DIY-SETUP/${FOLDER_NAME2}/settings.ini ]]; then
   source DIY-SETUP/${FOLDER_NAME2}/settings.ini
   if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]] && [[ -n "${CONFIG_FILE}" ]]; then
     if [[ `grep -c "CONFIG_TARGET_x86_64=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
@@ -831,8 +833,7 @@ if [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f 
   else
     KAIDUAN_JIANCE="0"
   fi
-elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/shibaisetup" ]]; then
-  source ${HOME_PATH}/diysetup
+elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/shibaisetup" ]] && [[ -f DIY-SETUP/${FOLDER_NAME2}/settings.ini ]]; then
   source DIY-SETUP/${FOLDER_NAME2}/settings.ini
   if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]] && [[ -n "${CONFIG_FILE}" ]]; then
     if [[ `grep -c "CONFIG_TARGET_x86_64=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
