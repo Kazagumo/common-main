@@ -807,13 +807,12 @@ elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -
 else
   KAIDUAN_JIANCE="0"
 fi
-}
-
 
 if [[ "${KAIDUAN_JIANCE}" == "1" ]]; then
   menu2
 else
   menu
 fi
+}
 
 menuoo "$@"
