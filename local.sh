@@ -100,20 +100,23 @@ fi
 
 function Bendi_WslPath() {
 if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
-  clear
-  ECHOR "您的ubuntu为Windows子系统,是否一次性解决路径问题,还是使用临时路径编译?"
-  while :; do
-  read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒自动跳过)： " Bendi_Wsl
-  case ${Bendi_Wsl} in
-  [Yy])
-    ECHOYY "请到 https://github.com/281677160/bendi 查看说明"
-    exit 0
-  ;;
-  *)
-    ECHOYY "正在使用临时路径解决编译问题！"
-  ;;
-  esac
-  done
+  WSL_windows="1"
+  if [[ ! "${WSL_ROUTEPATH}" == 'true' ]]; then
+    clear
+    ECHOR "您的ubuntu为Windows子系统,是否一次性解决路径问题,还是使用临时路径编译?"
+    while :; do
+    read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒自动跳过)： " Bendi_Wsl
+    case ${Bendi_Wsl} in
+    [Yy])
+      ECHOYY "请到 https://github.com/281677160/bendi 查看说明"
+      exit 0
+    ;;
+    *)
+      ECHOYY "正在使用临时路径解决编译问题！"
+    ;;
+    esac
+    done
+  fi
 fi
 }
 
@@ -155,6 +158,7 @@ for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name "settings.ini"); do
   sed -i '/COMPILATION_INFORMATION/d' "${X}"
   sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
   echo 'MODIFY_CONFIGURATION="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
+  [[ ${WSL_windows} == "1" ]] && echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
 done
 }
 
@@ -213,6 +217,7 @@ ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
 judge "变量读取"
+echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> ${GITHUB_ENV}
 source ${GITHUB_ENV}
 }
 
