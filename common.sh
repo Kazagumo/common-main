@@ -35,7 +35,7 @@ COOLSNOWWOLF)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Lede"
   export LUCI_EDITION="18.06"
-  export SOURCE_OWNER="Lede"
+  export SOURCE_OWNER="Lede's"
   export PACKAGE_BRANCH="master"
   export DIY_WORK="${FOLDER_NAME}MASTER"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
@@ -43,7 +43,7 @@ COOLSNOWWOLF)
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
-  export SOURCE_OWNER="Lienol"
+  export SOURCE_OWNER="Lienol's"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="19.07"
@@ -66,7 +66,7 @@ LIENOL)
 IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
-  export SOURCE_OWNER="ctcgfw"
+  export SOURCE_OWNER="ctcgfw's"
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings"
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     export PACKAGE_BRANCH="openwrt-21.02"
@@ -139,9 +139,9 @@ AMLOGIC)
 ;;
 esac
 
-echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
-echo "DIY_WORK=${DIY_WORK}" >> ${GITHUB_ENV}
-echo "PACKAGE_BRANCH=${PACKAGE_BRANCH}" >> ${GITHUB_ENV}
+echo "HOME_PATH='${GITHUB_WORKSPACE}/openwrt'" >> ${GITHUB_ENV}
+echo "DIY_WORK='${DIY_WORK}'" >> ${GITHUB_ENV}
+echo "PACKAGE_BRANCH='${PACKAGE_BRANCH}'" >> ${GITHUB_ENV}
 echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
 echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
