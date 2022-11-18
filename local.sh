@@ -178,7 +178,8 @@ fi
 
 function Bendi_Tongbu() {
 cd ${GITHUB_WORKSPACE}
-git clone -b main https://github.com/281677160/build-actions.git shangyou
+rm -rf shangyou
+git clone -b main https://github.com/281677160/autobuild shangyou
 rm -rf /shangyou/build/*/.config
 for X in $(find ${GITHUB_WORKSPACE}/DIYSETUP -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
 for X in $(find ${GITHUB_WORKSPACE}/DIYSETUP -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
