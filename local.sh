@@ -110,7 +110,6 @@ if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     exit 0
   ;;
   *)
-    echo "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" >> ${GITHUB_ENV}
     ECHOYY "正在使用临时路径解决编译问题！"
   ;;
   esac
@@ -162,7 +161,7 @@ done
 function Bendi_DiySetup() {
 cd ${GITHUB_WORKSPACE}
 if [ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]; then
-  ECHOR "下载DIY-SETUP自定义配置文件"
+  ECHOG "下载DIY-SETUP自定义配置文件"
   rm -rf DIY-SETUP && svn export https://github.com/281677160/autobuild/trunk/build DIY-SETUP
   judge "DIY-SETUP自定义配置文件下载"
   Bendi_RefreshFile
@@ -566,8 +565,8 @@ function Bendi_xuanzhe() {
     sleep 3
     Bendi_DiySetup
   else
-    YY="$(ls -1 "DIY-SETUP")"
-    if [[ -z "${YY}" ]]; then
+    YY="$(ls -1 "DIY-SETUP" |awk 'NR==1')"
+    if [[ ! -f "DIY-SETUP/${YY}/settings.ini" ]]; then
       ECHOG "没有主要编译程序存在,正在下载中,请稍后..."
       sleep 3
       Bendi_DiySetup
