@@ -400,9 +400,18 @@ fi
 if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
   print_error "编译失败~~!"
   ECHOGG "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
+  rm -rf ${HOME_PATH}/diysetup
+  echo "
+  FOLDER_NAME2="${FOLDER_NAME}"
+  REPO_BRANCH2="${REPO_BRANCH}"
+  TARGET_PROFILE2="${TARGET_PROFILE}"
+  " > ${HOME_PATH}/shibaisetup
+  sed -i 's/^[ ]*//g' ${HOME_PATH}/shibaisetup
+  sudo chmod +x ${HOME_PATH}/shibaisetup
   exit 1
 else
   cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
+  rm -rf ${HOME_PATH}/shibaisetup
   echo "
   FOLDER_NAME2="${FOLDER_NAME}"
   REPO_BRANCH2="${REPO_BRANCH}"
@@ -655,9 +664,15 @@ function menu2() {
   clear
   echo
   echo
-  echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
-  echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
-  echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+  if [[ -f "${HOME_PATH}/diysetup" ]]; then
+    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
+    echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
+    echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+  else
+    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
+    echo -e " ${Red}上回编译[${TARGET_PROFILE2}]于失败告终${Font}"
+    echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+  fi
   echo
   echo
   echo -e " 1${Red}.${Font}${Green}保留缓存,再次编译${Font}"
