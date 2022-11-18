@@ -736,22 +736,67 @@ esac
 done
 }
 
-if [[ -d "${HOME_PATH}/package" && -d "${HOME_PATH}/target" && -d "${HOME_PATH}/toolchain" && -d "${GITHUB_WORKSPACE}/DIY-SETUP" && -f "${HOME_PATH}/diysetup" ]]; then
+function menuoo() {
+cd ${GITHUB_WORKSPACE}
+if [[ -d "${HOME_PATH}" ]]; then
+cat > Update.txt <<EOF
+config
+include
+package
+scripts
+target
+toolchain
+tools
+EOF
+ls -1 ${HOME_PATH} > UpdateList.txt
+FOLDERS=`grep -Fxvf UpdateList.txt Update.txt`
+FOLDERSX=`echo $FOLDERS | sed 's/ /、/g'`;echo $FOLDERSX
+fi
+
+if [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
   source ${HOME_PATH}/diysetup
-  if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
-    if [[ `grep -c "CONFIG_TARGET_x86_64=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config"` -eq '1' ]]; then
+  source DIY-SETUP/${FOLDER_NAME2}/settings.ini
+  if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]] && [[ -n "${CONFIG_FILE}" ]]; then
+    if [[ `grep -c "CONFIG_TARGET_x86_64=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
       TARGET_PROFILE3="x86-64"
-    elif [[ `grep -c "CONFIG_TARGET_x86=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config"` == '1' ]]; then
+    elif [[ `grep -c "CONFIG_TARGET_x86=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` == '1' ]]; then
       TARGET_PROFILE3="x86_32"
-    elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config"` -eq '1' ]]; then
+    elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
       TARGET_PROFILE3="Armvirt_64"
     else
-      TARGET_PROFILE3="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME2}/config" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+      TARGET_PROFILE3="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
     fi
-    menu2
+    [[ -z "${TARGET_PROFILE3}" ]] && TARGET_PROFILE3="未知"
+    KAIDUAN_JIANCE="1"
   else
-    menu
+    KAIDUAN_JIANCE="0"
   fi
+elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/shibaisetup" ]]; then
+  source ${HOME_PATH}/diysetup
+  source DIY-SETUP/${FOLDER_NAME2}/settings.ini
+  if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]] && [[ -n "${CONFIG_FILE}" ]]; then
+    if [[ `grep -c "CONFIG_TARGET_x86_64=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
+      TARGET_PROFILE3="x86-64"
+    elif [[ `grep -c "CONFIG_TARGET_x86=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` == '1' ]]; then
+      TARGET_PROFILE3="x86_32"
+    elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
+      TARGET_PROFILE3="Armvirt_64"
+    else
+      TARGET_PROFILE3="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+    fi
+    [[ -z "${TARGET_PROFILE3}" ]] && TARGET_PROFILE3="未知"
+    KAIDUAN_JIANCE="1"
+  else
+    KAIDUAN_JIANCE="0"
+  fi
+fi
+}
+
+
+if [[ "${KAIDUAN_JIANCE}" == "1" ]]; then
+  menu2
 else
   menu
 fi
+
+menuoo "$@"
