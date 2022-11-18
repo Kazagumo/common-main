@@ -576,22 +576,22 @@ function Bendi_xuanzhe() {
   clear
   echo 
   echo
-  ls -1 "DIY-SETUP" |awk '$0=NR"、"$0'
+  ls -1 "DIY-SETUP" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   ls -1 "DIY-SETUP" |awk '$0=NR" "$0' > GITHUB_ENN
   XYZDSZ="$(cat GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
   echo
   echo
-  echo -e "${Blue}请输入您要编译的源码，选择前面对应的数值,输入[0]则为退出程序${Font}"
+  echo -e "${Blue}  请输入您要编译的源码，选择前面对应的数值,输入[0]则为退出程序${Font}"
   echo
-  echo -e "${Yellow}跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用${Font}"
+  echo -e "${Yellow}  跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用${Font}"
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     echo
-    echo -e "${Yellow}您使用的为WSL系统,若要自行建立文件夹${Font}"
-    echo -e "${Yellow}请勿直接打开Windows文件夹进行修改,这样修改出来的文件很经常是有问题的${Font}"
-    echo -e "${Yellow}请用WinSCP或者其他工具进行连接,然后建立机型文件夹${Font}"
+    echo -e "${Yellow}  您使用的为WSL系统,若要自行建立文件夹${Font}"
+    echo -e "${Yellow}  请勿直接打开Windows文件夹进行修改,这样修改出来的文件很经常是有问题的${Font}"
+    echo -e "${Yellow}  请用WinSCP或者其他工具进行连接,然后建立机型文件夹${Font}"
   fi
   echo
-  export YUMINGIP="请输入前面对应的数值"
+  export YUMINGIP="  请输入前面对应的数值"
   while :; do
   YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
@@ -605,7 +605,7 @@ function Bendi_xuanzhe() {
   case $CUrrenty in
   Y)
     FOLDER_NAME3="$(grep "${YMXZ}" GITHUB_ENN |awk '{print $(2)}')"
-    ECHOY "您选择了使用 ${FOLDER_NAME3} 编译固件,5秒后将进行启动编译"
+    ECHOY "  您选择了使用 ${FOLDER_NAME3} 编译固件,5秒后将进行启动编译"
     rm -rf GITHUB_ENN
     sleep 5
     Bendi_menu
@@ -617,7 +617,7 @@ function Bendi_xuanzhe() {
   break
   ;;
   *)
-    export YUMINGIP="敬告,请输入正确数值"
+    export YUMINGIP="  敬告,请输入正确数值"
   ;;
   esac
   done
