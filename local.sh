@@ -690,7 +690,7 @@ read -p " ${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
 [Yy])
   Bendi_Tongbu
-  Bendi_DownloadDLFile
+  Bendi_RefreshFile
 break
 ;;
 [Nn])
