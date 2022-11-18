@@ -1324,13 +1324,12 @@ cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
 sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
 if [[ 0 -eq $? ]]; then
-  echo "固件打包完成"
+  sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
+  sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
+  TIME g "固件打包完成,已将固件存入${FIRMWARE_PATH}文件夹内"
 else
-  echo "固件打包失败"
+  TIME r "固件打包失败"
 fi
-sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
-sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
-echo "已将固件存入${FIRMWARE_PATH}文件夹内"
 }
 
 
