@@ -424,18 +424,19 @@ else
 fi
 }
 
+
+function Bendi_PackageAmlogic() {
+if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
+  source ${BUILD_PATH}/common.sh && Package_amlogic
+fi
+}
+
 function Bendi_Arrangement() {
 ECHOGG "整理固件"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_firmware
 judge "整理固件"
-}
-
-function Bendi_PackageAmlogic() {
-if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
-  source ${BUILD_PATH}/common.sh && Package_amlogic
-fi
 }
 
 function Bendi_Packaging() {
@@ -636,8 +637,8 @@ Bendi_Configuration
 Bendi_ErrorMessage
 Bendi_DownloadDLFile
 Bendi_Compile
-Bendi_Arrangement
 Bendi_PackageAmlogic
+Bendi_Arrangement
 }
 
 function Bendi_menu() {
@@ -656,8 +657,8 @@ Bendi_Configuration
 Bendi_ErrorMessage
 Bendi_DownloadDLFile
 Bendi_Compile
-Bendi_Arrangement
 Bendi_PackageAmlogic
+Bendi_Arrangement
 }
 
 function menu2() {
