@@ -483,7 +483,7 @@ function Bendi_Packaging() {
   echo
   ECHOGG "设置打包的内核版本[直接回车则默认 5.15.xx 和 5.10.xx ，xx为当前最新版本]"
   read -p " 请输入您要设置的内核：" amlogic_kernel
-  export amlogic_kernel=${amlogic_kernel:-"5.15.25_5.10.100 -a true"}
+  export amlogic_kernel=${amlogic_kernel:-"5.15.77_5.10.153"}
   if [[ "${amlogic_kernel}" == "5.15.25_5.10.100 -a true" ]]; then
     ECHOYY "您设置的内核版本为：5.15.xx 和 5.10.xx "
   else
@@ -495,10 +495,10 @@ function Bendi_Packaging() {
   export rootfs_size=${rootfs_size:-"960"}
   ECHOYY "您设置的ROOTFS分区大小为：${rootfs_size}"
   if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
-    cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+    cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   else
     armvirtargz="$(ls -1 "${FIRMWARE_PATH}" |grep ".*tar.gz" |awk 'END {print}')"
-    cp -Rf ${FIRMWARE_PATH}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+    cp -Rf ${FIRMWARE_PATH}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   fi
   if [[ `ls -1 "${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt" | grep -c "openwrt-armvirt-64-default-rootfs.tar.gz"` == '0' ]]; then
     print_error "amlogic/openwrt-armvirt文件夹没发现openwrt-armvirt-64-default-rootfs.tar.gz固件存在"
@@ -508,13 +508,8 @@ function Bendi_Packaging() {
   cd ${GITHUB_WORKSPACE}/amlogic
   sudo chmod +x make
   sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
-  if [[ `ls -1 ${GITHUB_WORKSPACE}/amlogic/out | grep -c "openwrt"` -ge '1' ]]; then
+  if [[ $? -eq 0 ]];then
     print_ok "打包完成，固件存放在[amlogic/out]文件夹"
-    if [[ "${WSL_ubuntu}" == "YES" ]]; then
-      cd ${GITHUB_WORKSPACE}/amlogic/out
-      explorer.exe .
-      cd ${GITHUB_WORKSPACE}
-    fi
   else
     print_error "打包失败，请再次尝试!"
   fi
