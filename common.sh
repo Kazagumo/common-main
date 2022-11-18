@@ -139,9 +139,9 @@ AMLOGIC)
 ;;
 esac
 
-echo "HOME_PATH='${GITHUB_WORKSPACE}/openwrt'" >> ${GITHUB_ENV}
-echo "DIY_WORK='${DIY_WORK}'" >> ${GITHUB_ENV}
-echo "PACKAGE_BRANCH='${PACKAGE_BRANCH}'" >> ${GITHUB_ENV}
+echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
+echo "DIY_WORK=${DIY_WORK}" >> ${GITHUB_ENV}
+echo "PACKAGE_BRANCH=${PACKAGE_BRANCH}" >> ${GITHUB_ENV}
 echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
 echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
@@ -163,7 +163,11 @@ echo "COLLECTED_PACKAGES=${COLLECTED_PACKAGES}" >> ${GITHUB_ENV}
 echo "WAREHOUSE_MAN=${GIT_REPOSITORY##*/}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
-echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
+if [[ -n "${BENDI_VERSION}" ]]; then
+  echo "SOURCE_OWNER='${SOURCE_OWNER}'" >> ${GITHUB_ENV}
+else
+  echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
+fi
 echo "DIYWORKING=${FOLDER_NAME}${REPO_BRANCH}" >> ${GITHUB_ENV}
   
 echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
@@ -843,9 +847,17 @@ elif [[ -z "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "amlogic_model='s905d'" >> ${GITHUB_ENV}
 fi
 if [[ -n "${amlogic_kernel}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+  if [[ -n "${BENDI_VERSION}" ]]; then
+    echo "amlogic_kernel='${amlogic_kernel}'" >> ${GITHUB_ENV}
+  else
+    echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+  fi
 elif [[ -z "${amlogic_kernel}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  echo "amlogic_kernel='5.4.210_5.10.135_5.15.50 -a true'" >> ${GITHUB_ENV}
+  if [[ -n "${BENDI_VERSION}" ]]; then
+    echo "amlogic_kernel='5.4.210_5.10.135_5.15.50 -a true'" >> ${GITHUB_ENV}
+  else
+    echo "amlogic_kernel=5.4.210_5.10.135_5.15.50 -a true" >> ${GITHUB_ENV}
+  fi
 fi
 if [[ -n "${rootfs_size}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
