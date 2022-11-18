@@ -699,6 +699,7 @@ function menu2() {
   break
   ;;
   4)
+    Bendi_Dependent
     Bendi_Packaging
   break
   ;;
@@ -731,6 +732,7 @@ case $CHOOSE in
 break
 ;;
 2)
+  Bendi_Dependent
   Bendi_Packaging
 break
 ;;
