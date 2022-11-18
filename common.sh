@@ -212,9 +212,10 @@ fi
 
 function Diy_update() {
 echo "安装依赖"
-sudo apt-get -y update
+sudo -E apt-get -y -qq update
 sudo -E apt-get -y -qq install rename
 if [[ ! -f "/etc/oprelyon" ]]; then
+  sudo apt-get -y update
   sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
   if [[ $? -ne 0 ]];then
     TIME r "依赖安装失败，请检测网络后再次尝试!"
