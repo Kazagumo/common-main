@@ -646,10 +646,7 @@ function Bendi_xuanzhe() {
 
 function Bendi_menu2() {
 FOLDER_NAME="${FOLDER_NAME2}"
-echo "同步上游仓库"
-git reset --hard HEAD^
 git pull
-echo "同步上游仓库完成"
 Bendi_WslPath
 Bendi_Dependent
 Bendi_DiySetup
