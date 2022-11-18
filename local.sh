@@ -68,7 +68,7 @@ judge() {
 }
 
 # 变量
-BENDI_VERSION="1.1"
+BENDI_VERSION="2.0"
 GITHUB_WORKSPACE="$PWD"
 HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
@@ -93,7 +93,7 @@ if [ ! "$Google_Check" == 301 ];then
   print_error "提醒：编译之前请自备梯子，编译全程都需要稳定翻墙的梯子~~"
   exit 1
 fi
-if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` == '0' ]]; then
+if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
   sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
 fi
 
@@ -391,6 +391,8 @@ else
      make V=s -16 |tee ${HOME_PATH}/build.log
   fi
 fi
+
+sleep 3
 
 if [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" ${FIRMWARE_PATH}/*
