@@ -121,11 +121,11 @@ fi
 function Bendi_Dependent() {
 ECHOGG "下载common.sh运行文件"
 cd ${GITHUB_WORKSPACE}
-curl -L https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
-if [[ $? -ne 0 ]];then
-  wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/common.sh
+wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/common.sh
+if [[ $? -ne 0 ]]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
 fi
-if [[ $? -eq 0 ]];then
+if [[ $? -eq 0 ]]; then
   sudo chmod +x common.sh
   source common.sh && Diy_update
 else
