@@ -605,7 +605,7 @@ function Bendi_xuanzhe() {
   case $CUrrenty in
   Y)
     FOLDER_NAME3="$(grep "${YMXZ}" GITHUB_ENN |awk '{print $(2)}')"
-    ECHOY "  您选择了使用 ${FOLDER_NAME3} 编译固件,5秒后将进行启动编译"
+    ECHOY " 您选择了使用 ${FOLDER_NAME3} 编译固件,5秒后将进行启动编译"
     rm -rf GITHUB_ENN
     sleep 5
     Bendi_menu
