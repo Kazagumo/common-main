@@ -423,6 +423,12 @@ source ${BUILD_PATH}/common.sh && Diy_firmware
 judge "整理固件"
 }
 
+function Bendi_PackageAmlogic() {
+if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
+  source ${BUILD_PATH}/common.sh && Package_amlogic
+fi
+}
+
 function Bendi_Packaging() {
   cd ${GITHUB_WORKSPACE}
   if [[ `ls -1 "${HOME_PATH}/bin/targets/armvirt/64" | grep -c "tar.gz"` == '0' ]]; then
@@ -622,6 +628,7 @@ Bendi_ErrorMessage
 Bendi_DownloadDLFile
 Bendi_Compile
 Bendi_Arrangement
+Bendi_PackageAmlogic
 }
 
 function Bendi_menu() {
@@ -641,6 +648,7 @@ Bendi_ErrorMessage
 Bendi_DownloadDLFile
 Bendi_Compile
 Bendi_Arrangement
+Bendi_PackageAmlogic
 }
 
 function menu2() {
