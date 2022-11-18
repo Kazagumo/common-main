@@ -684,9 +684,9 @@ function Bendi_UPDIYSETUP() {
 echo
 echo
 ECHOG "是否更新DIY-SETUP文件夹?按[Y/y]继续,或按[N/n]退出"
-IY-SETUP="请输入您的选择"
+IYSETUP="请输入您的选择"
 while :; do
-read -p " ${IY-SETUP}：" Bendi_upsetup
+read -p " ${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
 [Yy])
   Bendi_Tongbu
@@ -698,7 +698,7 @@ break
 break
 ;;
 *)
-  XUANMA="输入错误,请输入[Y/n]"
+  IYSETUP="输入错误,请输入[Y/n]"
 ;;
 esac
 done
