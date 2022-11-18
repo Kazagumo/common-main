@@ -71,8 +71,8 @@ judge() {
 BENDI_VERSION="1.1"
 GITHUB_WORKSPACE="$PWD"
 HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
-GITHUB_ENV="/etc/GITHUB_ENV"
-sudo sh -c 'echo #!/bin/bash >/etc/GITHUB_ENV'
+GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
+echo '#!/bin/bash' >${GITHUB_ENV}
 sudo chmod +x ${GITHUB_ENV}
 source /etc/os-release
 case "${UBUNTU_CODENAME}" in
@@ -766,7 +766,9 @@ FOLDERS=`grep -Fxvf UpdateList.txt Update.txt`
 FOLDERSX=`echo $FOLDERS | sed 's/ /、/g'`;echo $FOLDERSX
 fi
 
-if [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
+if [[ ! -f "${HOME_PATH}/diysetup" ]] || [[ ! -f "${HOME_PATH}/shibaisetup" ]]; then
+  menu
+elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
   source ${HOME_PATH}/diysetup
   source DIY-SETUP/${FOLDER_NAME2}/settings.ini
   if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]] && [[ -n "${CONFIG_FILE}" ]]; then
