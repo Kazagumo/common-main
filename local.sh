@@ -556,6 +556,9 @@ sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 
 function Bendi_xuanzhe() {
   cd ${GITHUB_WORKSPACE}
+  if [[ ! -f "/etc/oprelyon" ]]; then
+    Bendi_Dependent
+  fi
   if [[ ! -d "DIY-SETUP" ]]; then
     echo "没有主要编译程序存在,正在下载中,请稍后..."
     Bendi_DiySetup
@@ -657,7 +660,6 @@ Bendi_Arrangement
 }
 
 function menu2() {
-  clear
   echo
   echo
   if [[ -f "${HOME_PATH}/diysetup" ]]; then
@@ -717,7 +719,6 @@ function menu2() {
 
 function menu() {
 cd ${GITHUB_WORKSPACE}
-clear
 echo
 ECHOY " 1. 进行选择编译源码文件"
 ECHOYY " 2. 单独打包晶晨系列固件(前提是您要有armvirt的.tar.gz固件)"
@@ -766,9 +767,7 @@ FOLDERS=`grep -Fxvf UpdateList.txt Update.txt`
 FOLDERSX=`echo $FOLDERS | sed 's/ /、/g'`;echo $FOLDERSX
 fi
 
-if [[ ! -f "${HOME_PATH}/diysetup" ]] || [[ ! -f "${HOME_PATH}/shibaisetup" ]]; then
-  KAIDUAN_JIANCE="0"
-elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
+if [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
   source ${HOME_PATH}/diysetup
   source DIY-SETUP/${FOLDER_NAME2}/settings.ini
   if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]] && [[ -n "${CONFIG_FILE}" ]]; then
