@@ -789,6 +789,8 @@ elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -
   else
     KAIDUAN_JIANCE="0"
   fi
+else
+  KAIDUAN_JIANCE="0"
 fi
 }
 
