@@ -689,7 +689,7 @@ Bendi_Arrangement
 function Bendi_UPDIYSETUP() {
 echo
 echo
-ECHOG "是否更新DIY-SETUP文件夹?按[Y/y]继续,或按[N/n]退出"
+ECHOY "是否更新DIY-SETUP文件夹?按[Y/y]继续,或按[N/n]退出"
 IYSETUP="请输入您的选择"
 while :; do
 read -p " ${IYSETUP}：" Bendi_upsetup
