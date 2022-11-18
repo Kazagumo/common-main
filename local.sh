@@ -767,7 +767,7 @@ FOLDERSX=`echo $FOLDERS | sed 's/ /、/g'`;echo $FOLDERSX
 fi
 
 if [[ ! -f "${HOME_PATH}/diysetup" ]] || [[ ! -f "${HOME_PATH}/shibaisetup" ]]; then
-  menu
+  KAIDUAN_JIANCE="0"
 elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
   source ${HOME_PATH}/diysetup
   source DIY-SETUP/${FOLDER_NAME2}/settings.ini
