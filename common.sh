@@ -913,11 +913,13 @@ cd ${HOME_PATH}
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
-  export themee=luci-theme-${Required_Topic}
-  if [[ `find . -name "${themee}" -type d |grep -v build_dir |grep -c "${themee}"` -ge '1' ]]; then
-    sed -i "s/bootstrap/${Required_Topic}/g" ${HOME_PATH}/feeds/luci/collections/luci/Makefile
+  export collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+  export ybtheme="$(egrep -o "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
+  export yhtheme=luci-theme-${Required_Topic}
+  if [[ `find . -name "${yhtheme}" -type d |grep -v build_dir |grep -c "${yhtheme}"` -ge '1' ]]; then
+    sed -i "s/${yhtheme}/${yhtheme}/g" "${collections}"
   else
-    echo "TIME r \"没有${themee}此主题存在,不进行替换bootstrap主题操作\"" >> ${HOME_PATH}/CHONGTU
+    echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${yhtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 }
