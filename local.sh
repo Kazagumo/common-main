@@ -740,7 +740,7 @@ function menu2() {
   break
   ;;
   3)
-    menu
+    Bendi_UPDIYSETUP
   break
   ;;
   4)
