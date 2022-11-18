@@ -161,6 +161,7 @@ for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini"); do
   [[ "${WSL_windows}" == "1" ]] && echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
 done
 if [[ "${tongbushangyou}" == "1" ]]; then
+  rm -rf shangyou
   ECHOG "同步上游DIY-SETUP文件完成，请到DIY-SETUP对比文件完成设置"
   exit 0
 fi
