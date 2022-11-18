@@ -164,7 +164,7 @@ echo "WAREHOUSE_MAN=${GIT_REPOSITORY##*/}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 if [[ -n "${BENDI_VERSION}" ]]; then
-  echo "SOURCE_OWNER='${SOURCE_OWNER}'" >> ${GITHUB_ENV}
+  echo "SOURCE_OWNER=\"${SOURCE_OWNER}\"" >> ${GITHUB_ENV}
 else
   echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 fi
