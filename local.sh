@@ -183,6 +183,7 @@ fi
 
 function Bendi_Tongbu() {
 cd ${GITHUB_WORKSPACE}
+tongbushangyou="1"
 rm -rf shangyou
 git clone -b main https://github.com/281677160/autobuild shangyou
 rm -rf /shangyou/build/*/.config
@@ -194,7 +195,6 @@ for X in $(grep "\"IMMORTALWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "set
 for X in $(grep "\"XWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
 for X in $(grep "\"OFFICIAL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
 for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
-tongbushangyou="1"
 }
 
 
