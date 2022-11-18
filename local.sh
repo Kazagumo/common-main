@@ -660,6 +660,8 @@ Bendi_Arrangement
 
 function Bendi_menu() {
 FOLDER_NAME="${FOLDER_NAME3}"
+git reset --hard HEAD^
+git pull
 Bendi_WslPath
 Bendi_Dependent
 Bendi_DiySetup
