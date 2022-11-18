@@ -140,8 +140,8 @@ function Bendi_RefreshFile() {
 cd ${GITHUB_WORKSPACE}
 ECHOGG "将云编译的配置文件修改成本地适用文件"
 rm -rf ${GITHUB_WORKSPACE}/DIY-SETUP/*/start-up
-for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name ".config" |sed 's/\/.config//g'); do 
-  mv "${X}/.config" "${X}/config"
+for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name "settings.ini" |sed 's/\/settings.ini//g'); do 
+  [[ -f "${X}/.config" ]] && mv "${X}/.config" "${X}/config"
   mkdir -p "${X}/version"
   echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/version/bendi_version"
   echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/version/README.md"
@@ -175,6 +175,22 @@ else
   source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 fi
 }
+
+function Bendi_Tongbu() {
+cd ${GITHUB_WORKSPACE}
+git clone -b main https://github.com/281677160/build-actions.git shangyou
+rm -rf /shangyou/build/*/.config
+for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
+for X in $(find ${GITHUB_WORKSPACE}/DIY-SETUP -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
+for X in $(grep "\"COOLSNOWWOLF\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
+for X in $(grep "\"LIENOL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
+for X in $(grep "\"IMMORTALWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
+for X in $(grep "\"XWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
+for X in $(grep "\"OFFICIAL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
+for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
+rm -rf shangyou
+}
+
 
 function Bendi_EveryInquiry() {
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
@@ -662,6 +678,30 @@ Bendi_PackageAmlogic
 Bendi_Arrangement
 }
 
+function Bendi_UPDIYSETUP() {
+echo
+echo
+ECHOG "是否更新DIY-SETUP文件夹?按[Y/y]继续,或按[N/n]退出"
+IY-SETUP="请输入您的选择"
+while :; do
+read -p " ${IY-SETUP}：" Bendi_upsetup
+case ${Bendi_upsetup} in
+[Yy])
+  Bendi_Tongbu
+  Bendi_DownloadDLFile
+break
+;;
+[Nn])
+  exit 1
+break
+;;
+*)
+  XUANMA="输入错误,请输入[Y/n]"
+;;
+esac
+done
+}
+
 function menu2() {
   echo
   echo
@@ -680,7 +720,7 @@ function menu2() {
   echo
   echo -e " 2${Red}.${Font}${Green}重新选择源码编译${Font}"
   echo
-  echo -e " 3${Red}.${Font}${Green}同步上游OP_DIY文件(不覆盖config配置文件)${Font}"
+  echo -e " 3${Red}.${Font}${Green}同步上游DIY-SETUP文件(不覆盖config配置文件)${Font}"
   echo
   echo -e " 4${Red}.${Font}${Green}打包N1和晶晨系列CPU固件${Font}"
   echo
