@@ -89,7 +89,7 @@ if [[ "$USER" == "root" ]]; then
   exit 1
 fi
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
-if [ ! "$Google_Check" == 301 ];then
+if [ ! "${Google_Check}" == 301 ]; then
   print_error "提醒：编译之前请自备梯子，编译全程都需要稳定翻墙的梯子~~"
   exit 1
 fi
