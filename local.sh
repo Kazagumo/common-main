@@ -633,7 +633,7 @@ function Bendi_xuanzhe() {
     echo -e "${Yellow}  请用WinSCP或者其他工具进行连接,然后建立机型文件夹${Font}"
   fi
   echo
-  export YUMINGIP="  请输入前面对应的数值"
+  export YUMINGIP="  请输入数字(1~N)"
   while :; do
   YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
