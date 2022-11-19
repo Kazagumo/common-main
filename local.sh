@@ -168,6 +168,35 @@ for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini"); do
   echo 'MODIFY_CONFIGURATION="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
   [[ "${WSL_windows}" == "1" ]] && echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
 done
+
+for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
+  
+  axzini="$(grep "REPO_BRANCH" "${X}/settings.ini" |awk '{print $(1)}')"
+  athini="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${axzini}" ]] && [[ -n "${athini}" ]]; then
+   sed -i "s?${axzini}?${athini}?g" "${X}/settings.ini"
+  fi
+  bxzini="$(grep "CONFIG_FILE" "${X}/settings.ini" |awk '{print $(1)}')"
+  bthini="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${bxzini}" ]] && [[ -n "${bthini}" ]]; then
+   sed -i "s?${bxzini}?${bthini}?g" "${X}/settings.ini"
+  fi
+  cxzini="$(grep "DIY_PART_SH" "${X}/settings.ini" |awk '{print $(1)}')"
+  cthini="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${cxzini}" ]] && [[ -n "${cthini}" ]]; then
+   sed -i "s?${cxzini}?${cthini}?g" "${X}/settings.ini"
+  fi
+  dxzini="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |awk '{print $(1)}')"
+  dthini="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${dxzini}" ]] && [[ -n "${dthini}" ]]; then
+   sed -i "s?${dxzini}?${dthini}?g" "${X}/settings.ini"
+  fi
+  fxzini="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |awk '{print $(1)}')"
+  fthini="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${fxzini}" ]] && [[ -n "${fthini}" ]]; then
+   sed -i "s?${fxzini}?${fthini}?g" "${X}/settings.ini"
+  fi
+done
 if [[ "${tongbushangyou}" == "1" ]]; then
   rm -rf shangyou
   ECHOG "同步上游DIY-SETUP文件完成，请到DIY-SETUP对比文件完成设置"
@@ -201,35 +230,7 @@ for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini" |sed 's/\/s
 for X in $(grep "\"COOLSNOWWOLF\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
 for X in $(grep "\"LIENOL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
 for X in $(grep "\"IMMORTALWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
-for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
-  cp -Rf shangyou/build/Xwrt/* "${X}"
-  
-  axzini="$(grep "REPO_BRANCH" "${X}/settings.ini" |awk '{print $(1)}')"
-  athini="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${axzini}" ]] && [[ -n "${athini}" ]]; then
-   sed -i "s?${axzini}?${athini}?g" "${X}/settings.ini"
-  fi
-  bxzini="$(grep "CONFIG_FILE" "${X}/settings.ini" |awk '{print $(1)}')"
-  bthini="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${bxzini}" ]] && [[ -n "${bthini}" ]]; then
-   sed -i "s?${bxzini}?${bthini}?g" "${X}/settings.ini"
-  fi
-  cxzini="$(grep "DIY_PART_SH" "${X}/settings.ini" |awk '{print $(1)}')"
-  cthini="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${cxzini}" ]] && [[ -n "${cthini}" ]]; then
-   sed -i "s?${cxzini}?${cthini}?g" "${X}/settings.ini"
-  fi
-  dxzini="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |awk '{print $(1)}')"
-  dthini="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${dxzini}" ]] && [[ -n "${dthini}" ]]; then
-   sed -i "s?${dxzini}?${dthini}?g" "${X}/settings.ini"
-  fi
-  fxzini="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |awk '{print $(1)}')"
-  fthini="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${fxzini}" ]] && [[ -n "${fthini}" ]]; then
-   sed -i "s?${fxzini}?${fthini}?g" "${X}/settings.ini"
-  fi
-done
+for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
 for X in $(grep "\"OFFICIAL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
 for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
 }
