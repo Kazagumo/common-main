@@ -208,10 +208,10 @@ for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "setting
 
 function Bendi_Version() {
   cd ${GITHUB_WORKSPACE}
-  if [[ -d ${GITHUB_WORKSPACE}/DIY-SETUP ]]; then
+  if [[ -d "DIY-SETUP" ]]; then
     A="$(grep "BENDI_VERSION=" "DIY-SETUP/${FOLDER_NAME}/version/bendi_version" |egrep -o "[0-9]+\.[0-9]+")"
     [[ -z ${A} ]] && A="0.9"
-    B="${Version}"
+    B="${BENDI_VERSION}"
     if [[ "$A" < "$B" ]]; then
       ECHOY "上游DIY-SETUP文件有更新，是否同步更新DIY-SETUP文件?"
       read -p " 按[Y/y]回车同步文件，任意键回车则跳过更新： " TB
@@ -679,6 +679,7 @@ FOLDER_NAME="${FOLDER_NAME2}"
 git pull
 Bendi_WslPath
 Bendi_Dependent
+Bendi_Version
 Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
@@ -700,10 +701,10 @@ function Bendi_menu() {
 FOLDER_NAME="${FOLDER_NAME3}"
 Bendi_WslPath
 Bendi_Dependent
+Bendi_Version
 Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
-Bendi_Version
 Bendi_MainProgram
 Bendi_Download
 Bendi_SourceClean
