@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ `grep -c "KernelPackage/inet-diag" package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
+if [[ `grep -c "KernelPackage/netlink-diag" package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
 echo "
 define KernelPackage/netlink-diag
   SUBMENU:=\$(NETWORK_SUPPORT_MENU)
@@ -15,7 +15,11 @@ define KernelPackage/netlink-diag/description
 endef
 
 \$(eval \$(call KernelPackage,netlink-diag))
+" >>  package/kernel/linux/modules/netsupport.mk
+fi
 
+if [[ `grep -c "KernelPackage/inet-diag" package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
+echo "
 define KernelPackage/inet-diag
   SUBMENU:=\$(NETWORK_SUPPORT_MENU)
   TITLE:=INET diag support for ss utility
