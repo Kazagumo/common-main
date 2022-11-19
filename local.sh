@@ -623,9 +623,9 @@ function Bendi_xuanzhe() {
   XYZDSZ="$(cat GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
   echo
   echo
-  echo -e "${Blue}  请输入您要编译的源码，选择前面对应的数值,输入[0]则为退出程序${Font}"
+  echo -e "${Blue}  请输入您要编译的源码，选择前面对应的数值(1~N),输入[0]则为退出程序${Font}"
   echo
-  echo -e "${Yellow}  跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用${Font}"
+  echo -e "${Yellow}  跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     echo
     echo -e "${Yellow}  您使用的为WSL系统,若要自行建立文件夹${Font}"
