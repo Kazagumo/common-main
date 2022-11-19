@@ -240,6 +240,7 @@ OFFICIAL)
     git switch -c ${LUCI_CHECKUT}
     export LUCI_CHECKUT="$(echo ${LUCI_CHECKUT} |sed 's/v//')"
     echo "正在使用${LUCI_CHECKUT}版本源码进行编译"
+    echo
   fi
 ;;
 esac
