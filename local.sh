@@ -527,6 +527,7 @@ function Bendi_Packaging() {
 
 function Bendi_Change() {
 cd ${HOME_PATH}
+sed -i '/^#/d' feeds.conf.default
 if [[ ! "${REPO_BRANCH2}" == "${REPO_BRANCH}" ]]; then
   ECHOR "编译分支发生改变,需要重新下载源码,下载源码中..."
   sleep 5
