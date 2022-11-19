@@ -168,44 +168,6 @@ for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini"); do
   echo 'MODIFY_CONFIGURATION="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
   [[ "${WSL_windows}" == "1" ]] && echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
 done
-
-for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
-  aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "DIY_PART_SH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-done
-if [[ "${tongbushangyou}" == "1" ]]; then
-  rm -rf shangyou
-  ECHOG "同步上游DIY-SETUP文件完成，请到DIY-SETUP对比文件完成设置"
-  exit 0
-fi
 }
 
 function Bendi_DiySetup() {
@@ -225,18 +187,7 @@ fi
 
 function Bendi_Tongbu() {
 cd ${GITHUB_WORKSPACE}
-tongbushangyou="1"
-rm -rf shangyou
-git clone -b main https://github.com/281677160/autobuild shangyou
-rm -rf /shangyou/build/*/.config
-for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
-for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
-for X in $(grep "\"COOLSNOWWOLF\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
-for X in $(grep "\"LIENOL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
-for X in $(grep "\"IMMORTALWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
-for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
-for X in $(grep "\"OFFICIAL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
-for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
+bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/tongbu.sh)
 }
 
 function Bendi_Version() {
@@ -762,7 +713,6 @@ read -p " ${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
 [Yy])
   Bendi_Tongbu
-  Bendi_RefreshFile
 break
 ;;
 [Nn])
