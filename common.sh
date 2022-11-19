@@ -516,9 +516,6 @@ elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang && svn export https://github.com/coolsnowwolf/packages/trunk/lang/golang ${HOME_PATH}/feeds/packages/lang/golang
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
-  if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-    find . -name 'luci-app-samba4' | xargs -i rm -rf {}
-  fi
 fi
 
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
