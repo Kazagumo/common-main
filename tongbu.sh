@@ -96,7 +96,7 @@ for X in $(find "DIY-SETUP" -name "settings.ini"); do
 done
 fi
 
-# 替换本地文件的变量
+# 恢复settings.ini设置
 # N1
 for X in $(grep "\"AMLOGIC\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
   aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
