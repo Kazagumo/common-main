@@ -838,7 +838,7 @@ if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "DIY-SETUP/${FOLDER_NAME2}/${CONFIG
   if [[ `grep -c "CONFIG_TARGET_x86_64=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
     TARGET_PROFILE3="x86-64"
   elif [[ `grep -c "CONFIG_TARGET_x86=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` == '1' ]]; then
-    TARGET_PROFILE3="x86_32"
+    TARGET_PROFILE3="x86-32"
   elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
     TARGET_PROFILE3="Armvirt_64"
   else
