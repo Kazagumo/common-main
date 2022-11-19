@@ -661,7 +661,6 @@ function Bendi_xuanzhe() {
 }
 
 function Bendi_menu2() {
-git pull
 Bendi_WslPath
 Bendi_Dependent
 Bendi_Version
@@ -670,6 +669,7 @@ Bendi_EveryInquiry
 Bendi_Variable
 Bendi_Version
 Bendi_Change
+git pull
 Bendi_MainProgram
 Bendi_Restore
 Bendi_UpdateSource
