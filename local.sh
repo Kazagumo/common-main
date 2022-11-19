@@ -813,6 +813,7 @@ EOF
 ls -1 ${HOME_PATH} > UpdateList.txt
 FOLDERS=`grep -Fxvf UpdateList.txt Update.txt`
 FOLDERSX=`echo $FOLDERS | sed 's/ /、/g'`;echo $FOLDERSX
+rm -rf {UpdateList.txt,Update.txt}
 fi
 
 if [[ -z "${FOLDERS}" ]]; then
