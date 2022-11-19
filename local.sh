@@ -100,7 +100,6 @@ fi
 
 function Bendi_WslPath() {
 if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
-  WSL_windows="1"
   if [[ ! "${WSL_ROUTEPATH}" == 'true' ]]; then
     clear
     ECHOR "您的ubuntu为Windows子系统,是否一次性解决路径问题,还是使用临时路径编译?"
