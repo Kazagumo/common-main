@@ -68,7 +68,7 @@ judge() {
 }
 
 # 变量
-export BENDI_VERSION="2.1"
+export BENDI_VERSION="2.0"
 export GITHUB_WORKSPACE="$PWD"
 export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
