@@ -590,7 +590,7 @@ mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
 
-function Bendi_Restore() {
+function Bendi_gitpull() {
 ECHOG "同步上游源码"
 git pull
 judge "同步"
@@ -675,7 +675,7 @@ Bendi_EveryInquiry
 Bendi_Variable
 Bendi_Version
 Bendi_Change
-git_pull
+Bendi_gitpull
 Bendi_MainProgram
 Bendi_Restore
 Bendi_UpdateSource
