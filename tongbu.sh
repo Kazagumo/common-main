@@ -22,6 +22,14 @@ for X in $(grep "\"OFFICIAL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/se
 for X in $(grep "\"AMLOGIC\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
 
 
+# 上游仓库用完，删除了
+if [[ "${TONGBU_CANGKU}" == "1" ]]; then
+  mv -f DIY-SETUP repogx/build
+else
+  rm -rf shangyou
+fi
+
+
 # 修改本地文件
 if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
 rm -rf DIY-SETUP/*/start-up
