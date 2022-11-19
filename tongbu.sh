@@ -559,6 +559,6 @@ for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settin
 done
 
 if [[ "${BENDI_SHANCHUBAK}" == "1" ]]; then
-  for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/.*.bak; done
+  for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
 fi
 exit 0
