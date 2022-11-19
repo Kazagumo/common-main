@@ -520,7 +520,7 @@ function Bendi_Packaging() {
   if [[ $? -eq 0 ]];then
     print_ok "打包完成，固件存放在[amlogic/out]文件夹"
   else
-    print_error "打包失败，请再次尝试!"
+    print_error "打包失败，请查看当前错误说明!"
   fi
 }
 
