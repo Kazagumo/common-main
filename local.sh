@@ -656,6 +656,7 @@ function Bendi_xuanzhe() {
   ;;
   N)
     rm -rf GITHUB_ENN
+    echo
     exit 0
   break
   ;;
