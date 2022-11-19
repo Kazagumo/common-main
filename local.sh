@@ -816,9 +816,9 @@ FOLDERSX=`echo $FOLDERS | sed 's/ /、/g'`;echo $FOLDERSX
 fi
 
 if [[ -z "${FOLDERS}" ]]; then
-  KAIDUAN_JIANCE="0"
-else
   KAIDUAN_JIANCE="1"
+else
+  KAIDUAN_JIANCE="0"
 fi
 if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
   source ${HOME_PATH}/diysetup
