@@ -77,6 +77,11 @@ for X in $(grep "\"AMLOGIC\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/set
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
+  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+  fi
   
   aa="$(grep "SSH_ACTIONS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "SSH_ACTIONS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
@@ -154,6 +159,11 @@ for X in $(grep "\"IMMORTALWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\
   fi
   aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+  fi
+  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
@@ -237,6 +247,11 @@ for X in $(grep "\"COOLSNOWWOLF\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
+  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+  fi
   
   aa="$(grep "SSH_ACTIONS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "SSH_ACTIONS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
@@ -314,6 +329,11 @@ for X in $(grep "\"LIENOL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/sett
   fi
   aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+  fi
+  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
@@ -397,6 +417,11 @@ for X in $(grep "\"OFFICIAL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/se
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
+  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+  fi
   
   aa="$(grep "SSH_ACTIONS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "SSH_ACTIONS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
@@ -474,6 +499,11 @@ for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settin
   fi
   aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+  fi
+  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
