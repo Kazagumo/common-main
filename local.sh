@@ -386,9 +386,9 @@ RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
 RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
 
 echo
-ECHOGG "您的机器CPU型号为[ ${Model_Name} ]"
+ECHOG "您的机器CPU型号为[ ${Model_Name} ]"
 ECHOGG "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
-ECHOGG "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
+ECHOG "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
 echo
 
 [[ -f "${GITHUB_WORKSPACE}/common.sh" ]] && rm -rf ${GITHUB_WORKSPACE}/common.sh
@@ -455,7 +455,9 @@ cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_firmware
 judge "整理固件"
-echo
+}
+
+function Bendi_shouweigongzhong() {
 if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   print_ok "[ N1或晶晨系列盒子专用固件 ]顺利编译完成~~~"
 else
@@ -678,6 +680,7 @@ Bendi_DownloadDLFile
 Bendi_Compile
 Bendi_PackageAmlogic
 Bendi_Arrangement
+Bendi_shouweigongzhong
 }
 
 function Bendi_menu() {
@@ -698,6 +701,7 @@ Bendi_DownloadDLFile
 Bendi_Compile
 Bendi_PackageAmlogic
 Bendi_Arrangement
+Bendi_shouweigongzhong
 }
 
 function Bendi_UPDIYSETUP() {
