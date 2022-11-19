@@ -159,6 +159,7 @@ fi
 
 function Bendi_Tongbu() {
 cd ${GITHUB_WORKSPACE}
+echo "开始同步上游DIY-SETUP文件"
 bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/tongbu.sh)
 judge "同步上游仓库完成，请至DIY-SETUP检查设置，设置好最新配置再进行编译"
 }
