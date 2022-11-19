@@ -39,7 +39,7 @@ native Linux tools such as ss.
 endef
 
 \$(eval \$(call KernelPackage,inet-diag))
-" >>  "/home/danshui/openwrt/package/kernel/linux/modules/netsupport.mk"
+" >>  package/kernel/linux/modules/netsupport.mk
 fi
 
 if [[ `grep -c "kmod-netlink-diag" package/network/utils/iproute2/Makefile` -eq '0' ]]; then
