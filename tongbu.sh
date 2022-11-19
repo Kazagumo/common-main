@@ -24,6 +24,45 @@ for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settin
 for X in $(grep "\"OFFICIAL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
 for X in $(grep "\"AMLOGIC\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
 
+# 云仓库的修改文件
+case "${TONGBU_CANGKU}" in
+1)
+  if [[ -n "$(ls -A "${GITHUB_WORKSPACE}/repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
+    CRON2="$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |cut -d "#" -f1 |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+    CRON1="$(grep -A 1 'schedule:' shangyou/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
+    if [[ `grep 'cron:' repogx/.github/workflows/build-openwrt.yml |sed 's/^[ ]*//g' |grep '^-\ cron'` ]]; then
+      sed -i 's/^#\(.*schedule:\)/\1/' shangyou/.github/workflows/build-openwrt.yml
+      sed -i 's/^#\(.*- cron:\)/\1/' shangyou/.github/workflows/build-openwrt.yml
+    fi
+    TARGET1="$(grep 'target: \[' shangyou/.github/workflows/build-openwrt.yml  |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+    TARGET2="$(grep 'target: \[' repogx/.github/workflows/build-openwrt.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+    QIDONG1="$(grep -A 1 'paths:' shangyou/.github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
+    QIDONG2="- 'config'"
+    TARGE1="$(grep 'target: \[' shangyou/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+    TARGE2="$(grep 'target: \[' repogx/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+    BEIYONG1="$(grep -A 2 'target:' shangyou/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')"
+    BEIYONG2="$(grep -A 2 'target:' repogx/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')"
+  fi
+  
+  if [[ -n "$(ls -A "${GITHUB_WORKSPACE}/repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
+    if [[ -n "${{env.BEIYONG1}}" ]] && [[ -n "${{env.BEIYONG2}}" ]]; then
+      sed -i "s/${{env.BEIYONG1}}/${{env.BEIYONG2}}/g" shangyou/.github/workflows/build-openwrt.yml
+    fi
+    if [[ -n "${{env.CRON1}}" ]] && [[ -n "${{env.CRON2}}" ]]; then
+      sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyou/.github/workflows/build-openwrt.yml
+    fi
+    if [[ -n "${{env.TARGET1}}" ]] && [[ -n "${{env.TARGET2}}" ]]; then
+      sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyou/.github/workflows/build-openwrt.yml
+    fi
+    if [[ -n "${{env.TARGE1}}" ]] && [[ -n "${{env.TARGE2}}" ]]; then
+      sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyou/.github/workflows/compile.yml
+    fi
+    if [[ -n "${{env.QIDONG1}}" ]] && [[ -n "${{env.QIDONG2}}" ]]; then
+      sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyou/.github/workflows/compile.yml
+    fi
+  fi
+;;
+esac
 
 # 修改本地文件
 if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
