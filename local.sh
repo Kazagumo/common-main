@@ -201,7 +201,9 @@ for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini" |sed 's/\/s
 for X in $(grep "\"COOLSNOWWOLF\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
 for X in $(grep "\"LIENOL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
 for X in $(grep "\"IMMORTALWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
-for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do 
+for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
+  cp -Rf shangyou/build/Xwrt/* "${X}/"
+  
   xzini="$(grep "REPO_BRANCH" "${X}/settings.ini" |awk '{print $(1)}')"
   thini="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |awk '{print $(1)}')"
   if [[ -n "${xzini}" ]] && [[ -n "${thini}" ]]; then
