@@ -816,50 +816,42 @@ FOLDERSX=`echo $FOLDERS | sed 's/ /、/g'`;echo $FOLDERSX
 rm -rf {UpdateList.txt,Update.txt}
 fi
 
-[[ -f "${HOME_PATH}/diysetup" ]] && source ${HOME_PATH}/diysetup
-[[ -f "${HOME_PATH}/shibaisetup" ]] && source ${HOME_PATH}/shibaisetup
-
-if [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/diysetup" ]] && [[ -f DIY-SETUP/${FOLDER_NAME2}/settings.ini ]]; then
-  source DIY-SETUP/${FOLDER_NAME2}/settings.ini
-  if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]] && [[ -n "${CONFIG_FILE}" ]]; then
-    if [[ `grep -c "CONFIG_TARGET_x86_64=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
-      TARGET_PROFILE3="x86-64"
-    elif [[ `grep -c "CONFIG_TARGET_x86=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` == '1' ]]; then
-      TARGET_PROFILE3="x86_32"
-    elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
-      TARGET_PROFILE3="Armvirt_64"
-    else
-      TARGET_PROFILE3="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
-    fi
-    [[ -z "${TARGET_PROFILE3}" ]] && TARGET_PROFILE3="未知"
-    KAIDUAN_JIANCE="1"
-  else
-    KAIDUAN_JIANCE="0"
-  fi
-elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -f "${HOME_PATH}/shibaisetup" ]] && [[ -f DIY-SETUP/${FOLDER_NAME2}/settings.ini ]]; then
-  source DIY-SETUP/${FOLDER_NAME2}/settings.ini
-  if [[ -n "${FOLDER_NAME2}" ]] && [[ -n "${REPO_BRANCH2}" ]] && [[ -n "${CONFIG_FILE}" ]]; then
-    if [[ `grep -c "CONFIG_TARGET_x86_64=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
-      TARGET_PROFILE3="x86-64"
-    elif [[ `grep -c "CONFIG_TARGET_x86=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` == '1' ]]; then
-      TARGET_PROFILE3="x86_32"
-    elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
-      TARGET_PROFILE3="Armvirt_64"
-    else
-      TARGET_PROFILE3="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
-    fi
-    [[ -z "${TARGET_PROFILE3}" ]] && TARGET_PROFILE3="未知"
-    KAIDUAN_JIANCE="1"
-  else
-    KAIDUAN_JIANCE="0"
-  fi
+if [[ -z "${FOLDERS}" ]]; then
+  KAIDUAN_JIANCE="0"
+else
+  KAIDUAN_JIANCE="1"
+fi
+if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
+  source ${HOME_PATH}/diysetup
+elif [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "${HOME_PATH}/shibaisetup" ]]; then
+  source ${HOME_PATH}/shibaisetup
+  KAIDUAN_JIANCE="1"
 else
   KAIDUAN_JIANCE="0"
 fi
-export FOLDER_NAME="${FOLDER_NAME2}"
+if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "DIY-SETUP/${FOLDER_NAME2}/settings.ini" ]]; then
+  source DIY-SETUP/${FOLDER_NAME2}/settings.ini
+  KAIDUAN_JIANCE="1"
+else
+  KAIDUAN_JIANCE="0"
+fi
+if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" ]]; then
+  if [[ `grep -c "CONFIG_TARGET_x86_64=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
+    TARGET_PROFILE3="x86-64"
+  elif [[ `grep -c "CONFIG_TARGET_x86=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` == '1' ]]; then
+    TARGET_PROFILE3="x86_32"
+  elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
+    TARGET_PROFILE3="Armvirt_64"
+  else
+    TARGET_PROFILE3="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+  fi
+  [[ -z "${TARGET_PROFILE3}" ]] && TARGET_PROFILE3="未知"
+fi
 if [[ "${KAIDUAN_JIANCE}" == "1" ]]; then
+  export FOLDER_NAME="${FOLDER_NAME2}"
   menu2
 else
+  export FOLDER_NAME=""
   menu
 fi
 }
