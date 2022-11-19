@@ -530,12 +530,13 @@ cd ${HOME_PATH}
 sed -i '/^#/d' feeds.conf.default
 if [[ ! "${REPO_BRANCH2}" == "${REPO_BRANCH}" ]]; then
   ECHOR "编译分支发生改变,需要重新下载源码,下载源码中..."
-  sleep 5
+  sleep 3
   Bendi_Download
 elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
   if [[ `grep -c "danshui" feeds.conf.default` -ge '1' ]]; then
     ECHOR "您的自定义设置更改为不需要作者收集的插件包,正在清理插件中..."
-    sleep 5
+    sleep 3
+    find . -name 'luci-app-openclash' | xargs -i rm -rf {}
     sed -i '/danshui/d' feeds.conf.default
     sed -i '/helloworld/d' feeds.conf.default
     sed -i '/passwall/d' feeds.conf.default
@@ -545,7 +546,7 @@ elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
 elif [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   if [[ `grep -c "danshui" feeds.conf.default` -eq '0' ]]; then
     ECHOG "您的自定义设置更改为需要作者收集的插件包,正在增加插件中..."
-    sleep 5
+    sleep 3
     sed -i '/danshui/d' feeds.conf.default
     sed -i '/helloworld/d' feeds.conf.default
     sed -i '/fw876/d' feeds.conf.default
