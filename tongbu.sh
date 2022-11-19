@@ -61,6 +61,8 @@ case "${TONGBU_CANGKU}" in
       sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyou/.github/workflows/compile.yml
     fi
   fi
+  
+  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/* ${GITHUB_WORKSPACE}/repogx/.github/workflows
 ;;
 esac
 
