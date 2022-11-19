@@ -131,6 +131,13 @@ fi
 if [[ $? -eq 0 ]]; then
   sudo chmod +x common.sh
   source common.sh && Diy_update
+  if [[ -f /etc/ssh/sshd_config ]] && [[ `grep -c "ClientAliveInterval 30" /etc/ssh/sshd_config` -eq '0' ]]; then
+    sudo sed -i '/ClientAliveInterval/d' /etc/ssh/sshd_config
+    sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config
+    sudo sh -c 'echo ClientAliveInterval 30 >> /etc/ssh/sshd_config'
+    sudo sh -c 'echo ClientAliveCountMax 6 >> /etc/ssh/sshd_config'
+    sudo service ssh restart
+  fi
 else
   print_error "common.sh下载失败，请检测网络后再用一键命令试试!"
   exit 1
