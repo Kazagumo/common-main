@@ -81,7 +81,7 @@ case "${UBUNTU_CODENAME}" in
 ;;
 *)
   print_error "请使用Ubuntu 64位系统，推荐 Ubuntu 20.04 LTS 或 Ubuntu 22.04 LTS"
-exit 1
+  exit 1
 ;;
 esac
 if [[ "$USER" == "root" ]]; then
