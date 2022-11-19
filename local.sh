@@ -178,8 +178,7 @@ function Bendi_Version() {
       case ${TB} in
       [Yy]) 
         ECHOG "正在同步DIY-SETUP文件，请稍后..."
-          Bendi_Tongbu
-          Bendi_RefreshFile
+        Bendi_Tongbu
       ;;
       *)
         ECHOR "您已跳过更新DIY-SETUP文件"
