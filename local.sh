@@ -615,7 +615,8 @@ function Bendi_xuanzhe() {
   fi
   case $CUrrenty in
   Y)
-    FOLDER_NAME3="$(grep "${YMXZ}" GITHUB_ENN |awk '{print $(2)}')"
+    export FOLDER_NAME3="$(grep "${YMXZ}" GITHUB_ENN |awk '{print $(2)}')"
+    export FOLDER_NAME="${FOLDER_NAME3}"
     ECHOY " 您选择了使用 ${FOLDER_NAME3} 编译固件,3秒后将进行启动编译"
     rm -rf GITHUB_ENN
     sleep 2
@@ -635,7 +636,6 @@ function Bendi_xuanzhe() {
 }
 
 function Bendi_menu2() {
-FOLDER_NAME="${FOLDER_NAME2}"
 git pull
 Bendi_WslPath
 Bendi_Dependent
@@ -658,7 +658,6 @@ Bendi_Arrangement
 }
 
 function Bendi_menu() {
-FOLDER_NAME="${FOLDER_NAME3}"
 Bendi_WslPath
 Bendi_Dependent
 Bendi_Version
@@ -856,7 +855,7 @@ elif [[ -d "openwrt" ]] && [[ -z "${FOLDERS}" ]] && [[ -d "DIY-SETUP" ]] && [[ -
 else
   KAIDUAN_JIANCE="0"
 fi
-
+export FOLDER_NAME="${FOLDER_NAME2}"
 if [[ "${KAIDUAN_JIANCE}" == "1" ]]; then
   menu2
 else
