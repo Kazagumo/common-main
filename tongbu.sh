@@ -90,7 +90,9 @@ for X in $(find "DIY-SETUP" -name "settings.ini"); do
   sed -i '/COMPILATION_INFORMATION/d' "${X}"
   sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
   echo 'MODIFY_CONFIGURATION="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
-  [[ "${WSL_windows}" == "1" ]] && echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
+  if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+    echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
+  fi
 done
 fi
 
