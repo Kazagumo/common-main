@@ -102,7 +102,7 @@ for X in $(grep "\"AMLOGIC\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/set
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
+  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
   if [[ ! "${cc}" == ".config" ]]; then
     aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
     bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
@@ -190,7 +190,7 @@ for X in $(grep "\"IMMORTALWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
+  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
   if [[ ! "${cc}" == ".config" ]]; then
     aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
     bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
@@ -278,7 +278,7 @@ for X in $(grep "\"COOLSNOWWOLF\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
+  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
   if [[ ! "${cc}" == ".config" ]]; then
     aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
     bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
@@ -366,7 +366,7 @@ for X in $(grep "\"LIENOL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/sett
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
+  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
   if [[ ! "${cc}" == ".config" ]]; then
     aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
     bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
@@ -454,7 +454,7 @@ for X in $(grep "\"OFFICIAL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/se
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
+  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
   if [[ ! "${cc}" == ".config" ]]; then
     aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
     bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
@@ -542,7 +542,7 @@ for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settin
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
+  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
   if [[ ! "${cc}" == ".config" ]]; then
     aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
     bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
