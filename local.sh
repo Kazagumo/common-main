@@ -68,10 +68,10 @@ judge() {
 }
 
 # 变量
-BENDI_VERSION="2.1"
-GITHUB_WORKSPACE="$PWD"
-HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
-GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
+export BENDI_VERSION="2.1"
+export GITHUB_WORKSPACE="$PWD"
+export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
+export GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
 echo '#!/bin/bash' >${GITHUB_ENV}
 sudo chmod +x ${GITHUB_ENV}
 source /etc/os-release
