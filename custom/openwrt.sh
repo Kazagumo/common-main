@@ -91,7 +91,7 @@ function xiugai_ip() {
 
 function qingkong_mima() {
 while :; do
-read -p 请输入[Y/n]选择是否清空密码： YN
+read -p 否清空密码(shi fou qing kong mi ma)[Y/n]： YN
 case ${YN} in
 [Yy]) 
     passwd -d root
@@ -99,11 +99,45 @@ case ${YN} in
 break
 ;;
 [Nn])
-    ECHOR "您已跳过清空密码"
+    ECHOR "退出操作(tui chu)"
+    exit 0
 break
 ;;
 *)
-    ECHOR ""
+    ECHOR "输入正确选择[Y/n]"
+;;
+esac
+done
+}
+
+function re_boot() {
+echo
+while :; do
+read -p 是否重启系统(shi fou chong qi xi tong)[Y/n]： YN
+case ${YN} in
+[Yy]) 
+    ECHOG "5秒后为您重启系统"
+    uci set argon.@global[0].bing_background=0
+    uci commit argon
+	  /etc/init.d/uhttpd restart
+    sleep 1
+	  /etc/init.d/dnsmasq restart
+    sleep 1
+	  /etc/init.d/firewall restart
+    sleep 1
+	  /etc/init.d/network restart
+    sleep 1
+    reboot -f
+    judge
+break
+;;
+[Nn])
+    ECHOR "退出操作(tui chu)"
+    exit 0
+break
+;;
+*)
+    ECHOR "输入正确选择[Y/n]"
 ;;
 esac
 done
@@ -121,10 +155,11 @@ menu() {
   clear
   echo  
   ECHOB "  请选择执行命令编码"
-  ECHOYY " 1. 修改后台IP和清空密码"
-  ECHOY " 2. 清空密码(Clear password)"
-  ECHOYY " 3. 恢复出厂设置(Restore factory settings)"
-  ECHOY " 4. 退出菜单(EXIT)"
+  ECHOYY " 1. 修改后台IP和清空密码(xiu gai hou tai IP)"
+  ECHOY " 2. 清空密码(qing kong mi ma)"
+  ECHOYY " 3. 重启系统(chong qi xi tong)"
+  ECHOY " 4. 恢复出厂设置(hui fu chu chang she zhi)"
+  ECHOYY " 5. 退出菜单(tui chu)"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -136,6 +171,10 @@ menu() {
     ;;
     2)
       qingkong_mima
+    break
+    ;;
+    3)
+      re_boot
     break
     ;;
     3)
