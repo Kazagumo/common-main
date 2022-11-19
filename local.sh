@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #====================================================
-#	System Request:Ubuntu 18.04+/20.04+
+#	System Request:Ubuntu 18.04lts/20.04lts/22.04lts
 #	Author:	281677160
-#	Dscription: openwrt onekey Management
-#	github: https://github.com/281677160
+#	Dscription: Compile openwrt firmware
+#	github: https://github.com/281677160/build-actions
 #====================================================
 
 # 字体颜色配置
@@ -736,6 +736,7 @@ done
 }
 
 function menu2() {
+  clear
   echo
   echo
   if [[ -f "${HOME_PATH}/diysetup" ]]; then
@@ -795,6 +796,8 @@ function menu2() {
 
 function menu() {
 cd ${GITHUB_WORKSPACE}
+clear
+echo
 echo
 ECHOY " 1. 进行选择编译源码文件"
 ECHOY " 2. 同步上游DIY-SETUP文件(不覆盖config配置文件)"
