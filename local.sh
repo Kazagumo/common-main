@@ -687,6 +687,8 @@ while :; do
 read -p " ${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
 [Yy])
+  Bendi_Dependent
+  Bendi_Variable
   Bendi_Tongbu
 break
 ;;
