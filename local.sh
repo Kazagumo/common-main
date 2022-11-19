@@ -687,6 +687,7 @@ while :; do
 read -p " ${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
 [Yy])
+  [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
   Bendi_Tongbu
 break
 ;;
