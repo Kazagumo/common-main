@@ -170,31 +170,35 @@ for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini"); do
 done
 
 for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
-  
-  axzini="$(grep "REPO_BRANCH" "${X}/settings.ini" |awk '{print $(1)}')"
-  athini="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${axzini}" ]] && [[ -n "${athini}" ]]; then
-   sed -i "s?${axzini}?${athini}?g" "${X}/settings.ini"
+  aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  bxzini="$(grep "CONFIG_FILE" "${X}/settings.ini" |awk '{print $(1)}')"
-  bthini="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${bxzini}" ]] && [[ -n "${bthini}" ]]; then
-   sed -i "s?${bxzini}?${bthini}?g" "${X}/settings.ini"
+  aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  cxzini="$(grep "DIY_PART_SH" "${X}/settings.ini" |awk '{print $(1)}')"
-  cthini="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${cxzini}" ]] && [[ -n "${cthini}" ]]; then
-   sed -i "s?${cxzini}?${cthini}?g" "${X}/settings.ini"
+  aa="$(grep "DIY_PART_SH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  dxzini="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |awk '{print $(1)}')"
-  dthini="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${dxzini}" ]] && [[ -n "${dthini}" ]]; then
-   sed -i "s?${dxzini}?${dthini}?g" "${X}/settings.ini"
+  aa="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
-  fxzini="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |awk '{print $(1)}')"
-  fthini="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |awk '{print $(1)}')"
-  if [[ -n "${fxzini}" ]] && [[ -n "${fthini}" ]]; then
-   sed -i "s?${fxzini}?${fthini}?g" "${X}/settings.ini"
+  aa="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+  fi
+  aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
 done
 if [[ "${tongbushangyou}" == "1" ]]; then
