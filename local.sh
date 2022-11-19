@@ -590,6 +590,12 @@ mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
 
+function Bendi_Restore() {
+ECHOG "同步上游源码"
+git pull
+judge "同步"
+}
+
 function Bendi_xuanzhe() {
   cd ${GITHUB_WORKSPACE}
   if [[ ! -f "/etc/oprelyon" ]]; then
@@ -669,7 +675,7 @@ Bendi_EveryInquiry
 Bendi_Variable
 Bendi_Version
 Bendi_Change
-git pull
+git_pull
 Bendi_MainProgram
 Bendi_Restore
 Bendi_UpdateSource
