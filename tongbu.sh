@@ -7,7 +7,10 @@ if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f repogx/build DIY-SETUP
 else
   rm -rf shangyou && git clone -b main https://github.com/281677160/autobuild shangyou
-  [[ ! -d "DIY-SETUP" ]] && cp -Rf shangyou/build DIY-SETUP
+  if [[ ! -d "DIY-SETUP" ]]; then
+    cp -Rf shangyou/build DIY-SETUP
+    BENDI_SHANCHUBAK="1"
+  fi
 fi
 
 # 删除上游的.config和备份diy-part.sh、settings.ini
