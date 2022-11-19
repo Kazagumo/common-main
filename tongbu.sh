@@ -23,6 +23,7 @@ for X in $(grep "\"AMLOGIC\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/set
 
 
 # 修改本地文件
+if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
 rm -rf DIY-SETUP/*/start-up
 for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do 
   [[ -f "${X}/.config" ]] && mv "${X}/.config" "${X}/config"
@@ -44,7 +45,7 @@ for X in $(find "DIY-SETUP" -name "settings.ini"); do
   echo 'MODIFY_CONFIGURATION="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
   [[ "${WSL_windows}" == "1" ]] && echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
 done
-
+fi
 
 # 替换本地文件的变量
 # N1
