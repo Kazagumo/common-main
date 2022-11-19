@@ -206,6 +206,26 @@ for X in $(grep "\"OFFICIAL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settin
 for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
 }
 
+function Bendi_Version() {
+  cd ${GITHUB_WORKSPACE}
+  if [[ -d ${GITHUB_WORKSPACE}/DIY-SETUP ]]; then
+    A="$(grep "BENDI_VERSION=" "DIY-SETUP/${FOLDER_NAME}/version/bendi_version" |egrep -o "[0-9]+\.[0-9]+")"
+    [[ -z ${A} ]] && A="0.9"
+    B="${Version}"
+    if [[ "$A" < "$B" ]]; then
+      ECHOY "上游DIY-SETUP文件有更新，是否同步更新DIY-SETUP文件?"
+      read -p " 按[Y/y]回车同步文件，任意键回车则跳过更新： " TB
+      case ${TB} in
+      [Yy]) 
+        ECHOG "正在同步DIY-SETUP文件，请稍后..."
+      ;;
+      *)
+        ECHOR "您已跳过更新DIY-SETUP文件"
+    ;;
+    esac
+    fi
+  fi
+}
 
 function Bendi_EveryInquiry() {
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
@@ -661,6 +681,7 @@ Bendi_Dependent
 Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
+Bendi_Version
 Bendi_Change
 Bendi_MainProgram
 Bendi_Restore
@@ -681,6 +702,7 @@ Bendi_Dependent
 Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
+Bendi_Version
 Bendi_MainProgram
 Bendi_Download
 Bendi_SourceClean
