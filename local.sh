@@ -201,11 +201,32 @@ for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini" |sed 's/\/s
 for X in $(grep "\"COOLSNOWWOLF\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
 for X in $(grep "\"LIENOL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
 for X in $(grep "\"IMMORTALWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
-for X in $(grep "\"XWRT\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do 
-  cp -Rf shangyou/build/Xwrt/* "${X}"
-  xzini="$(grep "REPO_BRANCH" "${X}/settings.ini" |cut -d '"' -f2)"
-  thini="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |cut -d '"' -f2)"
-  sed -i 's?${xzini}?${thini}?g' "${X}/settings.ini"
+for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do 
+  xzini="$(grep "REPO_BRANCH" "${X}/settings.ini" |awk '{print $(1)}')"
+  thini="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${xzini}" ]] && [[ -n "${thini}" ]]; then
+   sed -i "s?${xzini}?${thini}?g" "${X}/settings.ini"
+  fi
+  xzini="$(grep "CONFIG_FILE" "${X}/settings.ini" |awk '{print $(1)}')"
+  thini="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${xzini}" ]] && [[ -n "${thini}" ]]; then
+   sed -i "s?${xzini}?${thini}?g" "${X}/settings.ini"
+  fi
+  xzini="$(grep "DIY_PART_SH" "${X}/settings.ini" |awk '{print $(1)}')"
+  thini="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${xzini}" ]] && [[ -n "${thini}" ]]; then
+   sed -i "s?${xzini}?${thini}?g" "${X}/settings.ini"
+  fi
+  xzini="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |awk '{print $(1)}')"
+  thini="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${xzini}" ]] && [[ -n "${thini}" ]]; then
+   sed -i "s?${xzini}?${thini}?g" "${X}/settings.ini"
+  fi
+  xzini="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |awk '{print $(1)}')"
+  thini="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |awk '{print $(1)}')"
+  if [[ -n "${xzini}" ]] && [[ -n "${thini}" ]]; then
+   sed -i "s?${xzini}?${thini}?g" "${X}/settings.ini"
+  fi
 done
 for X in $(grep "\"OFFICIAL\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
 for X in $(grep "\"AMLOGIC\"" -rl "${GITHUB_WORKSPACE}/DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
