@@ -48,20 +48,20 @@ case "${TONGBU_CANGKU}" in
   fi
   
   if [[ -n "$(ls -A "${GITHUB_WORKSPACE}/repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
-    if [[ -n "${{env.BEIYONG1}}" ]] && [[ -n "${{env.BEIYONG2}}" ]]; then
-      sed -i "s/${{env.BEIYONG1}}/${{env.BEIYONG2}}/g" shangyou/.github/workflows/build-openwrt.yml
+    if [[ -n "${BEIYONG1}" ]] && [[ -n "${BEIYONG2}" ]]; then
+      sed -i "s/${BEIYONG1}/${BEIYONG2}/g" shangyou/.github/workflows/build-openwrt.yml
     fi
-    if [[ -n "${{env.CRON1}}" ]] && [[ -n "${{env.CRON2}}" ]]; then
-      sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyou/.github/workflows/build-openwrt.yml
+    if [[ -n "${CRON1}" ]] && [[ -n "${CRON2}" ]]; then
+      sed -i "s/${CRON1}/${CRON2}/g" shangyou/.github/workflows/build-openwrt.yml
     fi
-    if [[ -n "${{env.TARGET1}}" ]] && [[ -n "${{env.TARGET2}}" ]]; then
-      sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyou/.github/workflows/build-openwrt.yml
+    if [[ -n "${TARGET1}" ]] && [[ -n "${TARGET2}" ]]; then
+      sed -i "s/${TARGET1}/${TARGET2}/g" shangyou/.github/workflows/build-openwrt.yml
     fi
-    if [[ -n "${{env.TARGE1}}" ]] && [[ -n "${{env.TARGE2}}" ]]; then
-      sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyou/.github/workflows/compile.yml
+    if [[ -n "${TARGE1}" ]] && [[ -n "${TARGE2}" ]]; then
+      sed -i "s/${TARGE1}/${TARGE2}/g" shangyou/.github/workflows/compile.yml
     fi
-    if [[ -n "${{env.QIDONG1}}" ]] && [[ -n "${{env.QIDONG2}}" ]]; then
-      sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyou/.github/workflows/compile.yml
+    if [[ -n "${QIDONG1}" ]] && [[ -n "${QIDONG2}" ]]; then
+      sed -i "s/${QIDONG1}/${QIDONG2}/g" shangyou/.github/workflows/compile.yml
     fi
   fi
   
