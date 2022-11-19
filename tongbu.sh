@@ -5,6 +5,8 @@
 # 第一步下载上游仓库
 rm -rf shangyou && git clone -b main https://github.com/281677160/autobuild shangyou
 
+[[ ! -d "DIY-SETUP" ]] && cp -Rf shangyou/build DIY-SETUP
+
 # 删除上游的.config和备份diy-part.sh、settings.ini
 rm -rf /shangyou/build/*/.config
 for X in $(find "DIY-SETUP" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
