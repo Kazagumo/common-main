@@ -146,7 +146,7 @@ fi
 
 function Bendi_DiySetup() {
 cd ${GITHUB_WORKSPACE}
-BENDI_SHANCHUBAK="1"
+export BENDI_SHANCHUBAK="1"
 if [[ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]]; then
   ECHOG "下载DIY-SETUP自定义配置文件"
   bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/tongbu.sh)
