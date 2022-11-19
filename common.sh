@@ -675,12 +675,20 @@ if [[ "${OpenClash_branch}" != "0" ]] && [[ "${OpenClash_branch}" != "${clash_br
   find . -name 'luci-app-openclash' | xargs -i rm -rf {}
   if [[ "${OpenClash_branch}" != "master" ]] && [[ "${OpenClash_branch}" != "dev" ]]; then
     git clone -b master --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
-    echo "master" > "${jiance_clash}"
-    echo "因没发现正确分支数据，正在使用master分支的openclash"
+    if [[ $? -ne 0 ]]; then
+      echo "luci-app-openclash下载失败"
+    else
+      echo "master" > "${jiance_clash}"
+      echo "因没发现正确分支数据，正在使用master分支的openclash"
+    fi
   else
     git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
-    echo "${OpenClash_branch}" > "${jiance_clash}"
-    echo "正在使用"${OpenClash_branch}"分支的openclash"
+    if [[ $? -ne 0 ]]; then
+      echo "luci-app-openclash下载失败"
+    else
+      echo "${OpenClash_branch}" > "${jiance_clash}"
+      echo "正在使用"${OpenClash_branch}"分支的openclash"
+    fi
   fi
 fi
 
