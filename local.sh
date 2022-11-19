@@ -379,16 +379,19 @@ fi
 function Bendi_Compile() {
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
-export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
-export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
-export RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
-export RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
+START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
+Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
+RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
+RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
+
 echo
 ECHOGG "您的机器CPU型号为[ ${Model_Name} ]"
 ECHOGG "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
 ECHOGG "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
-[[ -f "${GITHUB_WORKSPACE}/common.sh" ]] && rm -rf ${GITHUB_WORKSPACE}/common.sh
+echo
 
+[[ -f "${GITHUB_WORKSPACE}/common.sh" ]] && rm -rf ${GITHUB_WORKSPACE}/common.sh
 [[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
 if [[ "$(nproc)" -le "12" ]];then
   ECHOYY "即将使用$(nproc)线程进行编译固件"
@@ -436,8 +439,8 @@ else
   " > ${HOME_PATH}/diysetup
   sed -i 's/^[ ]*//g' ${HOME_PATH}/diysetup
   sudo chmod +x ${HOME_PATH}/diysetup
-  print_ok "编译固件成功"
-  print_ok "已为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}里"
+  ECHOYY "固件编译成功"
+  ECHOY "已为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}里"
 fi
 }
 
@@ -454,6 +457,27 @@ cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_firmware
 judge "整理固件"
+echo
+if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
+  print_ok "[ N1或晶晨系列盒子专用固件 ]顺利编译完成~~~"
+else
+  print_ok "[ ${FOLDER_NAME}-${REPO_BRANCH}-${TARGET_PROFILE} ]顺利编译完成~~~"
+fi
+echo
+ECHOY "编译日期：$(date +'%Y年%m月%d号')"
+END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+START_SECONDS=$(date --date="$START_TIME" +%s)
+END_SECONDS=$(date --date="$END_TIME" +%s)
+SECONDS=$((END_SECONDS-START_SECONDS))
+HOUR=$(( $SECONDS/3600 ))
+MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
+SEC=$(( $SECONDS-${HOUR}*3600-${MIN}*60 ))
+if [[ "${HOUR}" == "0" ]]; then
+  ECHOG "编译总计用时 ${MIN}分${SEC}秒"
+else
+  ECHOG "编译总计用时 ${HOUR}时${MIN}分${SEC}秒"
+fi
+ECHOR "提示：再次输入编译命令可进行二次编译"
 }
 
 function Bendi_Packaging() {
@@ -570,7 +594,7 @@ function Bendi_xuanzhe() {
   cd ${GITHUB_WORKSPACE}
   if [[ ! -f "/etc/oprelyon" ]]; then
     ECHOG "您首次使用本脚本，需要先安装依赖，5秒后开始安装依赖"
-    sleep 5
+    sleep 3
     Bendi_Dependent
   fi
   if [[ ! -d "DIY-SETUP" ]]; then
@@ -786,7 +810,6 @@ break
 break
 ;;
 4)
-  ECHOR "您选择了退出编译程序"
   echo
   exit 0
 break
