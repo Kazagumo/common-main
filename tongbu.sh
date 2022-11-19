@@ -606,6 +606,10 @@ for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settin
 done
 
 
+if [[ "${BENDI_SHANCHUBAK}" == "1" ]]; then
+  for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
+fi
+
 # 上游仓库用完，删除了
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f DIY-SETUP repogx/build
@@ -613,8 +617,4 @@ else
   rm -rf shangyou
 fi
 
-
-if [[ "${BENDI_SHANCHUBAK}" == "1" ]]; then
-  for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
-fi
 exit 0
