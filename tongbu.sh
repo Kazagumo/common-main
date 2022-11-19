@@ -554,3 +554,5 @@ for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settin
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
 done
+
+exit 0
