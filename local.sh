@@ -144,41 +144,13 @@ else
 fi
 }
 
-function Bendi_RefreshFile() {
-cd ${GITHUB_WORKSPACE}
-ECHOGG "将云编译的配置文件修改成本地适用文件"
-rm -rf ${GITHUB_WORKSPACE}/DIY-SETUP/*/start-up
-for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do 
-  [[ -f "${X}/.config" ]] && mv "${X}/.config" "${X}/config"
-  mkdir -p "${X}/version"
-  echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/version/bendi_version"
-  echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/version/README.md"
-done
-for X in $(find "${GITHUB_WORKSPACE}/DIY-SETUP" -name "settings.ini"); do
-  sed -i 's/.config/config/g' "${X}"
-  sed -i '/SSH_ACTIONS/d' "${X}"
-  sed -i '/UPLOAD_CONFIG/d' "${X}"
-  sed -i '/UPLOAD_FIRMWARE/d' "${X}"
-  sed -i '/UPLOAD_WETRANSFER/d' "${X}"
-  sed -i '/UPLOAD_RELEASE/d' "${X}"
-  sed -i '/INFORMATION_NOTICE/d' "${X}"
-  sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
-  sed -i '/COMPILATION_INFORMATION/d' "${X}"
-  sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
-  echo 'MODIFY_CONFIGURATION="true"            # 是否每次都询问您要不要去设置自定义文件（true=开启）（false=关闭）' >> "${X}"
-  [[ "${WSL_windows}" == "1" ]] && echo 'WSL_ROUTEPATH="false"          # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
-done
-}
-
 function Bendi_DiySetup() {
 cd ${GITHUB_WORKSPACE}
-tongbushangyou="0"
+BENDI_SHANCHUBAK="1"
 if [[ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]]; then
   ECHOG "下载DIY-SETUP自定义配置文件"
-  rm -rf DIY-SETUP && svn export https://github.com/281677160/autobuild/trunk/build DIY-SETUP
+  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/tongbu.sh)
   judge "DIY-SETUP自定义配置文件下载"
-  Bendi_RefreshFile
-  judge "将云编译的配置文件修改成本地适用文件"
   source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
   source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
@@ -188,6 +160,7 @@ fi
 function Bendi_Tongbu() {
 cd ${GITHUB_WORKSPACE}
 bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/tongbu.sh)
+judge "同步上游仓库完成，请至DIY-SETUP检查设置，设置好最新配置再进行编译"
 }
 
 function Bendi_Version() {
