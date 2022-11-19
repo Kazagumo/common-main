@@ -439,8 +439,6 @@ else
   " > ${HOME_PATH}/diysetup
   sed -i 's/^[ ]*//g' ${HOME_PATH}/diysetup
   sudo chmod +x ${HOME_PATH}/diysetup
-  ECHOYY "固件编译成功"
-  ECHOY "已为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}里"
 fi
 }
 
@@ -463,8 +461,8 @@ if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
 else
   print_ok "[ ${FOLDER_NAME}-${REPO_BRANCH}-${TARGET_PROFILE} ]顺利编译完成~~~"
 fi
-echo
-ECHOY "编译日期：$(date +'%Y年%m月%d号')"
+ECHOB "已为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}里"
+ECHOYY "编译日期：$(date +'%Y年%m月%d号')"
 END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
 START_SECONDS=$(date --date="$START_TIME" +%s)
 END_SECONDS=$(date --date="$END_TIME" +%s)
@@ -477,7 +475,7 @@ if [[ "${HOUR}" == "0" ]]; then
 else
   ECHOG "编译总计用时 ${HOUR}时${MIN}分${SEC}秒"
 fi
-ECHOR "提示：再次输入编译命令可进行二次编译"
+ECHORR "提示：再次输入编译命令可进行二次编译"
 }
 
 function Bendi_Packaging() {
