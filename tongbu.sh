@@ -5,7 +5,11 @@
 # 第一步下载上游仓库
 rm -rf shangyou && git clone -b main https://github.com/281677160/autobuild shangyou
 
-[[ ! -d "DIY-SETUP" ]] && cp -Rf shangyou/build DIY-SETUP
+if [[ "${TONGBU_CANGKU}" == "1" ]]; then
+  mv -f repogx/build DIY-SETUP
+else
+  [[ ! -d "DIY-SETUP" ]] && cp -Rf shangyou/build DIY-SETUP
+fi
 
 # 删除上游的.config和备份diy-part.sh、settings.ini
 rm -rf /shangyou/build/*/.config
