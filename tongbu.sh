@@ -3,11 +3,10 @@
 # 同步上游操作
 
 # 第一步下载上游仓库
-rm -rf shangyou && git clone -b main https://github.com/281677160/autobuild shangyou
-
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f repogx/build DIY-SETUP
 else
+  rm -rf shangyou && git clone -b main https://github.com/281677160/autobuild shangyou
   [[ ! -d "DIY-SETUP" ]] && cp -Rf shangyou/build DIY-SETUP
 fi
 
