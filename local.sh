@@ -441,7 +441,8 @@ fi
 echo "
 SUCCESS_FAILED="${SUCCESS_FAILED}"
 FOLDER_NAME2="${FOLDER_NAME}"
-REPO_BRANCH2="${LUCI_EDITION}"
+REPO_BRANCH2="${REPO_BRANCH}"
+LUCI_EDITION2="${LUCI_EDITION}"
 TARGET_PROFILE2="${TARGET_PROFILE}"
 " > ${HOME_PATH}/key-zuild
 sudo chmod +x ${HOME_PATH}/key-zuild
@@ -776,7 +777,7 @@ function menu2() {
     echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
   else
-    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
+    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Red}大兄弟啊,上回编译${Yellow}[${TARGET_PROFILE2}]${Font}${Red}于失败告终了${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
   fi
