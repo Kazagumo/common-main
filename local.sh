@@ -595,7 +595,9 @@ sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
 
 function Bendi_gitpull() {
-if [[ ! "${SOURCE_CODE}" == "OFFICIAL" ]]; then
+if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
+  echo
+else
   ECHOG "同步上游源码"
   git pull
 fi
