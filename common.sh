@@ -1306,8 +1306,6 @@ if [[ "${OpenClash_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-open
   fi
   cd ${HOME_PATH}
   rm -rf ${HOME_PATH}/clash-neihe
-else
-  echo "没有选择luci-app-openclash此插件"
 fi
 
 if [[ "${AdGuardHome_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
@@ -1331,8 +1329,6 @@ if [[ "${AdGuardHome_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-ad
     echo "增加AdGuardHome核心失败"
   fi
     rm -rf ${HOME_PATH}/{AdGuardHome_${Arch}.tar.gz,AdGuardHome}
-else
-  echo "没有选择luci-app-adguardhome此插件"
 fi
 }
 
