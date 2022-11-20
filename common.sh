@@ -211,8 +211,6 @@ fi
 
 
 function Diy_update() {
-sudo -E apt-get -y -qq update
-sudo -E apt-get -y -qq install rename
 if [[ ! -f "/etc/oprelyon" ]]; then
   echo "安装依赖"
   sudo apt-get -y update
@@ -221,9 +219,10 @@ if [[ ! -f "/etc/oprelyon" ]]; then
     TIME r "依赖安装失败，请检测网络后再次尝试!"
     exit 1
   else
-    sudo sh -c 'echo openwrt > /etc/oprelyon'
+    sudo -E apt-get -y -qq install rename
     sudo -E apt-get -y -qq autoremove --purge
     sudo -E apt-get -y -qq clean
+    sudo sh -c 'echo openwrt > /etc/oprelyon'
     TIME b "依赖安装完成"
   fi
 fi
