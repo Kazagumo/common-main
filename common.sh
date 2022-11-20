@@ -1260,7 +1260,7 @@ elif [[ `grep -c "CONFIG_ARCH=\"mips\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "mips架构"
 elif [[ `grep -c "CONFIG_ARCH=\"mips64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_mips64_softfloat"
-  Archclash="linux-mips64-softfloat"
+  Archclash="linux-mips64"
   echo "mips架构"
 elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_mipsel_softfloat"
