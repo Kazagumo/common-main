@@ -667,11 +667,11 @@ fi
 jiance_clash="${HOME_PATH}/package/luci-app-openclash/clash_branch"
 if [[ -f "${OpenClash_branch}" ]]; then
   clash_branch="$(cat ${jiance_clash})"
-  echo "${clash_branch}"
+  echo "clash ${clash_branch}"
 else
   clash_branch="clash_branch"
 fi
-echo "${OpenClash_branch}"
+echo "zidingyi ${OpenClash_branch}"
 if [[ "${OpenClash_branch}" != "0" ]] && [[ ! "${OpenClash_branch}" == "${clash_branch}" ]]; then
   find . -name 'luci-app-openclash' | xargs -i rm -rf {}
   if [[ ! "${OpenClash_branch}" == "master" ]] && [[ ! "${OpenClash_branch}" == "dev" ]]; then
