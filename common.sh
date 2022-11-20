@@ -667,13 +667,14 @@ fi
 jiance_clash="${HOME_PATH}/package/luci-app-openclash/clash_branch"
 if [[ -f "${OpenClash_branch}" ]]; then
   clash_branch="$(cat ${jiance_clash})"
+  echo "${clash_branch}"
 else
   clash_branch="clash_branch"
 fi
-
-if [[ "${OpenClash_branch}" != "0" ]] && [[ "${OpenClash_branch}" != "${clash_branch}" ]]; then
+echo "${OpenClash_branch}"
+if [[ "${OpenClash_branch}" != "0" ]] && [[ ! "${OpenClash_branch}" == "${clash_branch}" ]]; then
   find . -name 'luci-app-openclash' | xargs -i rm -rf {}
-  if [[ "${OpenClash_branch}" != "master" ]] && [[ "${OpenClash_branch}" != "dev" ]]; then
+  if [[ ! "${OpenClash_branch}" == "master" ]] && [[ ! "${OpenClash_branch}" == "dev" ]]; then
     git clone -b master --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
     if [[ $? -ne 0 ]]; then
       echo "luci-app-openclash下载失败"
