@@ -717,7 +717,8 @@ Bendi_shouweigongzhong
 
 function Bendi_UPDIYSETUP() {
 cd ${GITHUB_WORKSPACE}
-echo
+clear
+echo 
 echo
 echo -e "${Green}  请选择更新方式${Font}"
 echo -e "${Yellow}  输入${Font}${Blue}[1]${Font}${Yellow}为单文件更新,只更新您DIY-SETUP内所有机型文件夹里的diy-part.sh和settings.ini${Font}"
