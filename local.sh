@@ -419,7 +419,7 @@ else
 fi
 sleep 3
 
-if [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immortalwrt"` -ge '1' ]]; then
+if [[ -f "${FIRMWARE_PATH}" ]] && [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" ${FIRMWARE_PATH}/*
 fi
 
