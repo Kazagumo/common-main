@@ -600,7 +600,7 @@ sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
 
 function Bendi_gitpull() {
-if [[ ! "${SOURCE_CODE}" == "OFFICIAL" ]]
+if [[ ! "${SOURCE_CODE}" == "OFFICIAL" ]]; then
   ECHOG "同步上游源码"
   git pull
 fi
