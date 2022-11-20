@@ -659,20 +659,16 @@ if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07
 fi
 
 # openclash分支选择
-if [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
+if [[ ! "${COLLECTED_PACKAGES}" == "true" ]] && [[ ! "${OpenClash_branch}" == "0" ]]; then
   OpenClash_branch="0"
   echo "TIME r \"因没开作者收集的插件包，对openclash的分支选择无效\"" >> ${HOME_PATH}/CHONGTU
 fi
-
 jiance_clash="${HOME_PATH}/package/luci-app-openclash/clash_branch"
 if [[ -f "${jiance_clash}" ]]; then
   clash_branch="$(cat ${jiance_clash})"
-  echo "clash ${clash_branch}"
-  echo "jiance_clash ${jiance_clash}"
 else
   clash_branch="clash_branch"
 fi
-echo "zidingyi ${OpenClash_branch}"
 if [[ "${OpenClash_branch}" != "0" ]] && [[ ! "${OpenClash_branch}" == "${clash_branch}" ]]; then
   find . -name 'luci-app-openclash' | xargs -i rm -rf {}
   if [[ ! "${OpenClash_branch}" == "master" ]] && [[ ! "${OpenClash_branch}" == "dev" ]]; then
