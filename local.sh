@@ -467,7 +467,7 @@ function Bendi_shouweigongzhong() {
 if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   print_ok "[ N1或晶晨系列盒子专用固件 ]顺利编译完成~~~"
 else
-  print_ok "[ ${FOLDER_NAME}-${REPO_BRANCH}-${TARGET_PROFILE} ]顺利编译完成~~~"
+  print_ok "[ ${FOLDER_NAME}-${LUCI_EDITION2}-${TARGET_PROFILE} ]顺利编译完成~~~"
 fi
 ECHOGG "已为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}里"
 ECHOY "编译日期：$(date +'%Y年%m月%d号')"
