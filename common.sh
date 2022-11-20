@@ -664,6 +664,7 @@ if [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
   echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
 elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "AdGuardHome_Core=1" >> ${GITHUB_ENV}
+  export AdGuardHome_Core="1"
 else
   [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
   echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
@@ -675,6 +676,7 @@ if [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
 elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "1" ]]; then
   echo "OpenClash_Core=1" >> ${GITHUB_ENV}
+  export OpenClash_Core="1"
 else
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
   [[ -f "${HOME_PATH}/files/etc/openclash/core/clash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core/clash
@@ -893,7 +895,6 @@ if [[ -n "${rootfs_size}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
 else
   echo "rootfs_size=960" >> ${GITHUB_ENV}
 fi
-[[ -f "${GITHUB_ENV}" ]] && source "${GITHUB_ENV}"
 }
 
 
