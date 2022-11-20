@@ -1251,7 +1251,7 @@ elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "X86 32位架构"
 elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_arm64"
-  Archclash="linux-armv8"
+  Archclash="linux-arm64"
   echo "arm64架构"
 elif [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_armv7"
