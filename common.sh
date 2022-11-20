@@ -665,9 +665,10 @@ if [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
 fi
 
 jiance_clash="${HOME_PATH}/package/luci-app-openclash/clash_branch"
-if [[ -f "${OpenClash_branch}" ]]; then
+if [[ -f "${jiance_clash}" ]]; then
   clash_branch="$(cat ${jiance_clash})"
   echo "clash ${clash_branch}"
+  echo "jiance_clash ${jiance_clash}"
 else
   clash_branch="clash_branch"
 fi
