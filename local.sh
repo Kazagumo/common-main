@@ -444,8 +444,8 @@ FOLDER_NAME2="${FOLDER_NAME}"
 REPO_BRANCH2="${REPO_BRANCH}"
 LUCI_EDITION2="${LUCI_EDITION}"
 TARGET_PROFILE2="${TARGET_PROFILE}"
-" > ${HOME_PATH}/key-zuild
-sudo chmod +x ${HOME_PATH}/key-zuild
+" > ${HOME_PATH}/key-buildzu
+sudo chmod +x ${HOME_PATH}/key-buildzu
 }
 
 
@@ -773,7 +773,7 @@ function menu2() {
   echo
   echo
   if [[ "${SUCCESS_FAILED}" == "success" ]]; then
-    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
+    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
   else
@@ -889,9 +889,9 @@ if [[ -z "${FOLDERS}" ]]; then
 else
   KAIDUAN_JIANCE="0"
 fi
-if [[ -f "${HOME_PATH}/key-zuild" ]]; then
+if [[ -f "${HOME_PATH}/key-buildzu" ]]; then
   KAIDUAN_JIANCE="1"
-  source ${HOME_PATH}/key-zuild
+  source ${HOME_PATH}/key-buildzu
 else
   KAIDUAN_JIANCE="0"
 fi
