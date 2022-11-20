@@ -716,24 +716,36 @@ Bendi_shouweigongzhong
 }
 
 function Bendi_UPDIYSETUP() {
+cd ${GITHUB_WORKSPACE}
 echo
 echo
-ECHOY "是否更新DIY-SETUP文件夹?按[Y/y]继续,或按[N/n]退出"
-IYSETUP="请输入您的选择"
+echo -e "${Green}  请选择更新方式${Font}"
+echo -e "${Yellow}  输入${Font}${Blue}【1】${Font}${Yellow}为单文件更新,只更新您DIY-SETUP内所有机型文件夹里的diy-part.sh和settings.ini${Font}"
+echo -e "${Yellow}  输入${Font}${Blue}【2】${Font}${Yellow}为删除您现有的DIY-SETUP文件夹,从上游重新拉取DIY-SETUP文件夹${Font}"
+echo -e "${Yellow}  输入${Font}${Blue}【3】${Font}${Yellow}为退出退出程序${Font}"
+echo
+echo
+IYSETUP="请输入数字确定您的选择"
 while :; do
 read -p " ${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
-[Yy])
+1)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
   Bendi_Tongbu
 break
 ;;
-[Nn])
-  exit 1
+2)
+  [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
+  [[ -d "DIY-SETUP" ]] && rm -rf DIY-SETUP
+  Bendi_Tongbu
+break
+;;
+3)
+  exit 0
 break
 ;;
 *)
-  IYSETUP="输入错误,请输入[Y/n]"
+  IYSETUP="输入错误,请输入数字"
 ;;
 esac
 done
