@@ -1267,7 +1267,7 @@ elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Archclash="linux-mipsel-softfloat"
   echo "mipsle架构"
 else
-  echo "This model does not support automatic core download"
+  echo "I don't know what the architecture is"
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '1' ]]; then
