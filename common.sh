@@ -659,17 +659,25 @@ if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07
 fi
 
 # AdGuardHome内核
-if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
+if [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
+  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
+  echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
+elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "AdGuardHome_Core=1" >> ${GITHUB_ENV}
 else
+  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
   echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
 fi
 
 # openclash分支选择
+if [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
+  [[ -f "${HOME_PATH}/files/etc/openclash/core/clash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core/clash
+  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "1" ]]; then
   echo "OpenClash_Core=1" >> ${GITHUB_ENV}
 else
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
+  [[ -f "${HOME_PATH}/files/etc/openclash/core/clash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core/clash
 fi
 if [[ ! "${COLLECTED_PACKAGES}" == "true" ]] && [[ ! "${OpenClash_branch}" == "0" ]]; then
   OpenClash_branch="0"
@@ -872,27 +880,20 @@ fi
 # 晶晨CPU机型自定义机型,内核,分区
 if [[ -n "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
-elif [[ -z "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
+else
   echo "amlogic_model='s905d'" >> ${GITHUB_ENV}
 fi
 if [[ -n "${amlogic_kernel}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  if [[ -n "${BENDI_VERSION}" ]]; then
-    echo "amlogic_kernel='${amlogic_kernel}'" >> ${GITHUB_ENV}
-  else
-    echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
-  fi
-elif [[ -z "${amlogic_kernel}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  if [[ -n "${BENDI_VERSION}" ]]; then
-    echo "amlogic_kernel='5.4.210_5.10.135_5.15.50 -a true'" >> ${GITHUB_ENV}
-  else
-    echo "amlogic_kernel=5.4.210_5.10.135_5.15.50 -a true" >> ${GITHUB_ENV}
-  fi
+  echo "amlogic_kernel='${amlogic_kernel}'" >> ${GITHUB_ENV}
+else
+  echo "amlogic_kernel=5.4.210_5.10.135_5.15.50" >> ${GITHUB_ENV}
 fi
 if [[ -n "${rootfs_size}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
-elif [[ -z "${rootfs_size}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
+else
   echo "rootfs_size='960'" >> ${GITHUB_ENV}
 fi
+[[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 }
 
 
