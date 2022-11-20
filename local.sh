@@ -723,8 +723,11 @@ echo
 echo -e "  ${Green}请选择更新方式${Font}"
 echo
 echo -e "  ${Blue}1${Font}、${Yellow}单文件更新,只更新您所有机型文件夹的diy-part.sh和settings.ini${Font}"
+echo
 echo -e "  ${Blue}2${Font}、${Yellow}删除您现有的DIY-SETUP文件夹,从上游重新拉取DIY-SETUP文件夹${Font}"
+echo
 echo -e "  ${Blue}3${Font}、${Yellow}返回上级菜单${Font}"
+echo
 echo -e "  ${Blue}4${Font}、${Yellow}退出退出程序${Font}"
 echo
 echo
