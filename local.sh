@@ -597,7 +597,11 @@ sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 function Bendi_gitpull() {
 ECHOG "同步上游源码"
 git pull
-judge "同步"
+if [[ $? -ne 0 ]]; then
+  ECHOR "同步上游源码失败,无需理会,不是所有源码都支持同步的"
+else
+  ECHOB "同步上游源码完成"
+fi
 }
 
 function Bendi_xuanzhe() {
