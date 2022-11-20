@@ -168,7 +168,6 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 else
   echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 fi
-echo "DIYWORKING=${FOLDER_NAME}${REPO_BRANCH}" >> ${GITHUB_ENV}
   
 echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_ENV}
