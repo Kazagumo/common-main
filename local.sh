@@ -75,7 +75,7 @@ export GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
 CURRENT_PATH="${GITHUB_WORKSPACE##*/}"
 echo '#!/bin/bash' >${GITHUB_ENV}
 sudo chmod +x ${GITHUB_ENV}
-if [[ "${CURRENT_PATH}" == "openwrt" ]]; then
+if [[ ! "$USER" == "openwrt" ]] && [[ "${CURRENT_PATH}" == "openwrt" ]]; then
   print_error "已在openwrt文件夹内,请在勿在此路径使用一键命令"
   exit 1
 fi
