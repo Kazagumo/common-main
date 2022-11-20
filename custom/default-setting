@@ -25,9 +25,9 @@ if [[ -f /etc/index.htm ]] && [[ `grep -c "pcdata(ver.distversion)%><!--" "${luc
   sed -i 's/luciversion)%>)/luciversion)%>)-->/g' /etc/index.htm
   sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' /etc/index.htm
 elif [[ `grep -c "pcdata(ver.distversion)%>" "${luci_web}"` -eq '1' ]] && [[ `grep -c "pcdata(ver.distversion)%><!--" "${luci_web}"` -eq '0' ]]; then
-  sed -i 's/distversion)%>/distversion)%><!--/g' /usr/lib/lua/luci/view/admin_status/index.htm
-  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' /usr/lib/lua/luci/view/admin_status/index.htm
-  sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' /usr/lib/lua/luci/view/admin_status/index.htm
+  sed -i 's/distversion)%>/distversion)%><!--/g' "${luci_web}"
+  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' "${luci_web}"
+  sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "${luci_web}"
 fi
 
 sed -i 's?=== WARNING! =====================================?=================== WARNING! ====================?g' /etc/profile
