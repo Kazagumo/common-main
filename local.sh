@@ -74,16 +74,21 @@ export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
 echo '#!/bin/bash' >${GITHUB_ENV}
 sudo chmod +x ${GITHUB_ENV}
-source /etc/os-release
-case "${UBUNTU_CODENAME}" in
-"bionic"|"focal"|"jammy")
-  echo ""
-;;
-*)
-  print_error "请使用Ubuntu 64位系统，推荐 Ubuntu 20.04 LTS 或 Ubuntu 22.04 LTS"
-  exit 1
-;;
-esac
+if [[ ! -f "/etc/oprelyon" ]]; then
+  source /etc/os-release
+  case "${UBUNTU_CODENAME}" in
+  "bionic"|"focal"|"jammy")
+    echo ""
+  ;;
+  *)
+    print_error "请使用Ubuntu 64位系统，推荐 Ubuntu 20.04 LTS 或 Ubuntu 22.04 LTS"
+    exit 1
+  ;;
+  esac
+  if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
+    sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
+  fi
+fi
 if [[ "$USER" == "root" ]]; then
   print_error "警告：请勿使用root用户编译，换一个普通用户吧~~"
   exit 1
@@ -93,10 +98,6 @@ if [ ! "${Google_Check}" == 301 ]; then
   print_error "提醒：编译之前请自备梯子，编译全程都需要稳定翻墙的梯子~~"
   exit 1
 fi
-if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
-  sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
-fi
-
 
 function Bendi_WslPath() {
 if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
@@ -489,9 +490,6 @@ echo
 function Bendi_Packaging() {
   cd ${GITHUB_WORKSPACE}
   export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
-  if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
-    sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
-  fi
   [[ -d "amlogic" ]] && sudo rm -rf amlogic
   if [[ -d "amlogic" ]]; then
     ECHOR "已存在的amlogic文件夹无法删除，请重启系统再来尝试"
