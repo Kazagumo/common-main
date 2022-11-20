@@ -1231,21 +1231,29 @@ fi
 
 function Diy_adguardhome() {
 if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="amd64"
-  Archclash="amd64"
+  Arch="linux_amd64"
+  Archclash="linux-amd64"
   echo "amd64架构"
 elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="i386"
-  Archclash="386"
+  Arch="linux_386"
+  Archclash="linux-386"
   echo "X86 32位架构"
 elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="arm64"
-  Archclash="armv8"
+  Arch="linux_arm64"
+  Archclash="linux-armv8"
   echo "arm64架构"
-elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="armv7"
-  Archclash="armv7"
+elif [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_armv7"
+  Archclash="linux-armv7"
   echo "armv7架构"
+elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep -c "vfp" ${HOME_PATH}/.config` -ge '1' ]]; then
+  Arch="linux_armv6"
+  Archclash="linux-armv6"
+  echo "armv6架构"
+elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep -c "vfp" ${HOME_PATH}/.config` -ge '0' ]]; then
+  Arch="linux_armv5"
+  Archclash="linux-armv5"
+  echo "armv6架构"
 else
   echo "This model does not support automatic core download"
 fi
