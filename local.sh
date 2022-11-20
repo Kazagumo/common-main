@@ -605,7 +605,7 @@ if [[ ! "${SOURCE_CODE}" == "OFFICIAL" ]]; then
   git pull
 fi
 if [[ $? -ne 0 ]]; then
-  ECHOR "同步上游源码失败,无需理会,不是所有源码都支持同步的"
+  ECHOR "同步上游源码失败"
 else
   ECHOB "同步上游源码完成"
 fi
