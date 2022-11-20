@@ -76,7 +76,7 @@ CURRENT_PATH="${HOME_PATH##*/}"
 echo '#!/bin/bash' >${GITHUB_ENV}
 sudo chmod +x ${GITHUB_ENV}
 if [[ "${CURRENT_PATH}" == "openwrt" ]]; then
-  print_error "已在openwrt文件夹内,请勿在当前路径使用一键命令"
+  print_error "已在openwrt文件夹内,请在勿在此路径使用一键命令"
   exit 1
 fi
 if [[ ! -f "/etc/oprelyon" ]]; then
