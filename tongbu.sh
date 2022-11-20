@@ -14,7 +14,7 @@ else
 fi
 
 # 删除上游的.config和备份diy-part.sh、settings.ini
-rm -rf /shangyou/build/*/.config
+rm -rf shangyou/build/*/{.config,diy,files,patches}
 for X in $(find "DIY-SETUP" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
 for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
 
