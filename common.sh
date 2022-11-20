@@ -642,20 +642,20 @@ sed -i '/lan.broadcast=/d' "${GENE_PATH}"
 sed -i '/lan.ignore=/d' "${GENE_PATH}"
 sed -i '/lan.type/d' "${GENE_PATH}"
 sed -i '/set ttyd/d' "${GENE_PATH}"
-export lan="/set network.\$1.netmask/a"
-export ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-export netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-export opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
+lan="/set network.\$1.netmask/a"
+ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+netmas="$(grep "netmask:-" "${GENE_PATH}" |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
 if [[ `grep -c 'set network.${1}6.device' "${GENE_PATH}"` -ge '1' ]]; then
-  export ifnamee="uci set network.ipv6.device='@lan'"
-  export set_add="uci add_list firewall.@zone[0].network='ipv6'"
+  ifnamee="uci set network.ipv6.device='@lan'"
+  set_add="uci add_list firewall.@zone[0].network='ipv6'"
 else
-  export ifnamee="uci set network.ipv6.ifname='@lan'"
-  export set_add="uci set firewall.@zone[0].network='lan ipv6'"
+  ifnamee="uci set network.ipv6.ifname='@lan'"
+  set_add="uci set firewall.@zone[0].network='lan ipv6'"
 fi
 
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-  export devicee="uci set network.ipv6.device='@lan'"
+  devicee="uci set network.ipv6.device='@lan'"
 fi
 
 # openclash分支选择
@@ -696,72 +696,72 @@ fi
 
 
 if [[ "${Package_IPv6helper}" == "1" ]]; then
-  export Create_IPV6_interface="0"
-  export Remove_IPv6="0"
+  Create_IPV6_interface="0"
+  Remove_IPv6="0"
   echo "Package_IPv6helper=1" >> ${GITHUB_ENV}
-echo "
-uci set network.lan.ip6assign='64'
-uci commit network
-uci set dhcp.lan.ra='server'
-uci set dhcp.lan.dhcpv6='server'
-uci set dhcp.lan.ra_management='1'
-uci set dhcp.lan.ra_default='1'
-uci set dhcp.@dnsmasq[0].localservice=0
-uci set dhcp.@dnsmasq[0].nonwildcard=0
-uci set dhcp.@dnsmasq[0].filter_aaaa='0'
-uci commit dhcp
-/etc/init.d/dnsmasq restart
-/etc/init.d/odhcpd restart
-" >> "${DEFAULT_PATH}"
+  echo "
+    uci set network.lan.ip6assign='64'
+    uci commit network
+    uci set dhcp.lan.ra='server'
+    uci set dhcp.lan.dhcpv6='server'
+    uci set dhcp.lan.ra_management='1'
+    uci set dhcp.lan.ra_default='1'
+    uci set dhcp.@dnsmasq[0].localservice=0
+    uci set dhcp.@dnsmasq[0].nonwildcard=0
+    uci set dhcp.@dnsmasq[0].filter_aaaa='0'
+    uci commit dhcp
+    /etc/init.d/dnsmasq restart
+    /etc/init.d/odhcpd restart
+  " >> "${DEFAULT_PATH}"
 fi
 
 if [[ "${Create_IPV6_interface}" == "1" ]]; then
   echo "Create_IPV6_interface=1" >> ${GITHUB_ENV}
   export Remove_IPv6="0"
-echo "
-uci delete network.lan.ip6assign
-uci set network.lan.delegate='0'
-uci commit network
-uci delete dhcp.lan.ra
-uci delete dhcp.lan.ra_management
-uci delete dhcp.lan.ra_default
-uci delete dhcp.lan.dhcpv6
-uci delete dhcp.lan.ndp
-uci set dhcp.@dnsmasq[0].filter_aaaa='0'
-uci commit dhcp
-uci set network.ipv6=interface
-uci set network.ipv6.proto='dhcpv6'
-${devicee}
-${ifnamee}
-uci set network.ipv6.reqaddress='try'
-uci set network.ipv6.reqprefix='auto'
-uci commit network
-${set_add}
-uci commit firewall
-/etc/init.d/network restart
-/etc/init.d/dnsmasq restart
-/etc/init.d/odhcpd restart
-" >> "${DEFAULT_PATH}"
+  echo "
+    uci delete network.lan.ip6assign
+    uci set network.lan.delegate='0'
+    uci commit network
+    uci delete dhcp.lan.ra
+    uci delete dhcp.lan.ra_management
+    uci delete dhcp.lan.ra_default
+    uci delete dhcp.lan.dhcpv6
+    uci delete dhcp.lan.ndp
+    uci set dhcp.@dnsmasq[0].filter_aaaa='0'
+    uci commit dhcp
+    uci set network.ipv6=interface
+    uci set network.ipv6.proto='dhcpv6'
+    ${devicee}
+    ${ifnamee}
+    uci set network.ipv6.reqaddress='try'
+    uci set network.ipv6.reqprefix='auto'
+    uci commit network
+    ${set_add}
+    uci commit firewall
+    /etc/init.d/network restart
+    /etc/init.d/dnsmasq restart
+    /etc/init.d/odhcpd restart
+  " >> "${DEFAULT_PATH}"
 fi
 
 if [[ "${Remove_IPv6}" == "1" ]]; then
-echo "
-uci delete network.globals.ula_prefix
-uci delete network.lan.ip6assign
-uci delete network.wan6
-uci set network.lan.delegate='0' 
-uci commit network
-uci delete dhcp.lan.ra
-uci delete dhcp.lan.ra_management
-uci delete dhcp.lan.ra_default
-uci delete dhcp.lan.dhcpv6
-uci delete dhcp.lan.ndp
-uci set dhcp.@dnsmasq[0].filter_aaaa='1'
-uci commit dhcp
-/etc/init.d/network restart
-/etc/init.d/dnsmasq restart
-/etc/init.d/odhcpd restart
-" >> "${DEFAULT_PATH}"
+  echo "
+    uci delete network.globals.ula_prefix
+    uci delete network.lan.ip6assign
+    uci delete network.wan6
+    uci set network.lan.delegate='0' 
+    uci commit network
+    uci delete dhcp.lan.ra
+    uci delete dhcp.lan.ra_management
+    uci delete dhcp.lan.ra_default
+    uci delete dhcp.lan.dhcpv6
+    uci delete dhcp.lan.ndp
+    uci set dhcp.@dnsmasq[0].filter_aaaa='1'
+    uci commit dhcp
+    /etc/init.d/network restart
+    /etc/init.d/dnsmasq restart
+    /etc/init.d/odhcpd restart
+  " >> "${DEFAULT_PATH}"
 fi
 
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
@@ -787,8 +787,8 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]]; then
 fi
 
 if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
-  export Kernel_Pat="$(echo ${IPv4_ipaddr} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  export ipadd_Pat="$(echo ${ipadd} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  Kernel_Pat="$(echo ${IPv4_ipaddr} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  ipadd_Pat="$(echo ${ipadd} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
      sed -i "s/${ipadd}/${IPv4_ipaddr}/g" "${GENE_PATH}"
    else
@@ -797,8 +797,8 @@ if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
 fi
 
 if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
-  export Kernel_netm="$(echo ${Netmask_netm} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  export ipadd_mas="$(echo ${netmas} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  Kernel_netm="$(echo ${Netmask_netm} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  ipadd_mas="$(echo ${netmas} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Kernel_netm}" ]] && [[ -n "${ipadd_mas}" ]]; then
      sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
    else
@@ -811,7 +811,7 @@ if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]];
 fi
 
 if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
-   export Router_gat="$(echo ${Router_gateway} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+   Router_gat="$(echo ${Router_gateway} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
    if [[ -n "${Router_gat}" ]]; then
      sed -i "$lan\set network.lan.gateway='${Router_gateway}'" "${GENE_PATH}"
    else
@@ -820,7 +820,7 @@ if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
 fi
 
 if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
-  export ipa_dns="$(echo ${Lan_DNS} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  ipa_dns="$(echo ${Lan_DNS} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${ipa_dns}" ]]; then
      sed -i "$lan\set network.lan.dns='${Lan_DNS}'" "${GENE_PATH}"
    else
@@ -829,7 +829,7 @@ if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
 fi
 
 if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
-  export IPv4_Bro="$(echo ${IPv4_Broadcast} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  IPv4_Bro="$(echo ${IPv4_Broadcast} |egrep -o "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${IPv4_Bro}" ]]; then
      sed -i "$lan\set network.lan.broadcast='${IPv4_Broadcast}'" "${GENE_PATH}"
    else
