@@ -126,7 +126,7 @@ fi
 }
 
 function Bendi_Dependent() {
-ECHOGG "下载common.sh运行文件"
+ECHOG "下载common.sh运行文件"
 cd ${GITHUB_WORKSPACE}
 wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/common.sh
 if [[ $? -ne 0 ]]; then
