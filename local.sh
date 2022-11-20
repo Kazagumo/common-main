@@ -72,7 +72,7 @@ export BENDI_VERSION="2.0"
 export GITHUB_WORKSPACE="$PWD"
 export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
-CURRENT_PATH="${HOME_PATH##*/}"
+CURRENT_PATH="${GITHUB_WORKSPACE##*/}"
 echo '#!/bin/bash' >${GITHUB_ENV}
 sudo chmod +x ${GITHUB_ENV}
 if [[ "${CURRENT_PATH}" == "openwrt" ]]; then
