@@ -673,7 +673,7 @@ fi
 if [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
   [[ -f "${HOME_PATH}/files/etc/openclash/core/clash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core/clash
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "1" ]]; then
+elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "1" ]]; then
   echo "OpenClash_Core=1" >> ${GITHUB_ENV}
 else
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
