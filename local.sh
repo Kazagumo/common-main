@@ -433,17 +433,19 @@ if [[ "${bianyijiance}" == "1" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "open
   ECHOGG "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
   rm -rf ${HOME_PATH}/diysetup
   echo "
+  SUCCESS_FAILED="0"
   FOLDER_NAME2="${FOLDER_NAME}"
   REPO_BRANCH2="${REPO_BRANCH}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
   " > ${HOME_PATH}/shibaisetup
-  sed -i 's/^[ ]*//g' ${HOME_PATH}/shibaisetup
+  sed -i 's/^[ ]*//g' ${HOME_PATH}/diysetup
   sudo chmod +x ${HOME_PATH}/shibaisetup
   exit 1
 else
   cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
   rm -rf ${HOME_PATH}/shibaisetup
   echo "
+  SUCCESS_FAILED="1"
   FOLDER_NAME2="${FOLDER_NAME}"
   REPO_BRANCH2="${REPO_BRANCH}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
@@ -777,7 +779,7 @@ function menu2() {
   clear
   echo
   echo
-  if [[ -f "${HOME_PATH}/diysetup" ]]; then
+  if [[ "${SUCCESS_FAILED}" == "1" ]]; then
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
     echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
@@ -894,17 +896,15 @@ if [[ -z "${FOLDERS}" ]]; then
 else
   KAIDUAN_JIANCE="0"
 fi
-if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "${HOME_PATH}/diysetup" ]]; then
+if [[ -f "${HOME_PATH}/diysetup" ]]; then
   source ${HOME_PATH}/diysetup
-elif [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "${HOME_PATH}/shibaisetup" ]]; then
-  source ${HOME_PATH}/shibaisetup
   KAIDUAN_JIANCE="1"
 else
   KAIDUAN_JIANCE="0"
 fi
-if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "DIY-SETUP/${FOLDER_NAME2}/settings.ini" ]]; then
-  source DIY-SETUP/${FOLDER_NAME2}/settings.ini
+if [[ -f "DIY-SETUP/${FOLDER_NAME2}/settings.ini" ]]; then
   KAIDUAN_JIANCE="1"
+  source DIY-SETUP/${FOLDER_NAME2}/settings.ini
 else
   KAIDUAN_JIANCE="0"
 fi
