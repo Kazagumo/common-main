@@ -1274,8 +1274,12 @@ elif [[ `grep -c "CONFIG_ARCH=\"mips64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Archclash="linux-mips64"
   echo "mips架构"
 elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_mipsel_softfloat"
-  Archclash="linux-mipsel-softfloat"
+  Arch="linux_mipsle_softfloat"
+  Archclash="linux-mipsle-softfloat"
+  echo "mipsle架构"
+elif [[ `grep -c "CONFIG_ARCH=\"mips64el\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_mips64le_softfloat"
+  Archclash="linux-mips64le"
   echo "mipsle架构"
 else
   echo "I don't know what the architecture is"
