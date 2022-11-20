@@ -418,9 +418,9 @@ else
   fi
 fi
 if [[ $? -eq 0 ]]; then
-  bianyijiance="0"
-else
   bianyijiance="1"
+else
+  bianyijiance="0"
 fi
 sleep 3
 
@@ -428,31 +428,23 @@ if [[ -f "${FIRMWARE_PATH}" ]] && [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immort
   rename -v "s/^immortalwrt/openwrt/" ${FIRMWARE_PATH}/*
 fi
 
-if [[ "${bianyijiance}" == "1" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
+if [[ "${bianyijiance}" == "0" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
+  SUCCESS_FAILED="shibai"
   print_error "编译失败~~!"
   ECHOGG "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
-  rm -rf ${HOME_PATH}/diysetup
-  echo "
-  SUCCESS_FAILED="0"
-  FOLDER_NAME2="${FOLDER_NAME}"
-  REPO_BRANCH2="${REPO_BRANCH}"
-  TARGET_PROFILE2="${TARGET_PROFILE}"
-  " > ${HOME_PATH}/shibaisetup
-  sed -i 's/^[ ]*//g' ${HOME_PATH}/diysetup
-  sudo chmod +x ${HOME_PATH}/shibaisetup
+  sleep 3
   exit 1
 else
+  SUCCESS_FAILED="chenggong"
   cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
-  rm -rf ${HOME_PATH}/shibaisetup
-  echo "
-  SUCCESS_FAILED="1"
-  FOLDER_NAME2="${FOLDER_NAME}"
-  REPO_BRANCH2="${REPO_BRANCH}"
-  TARGET_PROFILE2="${TARGET_PROFILE}"
-  " > ${HOME_PATH}/diysetup
-  sed -i 's/^[ ]*//g' ${HOME_PATH}/diysetup
-  sudo chmod +x ${HOME_PATH}/diysetup
 fi
+echo "
+SUCCESS_FAILED="${SUCCESS_FAILED}"
+FOLDER_NAME2="${FOLDER_NAME}"
+REPO_BRANCH2="${REPO_BRANCH}"
+TARGET_PROFILE2="${TARGET_PROFILE}"
+" > ${HOME_PATH}/diysetup
+sudo chmod +x ${HOME_PATH}/diysetup
 }
 
 
