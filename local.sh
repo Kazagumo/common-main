@@ -411,14 +411,18 @@ else
      make V=s -16 |tee ${HOME_PATH}/build.log
   fi
 fi
-
+if [[ $? -eq 0 ]]; then
+  bianyijiance="0"
+else
+  bianyijiance="1"
+fi
 sleep 3
 
 if [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" ${FIRMWARE_PATH}/*
 fi
 
-if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
+if [[ "${bianyijiance}" == "1" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
   print_error "编译失败~~!"
   ECHOGG "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
   rm -rf ${HOME_PATH}/diysetup
