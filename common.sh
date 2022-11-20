@@ -1120,28 +1120,33 @@ echo -e "\nCONFIG_PACKAGE_snmpd=y" >> "${HOME_PATH}/.config"
 fi
 
 if [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_rockchip=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  sed -i '/IMAGES_GZIP/d' "${HOME_PATH}/.config"
   echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${HOME_PATH}/.config"
-  sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${HOME_PATH}/.config"
   echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${HOME_PATH}/.config"
-  sed -i '/CONFIG_GRUB_IMAGES/d' "${HOME_PATH}/.config"
   echo -e "\nCONFIG_GRUB_IMAGES=y" >> "${HOME_PATH}/.config"
+  PARTSIZE="$(egrep -o "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
+  if [[ "${PARTSIZE}" -lt "600" ]];then
+    echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=600" >> ${HOME_PATH}/.config
+  fi
 fi
 if [[ `grep -c "CONFIG_TARGET_mxs=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_sunxi=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_zynq=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  sed -i '/IMAGES_GZIP/d' "${HOME_PATH}/.config"
   echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${HOME_PATH}/.config"
-  sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${HOME_PATH}/.config"
   echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${HOME_PATH}/.config"
-  sed -i '/CONFIG_GRUB_IMAGES/d' "${HOME_PATH}/.config"
   echo -e "\nCONFIG_GRUB_IMAGES=y" >> "${HOME_PATH}/.config"
+  PARTSIZE="$(egrep -o "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
+  if [[ "${PARTSIZE}" -lt "600" ]];then
+    echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=600" >> ${HOME_PATH}/.config
+  fi
 fi
 
 if [[ `grep -c "CONFIG_TARGET_armvirt=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
   export UPDATE_FIRMWARE_ONLINE="false"
   echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
-  sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${HOME_PATH}/.config"
   echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${HOME_PATH}/.config"
+  PARTSIZE="$(egrep -o "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
+  if [[ "${PARTSIZE}" -lt "600" ]];then
+    echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=600" >> ${HOME_PATH}/.config
+  fi
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_odhcp6c=y" ${HOME_PATH}/.config` -eq '1' ]]; then
@@ -1156,7 +1161,6 @@ fi
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   PARTSIZE="$(egrep -o "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
   if [[ "${PARTSIZE}" -lt "950" ]];then
-    sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
     echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=950" >> ${HOME_PATH}/.config
     echo "TIME r \"EXT4提示：请注意，您选择了ext4安装的固件格式,而检测到您的分配的固件系统分区过小\"" >> ${HOME_PATH}/CHONGTU
     echo "TIME y \"为避免编译出错,已自动帮您修改成950M\"" >> ${HOME_PATH}/CHONGTU
