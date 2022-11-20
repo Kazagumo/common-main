@@ -797,6 +797,7 @@ function menu2() {
   echo
   echo
   XUANZop="请输入数字"
+  echo
   while :; do
   read -p " ${XUANZop}：" menu_num
   case $menu_num in
@@ -840,6 +841,7 @@ ECHOY " 3. 打包N1或晶晨系列固件(您要有armvirt_64的.tar.gz固件)"
 ECHOY " 4. 退出编译程序"
 echo
 XUANZHEOP="请输入数字"
+echo
 while :; do
 read -p " ${XUANZHEOP}： " CHOOSE
 case $CHOOSE in
