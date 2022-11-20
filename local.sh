@@ -720,12 +720,13 @@ cd ${GITHUB_WORKSPACE}
 echo
 echo
 echo -e "${Green}  请选择更新方式${Font}"
-echo -e "${Yellow}  输入${Font}${Blue}【1】${Font}${Yellow}为单文件更新,只更新您DIY-SETUP内所有机型文件夹里的diy-part.sh和settings.ini${Font}"
-echo -e "${Yellow}  输入${Font}${Blue}【2】${Font}${Yellow}为删除您现有的DIY-SETUP文件夹,从上游重新拉取DIY-SETUP文件夹${Font}"
-echo -e "${Yellow}  输入${Font}${Blue}【3】${Font}${Yellow}为退出退出程序${Font}"
+echo -e "${Yellow}  输入${Font}${Blue}[1]${Font}${Yellow}为单文件更新,只更新您DIY-SETUP内所有机型文件夹里的diy-part.sh和settings.ini${Font}"
+echo -e "${Yellow}  输入${Font}${Blue}[2]${Font}${Yellow}为删除您现有的DIY-SETUP文件夹,从上游重新拉取DIY-SETUP文件夹${Font}"
+echo -e "${Yellow}  输入${Font}${Blue}[3]${Font}${Yellow}为返回上级菜单${Font}"
+echo -e "${Yellow}  输入${Font}${Blue}[4]${Font}${Yellow}为退出退出程序${Font}"
 echo
 echo
-IYSETUP="请输入数字确定您的选择"
+IYSETUP="  请输入数字确定您的选择"
 while :; do
 read -p " ${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
@@ -741,11 +742,15 @@ break
 break
 ;;
 3)
+  ${BENDI_MEMU}
+break
+;;
+4)
   exit 0
 break
 ;;
 *)
-  IYSETUP="输入错误,请输入数字"
+  IYSETUP="  输入错误,请输入数字"
 ;;
 esac
 done
@@ -900,9 +905,11 @@ if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "DIY-SETUP/${FOLDER_NAME2}/${CONFIG
 fi
 if [[ "${KAIDUAN_JIANCE}" == "1" ]]; then
   export FOLDER_NAME="${FOLDER_NAME2}"
+  export BENDI_MEMU="menu2"
   menu2
 else
   export FOLDER_NAME=""
+  export BENDI_MEMU="menu"
   menu
 fi
 }
