@@ -418,9 +418,9 @@ else
   fi
 fi
 if [[ $? -eq 0 ]]; then
-  bianyijiance="1"
+  bianyijiance="success"
 else
-  bianyijiance="0"
+  bianyijiance="fail"
 fi
 sleep 3
 
@@ -428,14 +428,14 @@ if [[ -f "${FIRMWARE_PATH}" ]] && [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immort
   rename -v "s/^immortalwrt/openwrt/" ${FIRMWARE_PATH}/*
 fi
 
-if [[ "${bianyijiance}" == "0" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
-  SUCCESS_FAILED="shibai"
+if [[ "${bianyijiance}" == "fail" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "openwrt"` -eq '0' ]]; then
+  SUCCESS_FAILED="fail"
   print_error "编译失败~~!"
   ECHOGG "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
   sleep 3
   exit 1
 else
-  SUCCESS_FAILED="chenggong"
+  SUCCESS_FAILED="success"
   cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
 fi
 echo "
@@ -771,13 +771,13 @@ function menu2() {
   clear
   echo
   echo
-  if [[ "${SUCCESS_FAILED}" == "1" ]]; then
+  if [[ "${SUCCESS_FAILED}" == "success" ]]; then
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
     echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
   else
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${REPO_BRANCH2}${Font}"
-    echo -e " ${Red}上回编译[${TARGET_PROFILE2}]于失败告终${Font}"
+    echo -e " ${Red}大兄弟啊,上回编译${Yellow}[${TARGET_PROFILE2}]${Font}${Red}于失败告终了${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
   fi
   echo
