@@ -104,10 +104,9 @@ if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     clear
     ECHOR "您的ubuntu为Windows子系统,是否一次性解决路径问题,还是使用临时路径编译?"
     while :; do
-    read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒自动跳过)： " Bendi_Wsl
+    read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒后继续编译)： " Bendi_Wsl
     case ${Bendi_Wsl} in
     [Yy])
-      WSL_windows="0"
       ECHOYY "请到 https://github.com/281677160/bendi 查看说明"
       exit 0
     ;;
@@ -228,7 +227,6 @@ ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
 judge "变量读取"
-echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> ${GITHUB_ENV}
 source ${GITHUB_ENV}
 }
 
@@ -236,6 +234,8 @@ function Bendi_MainProgram() {
 ECHOGG "下载扩展文件"
 cd ${GITHUB_WORKSPACE}
 source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
+echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> ${GITHUB_ENV}
+source ${GITHUB_ENV}
 rm -rf build && cp -Rf DIY-SETUP build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
 judge "扩展文件下载"
@@ -269,6 +269,7 @@ cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu3
 judge "源码微调"
+echo
 }
 
 function Bendi_UpdateSource() {
