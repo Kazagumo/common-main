@@ -1370,7 +1370,7 @@ done
 if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   rename -v "s/^openwrt/openwrt-amlogic/" *
 else
-  rename -v "s/^openwrt/${Gujian_Date}-${LUCI_EDITION}-${SOURCE}/" *
+  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}/" *
 fi
 sudo rm -rf "${CLEAR_PATH}"
 }
