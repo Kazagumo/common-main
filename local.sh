@@ -786,7 +786,7 @@ function menu2() {
   echo
   echo -e " 2${Red}.${Font}${Green}重新选择源码编译${Font}"
   echo
-  echo -e " 3${Red}.${Font}${Green}同步上游DIY-SETUP文件(不覆盖config配置文件)${Font}"
+  echo -e " 3${Red}.${Font}${Green}同步上游DIY-SETUP文件${Font}"
   echo
   echo -e " 4${Red}.${Font}${Green}打包N1和晶晨系列CPU固件${Font}"
   echo
@@ -832,7 +832,7 @@ clear
 echo
 echo
 ECHOY " 1. 进行选择编译源码文件"
-ECHOY " 2. 同步上游DIY-SETUP文件(不覆盖config配置文件)"
+ECHOY " 2. 同步上游DIY-SETUP文件"
 ECHOY " 3. 单独打包晶晨系列固件(前提是您要有armvirt的.tar.gz固件)"
 ECHOY " 4. 退出编译程序"
 echo
