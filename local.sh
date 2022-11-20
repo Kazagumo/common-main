@@ -889,8 +889,8 @@ else
   KAIDUAN_JIANCE="0"
 fi
 if [[ -f "${HOME_PATH}/key-zuild" ]]; then
-  source ${HOME_PATH}/key-zuild
   KAIDUAN_JIANCE="1"
+  source ${HOME_PATH}/key-zuild
 else
   KAIDUAN_JIANCE="0"
 fi
@@ -913,12 +913,12 @@ if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "DIY-SETUP/${FOLDER_NAME2}/${CONFIG
   [[ -z "${TARGET_PROFILE3}" ]] && TARGET_PROFILE3="未知"
 fi
 if [[ "${KAIDUAN_JIANCE}" == "1" ]]; then
-  export FOLDER_NAME="${FOLDER_NAME2}"
-  export BENDI_MEMU="menu2"
+  FOLDER_NAME="${FOLDER_NAME2}"
+  BENDI_MEMU="menu2"
   menu2
 else
-  export FOLDER_NAME=""
-  export BENDI_MEMU="menu"
+  FOLDER_NAME=""
+  BENDI_MEMU="menu"
   menu
 fi
 }
