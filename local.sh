@@ -72,8 +72,13 @@ export BENDI_VERSION="2.0"
 export GITHUB_WORKSPACE="$PWD"
 export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
+CURRENT_PATH="${HOME_PATH##*/}"
 echo '#!/bin/bash' >${GITHUB_ENV}
 sudo chmod +x ${GITHUB_ENV}
+if [[ "${CURRENT_PATH}" == "openwrt" ]]; then
+  print_error "已在openwrt文件夹内,请勿在当前路径使用一键命令"
+  exit 1
+fi
 if [[ ! -f "/etc/oprelyon" ]]; then
   source /etc/os-release
   case "${UBUNTU_CODENAME}" in
