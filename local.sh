@@ -317,6 +317,7 @@ cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu5
 judge "检测配置,生成配置"
+rm -rf ${GITHUB_WORKSPACE}/config
 }
 
 function Bendi_ErrorMessage() {
