@@ -443,8 +443,8 @@ SUCCESS_FAILED="${SUCCESS_FAILED}"
 FOLDER_NAME2="${FOLDER_NAME}"
 REPO_BRANCH2="${REPO_BRANCH}"
 TARGET_PROFILE2="${TARGET_PROFILE}"
-" > ${HOME_PATH}/diysetup
-sudo chmod +x ${HOME_PATH}/diysetup
+" > ${HOME_PATH}/key-zuild
+sudo chmod +x ${HOME_PATH}/key-zuild
 }
 
 
@@ -888,8 +888,8 @@ if [[ -z "${FOLDERS}" ]]; then
 else
   KAIDUAN_JIANCE="0"
 fi
-if [[ -f "${HOME_PATH}/diysetup" ]]; then
-  source ${HOME_PATH}/diysetup
+if [[ -f "${HOME_PATH}/key-zuild" ]]; then
+  source ${HOME_PATH}/key-zuild
   KAIDUAN_JIANCE="1"
 else
   KAIDUAN_JIANCE="0"
