@@ -881,19 +881,19 @@ fi
 if [[ -n "${amlogic_model}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
 else
-  echo "amlogic_model='s905d'" >> ${GITHUB_ENV}
+  echo "amlogic_model=s905d" >> ${GITHUB_ENV}
 fi
 if [[ -n "${amlogic_kernel}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  echo "amlogic_kernel='${amlogic_kernel}'" >> ${GITHUB_ENV}
+  echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
 else
   echo "amlogic_kernel=5.4.210_5.10.135_5.15.50" >> ${GITHUB_ENV}
 fi
 if [[ -n "${rootfs_size}" ]] && [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
 else
-  echo "rootfs_size='960'" >> ${GITHUB_ENV}
+  echo "rootfs_size=960" >> ${GITHUB_ENV}
 fi
-[[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
+[[ -f "${GITHUB_ENV}" ]] && source "${GITHUB_ENV}"
 }
 
 
