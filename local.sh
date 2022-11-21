@@ -231,7 +231,6 @@ esac
 }
 
 function Bendi_Variable() {
-ECHOGG "读取变量"
 cd ${GITHUB_WORKSPACE}
 source common.sh && Diy_variable
 judge "变量读取"
@@ -403,10 +402,11 @@ echo
 [[ -f "${GITHUB_WORKSPACE}/common.sh" ]] && rm -rf ${GITHUB_WORKSPACE}/common.sh
 [[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
 if [[ "$(nproc)" -le "12" ]];then
-  ECHOYY "即将使用$(nproc)线程进行编译固件"
+  ECHOY "即将使用$(nproc)线程进行编译固件"
   sleep 8
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
+    ECHOG "WSL临时路径编译中"
   else
      make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
   fi
@@ -415,6 +415,7 @@ else
   sleep 8
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |tee ${HOME_PATH}/build.log
+    ECHO "WSL临时路径编译中"
   else
      make V=s -16 |tee ${HOME_PATH}/build.log
   fi
