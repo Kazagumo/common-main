@@ -1532,7 +1532,7 @@ else
 fi
 echo
 TIME z " 系统空间      类型   总数  已用  可用 使用率"
-cd ../ && df -hT $PWD && cd ${HOME_PATH}
+df -hT $PWD
 echo
 echo
 
