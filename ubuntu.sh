@@ -25,25 +25,35 @@ function __warning_msg() {
 	echo -e "${YELLOW_COLOR}[WARNING]${DEFAULT_COLOR} $*"
 }
 
+function check_network(){
+	__info_msg "Checking network..."
+
+	curl -s "myip.ipip.net" | grep -qo "中国" && CHN_NET=1
+	curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || { __warning_msg "Your network is not suitable for compiling OpenWrt!"; }
+	curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || { __warning_msg "Your network is not suitable for compiling OpenWrt!"; }
+}
+
 function update_apt_source(){
-	__info_msg "开始安装依赖..."
+	__info_msg "Updating apt source lists..."
 	set -x
 
-	sudo apt-get update -y
-	sudo apt-get install -y apt-transport-https gnupg2
-	mv "/etc/apt/sources.list" "/etc/apt/sources.list.bak"
-	cat <<-EOF >"/etc/apt/sources.list"
-		deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse
-		deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-security main restricted universe multiverse
-		deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-updates main restricted universe multiverse
-		# deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-proposed main restricted universe multiverse
-		deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-backports main restricted universe multiverse
-		deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse
-		deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-security main restricted universe multiverse
-		deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-updates main restricted universe multiverse
-		deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-backports main restricted universe multiverse
-		# deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-proposed main restricted universe multiverse
-	EOF
+	apt update -y
+	apt install -y apt-transport-https gnupg2
+	[ -n "$CHN_NET" ] && {
+		mv "/etc/apt/sources.list" "/etc/apt/sources.list.bak"
+		cat <<-EOF >"/etc/apt/sources.list"
+			deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse
+			deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-security main restricted universe multiverse
+			deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-updates main restricted universe multiverse
+			# deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-proposed main restricted universe multiverse
+			deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-backports main restricted universe multiverse
+			deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse
+			deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-security main restricted universe multiverse
+			deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-updates main restricted universe multiverse
+			deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-backports main restricted universe multiverse
+			# deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-proposed main restricted universe multiverse
+		EOF
+	}
 
 	mkdir -p "/etc/apt/sources.list.d"
 
