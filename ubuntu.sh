@@ -148,7 +148,9 @@ function install_dependencies(){
 	ln -svf "/usr/lib/go-1.19/bin/go" "/usr/bin/go"
 	ln -svf "/usr/lib/go-1.19/bin/gofmt" "/usr/bin/gofmt"
 
+	sudo apt-get autoremove --purge -y
 	sudo apt-get clean -y
+	sudo sh -c 'echo openwrt > /etc/oprelyon'
 
 	if TMP_DIR="$(mktemp -d)"; then
 		pushd "$TMP_DIR"
