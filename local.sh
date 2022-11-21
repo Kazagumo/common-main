@@ -125,6 +125,26 @@ if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
 fi
 }
 
+function BENDI_Diskcapacity() {
+Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
+Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
+Cipan_Avail="$(df -hT $PWD|awk 'NR==2'|awk '{print $(5)}' |cut -d 'G' -f1)"
+ECHOY "磁盘总量为[${Cipan_Size}]，已用[${Cipan_Used}]，可用[${Cipan_Avail}G]"
+if [[ "${Cipan_Avail}" -lt "20" ]];then
+  print_error "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于20G,是否继续?"
+  read -p " 直接回车退出编译，按[Y/y]回车则继续编译： " KJYN
+  case ${KJYN} in
+  [Yy]) 
+    ECHOG  "可用空间太小严重影响编译,请满天神佛保佑您成功吧！"
+  ;;
+  *)
+    ECHOY  "您已取消编译,请清理Ubuntu空间或增加硬盘容量..."
+    exit 0
+  ;;
+  esac
+fi
+}
+
 function Bendi_Dependent() {
 ECHOG "下载common.sh运行文件"
 cd ${GITHUB_WORKSPACE}
@@ -494,35 +514,33 @@ function Bendi_Packaging() {
     exit 1
   fi
   
-  if [[ ! -d "${FIRMWARE_PATH}" ]] || [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "tar.gz"` -eq '0' ]]; then
+  if [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "tar.gz"` -eq '0' ]]; then
     mkdir -p "${FIRMWARE_PATH}"
     clear
     ECHOR "没发现 openwrt/bin/targets/armvirt/64 文件夹里存在.tar.gz固件，已为你创建了文件夹"
     ECHORR "请用WinSCP工具将\"openwrt-armvirt-64-default-rootfs.tar.gz\"固件存入文件夹中"
     if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
-      ECHOY "提醒：Windows的WSL系统的话，千万别直接打开文件夹来存放固件，很容易出错的，要用WinSCP工具或SSH工具自带的文件管理器"
+      ECHOYY "提醒：Windows的WSL系统的话，千万别直接打开文件夹来存放固件，很容易出错的，要用WinSCP工具或SSH工具自带的文件管理器"
     fi
     exit 1
   fi
 
   ECHOY "正在下载打包所需的程序,请耐心等候~~~"
   git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
-  judge "打包程序下载"
+  judge "内核运行文件下载"
   rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,*README*,LICENSE}
   [ ! -d amlogic/openwrt-armvirt ] && mkdir -p amlogic/openwrt-armvirt
   
   ECHOY "全部可打包机型：s922x s922x-n2 s922x-reva a311d s905x3 s905x2 s905x2-km3 s905l3a s912 s912-m8s s905d s905d-ki s905x s905w s905"
-  ECHOGG "设置要打包固件的机型[ 直接回车则默认(N1) ]"
+  ECHOGG "设置要打包固件的机型[ 直接回车则默认全部机型(N1) ]"
   read -p " 请输入您要设置的机型：" amlogic_model
   export amlogic_model=${amlogic_model:-"s905d"}
   ECHOYY "您设置的机型为：${amlogic_model}"
   echo
-  ECHOGG "设置打包的内核版本[直接回车则默认 5.15.xx 和 5.10.xx]"
-  ECHOGY "内核说明：不给您设置定制版本内核的,自动检测您当前写的内核最高版本打包,"
-  ECHOGY "比如您要5.15内核的话,您不需要考虑啥,直接写5.15.01就行了,其他版本内核也一样"
+  ECHOGG "设置打包的内核版本[直接回车则默认 5.15.xx 和 5.10.xx ，xx为当前最新版本]"
   read -p " 请输入您要设置的内核：" amlogic_kernel
-  export amlogic_kernel=${amlogic_kernel:-"5.15.01_5.10.02"}
-  if [[ "${amlogic_kernel}" == "5.15.01_5.10.02" ]]; then
+  export amlogic_kernel=${amlogic_kernel:-"5.15.25_5.10.100"}
+  if [[ "${amlogic_kernel}" == "5.15.25_5.10.100" ]]; then
     ECHOYY "您设置的内核版本为：5.15.xx 和 5.10.xx "
   else
     ECHOYY "您设置的内核版本为：${amlogic_kernel}"
@@ -538,7 +556,7 @@ function Bendi_Packaging() {
     armvirtargz="$(ls -1 "${FIRMWARE_PATH}" |grep ".*tar.gz" |awk 'END {print}')"
     cp -Rf ${FIRMWARE_PATH}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   fi
-  if [[ `ls -1 "${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt" | grep -c ".tar.gz"` -eq '0' ]]; then
+  if [[ `ls -1 "${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt" | grep -c "openwrt-armvirt-64-default-rootfs.tar.gz"` -eq '0' ]]; then
     print_error "amlogic/openwrt-armvirt文件夹没发现openwrt-armvirt-64-default-rootfs.tar.gz固件存在"
     print_error "请检查openwrt/bin/targets/armvirt/64文件夹内有没有openwrt-armvirt-64-default-rootfs.tar.gz固件存在"
     exit 1
@@ -682,6 +700,7 @@ function Bendi_xuanzhe() {
 
 function Bendi_menu2() {
 Bendi_WslPath
+BENDI_Diskcapacity
 Bendi_Dependent
 Bendi_Version
 Bendi_DiySetup
@@ -705,6 +724,7 @@ Bendi_shouweigongzhong
 
 function Bendi_menu() {
 Bendi_WslPath
+BENDI_Diskcapacity
 Bendi_Dependent
 Bendi_Version
 Bendi_DiySetup
