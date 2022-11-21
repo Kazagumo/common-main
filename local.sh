@@ -512,7 +512,7 @@ function Bendi_Packaging() {
   [ ! -d amlogic/openwrt-armvirt ] && mkdir -p amlogic/openwrt-armvirt
   
   ECHOY "全部可打包机型：s922x s922x-n2 s922x-reva a311d s905x3 s905x2 s905x2-km3 s905l3a s912 s912-m8s s905d s905d-ki s905x s905w s905"
-  ECHOGG "设置要打包固件的机型[ 直接回车则默(N1) ]"
+  ECHOGG "设置要打包固件的机型[ 直接回车则默认(N1) ]"
   read -p " 请输入您要设置的机型：" amlogic_model
   export amlogic_model=${amlogic_model:-"s905d"}
   ECHOYY "您设置的机型为：${amlogic_model}"
