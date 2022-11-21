@@ -116,6 +116,7 @@ function install_dependencies(){
 		yarn config set registry "https://mirrors.tencent.com/npm/" --global
 	}
 
+	sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /etc/mysql /etc/php /swapfile
 	sudo apt-get autoremove --purge -y
 	sudo apt-get clean -y
 	sudo sh -c 'echo openwrt > /etc/oprelyon'
