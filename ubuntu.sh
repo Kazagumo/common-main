@@ -5,6 +5,7 @@
 
 
 function check_system(){
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt-get update -y
 sudo apt-get full-upgrade -y
 sudo apt-get install -y rename ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential \
@@ -20,8 +21,6 @@ sudo apt-get install -y apt-transport-https gnupg2
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 sudo apt-get install -y nodejs
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update
 sudo apt-get install -y yarn
 
 node --version
