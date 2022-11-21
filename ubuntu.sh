@@ -25,35 +25,8 @@ function __warning_msg() {
 	echo -e "${YELLOW_COLOR}[WARNING]${DEFAULT_COLOR} $*"
 }
 
-function check_system(){
-	__info_msg "Checking system info..."
-
-	UBUNTU_CODENAME="$(source /etc/os-release; echo "$UBUNTU_CODENAME")"
-	case "$UBUNTU_CODENAME" in
-	"bionic"|"focal"|"jammy")
-		# Nothing to do
-		;;
-	*)
-		__error_msg "Unsupported OS, use Ubuntu 20.04 instead."
-		exit 1
-		;;
-	esac
-
-	[ "$(uname -m)" != "x86_64" ] && { __error_msg "Unsupported architecture, use AMD64 instead." && exit 1; }
-
-	[ "$(whoami)" != "root" ] && { __error_msg "You must run me as root." && exit 1; }
-}
-
-function check_network(){
-	__info_msg "Checking network..."
-
-	curl -s "myip.ipip.net" | grep -qo "中国" && CHN_NET=1
-	curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || { __warning_msg "Your network is not suitable for compiling OpenWrt!"; }
-	curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || { __warning_msg "Your network is not suitable for compiling OpenWrt!"; }
-}
-
 function update_apt_source(){
-	__info_msg "Updating apt source lists..."
+	__info_msg "开始安装依赖..."
 	set -x
 
 	sudo apt-get update -y
@@ -188,11 +161,9 @@ function install_dependencies(){
 	rm -rf "$TMP_DIR"
 
 	set +x
-	__success_msg "All dependencies have been installed."
+	__success_msg "依赖全部安装完毕."
 }
 function main(){
-	check_system
-	check_network
 	update_apt_source
 	install_dependencies
 }
