@@ -116,7 +116,7 @@ function install_dependencies(){
 	set -x
 
 	apt full-upgrade -y
-	apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+	apt install -y rename ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
 		bzip2 ccache cmake cpio curl device-tree-compiler ecj fakeroot fastjar flex gawk gettext git \
 		gperf haveged help2man intltool jq libc6-dev-i386 libelf-dev lib32gcc-s1 libglib2.0-dev libgmp3-dev \
 		libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5 libncursesw5-dev libreadline-dev \
