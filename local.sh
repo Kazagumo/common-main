@@ -538,8 +538,9 @@ function Bendi_Packaging() {
   ECHOYY "您设置的机型为：${amlogic_model}"
   echo
   ECHOGG "设置打包的内核版本[直接回车则默认 5.15.xx 和 5.10.xx]"
-  ECHOGY "内核说明：不给您设置定制版本内核的,自动检测您当前写的内核最高版本打包,"
-  ECHOGY "比如您要5.15内核的话,您不需要考虑啥,直接写5.15.01就行了,其他版本内核也一样"
+  ECHOY "内核说明：不给您设置定制版本内核的,自动检测您当前写的内核最高版本打包,"
+  ECHOY "比如您要5.15内核的话,您不需要考虑啥,直接写5.15.01就行了,其他版本内核也一样"
+  echo
   read -p " 请输入您要设置的内核：" amlogic_kernel
   export amlogic_kernel=${amlogic_kernel:-"5.15.01_5.10.02"}
   if [[ "${amlogic_kernel}" == "5.15.01_5.10.02" ]]; then
