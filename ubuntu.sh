@@ -46,6 +46,9 @@ popd
 curl -fL "https://build-scripts.immortalwrt.eu.org/modify-firmware.sh" -o "/usr/bin/modify-firmware"
 chmod 0755 "/usr/bin/modify-firmware"
 popd
+
+sudo apt-get autoremove -y --purge
+sudo apt-get clean
 }
 
 function main(){
