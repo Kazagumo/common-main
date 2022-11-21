@@ -37,8 +37,8 @@ function update_apt_source(){
 	__info_msg "Updating apt source lists..."
 	set -x
 
-	apt update -y
-	apt install -y apt-transport-https gnupg2
+	sudo apt-get update -y
+	sudo apt-get install -y apt-transport-https gnupg2
 	[ -n "$CHN_NET" ] && {
 		mv "/etc/apt/sources.list" "/etc/apt/sources.list.bak"
 		cat <<-EOF >"/etc/apt/sources.list"
@@ -124,7 +124,6 @@ function install_dependencies(){
 		yarn config set registry "https://mirrors.tencent.com/npm/" --global
 	}
 
-	sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /etc/mysql /etc/php /swapfile
 	sudo apt-get autoremove --purge -y
 	sudo apt-get clean -y
 	sudo sh -c 'echo openwrt > /etc/oprelyon'
@@ -168,6 +167,7 @@ function install_dependencies(){
 	__success_msg "依赖全部安装完毕."
 }
 function main(){
+	check_network
 	update_apt_source
 	install_dependencies
 }
