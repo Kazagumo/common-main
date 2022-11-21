@@ -116,11 +116,6 @@ function install_dependencies(){
 		yarn config set registry "https://mirrors.tencent.com/npm/" --global
 	}
 
-	sudo apt-get install -y golang-1.19-go
-	rm -rf "/usr/bin/go" "/usr/bin/gofmt"
-	ln -svf "/usr/lib/go-1.19/bin/go" "/usr/bin/go"
-	ln -svf "/usr/lib/go-1.19/bin/gofmt" "/usr/bin/gofmt"
-
 	sudo apt-get autoremove --purge -y
 	sudo apt-get clean -y
 	sudo sh -c 'echo openwrt > /etc/oprelyon'
