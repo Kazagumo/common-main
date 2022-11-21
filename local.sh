@@ -420,7 +420,7 @@ ECHOG "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_ava
 echo
 
 [[ -f "${GITHUB_WORKSPACE}/common.sh" ]] && rm -rf ${GITHUB_WORKSPACE}/common.sh
-[[ -d "${FIRMWARE_PATH}" ]] && rm -rf ${FIRMWARE_PATH}/*
+[[ -d "${FIRMWARE_PATH}" ]] && sudo rm -rf ${FIRMWARE_PATH}
 if [[ "$(nproc)" -le "12" ]];then
   ECHOY "即将使用$(nproc)线程进行编译固件"
   sleep 8
