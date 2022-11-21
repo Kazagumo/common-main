@@ -256,7 +256,7 @@ sudo chmod -R +x build
 }
 
 function Bendi_Download() {
-ECHOGG "下载${SOURCE_CODE}-${REPO_BRANCH}源码"
+ECHOGG "下载${SOURCE_CODE}-${LUCI_EDITION}源码"
 cd ${GITHUB_WORKSPACE}
 rm -rf ${HOME_PATH}
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
