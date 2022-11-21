@@ -405,8 +405,8 @@ if [[ "$(nproc)" -le "12" ]];then
   ECHOY "即将使用$(nproc)线程进行编译固件"
   sleep 8
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
     ECHOG "WSL临时路径编译中"
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
   else
      make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
   fi
@@ -414,8 +414,8 @@ else
   ECHOGG "您的CPU线程超过或等于16线程，强制使用16线程进行编译固件"
   sleep 8
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |tee ${HOME_PATH}/build.log
     ECHO "WSL临时路径编译中"
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |tee ${HOME_PATH}/build.log
   else
      make V=s -16 |tee ${HOME_PATH}/build.log
   fi
@@ -429,7 +429,7 @@ sleep 3
 if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "${TARGET_BOARD}"` -eq '0' ]]; then
   SUCCESS_FAILED="fail"
   print_error "编译失败~~!"
-  ECHOGG "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
+  ECHOY "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
   sleep 3
   exit 1
 else
