@@ -4,7 +4,7 @@
 # Copyright (C) ImmortalWrt.org
 
 
-function check_system(){
+function install_mustrelyon(){
 sudo apt-get update -y
 sudo apt-get full-upgrade -y
 sudo apt-get install -y rename ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential \
@@ -15,7 +15,7 @@ mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 
 rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 }
 
-function check_network(){
+function update_apt_source(){
 sudo apt-get install -y apt-transport-https gnupg2
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 sudo apt-get install -y nodejs yarn
@@ -48,8 +48,8 @@ sudo apt-get clean
 }
 
 function main(){
-	check_system
-	check_network
+	install_mustrelyon
+	update_apt_source
 	install_dependencies
 }
 
