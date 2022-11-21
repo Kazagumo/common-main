@@ -18,8 +18,7 @@ rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wg
 function check_network(){
 sudo apt-get install -y apt-transport-https gnupg2
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-sudo apt-get install -y nodejs
-sudo apt-get install -y yarn
+sudo apt-get install -y nodejs yarn
 
 node --version
 yarn --version
