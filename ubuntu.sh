@@ -25,6 +25,25 @@ function __warning_msg() {
 	echo -e "${YELLOW_COLOR}[WARNING]${DEFAULT_COLOR} $*"
 }
 
+function check_system(){
+	__info_msg "Checking system info..."
+
+	UBUNTU_CODENAME="$(source /etc/os-release; echo "$UBUNTU_CODENAME")"
+	case "$UBUNTU_CODENAME" in
+	"bionic"|"focal"|"jammy")
+		# Nothing to do
+		;;
+	*)
+		__error_msg "Unsupported OS, use Ubuntu 20.04 instead."
+		exit 1
+		;;
+	esac
+
+	[ "$(uname -m)" != "x86_64" ] && { __error_msg "Unsupported architecture, use AMD64 instead." && exit 1; }
+
+	[ "$(whoami)" != "root" ] && { __error_msg "You must run me as root." && exit 1; }
+}
+
 function check_network(){
 	__info_msg "Checking network..."
 
@@ -37,8 +56,8 @@ function update_apt_source(){
 	__info_msg "Updating apt source lists..."
 	set -x
 
-	sudo apt-get update -y
-	sudo apt-get install -y apt-transport-https gnupg2
+	apt update -y
+	apt install -y apt-transport-https gnupg2
 	[ -n "$CHN_NET" ] && {
 		mv "/etc/apt/sources.list" "/etc/apt/sources.list.bak"
 		cat <<-EOF >"/etc/apt/sources.list"
@@ -88,7 +107,7 @@ function update_apt_source(){
 
 	[ -n "$CHN_NET" ] && sed -i "s,http://ppa.launchpad.net,https://launchpad.proxy.ustclug.org,g" "/etc/apt/sources.list.d"/*
 
-	sudo apt-get update -y
+	apt update -y
 
 	set +x
 }
@@ -96,16 +115,16 @@ function install_dependencies(){
 	__info_msg "Installing dependencies..."
 	set -x
 
-	sudo apt-get full-upgrade -y
-	sudo apt-get install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+	apt full-upgrade -y
+	apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
 		bzip2 ccache cmake cpio curl device-tree-compiler ecj fakeroot fastjar flex gawk gettext git \
 		gperf haveged help2man intltool jq libc6-dev-i386 libelf-dev lib32gcc-s1 libglib2.0-dev libgmp3-dev \
 		libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5 libncursesw5-dev libreadline-dev \
 		libssl-dev libtool libyaml-dev libz-dev lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch \
 		pkgconf python2 libpython3-dev python3 python3-pip python3-ply python3-docutils qemu-utils quilt \
-		re2c rsync scons squashfs-tools subversion swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev rename
+		re2c rsync scons squashfs-tools subversion swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 
-	sudo apt-get install -y gcc-11 g++-11 gcc-11-multilib g++-11-multilib
+	apt install -y gcc-11 g++-11 gcc-11-multilib g++-11-multilib
 	ln -svf "/usr/bin/gcc-11" "/usr/bin/gcc"
 	ln -svf "/usr/bin/g++-11" "/usr/bin/g++"
 	ln -svf "/usr/bin/gcc-ar-11" "/usr/bin/gcc-ar"
@@ -113,20 +132,18 @@ function install_dependencies(){
 	ln -svf "/usr/bin/gcc-ranlib-11" "/usr/bin/gcc-ranlib"
 	ln -svf "/usr/include/asm-generic" "/usr/include/asm"
 
-	sudo apt-get install -y clang-14 lldb-14 lld-14 libclang-14-dev
+	apt install -y clang-14 lldb-14 lld-14 libclang-14-dev
 	ln -svf "/usr/bin/clang-14" "/usr/bin/clang"
 	ln -svf "/usr/bin/clang++-14" "/usr/bin/clang++"
 	ln -svf "/usr/bin/clang-cpp-14" "/usr/bin/clang-cpp"
 
-	sudo apt-get install -y nodejs yarn
+	apt install -y nodejs yarn
 	[ -n "$CHN_NET" ] && {
 		npm config set registry "https://mirrors.tencent.com/npm/" --global
 		yarn config set registry "https://mirrors.tencent.com/npm/" --global
 	}
 
-	sudo apt-get autoremove --purge -y
-	sudo apt-get clean -y
-	sudo sh -c 'echo openwrt > /etc/oprelyon'
+	apt clean -y
 
 	if TMP_DIR="$(mktemp -d)"; then
 		pushd "$TMP_DIR"
@@ -164,9 +181,10 @@ function install_dependencies(){
 	rm -rf "$TMP_DIR"
 
 	set +x
-	__success_msg "依赖全部安装完毕."
+	__success_msg "All dependencies have been installed."
 }
 function main(){
+	check_system
 	check_network
 	update_apt_source
 	install_dependencies
