@@ -287,7 +287,7 @@ if [[ -d "${GITHUB_WORKSPACE}/build" ]]; then
   mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 else
   cd ${HOME_PATH}
-  source common.sh && Diy_checkout
+  source ${GITHUB_WORKSPACE}/common.sh && Diy_checkout
 fi
 }
 
@@ -341,7 +341,7 @@ fi
 }
 
 function Bendi_Configuration() {
-ECHOGG "检测配置,生成配置"
+ECHOGG "检查配置,生成配置"
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
 source ${BUILD_PATH}/common.sh && Diy_menu5
@@ -365,7 +365,7 @@ if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
      exit 1
   ;;
   *)
-    ECHOG "继续编译中...！"
+    ECHOG "继续编译中..."
   ;;
   esac
 fi
@@ -451,20 +451,29 @@ if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "${TARGET_BOARD}"` -eq '0' ]]; then
   SUCCESS_FAILED="fail"
   print_error "编译失败~~!"
   ECHOY "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
-  sleep 3
+  echo "
+  SUCCESS_FAILED="${SUCCESS_FAILED}"
+  FOLDER_NAME2="${FOLDER_NAME}"
+  REPO_BRANCH2="${REPO_BRANCH}"
+  LUCI_EDITION2="${LUCI_EDITION}"
+  TARGET_PROFILE2="${TARGET_PROFILE}"
+  " > ${HOME_PATH}/key-buildzu
+  sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
+  sudo chmod +x ${HOME_PATH}/key-buildzu
   exit 1
 else
   SUCCESS_FAILED="success"
   cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
+  echo "
+  SUCCESS_FAILED="${SUCCESS_FAILED}"
+  FOLDER_NAME2="${FOLDER_NAME}"
+  REPO_BRANCH2="${REPO_BRANCH}"
+  LUCI_EDITION2="${LUCI_EDITION}"
+  TARGET_PROFILE2="${TARGET_PROFILE}"
+  " > ${HOME_PATH}/key-buildzu
+  sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
+  sudo chmod +x ${HOME_PATH}/key-buildzu
 fi
-echo "
-SUCCESS_FAILED="${SUCCESS_FAILED}"
-FOLDER_NAME2="${FOLDER_NAME}"
-REPO_BRANCH2="${REPO_BRANCH}"
-LUCI_EDITION2="${LUCI_EDITION}"
-TARGET_PROFILE2="${TARGET_PROFILE}"
-" > ${HOME_PATH}/key-buildzu
-sudo chmod +x ${HOME_PATH}/key-buildzu
 }
 
 
