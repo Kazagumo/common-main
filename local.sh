@@ -90,11 +90,7 @@ if [[ ! -f "/etc/oprelyon" ]]; then
     exit 1
   ;;
   esac
-  if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
-    sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
-  fi
-fi
-if [[ "$USER" == "root" ]]; then
+  if [[ "$USER" == "root" ]]; then
   print_error "警告：请勿使用root用户编译，换一个普通用户吧~~"
   exit 1
 fi
@@ -103,6 +99,11 @@ if [ ! "${Google_Check}" == 301 ]; then
   print_error "提醒：编译之前请自备梯子，编译全程都需要稳定翻墙的梯子~~"
   exit 1
 fi
+  if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
+    sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
+  fi
+fi
+
 
 function Bendi_WslPath() {
 if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
