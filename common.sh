@@ -211,7 +211,8 @@ fi
 
 function Diy_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
-  echo "安装依赖"
+  TIME g "首次使用本脚本，需要先安装依赖，5秒后开始安装依赖"
+  sleep 3
   sudo bash -c 'bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/ubuntu.sh)'
   if [[ $? -ne 0 ]];then
     TIME r "依赖安装失败，请检测网络后再次尝试!"
