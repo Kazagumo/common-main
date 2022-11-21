@@ -109,7 +109,6 @@ if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
   if [[ ! "${WSL_ROUTEPATH}" == 'true' ]]; then
     clear
     ECHOR "您的ubuntu为Windows子系统,是否一次性解决路径问题,还是使用临时路径编译?"
-    while :; do
     read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒后继续编译)： " Bendi_Wsl
     case ${Bendi_Wsl} in
     [Yy])
@@ -120,7 +119,6 @@ if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
       ECHOYY "正在使用临时路径解决编译问题！"
     ;;
     esac
-    done
   fi
 fi
 }
