@@ -421,6 +421,12 @@ else
   fi
 fi
 
+if [[ $? -eq 0 ]]; then
+  print_error "编译成功"
+else
+  print_error "编译失败"
+fi
+
 if [[ -f "${FIRMWARE_PATH}" ]] && [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" ${FIRMWARE_PATH}/*
 fi
@@ -550,6 +556,7 @@ function Bendi_Packaging() {
     print_error "打包失败，请查看当前错误说明!"
   fi
 }
+
 
 function Bendi_Change() {
 cd ${HOME_PATH}
