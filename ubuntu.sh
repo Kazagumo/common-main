@@ -36,12 +36,16 @@ rm -rf "/usr/bin/padjffs2"
 cp -fp "padjffs2" "/usr/bin/padjffs2"
 popd
 
+rm -rf padjffs2
+
 svn co -r19250 "https://github.com/openwrt/luci/trunk/modules/luci-base/src" "po2lmo"
 pushd "po2lmo"
 make po2lmo
 rm -rf "/usr/bin/po2lmo"
 cp -fp "po2lmo" "/usr/bin/po2lmo"
 popd
+
+rm -rf po2lmo
 
 curl -fL "https://build-scripts.immortalwrt.eu.org/modify-firmware.sh" -o "/usr/bin/modify-firmware"
 chmod 0755 "/usr/bin/modify-firmware"
