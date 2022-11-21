@@ -602,11 +602,11 @@ if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-19.07
 else
   ECHOG "同步上游源码"
   git pull
-fi
-if [[ $? -ne 0 ]]; then
-  ECHOR "同步上游源码失败"
-else
-  ECHOB "同步上游源码完成"
+  if [[ $? -ne 0 ]]; then
+    ECHOR "同步上游源码失败"
+  else
+    ECHOB "同步上游源码完成"
+  fi
 fi
 }
 
