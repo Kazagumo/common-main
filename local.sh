@@ -643,8 +643,6 @@ fi
 function Bendi_xuanzhe() {
   cd ${GITHUB_WORKSPACE}
   if [[ ! -f "/etc/oprelyon" ]]; then
-    ECHOG "您首次使用本脚本，需要先安装依赖，5秒后开始安装依赖"
-    sleep 3
     Bendi_Dependent
   fi
   if [[ ! -d "DIY-SETUP" ]]; then
