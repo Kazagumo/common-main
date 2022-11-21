@@ -31,21 +31,19 @@ function update_apt_source(){
 
 	sudo apt-get update -y
 	sudo apt-get install -y apt-transport-https gnupg2
-	[ -n "$CHN_NET" ] && {
-		mv "/etc/apt/sources.list" "/etc/apt/sources.list.bak"
-		cat <<-EOF >"/etc/apt/sources.list"
-			deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse
-			deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-security main restricted universe multiverse
-			deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-updates main restricted universe multiverse
-			# deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-proposed main restricted universe multiverse
-			deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-backports main restricted universe multiverse
-			deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse
-			deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-security main restricted universe multiverse
-			deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-updates main restricted universe multiverse
-			deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-backports main restricted universe multiverse
-			# deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-proposed main restricted universe multiverse
-		EOF
-	}
+	mv "/etc/apt/sources.list" "/etc/apt/sources.list.bak"
+	cat <<-EOF >"/etc/apt/sources.list"
+		deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse
+		deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-security main restricted universe multiverse
+		deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-updates main restricted universe multiverse
+		# deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-proposed main restricted universe multiverse
+		deb http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-backports main restricted universe multiverse
+		deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME main restricted universe multiverse
+		deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-security main restricted universe multiverse
+		deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-updates main restricted universe multiverse
+		deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-backports main restricted universe multiverse
+		# deb-src http://mirrors.tencent.com/ubuntu/ $UBUNTU_CODENAME-proposed main restricted universe multiverse
+	EOF
 
 	mkdir -p "/etc/apt/sources.list.d"
 
