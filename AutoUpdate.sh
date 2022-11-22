@@ -3,6 +3,7 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
+function api_data() {
 if [[ ! -f "/bin/openwrt_info" ]]; then
   echo "未检测到固件更新应用程序,无法运行程序!" > /tmp/cloud_version
 else
@@ -16,7 +17,6 @@ export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | a
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
 
-function lian_wang() {
 curl --connect-timeout 5 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 if [[ "${wangluo}" == "1" ]]; then
 curl --connect-timeout 5 "google.com" > "/dev/null" 2>&1 || wangluo='2'
@@ -25,9 +25,7 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?" > /tmp/cloud_version
   exit 1
 fi
-}
 
-function api_data() {
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
@@ -183,7 +181,6 @@ update_firmware
 }
 
 function Update() {
-lian_wang
 api_data
 model_name
 cloud_Version
