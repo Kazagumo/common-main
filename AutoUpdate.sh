@@ -30,9 +30,7 @@ if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
   exit 1
 fi
-}
 
-function model_name() {
 case "${TARGET_BOARD}" in
 x86)
   [ -d /sys/firmware/efi ] && {
@@ -46,27 +44,20 @@ x86)
   CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
   BOOT_Type="sysupgrade"
 esac
-}
-
-function cloud_Version() {
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
 if [[ -z "${CLOUD_Version}" ]]; then
   echo "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致固件版本信息不一致!" > /tmp/cloud_version
   exit 1
 fi
-}
 
-function record_version() {
 cat > /tmp/Version_Tags <<-EOF
 LOCAL_Firmware=${LOCAL_Firmware}
 CLOUD_Firmware=${CLOUD_Firmware}
 EOF
 export LOCAL_Firmware="$(grep 'LOCAL_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
 export CLOUD_Firmware="$(grep 'CLOUD_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
-}
 
-function u_firmware() {
 if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
   echo "检测到有可更新的固件版本,立即更新固件!" > /tmp/cloud_version
   Update2
@@ -175,9 +166,5 @@ update_firmware
 
 function Update() {
 api_data
-model_name
-cloud_Version
-record_version
-u_firmware
 }
 Update
