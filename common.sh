@@ -125,6 +125,7 @@ OFFICIAL)
   export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
 AMLOGIC)
+  export SOURCE_CODE="AMLOGIC"
   export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Amlogic"
   export LUCI_EDITION="18.06"
