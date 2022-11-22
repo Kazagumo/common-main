@@ -211,6 +211,9 @@ fi
 
 function Diy_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
+  clear
+  echo
+  echo
   TIME g "首次使用本脚本，需要先安装依赖，5秒后开始安装依赖"
   TIME y "如果出现 YES OR NO 选择界面，直接按回车即可"
   sleep 5
