@@ -3,7 +3,10 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
+
 function api_data() {
+source /bin/openwrt_info
+
 export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
 export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
@@ -18,6 +21,7 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?" > /tmp/cloud_version
   exit 1
 fi
+
 
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
@@ -34,16 +38,17 @@ fi
 case "${TARGET_BOARD}" in
 x86)
   [ -d /sys/firmware/efi ] && {
-    BOOT_Type="uefi"
+    export BOOT_Type="uefi"
   } || {
-    BOOT_Type="legacy"
+    export BOOT_Type="legacy"
   }
-    Cpu_Device=="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
+  export Cpu_Device="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')"
 ;;
 *)
-  CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
-  BOOT_Type="sysupgrade"
+  export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
+  export BOOT_Type="sysupgrade"
 esac
+
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
 if [[ -z "${CLOUD_Version}" ]]; then
@@ -55,23 +60,29 @@ cat > /tmp/Version_Tags <<-EOF
 LOCAL_Firmware=${LOCAL_Firmware}
 CLOUD_Firmware=${CLOUD_Firmware}
 EOF
+cat > /etc/openwrt_upgrade <<-EOF
+LOCAL_Firmware=${LOCAL_Firmware}
+MODEL_type=${BOOT_Type}${Firmware_SFX}
+KERNEL_type=${Kernel} - ${LUCI_EDITION}
+CURRENT_Device=${CURRENT_Device}
+EOF
 export LOCAL_Firmware="$(grep 'LOCAL_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
 export CLOUD_Firmware="$(grep 'CLOUD_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
-
-if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
-  echo "检测到有可更新的固件版本,立即更新固件!" > /tmp/cloud_version
-  Update2
-else
-  exit 0
-fi
 }
-
 
 function firmware_Size() {
 let CLOUD_Firmware_Size="$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1"
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   echo "tmp空间值[${TMP_Available}M],固件体积[${CLOUD_Firmware_Size}M],空间不足" > /tmp/cloud_version
   exit 1
+fi
+}
+
+function u_firmware() {
+if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
+  echo "检测到有可更新的固件版本,立即更新固件!" > /tmp/cloud_version
+else
+  exit 0
 fi
 }
 
@@ -155,13 +166,6 @@ sleep 2
   fi
 
 "${Upgrade_Options} ${CLOUD_Version}"
-}
-
-function Update2() {
-firmware_Size
-download_firmware
-md5sum_sha256sum
-update_firmware
 }
 
 function Update() {
