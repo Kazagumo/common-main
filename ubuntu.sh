@@ -23,6 +23,7 @@ elif [[ -n "${GIT_REPOSITORY}" ]]; then
   fi
   sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
 else
+  INS="sudo apt-get"
   echo -e "\033[33m 好像有点问题啊，不是云也不是本地了?  \033[0m"
 fi
 }
