@@ -64,7 +64,7 @@ ${INS} clean
 }
 
 function main(){
-	if [[ -n "${GIT_REPOSITORY}" ]]; then
+	if [[ ! -f "GITHUB_ENV" ]]; then
 		INS="sudo -E apt-get -qq"
 	else
 		INS="sudo apt-get"
