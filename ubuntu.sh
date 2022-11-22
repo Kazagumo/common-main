@@ -64,6 +64,7 @@ ${INS} clean
 }
 
 function main(){
+	INS="sudo apt-get"
 	install_mustrelyon
 	ophub_amlogic-s9xxx
 	update_apt_source
