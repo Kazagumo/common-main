@@ -3,28 +3,6 @@
 #
 # Copyright (C) ImmortalWrt.org
 
-function bendi_notice(){
-if [[ -n "${BENDI_VERSION}" ]]; then
-  clear
-  echo
-  echo
-  echo -e "\033[32m 首次使用本脚本，需要先安装依赖，10秒后开始安装依赖  \033[0m"
-  echo
-  echo -e "\033[33m 如果出现 YES OR NO 选择界面，直接按回车即可  \033[0m"
-  sleep 10
-  echo
-  echo
-  INS="sudo apt-get"
-else
-  INS="sudo -E apt-get -qq"
-  if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-    docker rmi `docker images -q`
-    ${INS} remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
-    sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
-  fi
-fi
-}
-
 function install_mustrelyon(){
 # 安装大雕列出的编译openwrt依赖
 ${INS} update -y
@@ -86,7 +64,6 @@ ${INS} clean
 }
 
 function main(){
-	bendi_notice
 	install_mustrelyon
 	ophub_amlogic-s9xxx
 	update_apt_source
