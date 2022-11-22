@@ -22,6 +22,8 @@ elif [[ -z "${BENDI_VERSION}" ]] && [[ -n "${GIT_REPOSITORY}" ]]; then
     ${INS} remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
   fi
   sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
+else
+  echo -e "\033[33m 好像有点问题啊，不是云也不是本地了?  \033[0m"
 fi
 }
 
