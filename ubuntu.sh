@@ -15,6 +15,10 @@ mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 
 rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 }
 
+function ophub_amlogic-s9xxx(){
+sudo apt-get install $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
+}
+
 function update_apt_source(){
 sudo apt-get install -y apt-transport-https gnupg2
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
@@ -57,6 +61,7 @@ sudo apt-get clean
 
 function main(){
 	install_mustrelyon
+	ophub_amlogic-s9xxx
 	update_apt_source
 	install_dependencies
 }
