@@ -155,13 +155,21 @@ if [[ $? -ne 0 ]]; then
 fi
 if [[ $? -eq 0 ]]; then
   sudo chmod +x common.sh
-  source common.sh && Diy_update
-  if [[ -f /etc/ssh/sshd_config ]] && [[ `grep -c "ClientAliveInterval 30" /etc/ssh/sshd_config` -eq '0' ]]; then
-    sudo sed -i '/ClientAliveInterval/d' /etc/ssh/sshd_config
-    sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config
-    sudo sh -c 'echo ClientAliveInterval 30 >> /etc/ssh/sshd_config'
-    sudo sh -c 'echo ClientAliveCountMax 6 >> /etc/ssh/sshd_config'
-    sudo service ssh restart
+  if [[ ! -f "/etc/oprelyon" ]]; then
+   clear
+   echo
+   ECHOY "首次使用本脚本，需要先安装依赖，10秒后开始安装依赖"
+   ECHOYY "如果出现 YES OR NO 选择界面，直接按回车即可"
+   sleep 10
+   echo
+   source common.sh && Diy_update
+   if [[ -f /etc/ssh/sshd_config ]] && [[ `grep -c "ClientAliveInterval 30" /etc/ssh/sshd_config` -eq '0' ]]; then
+      sudo sed -i '/ClientAliveInterval/d' /etc/ssh/sshd_config
+      sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config
+      sudo sh -c 'echo ClientAliveInterval 30 >> /etc/ssh/sshd_config'
+      sudo sh -c 'echo ClientAliveCountMax 6 >> /etc/ssh/sshd_config'
+      sudo service ssh restart
+    fi
   fi
 else
   print_error "common.sh下载失败，请检测网络后再用一键命令试试!"
