@@ -4,14 +4,7 @@
 # Copyright (C) ImmortalWrt.org
 
 function bendi_notice(){
-if [[ -n "${GIT_REPOSITORY}" ]]; then
-  INS="sudo -E apt-get -qq"
-  if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-    docker rmi `docker images -q`
-    ${INS} remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
-    sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
-  fi
-else
+if [[ -n "${BENDI_VERSION}" ]]; then
   clear
   echo
   echo
@@ -22,6 +15,13 @@ else
   echo
   echo
   INS="sudo apt-get"
+else
+  INS="sudo -E apt-get -qq"
+  if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
+    docker rmi `docker images -q`
+    ${INS} remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
+    sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
+  fi
 fi
 }
 
