@@ -64,7 +64,11 @@ ${INS} clean
 }
 
 function main(){
-	INS="sudo apt-get"
+	if [[ -n "${GIT_REPOSITORY}" ]]; then
+		INS="sudo -E apt-get -qq"
+	else
+		INS="sudo apt-get"
+	fi
 	install_mustrelyon
 	ophub_amlogic-s9xxx
 	update_apt_source
