@@ -28,8 +28,6 @@ zzz_default() {
 	/etc/init.d/network restart
         /etc/init.d/dnsmasq restart
 	/etc/init.d/system restart
-	exit 0
-
 }
 
 start() {
