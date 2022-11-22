@@ -15,7 +15,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   echo
   echo
   INS="sudo apt-get"
-elif [[ -z "${BENDI_VERSION}" ]] && [[ -n "${GIT_REPOSITORY}" ]]; then
+elif [[ -n "${GIT_REPOSITORY}" ]]; then
   INS="sudo -E apt-get -qq"
   if [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
     docker rmi `docker images -q`
