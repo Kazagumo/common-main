@@ -5,6 +5,7 @@
 
 
 function install_mustrelyon(){
+# 安装大雕列出的编译openwrt依赖
 sudo apt-get update -y
 sudo apt-get full-upgrade -y
 sudo apt-get install -y ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential \
@@ -16,11 +17,14 @@ rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wg
 }
 
 function ophub_amlogic-s9xxx(){
+# 安装我仓库需要的依赖
 sudo apt-get install -y rename pigz
+# 安装打包N1需要用到的依赖
 sudo apt-get install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
 }
 
 function update_apt_source(){
+# 安装nodejs 16 和yarn
 sudo apt-get install -y apt-transport-https gnupg2
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/yarnkey.gpg >/dev/null
