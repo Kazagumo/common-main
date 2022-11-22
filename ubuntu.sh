@@ -19,7 +19,7 @@ elif [[ -z "${BENDI_VERSION}" ]] && [[ -n "${GIT_REPOSITORY}" ]]; then
   INS="sudo -E apt-get -qq"
   if [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
     docker rmi `docker images -q`
-    sudo apt-get remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
+    ${INS} remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
   fi
   sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
 fi
