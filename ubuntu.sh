@@ -3,6 +3,18 @@
 #
 # Copyright (C) ImmortalWrt.org
 
+function bendi_notice(){
+if [[ -n "${BENDI_VERSION}" ]]; then
+  clear
+  echo
+  echo
+  TIME g "首次使用本脚本，需要先安装依赖，10秒后开始安装依赖"
+  TIME y "如果出现 YES OR NO 选择界面，直接按回车即可"
+  sleep 10
+  echo
+  echo
+fi
+}
 
 function install_mustrelyon(){
 # 安装大雕列出的编译openwrt依赖
@@ -65,6 +77,7 @@ sudo apt-get clean
 }
 
 function main(){
+	bendi_notice
 	install_mustrelyon
 	ophub_amlogic-s9xxx
 	update_apt_source
