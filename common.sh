@@ -1451,8 +1451,8 @@ else
   TIME b "内核版本: ${LINUX_KERNEL}"
   TIME b "编译机型: ${TARGET_PROFILE}"
 fi
-TIME b "固件作者: ${MANUFACTURER}"
-TIME b "仓库地址: ${Github}"
+TIME b "固件作者: ${GIT_ACTOR}"
+TIME b "仓库地址: ${GITHUB_LINK}"
 TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${RUN_WORKFLOW}]工作流程）"
 TIME b "编译时间: ${Compte_Date}"
 if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
