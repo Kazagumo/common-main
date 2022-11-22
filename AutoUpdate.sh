@@ -3,42 +3,6 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
-White="\033[0;37m"
-Yellow="\033[0;33m"
-White="\033[0;37m"
-Yellow="\033[0;33m"
-Red="\033[1;91m"
-Blue="\033[0;94m"
-BLUEB="\033[1;94m"
-BCyan="\033[1;36m"
-Grey="\033[1;34m"
-Green="\033[0;92m"
-Purple="\033[1;95m"
-TIME() {
-  local Color
-  [[ -z $1 ]] && {
-    echo -ne "\n${Grey}[$(date "+%H:%M:%S")]${White} "
-  } || {
-  case $1 in
-    r) Color="${Red}";;
-    g) Color="${Green}";;
-    b) Color="${Blue}";;
-    B) Color="${BLUEB}";;
-    y) Color="${Yellow}";;
-    h) Color="${BCyan}";;
-    z) Color="${Purple}";;
-    x) Color="${Grey}";;
-  esac
-    [[ $# -lt 2 ]] && {
-      echo -e "\n${Grey}[$(date "+%H:%M:%S")]${White} $1"
-      LOGGER $1
-    } || {
-      echo -e "\n${Grey}[$(date "+%H:%M:%S")]${White} ${Color}$2${White}"
-      LOGGER $2
-    }
-  }
-}
-
 if [[ ! -f "/bin/openwrt_info" ]]; then
   echo "未检测到固件更新应用程序,无法运行程序!" > /tmp/cloud_version
 else
@@ -46,29 +10,30 @@ else
   source /bin/openwrt_info
 fi
 
-export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
 export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
 export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
-export AutoUpdate_Log_Path="/tmp"
 
 function lian_wang() {
-curl --connect-timeout 6 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
-if [[ -f /tmp/baidu.html ]] && [[ `grep -c "百度一下" /tmp/baidu.html` -ge '1' ]]; then
-  rm -rf /tmp/baidu.html
-else
+curl --connect-timeout 5 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+if [[ "${wangluo}" == "1" ]]; then
+curl --connect-timeout 5 "google.com" > "/dev/null" 2>&1 || wangluo='2'
+fi
+if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?" > /tmp/cloud_version
   exit 1
 fi
 }
 
 function api_data() {
-[ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH}
-if [[ $? -ne 0 ]];then
-  wget --no-check-certificate --content-disposition -q -T 6 -t 2 ${Github_API1} -O ${API_PATH}
+[ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
+Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
+if [ ! "${Google_Check}" == 301 ]; then
+  wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH}
+else
+wget --no-check-certificate --content-disposition -q -T 6 -t 2 ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
@@ -139,12 +104,6 @@ function record_version() {
 cat > /tmp/Version_Tags <<-EOF
 LOCAL_Firmware=${LOCAL_Firmware}
 CLOUD_Firmware=${CLOUD_Firmware}
-EOF
-cat > /etc/openwrt_upgrade <<-EOF
-LOCAL_Firmware=${LOCAL_Firmware}
-MODEL_type=${BOOT_Type}${Firmware_SFX}
-KERNEL_type=${Kernel} - ${LUCI_EDITION}
-CURRENT_Device=${CURRENT_Device}
 EOF
 export LOCAL_Firmware="$(grep 'LOCAL_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
 export CLOUD_Firmware="$(grep 'CLOUD_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
