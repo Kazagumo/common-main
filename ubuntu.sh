@@ -18,7 +18,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 else
   INS="sudo apt-get"
   if [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
-    docker rmi $(docker images -q)
+    docker rmi `docker images -q`
     sudo apt-get remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
   fi
   sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
