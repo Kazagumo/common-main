@@ -4,13 +4,6 @@
 # AutoUpdate for Openwrt
 
 function api_data() {
-if [[ ! -f "/bin/openwrt_info" ]]; then
-  echo "未检测到固件更新应用程序,无法运行程序!" > /tmp/cloud_version
-else
-  chmod +x /bin/openwrt_info
-  source /bin/openwrt_info
-fi
-
 export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
 export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
