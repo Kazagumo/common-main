@@ -22,7 +22,6 @@ else
   echo
   echo
   INS="sudo apt-get"
-  sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
 fi
 }
 
