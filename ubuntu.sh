@@ -15,16 +15,13 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   echo
   echo
   INS="sudo apt-get"
-elif [[ -n "${GIT_REPOSITORY}" ]]; then
+else
   INS="sudo -E apt-get -qq"
   if [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
     docker rmi `docker images -q`
     ${INS} remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
   fi
   sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
-else
-  INS="sudo apt-get"
-  echo -e "\033[33m 好像有点问题啊，不是云也不是本地了?  \033[0m"
 fi
 }
 
