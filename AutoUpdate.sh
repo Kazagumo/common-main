@@ -60,6 +60,7 @@ fi
 cat > /tmp/Version_Tags <<-EOF
 LOCAL_Firmware=${LOCAL_Firmware}
 CLOUD_Firmware=${CLOUD_Firmware}
+CLOUD2_Firmware=${CLOUD2_Firmware}
 EOF
 cat > /etc/openwrt_upgrade <<-EOF
 CLOUD2_Firmware=${CLOUD2_Firmware}
