@@ -82,10 +82,10 @@ function GET_TARGET_INFO() {
 	  export AutoUpdate_Version="7.1"
 	fi
 	export In_Firmware_Info="$FILES_PATH/bin/openwrt_info"
-	export Github_Release="${Github}/releases/tag/AutoUpdate"
+	export Github_Release="${GITHUB_LINK}/releases/tag/AutoUpdate"
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
 	export Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/AutoUpdate"
-	export Github_API2="${Github}/releases/download/AutoUpdate/zzz_api"
+	export Github_API2="${GITHUB_LINK}/releases/download/AutoUpdate/zzz_api"
 	export Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/AutoUpdate"
 	export LOCAL_CHAZHAO="${LUCI_EDITION}-${Openwrt_Version}"
 	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
@@ -105,8 +105,8 @@ GET_TARGET_INFO
 touch ${In_Firmware_Info}
 sudo chmod +x ${In_Firmware_Info}
 cat >${In_Firmware_Info} <<-EOF
-Github=${Github}
-MANUFACTURER=${MANUFACTURER}
+GITHUB_LINK=${GITHUB_LINK}
+GIT_ACTOR=${GIT_ACTOR}
 WAREHOUSE_MAN=${WAREHOUSE_MAN}
 GIT_REPOSITORY=${GIT_REPOSITORY}
 SOURCE=${SOURCE}
