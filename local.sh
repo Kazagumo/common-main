@@ -153,7 +153,7 @@ wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/c
 if [[ $? -ne 0 ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
 fi
-if [[ $? -eq 0 ]]; then
+if [[ `grep -c "TIME" common.sh` -ge '1' ]]; then
   sudo chmod +x common.sh
   if [[ ! -f "/etc/oprelyon" ]]; then
    clear
