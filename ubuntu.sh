@@ -16,7 +16,7 @@ rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wg
 }
 
 function ophub_amlogic-s9xxx(){
-sudo apt-get install $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
+sudo apt-get install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
 }
 
 function update_apt_source(){
