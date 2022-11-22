@@ -3,21 +3,6 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
-function GET_PID() {
-  local Result
-  while [[ $1 ]];do
-    Result=$(busybox ps | grep "$1" | grep -v "grep" | awk '{print $1}' | awk 'NR==1')
-    [[ -n ${Result} ]] && echo ${Result}
-  shift
-  done
-}
-
-function LOGGER() {
-  [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
-  [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
-  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate)-${Update_explain}] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
-}
-
 White="\033[0;37m"
 Yellow="\033[0;33m"
 White="\033[0;37m"
@@ -54,31 +39,28 @@ TIME() {
   }
 }
 
-if [[ -f "/bin/openwrt_info" ]]; then
+function GET_PID() {
+  local Result
+  while [[ $1 ]];do
+    Result=$(busybox ps | grep "$1" | grep -v "grep" | awk '{print $1}' | awk 'NR==1')
+    [[ -n ${Result} ]] && echo ${Result}
+  shift
+  done
+}
+
+function LOGGER() {
+  [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
+  [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
+  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate)-${Update_explain}] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
+}
+
+if [[ ! -f "/bin/openwrt_info" ]] && [[ ! -f "/usr/bin/AutoUpdate" ]]; then
+  echo "未检测到固件更新应用程序,无法运行程序!" > /tmp/cloud_version
+else
   chmod +x /bin/openwrt_info
   source /bin/openwrt_info
-  if [[ $? -ne 0 ]];then
-    TIME r "openwrt_info数据有误,请检查openwrt_info!"
-    echo "/bin/openwrt_info文件数据有误,请检查openwrt_info!" > /tmp/cloud_version
-    exit 1
-  fi
-  if [[ -z ${CURRENT_Version} ]]; then
-    TIME r "本地固件版本信息获取失败,请检查/bin/openwrt_info文件的值!"
-    echo "本地固件版本信息获取失败,请检查/bin/openwrt_info文件的值!" > /tmp/cloud_version
-    exit 1
-  fi
-  if [[ -z ${Github} ]]; then
-    TIME r "Github地址获取失败,请检查/bin/openwrt_info文件的值!"
-    echo "Github地址获取失败,请检查/bin/openwrt_info文件的值!" > /tmp/cloud_version
-    exit 1
-  fi
-else
-  TIME r "未检测到openwrt_info文件,无法运行更新程序!"
-  echo "未检测到openwrt_info文件,无法运行更新程序!" > /tmp/cloud_version
-  exit 1
 fi
 
-export Version=V7.0
 export Input_Option=$1
 export Input_Other=$2
 export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
