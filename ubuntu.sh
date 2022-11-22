@@ -17,7 +17,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   INS="sudo apt-get"
 else
   INS="sudo -E apt-get -qq"
-  if [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
+  if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
     docker rmi `docker images -q`
     ${INS} remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
   fi
