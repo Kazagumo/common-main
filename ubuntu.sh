@@ -46,9 +46,9 @@ ${INS} install -y apt-transport-https gnupg2
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/yarnkey.gpg >/dev/null
 echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get install -y nodejs gcc g++ make
-sudo apt-get update -y
-sudo apt-get install -y yarn
+${INS} install -y nodejs gcc g++ make
+${INS} update -y
+${INS} install -y yarn
 
 node --version
 yarn --version
