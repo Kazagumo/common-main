@@ -846,7 +846,7 @@ function menu2() {
   break
   ;;
   4)
-    [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
+    Bendi_Dependent
     Bendi_Packaging
   break
   ;;
@@ -886,7 +886,7 @@ break
 break
 ;;
 3)
-  [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
+  Bendi_Dependent
   Bendi_Packaging
 break
 ;;
