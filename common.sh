@@ -211,35 +211,13 @@ fi
 
 
 function Diy_update() {
-if [[ ! -f "/etc/oprelyon" ]]; then
-  if [[ -n "${BENDI_VERSION}" ]]; then
-    clear
-    echo
-    echo
-    echo -e "\033[32m 首次使用本脚本，需要先安装依赖，10秒后开始安装依赖  \033[0m"
-    echo
-    echo -e "\033[33m 如果出现 YES OR NO 选择界面，直接按回车即可  \033[0m"
-    sleep 10
-    echo
-    echo
-    INS="sudo apt-get"
-  else
-    INS="sudo -E apt-get -qq"
-    if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-      docker rmi `docker images -q`
-      ${INS} remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
-    fi
-    sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
-  fi
-
-  sudo bash -c 'bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/ubuntu.sh)'
-  if [[ $? -ne 0 ]];then
-    TIME r "依赖安装失败，请检测网络后再次尝试!"
-    exit 1
-  else
-    sudo sh -c 'echo openwrt > /etc/oprelyon'
-    TIME b "全部依赖安装完毕"
-  fi
+sudo bash -c 'bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/ubuntu.sh)'
+if [[ $? -ne 0 ]];then
+  TIME r "依赖安装失败，请检测网络后再次尝试!"
+  exit 1
+else
+  sudo sh -c 'echo openwrt > /etc/oprelyon'
+  TIME b "全部依赖安装完毕"
 fi
 }
 
