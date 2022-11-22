@@ -45,53 +45,19 @@ function model_name() {
 case "${TARGET_BOARD}" in
 x86)
   [ -d /sys/firmware/efi ] && {
-    export BOOT_Type="uefi"
+    BOOT_Type="uefi"
   } || {
-    export BOOT_Type="legacy"
+    BOOT_Type="legacy"
   }
-  export CPUmodel="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')"
-  if [[ "$(echo ${CPUmodel} |grep -c 'Intel')" -ge '1' ]]; then
-    export Cpu_Device="$(echo "${CPUmodel}" |awk '{print $2}')"
-    export CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${Cpu_Device}//g")"
-  else
-    export CURRENT_Device="${CPUmodel}"
-  fi
-;;
-rockchip | bcm27xx | mxs | sunxi | zynq)
-  [ -d /sys/firmware/efi ] && {
-    export BOOT_Type="uefi"
-  } || {
-    export BOOT_Type="legacy"
-  }
-  export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
-;;
-mvebu)
-  case "${TARGET_SUBTARGET}" in
-  cortexa53 | cortexa72)
-    [ -d /sys/firmware/efi ] && {
-      export BOOT_Type="uefi"
-    } || {
-      export BOOT_Type="legacy"
-    }
-    export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
-  ;;
-  esac
+    Cpu_Device=="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
 ;;
 *)
-  export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
-  export BOOT_Type="sysupgrade"
+  CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
+  BOOT_Type="sysupgrade"
 esac
 }
 
 function cloud_Version() {
-# 搞出本地版本固件名字用作显示用途
-export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
-export LOCAL_Firmware="$(grep 'CURRENT_Version=' "/bin/openwrt_info" | cut -d "=" -f2)"
-if [[ -z "${LOCAL_Version}" ]]; then
-  export LOCAL_Version="云端有没发现您现在安装的固件版本存在"
-fi
-echo "${LOCAL_Version}" > /etc/local_Version
-
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
 if [[ -z "${CLOUD_Version}" ]]; then
@@ -109,19 +75,21 @@ export LOCAL_Firmware="$(grep 'LOCAL_Firmware=' "/tmp/Version_Tags" | cut -d "-"
 export CLOUD_Firmware="$(grep 'CLOUD_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
 }
 
+function u_firmware() {
+if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
+  echo "检测到有可更新的固件版本,立即更新固件!" > /tmp/cloud_version
+  Update2
+else
+  exit 0
+fi
+}
+
+
 function firmware_Size() {
 let CLOUD_Firmware_Size="$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1"
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   echo "tmp空间值[${TMP_Available}M],固件体积[${CLOUD_Firmware_Size}M],空间不足" > /tmp/cloud_version
   exit 1
-fi
-}
-
-function u_firmware() {
-if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
-  echo "检测到有可更新的固件版本,立即更新固件!" > /tmp/cloud_version
-else
-  exit 0
 fi
 }
 
@@ -207,16 +175,19 @@ sleep 2
 "${Upgrade_Options} ${CLOUD_Version}"
 }
 
+function Update2() {
+firmware_Size
+download_firmware
+md5sum_sha256sum
+update_firmware
+}
+
 function Update() {
 lian_wang
 api_data
 model_name
 cloud_Version
 record_version
-firmware_Size
 u_firmware
-download_firmware
-md5sum_sha256sum
-update_firmware
 }
 Update
