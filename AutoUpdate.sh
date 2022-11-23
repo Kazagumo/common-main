@@ -80,6 +80,7 @@ let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   echo "tmp空间值[${TMP_Available}M],固件体积[${CLOUD_Firmware_Size}M],空间不足" > /tmp/cloud_version
   exit 1
+else
   echo "${TMP_Available}"  "${CLOUD_Firmware_Size}"
 fi
 
