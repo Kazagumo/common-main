@@ -49,8 +49,7 @@ function print_error() {
 }
 judge() {
   if [[ 0 -eq $? ]]; then
-    print_ok "$1 完成,3秒后重启系统"
-    sleep 2
+    print_ok "$1 完成,正在为您重启系统"
     reboot -f
   else
     print_error "$1 失败"
