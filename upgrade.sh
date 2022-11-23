@@ -81,7 +81,7 @@ function GET_TARGET_INFO() {
 	else
 	  export AutoUpdate_Version="7.1"
 	fi
-	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update""
+	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
 	export Github_Release="${GITHUB_LINK}/releases/tag/AutoUpdate"
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
 	export Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/AutoUpdate"
