@@ -124,10 +124,52 @@ CLOUD_Firmware_42="$(egrep -o "switch-Xwrt-${DEFAULT_Device}-[0-9]+-${BOOT_Type}
 
 
 echo "
-CLOUD_Firmware_1=${CLOUD_Firmware_1}
-" >> /root/feedsdefault
+${CLOUD_Firmware_1}
+${CLOUD_Firmware_2}
+${CLOUD_Firmware_3}
+${CLOUD_Firmware_4}
+${CLOUD_Firmware_5}
+${CLOUD_Firmware_6}
+${CLOUD_Firmware_7}
+${CLOUD_Firmware_8}
+${CLOUD_Firmware_9}
+${CLOUD_Firmware_10}
+${CLOUD_Firmware_11}
+${CLOUD_Firmware_12}
+${CLOUD_Firmware_13}
+${CLOUD_Firmware_14}
+${CLOUD_Firmware_15}
+${CLOUD_Firmware_16}
+${CLOUD_Firmware_17}
+${CLOUD_Firmware_18}
+${CLOUD_Firmware_19}
+${CLOUD_Firmware_20}
+${CLOUD_Firmware_21}
+${CLOUD_Firmware_22}
+${CLOUD_Firmware_23}
+${CLOUD_Firmware_24}
+${CLOUD_Firmware_25}
+${CLOUD_Firmware_26}
+${CLOUD_Firmware_27}
+${CLOUD_Firmware_28}
+${CLOUD_Firmware_29}
+${CLOUD_Firmware_30}
+${CLOUD_Firmware_31}
+${CLOUD_Firmware_32}
+${CLOUD_Firmware_33}
+${CLOUD_Firmware_34}
+${CLOUD_Firmware_35}
+${CLOUD_Firmware_36}
+${CLOUD_Firmware_37}
+${CLOUD_Firmware_38}
+${CLOUD_Firmware_39}
+${CLOUD_Firmware_40}
+${CLOUD_Firmware_41}
+${CLOUD_Firmware_42}
+" >> /tmp/feedsdefault
 
-
+sed -i '/^$/d' /tmp/feedsdefault
+cat "/root/feedsdefault" |awk '$0=NR" "$0' > /tmp/GITHUB_ENN
 
 
 
