@@ -66,7 +66,7 @@ else
   WGETGNU="wget -q"
 fi
 
-source /bin/openwrt_info
+source /etc/openwrt_update
 Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
