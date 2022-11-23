@@ -289,7 +289,13 @@ fi
 
 cd "${Download_Path}"
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在执行更新,更新期间请不要断开电源或重启设备 ...]"
-sleep 10
+seconds=10
+while [ $seconds -gt 0 ];do
+  echo -n $seconds
+  sleep 1
+  seconds=$(($seconds - 1))
+  echo -ne "\r	\r"
+done
 chmod 777 "${CLOUD_Firmware}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
