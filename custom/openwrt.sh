@@ -148,7 +148,7 @@ function first_boot() {
   judge
 }
 
-menu() {
+menu2() {
   clear
   echo  
   ECHOB "  请选择执行命令编码"
@@ -179,6 +179,53 @@ menu() {
     break
     ;;
     5)
+      ECHOR "您选择了退出程序"
+      exit 0
+    break
+    ;;
+    *)
+      XUANZHEOP="请输入正确的数字编号!"
+    ;;
+    esac
+    done
+}
+
+menu() {
+  clear
+  echo  
+  ECHOB "  请选择执行命令编码"
+  ECHOY " 1. 在线更新固件或转换其他作者固件(zai xian sheng ji gu jian)"
+  ECHOYY " 2. 修改后台IP和清空密码(xiu gai hou tai IP)"
+  ECHOY " 3. 清空密码(qing kong mi ma)"
+  ECHOYY " 4. 重启系统(chong qi xi tong)"
+  ECHOY " 5. 恢复出厂设置(hui fu chu chang she zhi)"
+  ECHOYY " 6. 退出菜单(tui chu)"
+  echo
+  XUANZHEOP="请输入数字"
+  while :; do
+  read -p " ${XUANZHEOP}： " CHOOSE
+  case $CHOOSE in
+    1)
+      source /etc/replace
+    break
+    ;;
+    2)
+      xiugai_ip
+    break
+    ;;
+    3)
+      qingkong_mima
+    break
+    ;;
+    4)
+      re_boot
+    break
+    ;;
+    5)
+      first_boot
+    break
+    ;;
+    6)
       ECHOR "您选择了退出程序"
       exit 0
     break
