@@ -148,6 +148,7 @@ api_data
 else
   case ${Input_Option} in
   -u)
+  api_data
   firmware_Size
   ;;
   esac
