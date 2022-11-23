@@ -48,21 +48,21 @@ x86)
   BOOT_Type=sysupgrade
 esac
 
-CLOUD_Version=$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')
-CLOUD_Firmware=$(echo "${CLOUD_Version}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
-CLOUD2_Firmware=$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")
+CLOUD_Firmware=$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')
+CLOUD_Version=$(echo "${CLOUD_Version}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
+LUCI_Firmware=$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")
 if [[ -z "${CLOUD_Version}" ]]; then
   echo "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致固件版本信息不一致!" > /tmp/cloud_version
   exit 1
 fi
 
 cat > /tmp/Version_Tags <<-EOF
-LOCAL_Firmware=${LOCAL_Firmware}
-CLOUD_Firmware=${CLOUD_Firmware}
-CLOUD2_Firmware=${CLOUD2_Firmware}
+LOCAL_Version=${LOCAL_Version}
+CLOUD_Version=${CLOUD_Version}
+LUCI_Firmware=${LUCI_Firmware}
 EOF
 cat > /etc/openwrt_upgrade <<-EOF
-CLOUD2_Firmware=${CLOUD2_Firmware}
+LUCI_Firmware=${LUCI_Firmware}
 MODEL_type=${BOOT_Type}${Firmware_SFX}
 KERNEL_type=${Kernel} - ${LUCI_EDITION}
 CURRENT_Device=${CURRENT_Device}
@@ -72,7 +72,7 @@ echo "信息检测完毕"
 
 function firmware_upgrade() {
 TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
-let X=$(grep -n "${CLOUD_Version}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
+let X=$(grep -n "${CLOUD_Firmware}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   echo "固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间不足，不能下载" > /tmp/cloud_version
@@ -81,19 +81,19 @@ else
   echo "${TMP_Available}  ${CLOUD_Firmware_Size}"
 fi
 
-if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
+if [[ "${LOCAL_Version}" -lt "${CLOUD_Version}" ]]; then
   echo "检测到有可更新的固件版本,立即更新固件!"
 else
-  echo "${LOCAL_Firmware} = ${CLOUD_Firmware}"
+  echo "${LOCAL_Version} = ${CLOUD_Version}"
   echo "已是最新版本，无需更新固件!"
   exit 0
 fi
 
 cd "${Download_Path}"
 echo "正在下载云端固件,请耐心等待..." > /tmp/cloud_version
-wget -q "${DOWNLOAD}/${CLOUD_Version}" -O ${CLOUD_Version}
+wget -q "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
-curl -# -L -O "${DOWNLOAD}/${CLOUD_Version}"
+curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
 if [[ $? -ne 0 ]];then
    echo "下载云端固件失败,请检查网络再尝试或手动安装固件!" > /tmp/cloud_version
@@ -103,9 +103,9 @@ else
   echo "下载云端固件"
 fi
 
-export LOCAL_MD5=$(md5sum ${CLOUD_Version} | cut -c1-3)
-export LOCAL_256=$(sha256sum ${CLOUD_Version} | cut -c1-3)
-export MD5_256=$(echo ${CLOUD_Version} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
+export LOCAL_MD5=$(md5sum ${CLOUD_Firmware} | cut -c1-3)
+export LOCAL_256=$(sha256sum ${CLOUD_Firmware} | cut -c1-3)
+export MD5_256=$(echo ${CLOUD_Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
 export CLOUD_MD5="$(echo "${MD5_256}" | cut -c1-3)"
 export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
 if [[ ! "${LOCAL_MD5}" == "${CLOUD_MD5}" ]]; then
@@ -119,7 +119,7 @@ fi
 
 cd "${Download_Path}"
 echo "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..." > /tmp/cloud_version
-chmod 777 "${CLOUD_Version}"
+chmod 777 "${CLOUD_Firmware}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
 if [[ -f "/etc/deletefile" ]]; then
@@ -137,7 +137,7 @@ else
   echo "${Upgrade_Options}"
 fi
 echo "升级固件中，请勿断开路由器电源"
-${Upgrade_Options} ${CLOUD_Version}
+${Upgrade_Options} ${CLOUD_Firmware}
 }
 
 
