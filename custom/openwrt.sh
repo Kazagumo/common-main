@@ -83,7 +83,6 @@ function xiugai_ip() {
     else
       passwd -d root
     fi
-    judge
   break
   ;;
   *)
