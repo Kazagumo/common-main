@@ -7,12 +7,12 @@ Input_Option=$1
 
 function api_data() {
 source /bin/openwrt_info
-Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
-export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
-export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
+Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
+Overlay_Available=$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')
+TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
-export PKG_List="${Download_Path}/Installed_PKG_List"
+PKG_List="${Download_Path}/Installed_PKG_List"
 
 curl --connect-timeout 5 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 if [[ "${wangluo}" == "1" ]]; then
@@ -23,14 +23,12 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   exit 1
 fi
 
-
-[ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
   DOWNLOAD="https://ghproxy.com/${Release_download}"
   wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH}
 else
-  DOWNLOAD="${Release_download}" 
+  DOWNLOAD=${Release_download}
   wget -q ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
@@ -40,21 +38,21 @@ fi
 
 case "${TARGET_BOARD}" in
 x86)
-  [ -d /sys/firmware/efi ] && {
-    export BOOT_Type="uefi"
+  [ -d '/sys/firmware/efi' ] && {
+    BOOT_Type=uefi
   } || {
-    export BOOT_Type="legacy"
+    BOOT_Type=legacy
   }
-  export CURRENT_Device="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')"
+  CURRENT_Device=$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')
 ;;
 *)
-  export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
-  export BOOT_Type="sysupgrade"
+  CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
+  BOOT_Type=sysupgrade
 esac
 
-CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
-CLOUD_Firmware="$(echo "${CLOUD_Version}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)"
-CLOUD2_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
+CLOUD_Version=$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')
+CLOUD_Firmware=$(echo "${CLOUD_Version}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
+CLOUD2_Firmware=$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")
 if [[ -z "${CLOUD_Version}" ]]; then
   echo "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致固件版本信息不一致!" > /tmp/cloud_version
   exit 1
@@ -81,13 +79,13 @@ if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   echo "tmp空间值[${TMP_Available}M],固件体积[${CLOUD_Firmware_Size}M],空间不足" > /tmp/cloud_version
   exit 1
 else
-  echo "${TMP_Available}"  "${CLOUD_Firmware_Size}"
+  echo "${TMP_Available}  ${CLOUD_Firmware_Size}"
 fi
 
 if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
   echo "检测到有可更新的固件版本,立即更新固件!" > /tmp/cloud_version
 else
-  echo "${LOCAL_Firmware}" = "${CLOUD_Firmware}"
+  echo "${LOCAL_Firmware} = ${CLOUD_Firmware}"
   exit 0
 fi
 
@@ -125,29 +123,22 @@ echo "升级"
 chmod 777 "${CLOUD_Version}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
-  if [[ -f "/etc/deletefile" ]]; then
-    chmod 775 "/etc/deletefile"
-    source /etc/deletefile
-  fi
-  curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/281677160/common/main/custom/Detectionnetwork > /mnt/Detectionnetwork
-  if [[ $? -ne 0 ]]; then
-    wget -P /mnt https://raw.githubusercontent.com/281677160/common/main/custom/Detectionnetwork -O /mnt/Detectionnetwork
-  fi
-  if [[ $? -eq 0 ]]; then
-    chmod 775 "/mnt/Detectionnetwork"
-    echo "*/5 * * * * source /mnt/Detectionnetwork > /dev/null 2>&1" >> /etc/crontabs/root
-  fi
-  rm -rf /etc/config/luci
-  rm -rf /mnt/back.tar.gz
-  sysupgrade -b /mnt/back.tar.gz
-  if [[ `ls -1 /mnt | grep -c "back.tar.gz"` -ge '0' ]]; then
-    export Upgrade_Options="sysupgrade -q"
-  else
-    export Upgrade_Options="sysupgrade -f /mnt/back.tar.gz"
-  fi
+if [[ -f "/etc/deletefile" ]]; then
+  chmod 775 "/etc/deletefile"
+  source /etc/deletefile
+fi
+rm -rf /etc/config/luci
+rm -rf /mnt/back.tar.gz && sysupgrade -b /mnt/back.tar.gz
+if [[ -f '/mnt/back.tar.gz']]; then
+  Upgrade_Options='sysupgrade -f /mnt/back.tar.gz'
+  echo "${Upgrade_Options}"
+else
+  Upgrade_Options='sysupgrade -q'
+  echo "${Upgrade_Options}"
+fi
 echo "123"
 exit 0
-"${Upgrade_Options} ${CLOUD_Version}"
+${Upgrade_Options} ${CLOUD_Version}
 }
 
 
