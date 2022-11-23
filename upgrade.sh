@@ -21,6 +21,12 @@ function Diy_Part1() {
   else
     echo "没发现AutoUpdate.sh文件存在，不能增加在线升级固件程序"
   fi
+
+  rm -rf "${FILES_PATH}/etc/replace"
+  if [[ "UPDATE_FIRMWARE_ONLINE" == "true" ]]; then
+    cp ${HOME_PATH}/build/common/custom/replace.sh "${FILES_PATH}/etc/replace"
+    sudo chmod +x "${FILES_PATH}/etc/replace"
+  fi
 }
 
 function GET_TARGET_INFO() {
