@@ -4,7 +4,7 @@
 # AutoUpdate for Openwrt
 
 Input_Option=$1
-
+Version=7.2
 function information_acquisition() {
 source /bin/openwrt_info
 Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
