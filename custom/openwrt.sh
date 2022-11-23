@@ -78,7 +78,6 @@ function xiugai_ip() {
     uci commit network
     ECHOG "您的IP为：${domain}"
     ECHOY "正在为您清空密码"
-    "/etc/shadow"
     if [[ `grep -c "admin" /etc/shadow` -eq '1' ]]; then
       passwd -d admin
     else
@@ -203,5 +202,3 @@ menu() {
 }
 
 menu "$@"
-
-exit 0
