@@ -76,8 +76,6 @@ let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间不足，不能下载]" >> /tmp/AutoUpdate.log
   exit 1
-else
-  echo "${TMP_Available}  ${CLOUD_Firmware_Size}"
 fi
 
 if [[ "${LOCAL_Version}" -lt "${CLOUD_Version}" ]]; then
@@ -129,10 +127,8 @@ echo "*/5 * * * * sh /etc/networkdetection > /dev/null 2>&1" >> /etc/crontabs/ro
 rm -rf /mnt/*upback.tar.gz && sysupgrade -b /mnt/upback.tar.gz
 if [[ `ls -1 /mnt | grep -c "upback.tar.gz"` -eq '1' ]]; then
   Upgrade_Options='sysupgrade -f /mnt/upback.tar.gz'
-  echo "${Upgrade_Options}"
 else
   Upgrade_Options='sysupgrade -q'
-  echo "${Upgrade_Options}"
 fi
 echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 升级固件中，请勿断开路由器电源，END]" >> /tmp/AutoUpdate.log
 ${Upgrade_Options} ${CLOUD_Firmware}
