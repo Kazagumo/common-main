@@ -72,16 +72,16 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?"
   exit 1
 else
-  echo "网络连接正常"
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 网络连接正常]"
 fi
 
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
-  echo "正在检测和下载云端API"
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=https://ghproxy.com/${Release_download}
   wget -q --show-progress https://ghproxy.com/${Github_API2} -O ${API_PATH}
 else
-  echo "正在检测和下载云端API"
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=${Release_download}
   wget -q --show-progress ${Github_API1} -O ${API_PATH}
 fi
@@ -89,7 +89,7 @@ if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!"
   exit 1
 else
-  echo "云端API下载完成,开始获取固件信息"
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 云端API下载完成,开始获取固件信息]"
 fi
 
 case "${TARGET_BOARD}" in
@@ -209,7 +209,7 @@ else
 fi
 
 cd "${Download_Path}"
-echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
+ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
 wget -q --show-progress "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
   curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
@@ -218,7 +218,7 @@ if [[ $? -ne 0 ]];then
   echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件失败,请检查网络再尝试或手动安装固件]"
   exit 1
 else
-  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件成功!]"
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件成功!]"
 fi
 
 export LOCAL_MD5=$(md5sum ${CLOUD_Firmware} | cut -c1-3)
@@ -236,7 +236,7 @@ if [[ ! "${LOCAL_256}" == "${CLOUD_256}" ]]; then
 fi
 
 cd "${Download_Path}"
-echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在执行更新,更新期间请不要断开电源或重启设备 ...]"
+ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在执行更新,更新期间请不要断开电源或重启设备 ...]"
 chmod 777 "${CLOUD_Firmware}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
@@ -254,7 +254,7 @@ else
   Upgrade_Options='sysupgrade -q'
   echo "${Upgrade_Options}"
 fi
-echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 升级固件中，请勿断开路由器电源，END]"
+ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 升级固件中，请勿断开路由器电源，END]"
 ${Upgrade_Options} ${CLOUD_Firmware}
 }
   
@@ -283,7 +283,7 @@ function Bendi_xuanzhe() {
   Y)
     CLOUD_Firmware=$(cat /tmp/feedsdefault |awk ''NR==${YMXZ}'')
     ECHOG " 您选择了[${CLOUD_Firmware}]固件"
-    ECHOGG " 10秒后将进行不保留配置升级固件操作"
+    ECHOG " 10秒后将进行不保留配置升级固件操作"
     sleep 12
     firmware_upgrade
   break
