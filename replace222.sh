@@ -83,17 +83,21 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   exit 1
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 网络连接正常]"
+  sleep 2
 fi
 
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络类型]"
+sleep 1
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络为国内网络]"
+  sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=https://ghproxy.com/${Release_download}
   ${WGETGNU} https://ghproxy.com/${Github_API2} -O ${API_PATH}
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可连通世界]"
+  sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=${Release_download}
   ${WGETGNU} ${Github_API1} -O ${API_PATH}
@@ -103,6 +107,7 @@ if [[ $? -ne 0 ]];then
   exit 1
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 云端API下载完成,开始获取固件信息]"
+  sleep 2
 fi
 
 case "${TARGET_BOARD}" in
@@ -243,7 +248,7 @@ if [[ "${loca_firmw}" == "${cloud_firmw}" ]]; then
   break
   ;;
   *)
-    ECHOYY "正在使用临时路径解决编译问题！"
+    ECHOYY "请输入正确选[Y/n]"
   break
   ;;
   esac
@@ -283,6 +288,7 @@ fi
 
 cd "${Download_Path}"
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在执行更新,更新期间请不要断开电源或重启设备 ...]"
+sleep 10
 chmod 777 "${CLOUD_Firmware}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
@@ -338,8 +344,7 @@ function Bendi_xuanzhe() {
     CLOUD_Firmware=$(cat /tmp/feedsdefault |awk ''NR==${YMXZ}'')
     echo
     ECHOG " 您选择了[${CLOUD_Firmware}]固件"
-    ECHOG " 10秒后将进行不保留配置升级固件操作"
-    sleep 12
+    sleep 2
     firmware_upgrade
   break
   ;;
