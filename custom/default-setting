@@ -34,25 +34,3 @@ sed -i 's?=== WARNING! =====================================?===================
 
 sed -i '/= "OpenWrt"/d' /usr/lib/lua/luci/version.lua
 
-if [[ -f '/usr/bin/ AutoUpdate' ]]; then
-Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
-source /bin/openwrt_info
-case "${TARGET_BOARD}" in
-x86)
-  [ -d '/sys/firmware/efi' ] && {
-    BOOT_Type="uefi"
-  } || {
-    BOOT_Type="legacy"
-  }
-  CURRENT_Device="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')"
-;;
-*)
-  CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
-  BOOT_Type="sysupgrade"
-esac
-cat > /etc/openwrt_upgrade <<-EOF
-MODEL_type=${BOOT_Type}${Firmware_SFX}
-KERNEL_type=${Kernel} - ${LUCI_EDITION}
-CURRENT_Device=${CURRENT_Device}
-EOF
-fi
