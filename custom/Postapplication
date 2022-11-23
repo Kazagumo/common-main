@@ -28,7 +28,5 @@ run_zzz_default() {
 }
 
 start() {
-	zzz_default
-	config_load Postapplication
-	config_foreach run_zzz_default login
+	run_zzz_default login
 }
