@@ -279,7 +279,7 @@ function Bendi_xuanzhe() {
   fi
   case $CUrrenty in
   Y)
-    CLOUD_Firmware="$(cat /tmp/GITHUB_ENN |awk ''NR==$YMXZ'')
+    CLOUD_Firmware="$(cat /tmp/GITHUB_ENN |awk ''NR==$YMXZ'')"
     ECHOY " 您选择了 ${CLOUD_Firmware} 固件,10秒后将进行不保留配置升级固件操作"
     sleep 12
     firmware_upgrade
