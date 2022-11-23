@@ -240,22 +240,7 @@ ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在执行更新,更新期�
 chmod 777 "${CLOUD_Firmware}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
-if [[ -f "/etc/deletefile" ]]; then
-  chmod 775 "/etc/deletefile"
-  source /etc/deletefile
-fi
-rm -rf /etc/config/luci
-echo "*/5 * * * * sh /etc/networkdetection > /dev/null 2>&1" >> /etc/crontabs/root
-rm -rf /mnt/*upback.tar.gz && sysupgrade -b /mnt/upback.tar.gz
-if [[ `ls -1 /mnt | grep -c "upback.tar.gz"` -eq '1' ]]; then
-  Upgrade_Options='sysupgrade -f /mnt/upback.tar.gz'
-  echo "${Upgrade_Options}"
-else
-  Upgrade_Options='sysupgrade -q'
-  echo "${Upgrade_Options}"
-fi
-ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 升级固件中，请勿断开路由器电源，END]"
-${Upgrade_Options} ${CLOUD_Firmware}
+sysupgrade -F -n ${CLOUD_Firmware}
 }
   
 function Bendi_xuanzhe() {
