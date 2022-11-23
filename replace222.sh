@@ -62,10 +62,8 @@ A="$(wget -V |grep 'GNU Wget' |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")"
 B="1.16.1"
 if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1>num2)?"0":"1"}'` -eq '0' ]]; then
   WGETGNU="wget -q --show-progress"
-  CURLGNU="wget -q --show-progress"
 else
   WGETGNU="wget -q"
-  CURLGNU="curl -# -L -O"
 fi
 
 source /bin/openwrt_info
@@ -257,7 +255,7 @@ fi
 
 cd "${Download_Path}"
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
-${CURLGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
+${WGETGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
   curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
@@ -266,6 +264,7 @@ if [[ $? -ne 0 ]];then
   exit 1
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件成功!]"
+  sleep 2
 fi
 
 export LOCAL_MD5=$(md5sum ${CLOUD_Firmware} | cut -c1-3)
@@ -276,10 +275,16 @@ export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
 if [[ ! "${LOCAL_MD5}" == "${CLOUD_MD5}" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") MD5对比失败,固件可能在下载时损坏,请检查网络后重试!]"
   exit 1
+else
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") MD5对比成功!]"
+  sleep 2
 fi
 if [[ ! "${LOCAL_256}" == "${CLOUD_256}" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!]"
   exit 1
+else
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") SHA256对比成功!]"
+  sleep 2
 fi
 
 cd "${Download_Path}"
