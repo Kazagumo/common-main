@@ -3,7 +3,7 @@
 
 START=99
 
-zzz_default() {
+run_zzz_default() {
     
 	if [ -f "/etc/default-setting" ]; then
 		/etc/default-setting
@@ -13,12 +13,6 @@ zzz_default() {
 	if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
 		echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
 		/etc/init.d/cron restart
-	fi
-	
-	if [[ `grep -c "Detectionnetwork" /etc/crontabs/root` -ge '1' ]]; then
-		if [[ ! -f '/mnt/Detectionnetwork' ]]; then
-			sed -i '/Detectionnetwork/d' /etc/crontabs/root
-		fi
 	fi
 	
 	rm -rf /tmp/luci-*cache*
@@ -35,4 +29,6 @@ zzz_default() {
 
 start() {
 	zzz_default
+	config_load Postapplication
+	config_foreach run_zzz_default login
 }
