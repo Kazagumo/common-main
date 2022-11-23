@@ -282,6 +282,7 @@ function Bendi_xuanzhe() {
   case $CUrrenty in
   Y)
     CLOUD_Firmware=$(cat /tmp/feedsdefault |awk ''NR==${YMXZ}'')
+    echo
     ECHOG " 您选择了[${CLOUD_Firmware}]固件"
     ECHOG " 10秒后将进行不保留配置升级固件操作"
     sleep 12
