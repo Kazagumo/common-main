@@ -148,7 +148,7 @@ CLOUD_Firmware_40="$(egrep -o "pr-rm-ax6000-Xwrt-${DEFAULT_Device}-[0-9]+-${BOOT
 CLOUD_Firmware_41="$(egrep -o "switch_ports_status-Xwrt-${DEFAULT_Device}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 CLOUD_Firmware_42="$(egrep -o "switch-Xwrt-${DEFAULT_Device}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 
-echo "
+cat >/tmp/GITHUB_ENN <<-EOF
 ${CLOUD_Firmware_1}
 ${CLOUD_Firmware_2}
 ${CLOUD_Firmware_3}
@@ -191,12 +191,9 @@ ${CLOUD_Firmware_39}
 ${CLOUD_Firmware_40}
 ${CLOUD_Firmware_41}
 ${CLOUD_Firmware_42}
-" > /tmp/feedsdefault
-
-sed -i '/^$/d' /tmp/feedsdefault
-cat "/tmp/feedsdefault" |awk '$0=NR" "$0' > /tmp/GITHUB_ENN
+EOF
 sed -i '/^$/d' /tmp/GITHUB_ENN
-XYZDSZ="$(cat /tmp/GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
+XYZDSZ=$(cat /tmp/GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')
 }
 
 function firmware_upgrade() {
@@ -264,7 +261,7 @@ function Bendi_xuanzhe() {
   clear
   echo
   echo
-  cat "/tmp/feedsdefault" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
+  cat "/tmp/GITHUB_ENN" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   echo
   echo
   echo -e "${Blue}  请输入您要升级的固件，选择前面对应的数值(1~N),输入[0或n]则为退出程序${Font}"
@@ -282,7 +279,7 @@ function Bendi_xuanzhe() {
   fi
   case $CUrrenty in
   Y)
-    CLOUD_Firmware="$(grep "${YMXZ}" /tmp/GITHUB_ENN |awk '{print $(2)}')"
+    CLOUD_Firmware="$(cat /tmp/GITHUB_ENN |awk ''NR==$YMXZ'')
     ECHOY " 您选择了 ${CLOUD_Firmware} 固件,10秒后将进行不保留配置升级固件操作"
     sleep 12
     firmware_upgrade
