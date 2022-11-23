@@ -60,10 +60,12 @@ function print_gg() {
 function information_acquisition() {
 A="$(wget -V |grep 'GNU Wget' |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")"
 B="1.16.1"
-if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1<num2)?"0":"1"}'` -eq '0' ]]; then
+if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1>num2)?"0":"1"}'` -eq '0' ]]; then
   WGETGNU="wget -q --show-progress"
+  CURLGNU="wget -q --show-progress"
 else
   WGETGNU="wget -q"
+  CURLGNU="curl -# -L -O"
 fi
 
 source /bin/openwrt_info
@@ -221,9 +223,9 @@ fi
 
 cd "${Download_Path}"
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
-${WGETGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
+${CURLGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
-  curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
+  ${CURLGNU} "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
 if [[ $? -ne 0 ]];then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件失败,请检查网络再尝试或手动安装固件]"
