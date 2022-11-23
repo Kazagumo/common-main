@@ -124,11 +124,15 @@ while :; do
 read -p "是否重启系统(shi fou chong qi xi tong)[Y/n]：" YN
 case ${YN} in
 [Yy]) 
-    ECHOG "5秒后为您重启系统"
+    ECHOG "3秒后为您重启系统"
     uci set argon.@global[0].bing_background=0
     uci commit argon
     /etc/init.d/uhttpd restart
     /etc/init.d/dnsmasq restart
+    /etc/init.d/network restart
+    if [[ -f '/etc/init.d/shadowsocksr' ]]; then
+      /etc/init.d/shadowsocksr restart
+    fi
     reboot -f
     judge
 break
