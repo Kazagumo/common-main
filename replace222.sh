@@ -170,12 +170,47 @@ ${CLOUD_Firmware_42}
 
 sed -i '/^$/d' /tmp/feedsdefault
 cat "/root/feedsdefault" |awk '$0=NR" "$0' > /tmp/GITHUB_ENN
-
-
-
-
-
-
+sed -i '/^$/d' /root/GITHUB_ENN
+cat "/tmp/feedsdefault" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
+XYZDSZ="$(cat /tmp/GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
+  
+function Bendi_xuanzhe() {
+  echo
+  echo
+  echo -e "${Blue}  请输入您要编译的源码，选择前面对应的数值(1~N),输入[0]则为退出程序${Font}"
+  echo
+  export YUMINGIP="  请输入数字(1~N)"
+  while :; do
+  YMXZ=""
+  read -p "${YUMINGIP}：" YMXZ
+  if [[ "${YMXZ}" == "0" ]]; then
+    CUrrenty="N"
+  elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
+    CUrrenty="Y"
+  else
+    CUrrenty=""
+  fi
+  case $CUrrenty in
+  Y)
+    export FOLDER_NAME="$(grep "${YMXZ}" /tmp/GITHUB_ENN |awk '{print $(2)}')"
+    ECHOY " 您选择了使用 ${FOLDER_NAME} 编译固件,3秒后将进行启动编译"
+    rm -rf /tmp/GITHUB_ENN
+    sleep 2
+    Bendi_menu
+  break
+  ;;
+  N)
+    rm -rf GITHUB_ENN
+    echo
+    exit 0
+  break
+  ;;
+  *)
+    export YUMINGIP="  敬告,请输入正确数值"
+  ;;
+  esac
+  done
+}
 
 
 
