@@ -8,8 +8,6 @@ Input_Option=$1
 function api_data() {
 source /bin/openwrt_info
 Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
-Overlay_Available=$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')
-TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 PKG_List="${Download_Path}/Installed_PKG_List"
@@ -25,7 +23,7 @@ fi
 
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
-  DOWNLOAD="https://ghproxy.com/${Release_download}"
+  DOWNLOAD=https://ghproxy.com/${Release_download}
   wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH}
 else
   DOWNLOAD=${Release_download}
@@ -73,10 +71,11 @@ echo "第一段完成"
 }
 
 function firmware_Size() {
+TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
 let X=$(grep -n "${CLOUD_Version}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
-  echo "tmp空间值[${TMP_Available}M],固件体积[${CLOUD_Firmware_Size}M],空间不足" > /tmp/cloud_version
+  echo "固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间不足，不能下载" > /tmp/cloud_version
   exit 1
 else
   echo "${TMP_Available}  ${CLOUD_Firmware_Size}"
@@ -129,7 +128,7 @@ if [[ -f "/etc/deletefile" ]]; then
 fi
 rm -rf /etc/config/luci
 rm -rf /mnt/*upback.tar.gz && sysupgrade -b /mnt/upback.tar.gz
-if [[ `ls -1 /mnt | grep -c "upback.tar.gz"` -eq '0' ]]; then
+if [[ `ls -1 /mnt | grep -c "upback.tar.gz"` -eq '1' ]]; then
   Upgrade_Options='sysupgrade -f /mnt/upback.tar.gz'
   echo "${Upgrade_Options}"
 else
