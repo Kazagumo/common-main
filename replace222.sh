@@ -261,8 +261,10 @@ ${Upgrade_Options} ${CLOUD_Firmware}
 }
   
 function Bendi_xuanzhe() {
-  cat "/tmp/feedsdefault" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   clear
+  echo
+  echo
+  cat "/tmp/feedsdefault" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   echo
   echo
   echo -e "${Blue}  请输入您要升级的固件，选择前面对应的数值(1~N),输入[0或n]则为退出程序${Font}"
