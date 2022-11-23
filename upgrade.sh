@@ -87,7 +87,7 @@ function GET_TARGET_INFO() {
 	export Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/AutoUpdate"
 	export Github_API2="${GITHUB_LINK}/releases/download/AutoUpdate/zzz_api"
 	export Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/AutoUpdate"
-	export LOCAL_CHAZHAO="${LUCI_EDITION}-${Openwrt_Version}"
+	export LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
 	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 	if [[ ! ${bendi_script} == "1" ]]; then
 	  echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
@@ -106,8 +106,6 @@ touch ${In_Firmware_Info}
 sudo chmod +x ${In_Firmware_Info}
 cat >${In_Firmware_Info} <<-EOF
 GITHUB_LINK=${GITHUB_LINK}
-GIT_ACTOR=${GIT_ACTOR}
-WAREHOUSE_MAN=${WAREHOUSE_MAN}
 GIT_REPOSITORY=${GIT_REPOSITORY}
 SOURCE=${SOURCE}
 LOCAL_Firmware=${Upgrade_Date}
@@ -116,7 +114,7 @@ DEFAULT_Device=${TARGET_PROFILE}
 Firmware_SFX=${Firmware_SFX}
 TARGET_BOARD=${TARGET_BOARD}
 CURRENT_Version=${Openwrt_Version}
-LOCAL_CHAZHAO=${LOCAL_CHAZHAO}
+LOCAL_FIRMW=${LOCAL_FIRMW}
 CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
 Download_Path=/tmp/Downloads
 Version=${AutoUpdate_Version}
@@ -229,7 +227,7 @@ function Diy_Part3() {
 
 	cd "${Firmware_Path}"
 	case "${TARGET_BOARD}" in
-	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
+	x86)
 		[[ -f ${Legacy_Firmware} ]] && {
 			MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
@@ -242,24 +240,6 @@ function Diy_Part3() {
 			SHA5BIT="${MD5}${SHA256}"
 			cp ${UEFI_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-uefi-${SHA5BIT}${Firmware_SFX}
 		}
-	;;
-	mvebu)
-		case "${TARGET_SUBTARGET}" in
-		cortexa53 | cortexa72)
-			[[ -f ${Legacy_Firmware} ]] && {
-				MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
-				SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
-				SHA5BIT="${MD5}${SHA256}"
-				cp ${Legacy_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-legacy-${SHA5BIT}${Firmware_SFX}
-			}
-			[[ -f ${UEFI_Firmware} ]] && {
-				MD5=$(md5sum ${UEFI_Firmware} | cut -c1-3)
-				SHA256=$(sha256sum ${UEFI_Firmware} | cut -c1-3)
-				SHA5BIT="${MD5}${SHA256}"
-				cp ${UEFI_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-uefi-${SHA5BIT}${Firmware_SFX}
-			}
-		;;
-		esac
 	;;
 	*)
 		[[ -f ${Up_Firmware} ]] && {
