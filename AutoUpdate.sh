@@ -42,6 +42,7 @@ x86)
     BOOT_Type=legacy
   }
   CURRENT_Device=$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')
+  [[ -z "${CURRENT_Device}" ]] && CURRENT_Device="${DEFAULT_Device}"
 ;;
 *)
   CURRENT_Device=$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')
