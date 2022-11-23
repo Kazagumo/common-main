@@ -13,3 +13,5 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]] && [[ "${wangluo}" == 
 else
   echo "[$(date "+%Y年%m月%d日%H时%M分%S秒")-网络正常]" >> /mnt/network.log
 fi
+
+exit 0
