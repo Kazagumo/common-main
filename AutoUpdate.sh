@@ -64,7 +64,8 @@ MODEL_type=${BOOT_Type}${Firmware_SFX}
 KERNEL_type=${Kernel} - ${LUCI_EDITION}
 CURRENT_Device=${CURRENT_Device}
 EOF
-echo "信息检测完毕"
+echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 信息检测完毕]" > /tmp/AutoUpdate.log
+exit 0
 }
 
 function firmware_upgrade() {
@@ -72,32 +73,31 @@ TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '
 let X=$(grep -n "${CLOUD_Firmware}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
-  echo "固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间不足，不能下载" > /tmp/cloud_version
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间不足，不能下载]" >> /tmp/AutoUpdate.log
   exit 1
 else
   echo "${TMP_Available}  ${CLOUD_Firmware_Size}"
 fi
 
 if [[ "${LOCAL_Version}" -lt "${CLOUD_Version}" ]]; then
-  echo "检测到有可更新的固件版本,立即更新固件!"
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测到有可更新的固件版本,立即更新固件!]" >> /tmp/AutoUpdate.log
 else
   echo "${LOCAL_Version} = ${CLOUD_Version}"
-  echo "已是最新版本，无需更新固件!"
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 已是最新版本，无需更新固件!]" >> /tmp/AutoUpdate.log
   exit 0
 fi
 
 cd "${Download_Path}"
-echo "正在下载云端固件,请耐心等待..." > /tmp/cloud_version
+echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]" >> /tmp/AutoUpdate.log
 wget -q "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
-curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
+  curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
 if [[ $? -ne 0 ]];then
-   echo "下载云端固件失败,请检查网络再尝试或手动安装固件!" > /tmp/cloud_version
-   exit 1
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件失败,请检查网络再尝试或手动安装固件]" >> /tmp/AutoUpdate.log
+  exit 1
 else
-  echo "下载云端固件成功!" > /tmp/cloud_version
-  echo "下载云端固件"
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件成功!]" >> /tmp/AutoUpdate.log
 fi
 
 export LOCAL_MD5=$(md5sum ${CLOUD_Firmware} | cut -c1-3)
@@ -106,16 +106,16 @@ export MD5_256=$(echo ${CLOUD_Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}"
 export CLOUD_MD5="$(echo "${MD5_256}" | cut -c1-3)"
 export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
 if [[ ! "${LOCAL_MD5}" == "${CLOUD_MD5}" ]]; then
-  echo "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!" > /tmp/cloud_version
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") MD5对比失败,固件可能在下载时损坏,请检查网络后重试!]" >> /tmp/AutoUpdate.log
   exit 1
 fi
 if [[ ! "${LOCAL_256}" == "${CLOUD_256}" ]]; then
-  echo "SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!" > /tmp/cloud_version
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!]" >> /tmp/AutoUpdate.log
   exit 1
 fi
 
 cd "${Download_Path}"
-echo "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..." > /tmp/cloud_version
+echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在执行更新,更新期间请不要断开电源或重启设备 ...]" >> /tmp/AutoUpdate.log
 chmod 777 "${CLOUD_Firmware}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
@@ -133,7 +133,7 @@ else
   Upgrade_Options='sysupgrade -q'
   echo "${Upgrade_Options}"
 fi
-echo "升级固件中，请勿断开路由器电源"
+echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 升级固件中，请勿断开路由器电源，END]" >> /tmp/AutoUpdate.log
 ${Upgrade_Options} ${CLOUD_Firmware}
 }
 
