@@ -60,9 +60,6 @@ cat > /tmp/Version_Tags <<-EOF
 LOCAL_Version=${LOCAL_Version}
 CLOUD_Version=${CLOUD_Version}
 LUCI_Firmware=${LUCI_Firmware}
-EOF
-cat > /etc/openwrt_upgrade <<-EOF
-LUCI_Firmware=${LUCI_Firmware}
 MODEL_type=${BOOT_Type}${Firmware_SFX}
 KERNEL_type=${Kernel} - ${LUCI_EDITION}
 CURRENT_Device=${CURRENT_Device}
