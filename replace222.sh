@@ -58,6 +58,14 @@ function print_gg() {
 }
 
 function information_acquisition() {
+A="$(wget -V |grep 'GNU Wget' |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")"
+B="1.16.1"
+if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1<num2)?"0":"1"}'` -eq '0' ]]; then
+  WGETGNU="wget -q --show-progress"
+else
+  WGETGNU="wget -q"
+fi
+
 source /bin/openwrt_info
 Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
@@ -81,12 +89,12 @@ if [ ! "${Google_Check}" == 301 ]; then
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络为国内网络]"
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=https://ghproxy.com/${Release_download}
-  wget -q --show-progress https://ghproxy.com/${Github_API2} -O ${API_PATH}
+  ${WGETGNU} https://ghproxy.com/${Github_API2} -O ${API_PATH}
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可连通世界]"
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=${Release_download}
-  wget -q --show-progress ${Github_API1} -O ${API_PATH}
+  ${WGETGNU} ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!]"
@@ -213,7 +221,7 @@ fi
 
 cd "${Download_Path}"
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
-wget -q --show-progress "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
+${WGETGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
   curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
