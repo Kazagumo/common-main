@@ -44,7 +44,7 @@ x86)
   CURRENT_Device=$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')
 ;;
 *)
-  CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
+  CURRENT_Device=$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')
   BOOT_Type=sysupgrade
 esac
 
