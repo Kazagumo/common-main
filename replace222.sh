@@ -71,19 +71,25 @@ fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?"
   exit 1
+else
+  echo "网络连接正常"
 fi
 
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
+  echo "正在检测和下载云端API"
   DOWNLOAD=https://ghproxy.com/${Release_download}
   wget -q --show-progress https://ghproxy.com/${Github_API2} -O ${API_PATH}
 else
+  echo "正在检测和下载云端API"
   DOWNLOAD=${Release_download}
   wget -q --show-progress ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!"
   exit 1
+else
+  echo "云端API下载完成,开始获取固件信息"
 fi
 
 case "${TARGET_BOARD}" in
@@ -93,10 +99,8 @@ x86)
   } || {
     BOOT_Type=legacy
   }
-  CURRENT_Device=$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')
 ;;
 *)
-  CURRENT_Device=$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')
   BOOT_Type=sysupgrade
 esac
 
@@ -191,7 +195,7 @@ ${CLOUD_Firmware_42}
 
 sed -i '/^$/d' /tmp/feedsdefault
 cat "/tmp/feedsdefault" |awk '$0=NR" "$0' > /tmp/GITHUB_ENN
-sed -i '/^$/d' /root/GITHUB_ENN
+sed -i '/^$/d' /tmp/GITHUB_ENN
 XYZDSZ="$(cat /tmp/GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
 }
 
@@ -257,10 +261,11 @@ ${Upgrade_Options} ${CLOUD_Firmware}
 }
   
 function Bendi_xuanzhe() {
-  echo
   cat "/tmp/feedsdefault" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
+  clear
   echo
-  echo -e "${Blue}  请输入您要编译的源码，选择前面对应的数值(1~N),输入[0]则为退出程序${Font}"
+  echo
+  echo -e "${Blue}  请输入您要升级的固件，选择前面对应的数值(1~N),输入[0或n]则为退出程序${Font}"
   echo
   export YUMINGIP="  请输入数字(1~N)"
   while :; do
@@ -275,10 +280,10 @@ function Bendi_xuanzhe() {
   fi
   case $CUrrenty in
   Y)
-    export FOLDER_NAME="$(grep "${YMXZ}" /tmp/GITHUB_ENN |awk '{print $(2)}')"
-    ECHOY " 您选择了使用 ${FOLDER_NAME} 编译固件,3秒后将进行启动编译"
+    CLOUD_Firmware="$(grep "${YMXZ}" /tmp/GITHUB_ENN |awk '{print $(2)}')"
+    ECHOY " 您选择了 ${CLOUD_Firmware} 固件,10秒后将进行不保留配置升级固件操作"
     rm -rf /tmp/GITHUB_ENN
-    sleep 2
+    sleep 12
     firmware_upgrade
   break
   ;;
