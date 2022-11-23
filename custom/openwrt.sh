@@ -124,7 +124,7 @@ while :; do
 read -p "是否重启系统(shi fou chong qi xi tong)[Y/n]：" YN
 case ${YN} in
 [Yy]) 
-    ECHOG "3秒后为您重启系统"
+    ECHOG "系统重启中，售后自行登录openwrt后台"
     uci set argon.@global[0].bing_background=0
     uci commit argon
     reboot -f
