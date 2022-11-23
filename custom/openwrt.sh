@@ -237,4 +237,8 @@ menu() {
     done
 }
 
-menu "$@"
+if [[ -f '/etc/replace' ]]; then
+  menu "$@"
+else
+  menu2 "$@"
+fi
