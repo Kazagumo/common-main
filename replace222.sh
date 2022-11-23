@@ -211,6 +211,9 @@ XYZDSZ="$(cat /tmp/GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
 }
 
 function firmware_upgrade() {
+loca_firmw=$(echo "${CLOUD_Firmware}" |head -n 5|cut -d '-' -f 1-2)
+cloud_firmw=${SOURCE}
+
 TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
 let X=$(grep -n "${CLOUD_Firmware}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
@@ -220,6 +223,36 @@ if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
 else
   echo "${TMP_Available}  ${CLOUD_Firmware_Size}"
 fi
+
+
+if [[ "${loca_firmw}" == "${cloud_firmw}" ]]; then
+  clear
+  echo
+  echo
+  ECHOG "您选择的固件为您现在所用的同一个作者同一个LUCI版本,可以选择保留配置或不保留配置升级"
+  while :; do
+  read -t 30 -p " [输入[Y/y]为保留配置，输入[N/n]为不保留配置](不作处理,30秒后默认保留配置升级)： " Bendi_Wsl
+  case ${Bendi_Wsl} in
+  [Yy])
+    Upgrade_Options='sysupgrade -f /mnt/upback.tar.gz'
+    upgrade_tions="1"
+  break
+  ;;
+  [Nn])
+    Upgrade_Options='sysupgrade -F -n'
+  break
+  ;;
+  *)
+    ECHOYY "正在使用临时路径解决编译问题！"
+  break
+  ;;
+  esac
+  done
+else
+   Upgrade_Options='sysupgrade -F -n'
+fi
+
+
 
 cd "${Download_Path}"
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
@@ -253,7 +286,25 @@ ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在执行更新,更新期�
 chmod 777 "${CLOUD_Firmware}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
-sysupgrade -F -n ${CLOUD_Firmware}
+if [[ "${upgrade_tions}" == "1" ]]; then
+  if [[ -f "/etc/deletefile" ]]; then
+    chmod +x "/etc/deletefile"
+    source /etc/deletefile
+  fi
+  rm -rf /etc/config/luci
+  echo "*/5 * * * * sh /etc/networkdetection > /dev/null 2>&1" >> /etc/crontabs/root
+  rm -rf /mnt/*upback.tar.gz && sysupgrade -b /mnt/upback.tar.gz
+  if [[ `ls -1 /mnt | grep -c "upback.tar.gz"` -eq '1' ]]; then
+    echo "保留配置1"
+    ${Upgrade_Options} ${CLOUD_Firmware}
+  else
+    echo "保留配置2"
+    ${Upgrade_Options} ${CLOUD_Firmware}
+  fi
+else
+  echo "不保留配置"
+  ${Upgrade_Options} ${CLOUD_Firmware}
+fi
 }
   
 function Bendi_xuanzhe() {
