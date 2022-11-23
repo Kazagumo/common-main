@@ -95,7 +95,7 @@ function xiugai_ip() {
 
 function qingkong_mima() {
 while :; do
-read -p 否清空密码(shi fou qing kong mi ma)[Y/n]： YN
+read -p "否清空密码(shi fou qing kong mi ma)[Y/n]：" YN
 case ${YN} in
 [Yy]) 
     if [[ `grep -c "admin" /etc/shadow` -eq '1' ]]; then
@@ -121,7 +121,7 @@ done
 function re_boot() {
 echo
 while :; do
-read -p 是否重启系统(shi fou chong qi xi tong)[Y/n]： YN
+read -p "是否重启系统(shi fou chong qi xi tong)[Y/n]：" YN
 case ${YN} in
 [Yy]) 
     ECHOG "5秒后为您重启系统"
@@ -185,11 +185,11 @@ menu() {
       re_boot
     break
     ;;
-    3)
+    4)
       first_boot
     break
     ;;
-    4)
+    5)
       ECHOR "您选择了退出程序"
       exit 0
     break
