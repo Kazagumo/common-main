@@ -192,7 +192,6 @@ ${CLOUD_Firmware_42}
 sed -i '/^$/d' /tmp/feedsdefault
 cat "/root/feedsdefault" |awk '$0=NR" "$0' > /tmp/GITHUB_ENN
 sed -i '/^$/d' /root/GITHUB_ENN
-cat "/tmp/feedsdefault" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
 XYZDSZ="$(cat /tmp/GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
 }
 
@@ -259,6 +258,7 @@ ${Upgrade_Options} ${CLOUD_Firmware}
   
 function Bendi_xuanzhe() {
   echo
+  cat "/tmp/feedsdefault" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   echo
   echo -e "${Blue}  请输入您要编译的源码，选择前面对应的数值(1~N),输入[0]则为退出程序${Font}"
   echo
@@ -266,7 +266,7 @@ function Bendi_xuanzhe() {
   while :; do
   YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
-  if [[ "${YMXZ}" == "0" ]]; then
+  if [[ "${YMXZ}" == "0" ]] || [[ "${YMXZ}" == "N" ]] || [[ "${YMXZ}" == "n" ]]; then
     CUrrenty="N"
   elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
     CUrrenty="Y"
@@ -279,7 +279,7 @@ function Bendi_xuanzhe() {
     ECHOY " 您选择了使用 ${FOLDER_NAME} 编译固件,3秒后将进行启动编译"
     rm -rf /tmp/GITHUB_ENN
     sleep 2
-    Bendi_menu
+    firmware_upgrade
   break
   ;;
   N)
@@ -299,13 +299,9 @@ function menu() {
   clear
   echo
   echo
+  echo -e " 1${Red}.${Font}${Green}获取云端固件信息${Font}"
   echo
-  echo
-  echo -e " 1${Red}.${Font}${Green}保留缓存,再次编译${Font}"
-  echo
-  echo -e " 2${Red}.${Font}${Green}重新选择源码编译${Font}"
-  echo
-  echo -e " 3${Red}.${Font}${Green}退出${Font}"
+  echo -e " 2${Red}.${Font}${Green}退出${Font}"
   echo
   echo
   XUANZop="请输入数字"
@@ -314,18 +310,11 @@ function menu() {
   read -p " ${XUANZop}：" menu_num
   case $menu_num in
   1)
-    Bendi_menu2
-  break
-  ;;
-  2)
+    information_acquisition
     Bendi_xuanzhe
   break
   ;;
-  3)
-    Bendi_UPDIYSETUP
-  break
-  ;;
-  4)
+  2)
     echo
     exit 0
   break
@@ -338,4 +327,4 @@ function menu() {
 }
 
 
-
+menu
