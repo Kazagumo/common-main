@@ -75,17 +75,18 @@ echo "第一段完成"
 }
 
 function firmware_Size() {
-TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 let X=$(grep -n "${CLOUD_Version}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   echo "tmp空间值[${TMP_Available}M],固件体积[${CLOUD_Firmware_Size}M],空间不足" > /tmp/cloud_version
   exit 1
+  echo "${TMP_Available}"  "${CLOUD_Firmware_Size}"
 fi
 
 if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
   echo "检测到有可更新的固件版本,立即更新固件!" > /tmp/cloud_version
 else
+  echo "${LOCAL_Firmware}" = "${CLOUD_Firmware}"
   exit 0
 fi
 
