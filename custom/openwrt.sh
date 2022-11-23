@@ -127,14 +127,8 @@ case ${YN} in
     ECHOG "5秒后为您重启系统"
     uci set argon.@global[0].bing_background=0
     uci commit argon
-	  /etc/init.d/uhttpd restart
-    sleep 1
-	  /etc/init.d/dnsmasq restart
-    sleep 1
-	  /etc/init.d/firewall restart
-    sleep 1
-	  /etc/init.d/network restart
-    sleep 1
+    /etc/init.d/uhttpd restart
+    /etc/init.d/dnsmasq restart
     reboot -f
     judge
 break
