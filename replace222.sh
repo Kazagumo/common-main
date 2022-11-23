@@ -190,7 +190,7 @@ ${CLOUD_Firmware_42}
 " >> /tmp/feedsdefault
 
 sed -i '/^$/d' /tmp/feedsdefault
-cat "/root/feedsdefault" |awk '$0=NR" "$0' > /tmp/GITHUB_ENN
+cat "/tmp/feedsdefault" |awk '$0=NR" "$0' > /tmp/GITHUB_ENN
 sed -i '/^$/d' /root/GITHUB_ENN
 XYZDSZ="$(cat /tmp/GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
 }
