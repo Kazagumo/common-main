@@ -5,7 +5,7 @@
 
 Input_Option=$1
 
-function api_data() {
+function information_acquisition() {
 source /bin/openwrt_info
 Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
@@ -67,10 +67,10 @@ MODEL_type=${BOOT_Type}${Firmware_SFX}
 KERNEL_type=${Kernel} - ${LUCI_EDITION}
 CURRENT_Device=${CURRENT_Device}
 EOF
-echo "第一段完成"
+echo "信息检测完毕"
 }
 
-function firmware_Size() {
+function firmware_upgrade() {
 TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
 let X=$(grep -n "${CLOUD_Version}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
@@ -82,9 +82,10 @@ else
 fi
 
 if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
-  echo "检测到有可更新的固件版本,立即更新固件!" > /tmp/cloud_version
+  echo "检测到有可更新的固件版本,立即更新固件!"
 else
   echo "${LOCAL_Firmware} = ${CLOUD_Firmware}"
+  echo "已是最新版本，无需更新固件!"
   exit 0
 fi
 
@@ -99,7 +100,7 @@ if [[ $? -ne 0 ]];then
    exit 1
 else
   echo "下载云端固件成功!" > /tmp/cloud_version
-  echo "下载完成"
+  echo "下载云端固件"
 fi
 
 export LOCAL_MD5=$(md5sum ${CLOUD_Version} | cut -c1-3)
@@ -118,7 +119,6 @@ fi
 
 cd "${Download_Path}"
 echo "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..." > /tmp/cloud_version
-echo "升级"
 chmod 777 "${CLOUD_Version}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
@@ -127,6 +127,7 @@ if [[ -f "/etc/deletefile" ]]; then
   source /etc/deletefile
 fi
 rm -rf /etc/config/luci
+echo "*/5 * * * * sh /etc/networkdetection > /dev/null 2>&1" >> /etc/crontabs/root
 rm -rf /mnt/*upback.tar.gz && sysupgrade -b /mnt/upback.tar.gz
 if [[ `ls -1 /mnt | grep -c "upback.tar.gz"` -eq '1' ]]; then
   Upgrade_Options='sysupgrade -f /mnt/upback.tar.gz'
@@ -135,8 +136,7 @@ else
   Upgrade_Options='sysupgrade -q'
   echo "${Upgrade_Options}"
 fi
-echo "123"
-exit 0
+echo "升级固件中，请勿断开路由器电源"
 ${Upgrade_Options} ${CLOUD_Version}
 }
 
@@ -146,8 +146,8 @@ api_data
 else
   case ${Input_Option} in
   -u)
-  api_data
-  firmware_Size
+  information_acquisition
+  firmware_upgrade
   ;;
   esac
 fi
