@@ -129,7 +129,7 @@ if [[ -f "/etc/deletefile" ]]; then
 fi
 rm -rf /etc/config/luci
 rm -rf /mnt/back.tar.gz && sysupgrade -b /mnt/back.tar.gz
-if [[ -f '/mnt/back.tar.gz']]; then
+if [[ `ls -1 /mnt | grep -c "back.tar.gz"` -eq '0' ]]; then
   Upgrade_Options='sysupgrade -f /mnt/back.tar.gz'
   echo "${Upgrade_Options}"
 else
