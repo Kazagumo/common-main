@@ -76,10 +76,10 @@ fi
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
   DOWNLOAD=https://ghproxy.com/${Release_download}
-  wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH}
+  wget -q --show-progress https://ghproxy.com/${Github_API2} -O ${API_PATH}
 else
   DOWNLOAD=${Release_download}
-  wget -q ${Github_API1} -O ${API_PATH}
+  wget -q --show-progress ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!"
@@ -208,7 +208,7 @@ fi
 
 cd "${Download_Path}"
 echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
-wget -q "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
+wget -q --show-progress "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
   curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
