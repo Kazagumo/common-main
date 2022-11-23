@@ -3,6 +3,7 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
+Input_Option=$1
 
 function api_data() {
 source /bin/openwrt_info
@@ -78,17 +79,13 @@ if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   echo "tmp空间值[${TMP_Available}M],固件体积[${CLOUD_Firmware_Size}M],空间不足" > /tmp/cloud_version
   exit 1
 fi
-}
 
-function u_firmware() {
 if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
   echo "检测到有可更新的固件版本,立即更新固件!" > /tmp/cloud_version
 else
   exit 0
 fi
-}
 
-function download_firmware() {
 cd "${Download_Path}"
 echo "正在下载云端固件,请耐心等待..." > /tmp/cloud_version
 wget -q "${DOWNLOAD}/${CLOUD_Version}" -O ${CLOUD_Version}
@@ -101,9 +98,7 @@ if [[ $? -ne 0 ]];then
 else
   echo "下载云端固件成功!" > /tmp/cloud_version
 fi
-}
 
-function md5sum_sha256sum() {
 export LOCAL_MD5=$(md5sum ${CLOUD_Version} | cut -c1-3)
 export LOCAL_256=$(sha256sum ${CLOUD_Version} | cut -c1-3)
 export MD5_256=$(echo ${CLOUD_Version} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
@@ -117,9 +112,7 @@ if [[ ! "${LOCAL_256}" == "${CLOUD_256}" ]]; then
   echo "SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!" > /tmp/cloud_version
   exit 1
 fi
-}
 
-function update_firmware() {
 cd "${Download_Path}"
 echo "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..." > /tmp/cloud_version
 chmod 777 "${CLOUD_Version}"
@@ -149,7 +142,13 @@ sleep 2
 "${Upgrade_Options} ${CLOUD_Version}"
 }
 
-function Update() {
+
+if [[ -z "${Input_Option}" ]]; then
 api_data
-}
-Update
+else
+  case ${Input_Option} in
+  -u)
+  firmware_Size
+  ;;
+  esac
+fi
