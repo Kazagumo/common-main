@@ -69,24 +69,27 @@ if [[ "${wangluo}" == "1" ]]; then
   curl --connect-timeout 5 "google.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
-  echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?"
+  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您可能没进行联网,请检查网络?"
   exit 1
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 网络连接正常]"
 fi
 
+ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络类型]"
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络为国内网络]"
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=https://ghproxy.com/${Release_download}
   wget -q --show-progress https://ghproxy.com/${Github_API2} -O ${API_PATH}
 else
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可连通世界]"
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=${Release_download}
   wget -q --show-progress ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
-  echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!"
+  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!]"
   exit 1
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 云端API下载完成,开始获取固件信息]"
@@ -202,7 +205,7 @@ TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '
 let X=$(grep -n "${CLOUD_Firmware}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
-  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间不足，不能下载]"
+  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间不足，不能下载]"
   exit 1
 else
   echo "${TMP_Available}  ${CLOUD_Firmware_Size}"
@@ -215,7 +218,7 @@ if [[ $? -ne 0 ]];then
   curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
 if [[ $? -ne 0 ]];then
-  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件失败,请检查网络再尝试或手动安装固件]"
+  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件失败,请检查网络再尝试或手动安装固件]"
   exit 1
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件成功!]"
@@ -227,11 +230,11 @@ export MD5_256=$(echo ${CLOUD_Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}"
 export CLOUD_MD5="$(echo "${MD5_256}" | cut -c1-3)"
 export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
 if [[ ! "${LOCAL_MD5}" == "${CLOUD_MD5}" ]]; then
-  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") MD5对比失败,固件可能在下载时损坏,请检查网络后重试!]"
+  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") MD5对比失败,固件可能在下载时损坏,请检查网络后重试!]"
   exit 1
 fi
 if [[ ! "${LOCAL_256}" == "${CLOUD_256}" ]]; then
-  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!]"
+  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!]"
   exit 1
 fi
 
