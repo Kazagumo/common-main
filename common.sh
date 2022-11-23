@@ -283,11 +283,9 @@ sudo chmod +x "${DELETE}"
 
 
 # 给固件保留配置更新固件的保留项目
-sed -i '/Detectionnetwork/d' "${KEEPD_PATH}"
 sed -i '/AdGuardHome/d' "${KEEPD_PATH}"
 sed -i '/background/d' "${KEEPD_PATH}"
 cat >>"${KEEPD_PATH}" <<-EOF
-/mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background
 EOF
