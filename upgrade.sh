@@ -11,8 +11,8 @@ function Diy_Part1() {
     git clone -b ceshi https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
     [[ ! -d "$FILES_PATH/usr/bin" ]] && mkdir $FILES_PATH/usr/bin
     cp $BUILD_PATH/AutoUpdate.sh $FILES_PATH/usr/bin/AutoUpdate
-    cp $BUILD_PATH/replace.sh $FILES_PATH/usr/bin/replace
-    sudo chmod +x $FILES_PATH/usr/bin/replace
+    cp $BUILD_PATH/replace.sh $FILES_PATH/etc/replace
+    sudo chmod +x $FILES_PATH/etc/replace
     sudo chmod +x $FILES_PATH/usr/bin/AutoUpdate
     if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
       sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
@@ -20,12 +20,6 @@ function Diy_Part1() {
     [[ -d $HOME_PATH/package/luci-app-autoupdate ]] && echo "增加定时更新固件的插件成功"
   else
     echo "没发现AutoUpdate.sh文件存在，不能增加在线升级固件程序"
-  fi
-
-  rm -rf "${FILES_PATH}/etc/replace"
-  if [[ "UPDATE_FIRMWARE_ONLINE" == "true" ]]; then
-    cp ${HOME_PATH}/build/common/custom/replace.sh "${FILES_PATH}/etc/replace"
-    sudo chmod +x "${FILES_PATH}/etc/replace"
   fi
 }
 
@@ -87,7 +81,7 @@ function GET_TARGET_INFO() {
 	else
 	  export AutoUpdate_Version="7.1"
 	fi
-	export In_Firmware_Info="$FILES_PATH/bin/openwrt_info"
+	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update""
 	export Github_Release="${GITHUB_LINK}/releases/tag/AutoUpdate"
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
 	export Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/AutoUpdate"
