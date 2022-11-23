@@ -15,7 +15,7 @@ export PKG_List="${Download_Path}/Installed_PKG_List"
 
 curl --connect-timeout 5 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 if [[ "${wangluo}" == "1" ]]; then
-curl --connect-timeout 5 "google.com" > "/dev/null" 2>&1 || wangluo='2'
+  curl --connect-timeout 5 "google.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?" > /tmp/cloud_version
@@ -26,9 +26,11 @@ fi
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
+  DOWNLOAD="https://ghproxy.com/${Release_download}"
   wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH}
 else
-wget --no-check-certificate --content-disposition -q -T 6 -t 2 ${Github_API1} -O ${API_PATH}
+  DOWNLOAD="${Release_download}" 
+  wget -q ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
@@ -89,36 +91,15 @@ fi
 function download_firmware() {
 cd "${Download_Path}"
 echo "正在下载云端固件,请耐心等待..." > /tmp/cloud_version
-if [[ "$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)" == "301" ]]; then
-  curl -# -L -O "${Release_download}/${CLOUD_Version}"
-  if [[ $? -ne 0 ]];then
-    echo "下载固件失败，切换工具继续下载中..." > /tmp/cloud_version
-    wget --no-check-certificate --content-disposition -q -T 8 -t 2 "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
-    if [[ $? -ne 0 ]];then
-      echo "下载云端固件失败,请检查网络再尝试或手动安装固件!" > /tmp/cloud_version
-      echo
-      exit 1
-    else
-      echo "下载云端固件成功!" > /tmp/cloud_version
-    fi
-  else
-    echo "下载云端固件成功!" > /tmp/cloud_version
-  fi
+wget -q "${DOWNLOAD}/${CLOUD_Version}" -O ${CLOUD_Version}
+if [[ $? -ne 0 ]];then
+curl -# -L -O "${DOWNLOAD}/${CLOUD_Version}"
+fi
+if [[ $? -ne 0 ]];then
+   echo "下载云端固件失败,请检查网络再尝试或手动安装固件!" > /tmp/cloud_version
+   exit 1
 else
-  curl -# -L -O "https://ghproxy.com/${Release_download}/${CLOUD_Version}"
-  if [[ $? -ne 0 ]];then
-    echo  "下载固件失败，切换工具继续下载中..." > /tmp/cloud_version
-    wget --no-check-certificate --content-disposition -q -T 8 -t 2 "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
-    if [[ $? -ne 0 ]];then
-      echo  "下载云端固件失败,请检查网络再尝试或手动安装固件!" > /tmp/cloud_version
-      echo
-      exit 1
-    else
-      echo  "下载云端固件成功!" > /tmp/cloud_version
-    fi
-  else
-    echo  "下载云端固件成功!" > /tmp/cloud_version
-  fi
+  echo "下载云端固件成功!" > /tmp/cloud_version
 fi
 }
 
