@@ -322,7 +322,7 @@ function Bendi_xuanzhe() {
   echo
   ECHOYY " 当前源码：${SOURCE} / ${LUCI_EDITION} / ${Kernel}"
   ECHOYY " 固件格式：${BOOT_Type}${Firmware_SFX}"
-  ECHOYY " 设备型号：${CURRENT_Device}"
+  ECHOYY " 设备型号：${DEFAULT_Device}"
   echo
   echo
   echo -e "${Blue}  请输入您要升级的固件，选择前面对应的数值(1~N),输入[0或n]则为退出程序${Font}"
