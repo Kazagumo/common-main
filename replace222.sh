@@ -71,35 +71,6 @@ x86)
   BOOT_Type=sysupgrade
 esac
 
-7.01-Lienol-x86-64-202211210153-legacy-eab838.img.gz
-36.1 MB
-3 days ago
-18.06-Immortalwrt-x86-64-202211210155-legacy-82541b.img.gz
-21.9 MB
-3 days ago
-18.06-Immortalwrt-x86-64-202211210155-uefi-d40397.img.gz
-22.1 MB
-3 days ago
-18.06-Lede-x86-64-202211210156-legacy-81128a.img.gz
-54.5 MB
-3 days ago
-18.06-Lede-x86-64-202211210156-uefi-219310.img.gz
-54.7 MB
-3 days ago
-18.06-Lede-x86-64-202211221901-legacy-c22527.img.gz
-54.8 MB
-23 hours ago
-18.06-Lede-x86-64-202211221901-uefi-365cc6.img.gz
-54.9 MB
-23 hours ago
-18.06-Lede-x86-64-202211230100-legacy-4a4109.img.gz
-54.6 MB
-17 hours ago
-18.06-Lede-x86-64-202211230100-uefi-d890fb.img.gz
-54.8 MB
-17 hours ago
-19.07-Official-x86-64-202211210155-legacy-3d7260.img.gz
-
 
 CLOUD_Firmware_1="$(egrep -o "18.06-Lede-${DEFAULT_Device}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 
@@ -152,7 +123,9 @@ CLOUD_Firmware_41="$(egrep -o "switch_ports_status-Xwrt-${DEFAULT_Device}-[0-9]+
 CLOUD_Firmware_42="$(egrep -o "switch-Xwrt-${DEFAULT_Device}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 
 
-
+echo "
+CLOUD_Firmware_1=${CLOUD_Firmware_1}
+" >> /root/feedsdefault
 
 
 
