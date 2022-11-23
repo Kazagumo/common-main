@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 if [[ "${wangluo}" == "1" ]]; then
