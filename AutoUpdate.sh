@@ -71,6 +71,7 @@ MODEL_type=${BOOT_Type}${Firmware_SFX}
 KERNEL_type=${Kernel} - ${LUCI_EDITION}
 CURRENT_Device=${CURRENT_Device}
 EOF
+echo "第一段完成"
 }
 
 function firmware_Size() {
@@ -97,6 +98,7 @@ if [[ $? -ne 0 ]];then
    exit 1
 else
   echo "下载云端固件成功!" > /tmp/cloud_version
+  echo "下载完成"
 fi
 
 export LOCAL_MD5=$(md5sum ${CLOUD_Version} | cut -c1-3)
@@ -115,6 +117,7 @@ fi
 
 cd "${Download_Path}"
 echo "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..." > /tmp/cloud_version
+echo "升级"
 chmod 777 "${CLOUD_Version}"
 [[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
@@ -138,7 +141,8 @@ sleep 2
   else
     export Upgrade_Options="sysupgrade -f /mnt/back.tar.gz"
   fi
-
+echo "123"
+exit 0
 "${Upgrade_Options} ${CLOUD_Version}"
 }
 
