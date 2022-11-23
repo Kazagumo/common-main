@@ -76,8 +76,10 @@ function xiugai_ip() {
     ECHOY "正在为您清空密码"
     if [[ "$USER" == "admin" ]]; then
       passwd -d admin
+      judge
     else
       passwd -d root
+      judge
     fi
   break
   ;;
