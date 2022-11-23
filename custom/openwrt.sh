@@ -53,6 +53,7 @@ judge() {
     reboot -f
   else
     print_error "$1 失败"
+    exit 0
   fi
 }
 
