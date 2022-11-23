@@ -191,7 +191,7 @@ ${CLOUD_Firmware_39}
 ${CLOUD_Firmware_40}
 ${CLOUD_Firmware_41}
 ${CLOUD_Firmware_42}
-" >> /tmp/feedsdefault
+" > /tmp/feedsdefault
 
 sed -i '/^$/d' /tmp/feedsdefault
 cat "/tmp/feedsdefault" |awk '$0=NR" "$0' > /tmp/GITHUB_ENN
