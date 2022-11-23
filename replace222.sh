@@ -284,13 +284,11 @@ function Bendi_xuanzhe() {
   Y)
     CLOUD_Firmware="$(grep "${YMXZ}" /tmp/GITHUB_ENN |awk '{print $(2)}')"
     ECHOY " 您选择了 ${CLOUD_Firmware} 固件,10秒后将进行不保留配置升级固件操作"
-    rm -rf /tmp/GITHUB_ENN
     sleep 12
     firmware_upgrade
   break
   ;;
   N)
-    rm -rf GITHUB_ENN
     echo
     exit 0
   break
