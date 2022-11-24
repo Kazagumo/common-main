@@ -88,19 +88,17 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   exit 1
 fi
 
-cd "${Download_Path}"
 if [ "${gitcom}" == "1" ]; then
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络不能连通github.com,使用代理中..]"
   sleep 2
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   echo
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=https://ghproxy.com/${Release_download}
-  curl -# -L -O  ${Github_API2}
+  ${WGETGNU} ${Github_API2} -O ${API_PATH}
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可以连通github.com]"
   sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
-  echo
   DOWNLOAD=${Release_download}
   ${WGETGNU} ${Github_API1} -O ${API_PATH}
 fi
@@ -111,8 +109,6 @@ else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 云端API下载完成,开始获取固件信息]"
   sleep 2
 fi
-
-cd ../../
 
 case "${TARGET_BOARD}" in
 x86)
