@@ -64,8 +64,9 @@ ${INS} clean
 }
 
 function main(){
-	if [[ ! -f "GITHUB_ENV" ]]; then
+	if [[ "${ubuntuyilai}" == "1" ]]; then
 		INS="sudo -E apt-get -qq"
+		echo "开始安装依赖....."
 	else
 		INS="sudo apt-get"
 	fi
