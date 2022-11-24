@@ -50,9 +50,9 @@ x86)
 esac
 
 CLOUD_Firmware=$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')
-CLOUD_Version=$(echo "${CLOUD_Version}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
-LUCI_Firmware=$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")
-if [[ -z "${CLOUD_Version}" ]]; then
+CLOUD_Version=$(echo "${CLOUD_Firmware}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
+LUCI_Firmware=$(echo ${CLOUD_Firmware} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")
+if [[ -z "${CLOUD_Firmware}" ]]; then
   echo "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致固件版本信息不一致!" > /tmp/cloud_version
   exit 1
 fi
