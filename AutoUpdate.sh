@@ -27,7 +27,7 @@ if [ ! "${Google_Check}" == 301 ]; then
   curl -# -L -O ${Github_API2}
 else
   DOWNLOAD=${Release_download}
-  curl -# -L -O ${Github_API1}
+  wget -q ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
