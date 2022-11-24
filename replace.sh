@@ -218,13 +218,17 @@ ${CLOUD_Firmware_41}
 ${CLOUD_Firmware_42}
 EOF
 sed -i '/^$/d' "${GUJIAN_liebiaoone}"
+local_firmw="${LUCI_EDITION}-${SOURCE}"
+kk=$(grep "${local_firmw}" "${GUJIAN_liebiaoone}")
+sed -i "/${kk}/d" "${GUJIAN_liebiaoone}"
+sed -i "1i${kk}" "${GUJIAN_liebiaoone}"
+sed -i s/[[:space:]]//g "${GUJIAN_liebiaoone}"
 cat "${GUJIAN_liebiaoone}" |awk '$0=NR" "$0' > ${GUJIAN_liebiaotwo}
 XYZDSZ="$(cat "${GUJIAN_liebiaotwo}" | awk 'END {print}' |awk '{print $(1)}')"
 }
 
 function firmware_upgrade() {
 cloud_firmw=$(echo "${CLOUD_Firmware}" |head -n 5|cut -d '-' -f 1-2)
-local_firmw="${LUCI_EDITION}-${SOURCE}"
 
 TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
 let X=$(grep -n "${CLOUD_Firmware}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
