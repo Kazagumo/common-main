@@ -24,7 +24,7 @@ fi
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
   DOWNLOAD=https://ghproxy.com/${Release_download}
-  curl -# -L -O ${Github_API2}
+  wget -q ${Github_API2} -O ${API_PATH}
 else
   DOWNLOAD=${Release_download}
   wget -q ${Github_API1} -O ${API_PATH}
