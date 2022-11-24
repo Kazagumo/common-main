@@ -362,11 +362,13 @@ function Bendi_xuanzhe() {
   read -p "${YUMINGIP}：" YMXZ
   if [[ "${YMXZ}" == "0" ]] || [[ "${YMXZ}" == "N" ]] || [[ "${YMXZ}" == "n" ]]; then
     CUrrenty="N"
+  elif [[ -z "${YMXZ}" ]]; then
+    CUrrenty="x"
   elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
     CUrrenty="Y"
     YMXZ=${YMXZ}
   else
-    CUrrenty=""
+    CUrrenty="x"
   fi
   case $CUrrenty in
   Y)
