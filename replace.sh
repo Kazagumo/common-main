@@ -328,16 +328,20 @@ function Bendi_xuanzhe() {
   clear
   echo
   echo
+  ECHOYY " 当前使用固件：${SOURCE} / ${LUCI_EDITION} / ${Kernel}"
+  ECHOYY " 当前固件格式：${BOOT_Type}${Firmware_SFX}"
+  ECHOYY " 当前设备型号：${DEFAULT_Device}"
+  echo
+  echo
+  ECHOR " 以下为可选升级固件："
+  ECHOG " ******************************************************************"  
   cat "/tmp/feedsdefault" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   echo
+  ECHOG " ******************************************************************" 
   echo
-  ECHOYY " 当前源码：${SOURCE} / ${LUCI_EDITION} / ${Kernel}"
-  ECHOYY " 固件格式：${BOOT_Type}${Firmware_SFX}"
-  ECHOYY " 设备型号：${DEFAULT_Device}"
+  ECHOB " 请输入您要升级固件名称前面对应的数值(1~X),输入[0或N]则为退出程序"
   echo
-  echo
-  echo -e "${Blue}  请输入您要升级的固件，选择前面对应的数值(1~N),输入[0或n]则为退出程序${Font}"
-  echo
+  ECHOG " 选择同一源码作者和LUCI版本的，可进行选择保留配置或者不保留配置升级，否则都不保留配置升级"
   export YUMINGIP="  请输入数字(1~N)"
   while :; do
   YMXZ=""
