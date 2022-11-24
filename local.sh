@@ -353,11 +353,14 @@ if [[ "${Menuconfig_Config}" == "true" ]]; then
 fi
 }
 
-
 function Make_Menuconfig() {
 if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   make defconfig
-  [[ ! -d "${GITHUB_WORKSPACE}/config" ]] && mkdir -p ${GITHUB_WORKSPACE}/config
+  if [[ ! -d "${GITHUB_WORKSPACE}/config" ]]; then
+    mkdir -p ${GITHUB_WORKSPACE}/config
+  else
+    rm -rf ${GITHUB_WORKSPACE}/config/*
+  fi
   source ${BUILD_PATH}/common.sh && Make_defconfig
   source ${GITHUB_ENV}
   difffonfig="${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}.config.txt"
