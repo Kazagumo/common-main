@@ -47,6 +47,7 @@ x86)
   BOOT_Type=sysupgrade
 esac
 
+LOCAL_Version=$(echo "${CURRENT_Version}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
 CLOUD_Firmware=$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')
 CLOUD_Version=$(echo "${CLOUD_Firmware}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
 LUCI_Firmware=$(echo ${CLOUD_Firmware} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")
