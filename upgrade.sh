@@ -86,7 +86,7 @@ function GET_TARGET_INFO() {
 	Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
 	Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/AutoUpdate"
 	Github_API2="${GITHUB_LINK}/releases/download/AutoUpdate/zzz_api"
-	API_PATH=/tmp/Downloads/zzz_api
+	API_PATH="/tmp/Downloads/zzz_api"
 	Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/AutoUpdate"
 	LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
 	CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
