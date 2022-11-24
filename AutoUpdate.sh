@@ -12,9 +12,9 @@ Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 PKG_List="${Download_Path}/Installed_PKG_List"
 
-curl --connect-timeout 6 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
+curl --connect-timeout 4 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
 if [[ "${gitcom}" == "1" ]]; then
-  curl --connect-timeout 6 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 fi
 if [[ "${wangluo}" == "1" ]]; then
   curl --connect-timeout 6 "google.com" > "/dev/null" 2>&1 || wangluo='2'
