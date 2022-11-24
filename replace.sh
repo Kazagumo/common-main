@@ -112,6 +112,8 @@ else
   sleep 2
 fi
 
+cd ../../
+
 case "${TARGET_BOARD}" in
 x86)
   [ -d '/sys/firmware/efi' ] && {
