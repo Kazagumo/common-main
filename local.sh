@@ -357,6 +357,16 @@ if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   [[ ! -d "${GITHUB_WORKSPACE}/config" ]] && mkdir -p ${GITHUB_WORKSPACE}/config
   difffonfig="${FOLDER_NAME}-${LUCI_EDITION}.config.txt"
   ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config/${difffonfig}
+  source ${BUILD_PATH}/common.sh && Make_defconfig
+  echo "
+  SUCCESS_FAILED="makeconfig"
+  FOLDER_NAME2="${FOLDER_NAME}"
+  REPO_BRANCH2="${REPO_BRANCH}"
+  LUCI_EDITION2="${LUCI_EDITION}"
+  TARGET_PROFILE2="${TARGET_PROFILE}"
+  " > ${HOME_PATH}/key-buildzu
+  sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
+  sudo chmod +x ${HOME_PATH}/key-buildzu
   ECHOGG "配置已经存入"
   exit 0
 fi
@@ -831,6 +841,10 @@ function menu2() {
   if [[ "${SUCCESS_FAILED}" == "success" ]]; then
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
+    echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+  if [[ "${SUCCESS_FAILED}" == "makeconfig" ]]; then  
+    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
+    echo -e " ${Blue}上回制作了${Font}：${Yellow}${TARGET_PROFILE2}${Font}${Blue}机型的.config配置文件${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
   else
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
