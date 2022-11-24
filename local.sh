@@ -415,7 +415,7 @@ function Bendi_DownloadDLFile() {
 ECHOGG "下载DL文件，请耐心等候..."
 cd ${HOME_PATH}
 make defconfig
-make -j8 download |tee ${HOME_PATH}/build.log
+make -j8 download |tee ${HOME_PATH}/build_logo/build.log
 if [[ `grep -c "make with -j1 V=s or V=sc" ${HOME_PATH}/build.log` -eq '0' ]] || [[ `grep -c "ERROR" ${HOME_PATH}/build.log` -eq '0' ]]; then
   print_ok "DL文件下载成功"
 else
@@ -466,18 +466,18 @@ if [[ "$(nproc)" -le "12" ]];then
   sleep 8
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     ECHOG "WSL临时路径编译中"
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |tee ${HOME_PATH}/build_logo/build.log
   else
-     make V=s -j$(nproc) |tee ${HOME_PATH}/build.log
+     make V=s -j$(nproc) |tee ${HOME_PATH}/build_logo/build.log
   fi
 else
   ECHOGG "您的CPU线程超过或等于16线程，强制使用16线程进行编译固件"
   sleep 8
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     ECHO "WSL临时路径编译中"
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |tee ${HOME_PATH}/build.log
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |tee ${HOME_PATH}/build_logo/build.log
   else
-     make V=s -16 |tee ${HOME_PATH}/build.log
+     make V=s -16 |tee ${HOME_PATH}/build_logo/build.log
   fi
 fi
 
@@ -489,7 +489,7 @@ sleep 3
 if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "${TARGET_BOARD}"` -eq '0' ]]; then
   SUCCESS_FAILED="fail"
   print_error "编译失败~~!"
-  ECHOY "在 openwrt/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
+  ECHOY "在 openwrt/build_logo/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
   echo "
   SUCCESS_FAILED="${SUCCESS_FAILED}"
   FOLDER_NAME2="${FOLDER_NAME}"
