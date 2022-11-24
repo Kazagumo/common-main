@@ -75,11 +75,8 @@ PKG_List="${Download_Path}/Installed_PKG_List"
 GUJIAN_liebiaoone="${Download_Path}/gujianliebiaoone"
 GUJIAN_liebiaotwo="${Download_Path}/gujianliebiaotwo"
 
-ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络类型]"
-curl --connect-timeout 4 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
-if [[ "${gitcom}" == "1" ]]; then
-  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
-fi
+ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络]"
+curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 if [[ "${wangluo}" == "1" ]]; then
   curl --connect-timeout 6 "google.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
@@ -88,19 +85,8 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   exit 1
 fi
 
-if [ "${gitcom}" == "1" ]; then
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络不能连通github.com,使用代理中..]"
-  sleep 2
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
-  echo
-  DOWNLOAD=https://ghproxy.com/${Release_download}
-  ${WGETGNU} ${Github_API2} -O ${API_PATH}
-else
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可以连通github.com]"
-  sleep 2
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
-  echo
-  DOWNLOAD=${Release_download}
+${WGETGNU} ${Github_API2} -O ${API_PATH}
+if [[ $? -ne 0 ]];then
   ${WGETGNU} ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
