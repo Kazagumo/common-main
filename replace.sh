@@ -250,13 +250,17 @@ fi
 
 
 cd "${Download_Path}"
+ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测网络类型]"
+curl --connect-timeout 10 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
+if [ "${gitcom}" == "1" ]; then
+  DOWNLOAD=https://ghproxy.com/${Release_download}
+else
+  DOWNLOAD=${Release_download}
+fi
+
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
 echo
-if [ "${gitcom}" == "1" ]; then
-  curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
-else
-  ${WGETGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
-fi
+${WGETGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
   curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
