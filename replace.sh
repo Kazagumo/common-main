@@ -88,6 +88,7 @@ fi
 if [ "${gitcom}" == "1" ]; then
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络不能连通github.com,使用代理中..]"
   sleep 2
+  echo
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=https://ghproxy.com/${Release_download}
   ${WGETGNU} ${Github_API2} -O ${API_PATH}
