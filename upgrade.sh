@@ -81,14 +81,15 @@ function GET_TARGET_INFO() {
 	else
 	  export AutoUpdate_Version="7.1"
 	fi
-	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
-	export Github_Release="${GITHUB_LINK}/releases/tag/AutoUpdate"
-	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
-	export Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/AutoUpdate"
-	export Github_API2="${GITHUB_LINK}/releases/download/AutoUpdate/zzz_api"
-	export Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/AutoUpdate"
-	export LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
-	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
+	In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
+	Github_Release="${GITHUB_LINK}/releases/tag/AutoUpdate"
+	Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
+	Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/AutoUpdate"
+	Github_API2="${GITHUB_LINK}/releases/download/AutoUpdate/zzz_api"
+	API_PATH=/tmp/Downloads/zzz_api
+	Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/AutoUpdate"
+	LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
+	CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 	if [[ ! ${bendi_script} == "1" ]]; then
 	  echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
 	  [[ -n "${Legacy_Firmware}" ]] && echo "Legacy_Firmware=${Legacy_Firmware}" >> ${GITHUB_ENV}
@@ -114,11 +115,10 @@ DEFAULT_Device=${TARGET_PROFILE}
 Firmware_SFX=${Firmware_SFX}
 TARGET_BOARD=${TARGET_BOARD}
 CURRENT_Version=${Openwrt_Version}
-LOCAL_FIRMW=${LOCAL_FIRMW}
 CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
 Download_Path=/tmp/Downloads
 Version=${AutoUpdate_Version}
-API_PATH=/tmp/Downloads/Github_Tags
+API_PATH=${API_PATH}
 Github_API1=${Github_API1}
 Github_API2=${Github_API2}
 Github_Release=${Github_Release}
