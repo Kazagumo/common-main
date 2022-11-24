@@ -92,7 +92,7 @@ if [ ! "${Google_Check}" == 301 ]; then
   sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=https://ghproxy.com/${Release_download}
-  ${WGETGNU} https://ghproxy.com/${Github_API2} -O ${API_PATH}
+  ${WGETGNU} ${Github_API2} -O ${API_PATH}
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可连通世界]"
   sleep 2
@@ -229,8 +229,6 @@ else
 fi
 
 if [[ "${local_firmw}" == "${cloud_firmw}" ]]; then
-  clear
-  echo
   echo
   ECHOYY "您选择的固件为您现在所用的固件为同一个作者同一个LUCI版本,"
   echo
