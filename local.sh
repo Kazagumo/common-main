@@ -355,9 +355,10 @@ fi
 if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   make defconfig
   [[ ! -d "${GITHUB_WORKSPACE}/config" ]] && mkdir -p ${GITHUB_WORKSPACE}/config
+  source ${BUILD_PATH}/common.sh && Make_defconfig
+  source ${GITHUB_ENV}
   difffonfig="${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}.config.txt"
   ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config/${difffonfig}
-  source ${BUILD_PATH}/common.sh && Make_defconfig
   echo "
   SUCCESS_FAILED="makeconfig"
   FOLDER_NAME2="${FOLDER_NAME}"
