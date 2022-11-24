@@ -73,9 +73,9 @@ opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 PKG_List="${Download_Path}/Installed_PKG_List"
 
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络类型]"
-curl --connect-timeout 6 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
+curl --connect-timeout 4 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
 if [[ "${gitcom}" == "1" ]]; then
-  curl --connect-timeout 6 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 fi
 if [[ "${wangluo}" == "1" ]]; then
   curl --connect-timeout 6 "google.com" > "/dev/null" 2>&1 || wangluo='2'
