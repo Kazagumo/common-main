@@ -75,7 +75,8 @@ PKG_List="${Download_Path}/Installed_PKG_List"
 GUJIAN_liebiaoone="${Download_Path}/gujianliebiaoone"
 GUJIAN_liebiaotwo="${Download_Path}/gujianliebiaotwo"
 
-ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络]"
+ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您网络是否联网]"
+sleep 2
 curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 if [[ "${wangluo}" == "1" ]]; then
   curl --connect-timeout 6 "google.com" > "/dev/null" 2>&1 || wangluo='2'
@@ -83,6 +84,9 @@ fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您可能没进行联网,请检查网络?"
   exit 1
+else
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 网络联网正常]"
+  sleep 2
 fi
 
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测网络类型]"
@@ -90,13 +94,17 @@ Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail 
 if [ ! "${Google_Check}" == 301 ]; then
   DOWNLOAD=https://ghproxy.com/${Release_download}
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络需要使用代理下载固件,网速或许有影响]"
+  sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
+  sleep 2
   echo
   ${WGETGNU} ${Github_API2} -O ${API_PATH}
 else
   DOWNLOAD=${Release_download}
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
+  sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
+  sleep 2
   echo
   ${WGETGNU} ${Github_API1} -O ${API_PATH}
 fi
