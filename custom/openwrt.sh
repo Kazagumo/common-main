@@ -206,7 +206,7 @@ menu() {
   read -p " ${XUANZHEOP}： " CHOOSE
   case $CHOOSE in
     1)
-      source /etc/replace
+      bash /etc/replace -u
     break
     ;;
     2)
