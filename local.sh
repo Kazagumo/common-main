@@ -355,7 +355,7 @@ fi
 if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   make defconfig
   [[ ! -d "${GITHUB_WORKSPACE}/config" ]] && mkdir -p ${GITHUB_WORKSPACE}/config
-  difffonfig="${FOLDER_NAME}-${LUCI_EDITION}.config.txt"
+  difffonfig="${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}.config.txt"
   ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config/${difffonfig}
   source ${BUILD_PATH}/common.sh && Make_defconfig
   echo "
@@ -367,7 +367,7 @@ if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
   sudo chmod +x ${HOME_PATH}/key-buildzu
-  ECHOGG "配置已经存入"
+  ECHOG "配置已经存入${GITHUB_WORKSPACE}/config文件夹中"
   exit 0
 fi
 }
