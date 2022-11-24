@@ -346,6 +346,14 @@ if [[ "${Menuconfig_Config}" == "true" ]]; then
     done
   fi
 fi
+
+if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
+  make defconfig
+  difffonfig="${FOLDER_NAME2}-${LUCI_EDITION2}.config.txt"
+  ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config/${difffonfig}
+  ECHOGG "配置已经存入"
+  exit 0
+fi
 }
 
 function Bendi_Configuration() {
