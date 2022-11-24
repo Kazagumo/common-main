@@ -109,8 +109,8 @@ else
   echo
   ${WGETGNU} ${Github_API1} -O ${API_PATH}
 fi
-if [[ $? -ne 0 ]];then
-  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!]"
+if [[ -f "/tmp/Downloads/zzz_api" ]] && [[ ! -s "/tmp/Downloads/zzz_api" ]]; then
+  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取数据失败,Github地址不正确,或此地址没云端存在,或您的仓库为私库,或网络抽风了再试试看!]"
   exit 1
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 云端API下载完成,开始获取固件信息]"
