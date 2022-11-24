@@ -107,7 +107,7 @@ fi
 
 function Bendi_WslPath() {
 if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
-  if [[ ! "${WSL_ROUTEPATH}" == 'true' ]]; then
+  if [[ ! "${WSL_ROUTEPATH}" == 'true' ]] && [[ ! "${MAKE_CONFIGURATION}" == "true" ]]; then
     clear
     echo
     echo
@@ -742,10 +742,10 @@ function Bendi_xuanzhe() {
 }
 
 function Bendi_menu2() {
-Bendi_WslPath
 BENDI_Diskcapacity
 Bendi_Dependent
 Bendi_Version
+Bendi_WslPath
 Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
@@ -766,10 +766,10 @@ Bendi_shouweigongzhong
 }
 
 function Bendi_menu() {
-Bendi_WslPath
 BENDI_Diskcapacity
 Bendi_Dependent
 Bendi_Version
+Bendi_WslPath
 Bendi_DiySetup
 Bendi_EveryInquiry
 Bendi_Variable
