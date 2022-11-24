@@ -58,6 +58,8 @@ function print_gg() {
 }
 
 function information_acquisition() {
+source /etc/openwrt_update
+
 A="$(wget -V |grep 'GNU Wget' |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")"
 B="1.16.1"
 if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1>num2)?"0":"1"}'` -eq '0' ]]; then
@@ -66,11 +68,12 @@ else
   WGETGNU="wget -q"
 fi
 
-source /etc/openwrt_update
 Kernel=$(grep 'Version' /usr/lib/opkg/info/kernel.control |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 PKG_List="${Download_Path}/Installed_PKG_List"
+GUJIAN_liebiaoone="${Download_Path}/gujianliebiaoone"
+GUJIAN_liebiaotwo="${Download_Path}/gujianliebiaotwo"
 
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络类型]"
 curl --connect-timeout 4 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
@@ -85,13 +88,14 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   exit 1
 fi
 
+cd "${Download_Path}"
 if [ "${gitcom}" == "1" ]; then
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络不能连通github.com,使用代理中..]"
   sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   echo
   DOWNLOAD=https://ghproxy.com/${Release_download}
-  ${WGETGNU} ${Github_API2} -O ${API_PATH}
+  curl -# -L -O  ${Github_API2}
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可以连通github.com]"
   sleep 2
@@ -164,7 +168,7 @@ CLOUD_Firmware_40="$(egrep -o "pr-rm-ax6000-Xwrt-${DEFAULT_Device}-[0-9]+-${BOOT
 CLOUD_Firmware_41="$(egrep -o "switch_ports_status-Xwrt-${DEFAULT_Device}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 CLOUD_Firmware_42="$(egrep -o "switch-Xwrt-${DEFAULT_Device}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 
-cat >/tmp/feedsdefault <<-EOF
+cat > "${GUJIAN_liebiaoone}" <<-EOF
 ${CLOUD_Firmware_1}
 ${CLOUD_Firmware_2}
 ${CLOUD_Firmware_3}
@@ -208,9 +212,9 @@ ${CLOUD_Firmware_40}
 ${CLOUD_Firmware_41}
 ${CLOUD_Firmware_42}
 EOF
-sed -i '/^$/d' /tmp/feedsdefault
-cat "/tmp/feedsdefault" |awk '$0=NR" "$0' > /tmp/GITHUB_ENN
-XYZDSZ="$(cat /tmp/GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
+sed -i '/^$/d' "${GUJIAN_liebiaoone}"
+cat "${GUJIAN_liebiaoone}" |awk '$0=NR" "$0' > ${GUJIAN_liebiaotwo}
+XYZDSZ="$(cat "${GUJIAN_liebiaotwo}" | awk 'END {print}' |awk '{print $(1)}')"
 }
 
 function firmware_upgrade() {
@@ -263,7 +267,11 @@ fi
 cd "${Download_Path}"
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
 echo
-${WGETGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
+if [ "${gitcom}" == "1" ]; then
+  curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
+else
+  ${WGETGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
+fi
 if [[ $? -ne 0 ]];then
   curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
@@ -336,7 +344,7 @@ function Bendi_xuanzhe() {
   echo
   ECHOR " 以下为可选升级固件："
   ECHOG " ******************************************************************"  
-  cat "/tmp/feedsdefault" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
+  cat "${GUJIAN_liebiaoone}" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   echo
   ECHOG " ******************************************************************" 
   echo
