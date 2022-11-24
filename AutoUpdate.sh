@@ -30,7 +30,6 @@ if [[ $? -ne 0 ]];then
   exit 1
 else
   echo "云端API下载完成,开始获取固件信息" > /tmp/cloud_version
-  sleep 2
 fi
 
 case "${TARGET_BOARD}" in
