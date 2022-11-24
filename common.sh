@@ -450,7 +450,7 @@ if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default
   if [[ `grep -c 'dnsmasq-full' "include/target.mk"` -ge '1' ]]; then
     sed -i 's/dnsmasq-full//g' "include/target.mk"
   fi
-  sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
+  sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash?g' "include/target.mk"
 fi
 
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
@@ -490,7 +490,7 @@ if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default
   if [[ `grep -c 'dnsmasq-full' "include/target.mk"` -ge '1' ]]; then
     sed -i 's/dnsmasq-full//g' "include/target.mk"
   fi
-  sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg?g' "include/target.mk"
+  sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash?g' "include/target.mk"
 fi
 
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
