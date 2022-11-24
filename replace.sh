@@ -354,7 +354,7 @@ function Bendi_xuanzhe() {
   fi
   case $CUrrenty in
   Y)
-    CLOUD_Firmware=$(cat /tmp/feedsdefault |awk ''NR==${YMXZ}'')
+    CLOUD_Firmware=$(cat ${GUJIAN_liebiaoone} |awk ''NR==${YMXZ}'')
     echo
     ECHOG " 您选择了[${CLOUD_Firmware}]固件"
     sleep 2
