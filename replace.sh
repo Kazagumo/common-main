@@ -72,21 +72,19 @@ Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 PKG_List="${Download_Path}/Installed_PKG_List"
 
-curl --connect-timeout 5 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络类型]"
+curl --connect-timeout 6 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
+if [[ "${gitcom}" == "1" ]]; then
+  curl --connect-timeout 6 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+fi
 if [[ "${wangluo}" == "1" ]]; then
-  curl --connect-timeout 5 "google.com" > "/dev/null" 2>&1 || wangluo='2'
+  curl --connect-timeout 6 "google.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您可能没进行联网,请检查网络?"
   exit 1
-else
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 网络连接正常]"
-  sleep 2
 fi
 
-ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络类型]"
-sleep 1
-curl --connect-timeout 10 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
 if [ "${gitcom}" == "1" ]; then
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络不能连通github.com,使用代理中..]"
   sleep 2
