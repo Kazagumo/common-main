@@ -105,6 +105,25 @@ else
   echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件成功!]" >> /tmp/AutoUpdate.log
 fi
 
+
+cd "${Download_Path}"
+Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
+if [ ! "${Google_Check}" == 301 ]; then
+  DOWNLOAD=https://ghproxy.com/${Release_download}
+else
+  DOWNLOAD=${Release_download}
+fi
+wget -q "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
+if [[ $? -ne 0 ]];then
+  curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
+fi
+if [[ $? -ne 0 ]];then
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件失败,请检查网络再尝试或手动安装固件]" >> /tmp/AutoUpdate.log
+  exit 1
+else
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件成功!]" >> /tmp/AutoUpdate.log
+fi
+
 export LOCAL_MD5=$(md5sum ${CLOUD_Firmware} | cut -c1-3)
 export LOCAL_256=$(sha256sum ${CLOUD_Firmware} | cut -c1-3)
 export MD5_256=$(echo ${CLOUD_Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
