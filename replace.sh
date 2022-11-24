@@ -105,7 +105,6 @@ else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
   sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
-  sleep 2
   echo
   ${WGETGNU} ${Github_API1} -O ${API_PATH}
 fi
