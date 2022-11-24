@@ -704,7 +704,7 @@ function Bendi_xuanzhe() {
   XYZDSZ="$(cat GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
   echo
   echo
-  echo -e "${Blue}  请输入您要编译的源码，选择前面对应的数值(1~N),输入[0]则为退出程序${Font}"
+  echo -e "${Blue}  请输入您要编译源码前面对应的数值(1~X),输入[0或N]则为退出程序${Font}"
   echo
   echo -e "${Green}  跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
@@ -718,8 +718,10 @@ function Bendi_xuanzhe() {
   while :; do
   YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
-  if [[ "${YMXZ}" == "0" ]]; then
+  if [[ "${YMXZ}" == "0" ]] || [[ "${YMXZ}" == "N" ]] || [[ "${YMXZ}" == "n" ]]; then
     CUrrenty="N"
+  elif [[ -z "${YMXZ}" ]]; then
+    CUrrenty="x"
   elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
     CUrrenty="Y"
   else
