@@ -17,6 +17,7 @@ RedBG="\033[41;37m"
 OK="${Green}[OK]${Font}"
 GX=" ${Red}[恭喜]${Font}"
 ERROR="${Red}[ERROR]${Font}"
+Input_Option=$1
 
 function ECHOY() {
   echo
@@ -415,5 +416,13 @@ function menu() {
   done
 }
 
-
-menu
+if [[ -z "${Input_Option}" ]]; then
+  menu
+else
+  case ${Input_Option} in
+  -u)
+    information_acquisition
+    Bendi_xuanzhe
+  ;;
+  esac
+fi
