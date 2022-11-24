@@ -21,9 +21,9 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   exit 1
 fi
 
-${WGETGNU} ${Github_API2} -O ${API_PATH}
+wget -q ${Github_API2} -O ${API_PATH}
 if [[ $? -ne 0 ]];then
-  ${WGETGNU} ${Github_API1} -O ${API_PATH}
+  wget -q ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
