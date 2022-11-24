@@ -351,7 +351,10 @@ if [[ "${Menuconfig_Config}" == "true" ]]; then
     done
   fi
 fi
+}
 
+
+function Make_Menuconfig() {
 if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   make defconfig
   [[ ! -d "${GITHUB_WORKSPACE}/config" ]] && mkdir -p ${GITHUB_WORKSPACE}/config
@@ -757,6 +760,7 @@ Bendi_MainProgram
 Bendi_Restore
 Bendi_UpdateSource
 Bendi_Menuconfig
+Make_Menuconfig
 Bendi_Configuration
 Bendi_ErrorMessage
 Bendi_DownloadDLFile
@@ -779,6 +783,7 @@ Bendi_Download
 Bendi_SourceClean
 Bendi_UpdateSource
 Bendi_Menuconfig
+Make_Menuconfig
 Bendi_Configuration
 Bendi_ErrorMessage
 Bendi_DownloadDLFile
