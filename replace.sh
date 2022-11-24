@@ -223,23 +223,31 @@ let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间不足，不能下载]"
   exit 1
+else
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],下载固件空间充足]"
+  sleep 2
 fi
 
 if [[ "${local_firmw}" == "${cloud_firmw}" ]]; then
   clear
   echo
   echo
-  ECHOG "您选择的固件为您现在所用的同一个作者同一个LUCI版本,可以选择保留配置或不保留配置升级"
+  ECHOYY "您选择的固件为您现在所用的固件为同一个作者同一个LUCI版本,"
+  echo
+  ECHOYY "可以选择保留配置或不保留配置升级"
+  echo
   while :; do
-  read -t 30 -p " [输入[Y/y]为保留配置，输入[N/n]为不保留配置](不作处理,30秒后默认保留配置升级)： " Bendi_Wsl
+  read -p " [输入[Y/y]为保留配置，输入[N/n]为不保留配置]： " Bendi_Wsl
   case ${Bendi_Wsl} in
   [Yy])
     Upgrade_Options='sysupgrade -f /mnt/upback.tar.gz'
     upgrade_tions="1"
+    tongzhi="保留配置"
   break
   ;;
   [Nn])
     Upgrade_Options='sysupgrade -F -n'
+    tongzhi="不保留配置"
   break
   ;;
   *)
@@ -250,6 +258,7 @@ if [[ "${local_firmw}" == "${cloud_firmw}" ]]; then
   done
 else
    Upgrade_Options='sysupgrade -F -n'
+   tongzhi="不保留配置"
 fi
 
 
@@ -288,7 +297,7 @@ else
 fi
 
 cd "${Download_Path}"
-ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在执行更新,更新期间请不要断开电源或重启设备 ...]"
+ECHOB "[倒计10秒后,执行[${tongzhi}]更新,更新期间请不要断开电源或重启设备 ...]"
 seconds=10
 while [ $seconds -gt 0 ];do
   echo -n $seconds
@@ -308,14 +317,11 @@ if [[ "${upgrade_tions}" == "1" ]]; then
   echo "*/5 * * * * sh /etc/networkdetection > /dev/null 2>&1" >> /etc/crontabs/root
   rm -rf /mnt/*upback.tar.gz && sysupgrade -b /mnt/upback.tar.gz
   if [[ `ls -1 /mnt | grep -c "upback.tar.gz"` -eq '1' ]]; then
-    echo "保留配置1"
     ${Upgrade_Options} ${CLOUD_Firmware}
   else
-    echo "保留配置2"
     ${Upgrade_Options} ${CLOUD_Firmware}
   fi
 else
-  echo "不保留配置"
   ${Upgrade_Options} ${CLOUD_Firmware}
 fi
 }
