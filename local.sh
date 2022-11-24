@@ -725,7 +725,7 @@ function Bendi_xuanzhe() {
   elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
     CUrrenty="Y"
   else
-    CUrrenty=""
+    CUrrenty="x"
   fi
   case $CUrrenty in
   Y)
