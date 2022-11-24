@@ -82,7 +82,7 @@ IMMORTALWRT)
     export DIY_WORK="${FOLDER_NAME}1806"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
     export PACKAGE_BRANCH="openwrt-18.06"
-    export LUCI_EDITION="18.06-K54"
+    export LUCI_EDITION="18.06.K5.4"
     export DIY_WORK="${FOLDER_NAME}K54"
   fi
 ;;
