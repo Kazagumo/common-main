@@ -86,15 +86,15 @@ fi
 
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您的网络类型]"
 sleep 1
-Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
-if [ ! "${Google_Check}" == 301 ]; then
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络为国内网络]"
+curl --connect-timeout 10 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
+if [ "${gitcom}" == "1" ]; then
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络不能连通github.com,使用代理中..]"
   sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=https://ghproxy.com/${Release_download}
   ${WGETGNU} ${Github_API2} -O ${API_PATH}
 else
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可连通世界]"
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可以连通github.com]"
   sleep 2
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在检测和下载云端API]"
   DOWNLOAD=${Release_download}
