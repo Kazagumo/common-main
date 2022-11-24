@@ -12,28 +12,25 @@ Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 PKG_List="${Download_Path}/Installed_PKG_List"
 
-curl --connect-timeout 4 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
-if [[ "${gitcom}" == "1" ]]; then
-  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
-fi
+curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 if [[ "${wangluo}" == "1" ]]; then
   curl --connect-timeout 6 "google.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
-  echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?" > /tmp/cloud_version
+  echo "您可能没进行联网,请检查网络?" > /tmp/cloud_version
   exit 1
 fi
 
-if [ "${gitcom}" == "1" ]; then
-  DOWNLOAD=https://ghproxy.com/${Release_download}
-  wget -q ${Github_API2} -O ${API_PATH}
-else
-  DOWNLOAD=${Release_download}
-  wget -q ${Github_API1} -O ${API_PATH}
+${WGETGNU} ${Github_API2} -O ${API_PATH}
+if [[ $? -ne 0 ]];then
+  ${WGETGNU} ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
   exit 1
+else
+  echo "云端API下载完成,开始获取固件信息" > /tmp/cloud_version
+  sleep 2
 fi
 
 case "${TARGET_BOARD}" in
@@ -90,6 +87,12 @@ else
 fi
 
 cd "${Download_Path}"
+curl --connect-timeout 10 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
+if [ "${gitcom}" == "1" ]; then
+  DOWNLOAD=https://ghproxy.com/${Release_download}
+else
+  DOWNLOAD=${Release_download}
+fi
 echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]" >> /tmp/AutoUpdate.log
 wget -q "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
