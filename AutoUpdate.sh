@@ -136,7 +136,7 @@ ${Upgrade_Options} ${CLOUD_Firmware}
 
 
 if [[ -z "${Input_Option}" ]]; then
-api_data
+  information_acquisition
 else
   case ${Input_Option} in
   -u)
