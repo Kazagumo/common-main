@@ -12,22 +12,24 @@ Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 PKG_List="${Download_Path}/Installed_PKG_List"
 
-curl --connect-timeout 5 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+curl --connect-timeout 6 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
+if [[ "${gitcom}" == "1" ]]; then
+  curl --connect-timeout 6 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+fi
 if [[ "${wangluo}" == "1" ]]; then
-  curl --connect-timeout 5 "google.com" > "/dev/null" 2>&1 || wangluo='2'
+  curl --connect-timeout 6 "google.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?" > /tmp/cloud_version
   exit 1
 fi
 
-curl --connect-timeout 10 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
 if [ "${gitcom}" == "1" ]; then
   DOWNLOAD=https://ghproxy.com/${Release_download}
-  ${WGETGNU} ${Github_API2} -O ${API_PATH}
+  wget -q ${Github_API2} -O ${API_PATH}
 else
   DOWNLOAD=${Release_download}
-  ${WGETGNU} ${Github_API1} -O ${API_PATH}
+  wget -q ${Github_API1} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
