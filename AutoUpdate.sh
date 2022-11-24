@@ -24,10 +24,10 @@ fi
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
   DOWNLOAD=https://ghproxy.com/${Release_download}
-  wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH}
+  curl -# -L -O ${Github_API2}
 else
   DOWNLOAD=${Release_download}
-  wget -q ${Github_API1} -O ${API_PATH}
+  curl -# -L -O ${Github_API1}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
