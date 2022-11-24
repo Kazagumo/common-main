@@ -247,6 +247,7 @@ fi
 
 if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   Menuconfig_Config="true"
+  ECHOG "请耐心等待程序运行至窗口弹出进行机型和插件配置!"
 else
   ECHOGG "是否需要选择机型和增删插件?"
   read -t 30 -p " [输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
