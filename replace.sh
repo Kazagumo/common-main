@@ -85,6 +85,7 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   exit 1
 fi
 
+ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
 ${WGETGNU} ${Github_API2} -O ${API_PATH}
 if [[ $? -ne 0 ]];then
   ${WGETGNU} ${Github_API1} -O ${API_PATH}
@@ -251,11 +252,13 @@ fi
 
 cd "${Download_Path}"
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测网络类型]"
-curl --connect-timeout 10 "https://github.com" > "/dev/null" 2>&1 || gitcom='1'
-if [ "${gitcom}" == "1" ]; then
+Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
+if [ ! "${Google_Check}" == 301 ]; then
   DOWNLOAD=https://ghproxy.com/${Release_download}
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络需要使用代理下载固件,网速或许有影响]"
 else
   DOWNLOAD=${Release_download}
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
 fi
 
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
