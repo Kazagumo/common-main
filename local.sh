@@ -245,18 +245,22 @@ if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   done
 fi
 
-ECHOGG "是否需要选择机型和增删插件?"
-read -t 30 -p " [输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
-case ${Bendi_Diy} in
-[Yy])
+if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   Menuconfig_Config="true"
-  ECHOY "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
-;;
-*)
-  Menuconfig_Config="false"
-  ECHOR "您已关闭选择机型和增删插件设置！"
-;;
-esac
+else
+  ECHOGG "是否需要选择机型和增删插件?"
+  read -t 30 -p " [输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
+  case ${Bendi_Diy} in
+  [Yy])
+    Menuconfig_Config="true"
+    ECHOY "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
+  ;;
+  *)
+    Menuconfig_Config="false"
+    ECHOR "您已关闭选择机型和增删插件设置！"
+  ;;
+  esac
+fi
 }
 
 function Bendi_Variable() {
@@ -349,7 +353,8 @@ fi
 
 if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   make defconfig
-  difffonfig="${FOLDER_NAME2}-${LUCI_EDITION2}.config.txt"
+  [[ ! -d "${GITHUB_WORKSPACE}/config" ]] && mkdir -p ${GITHUB_WORKSPACE}/config
+  difffonfig="${FOLDER_NAME}-${LUCI_EDITION}.config.txt"
   ./scripts/diffconfig.sh > ${GITHUB_WORKSPACE}/config/${difffonfig}
   ECHOGG "配置已经存入"
   exit 0
