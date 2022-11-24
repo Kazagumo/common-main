@@ -66,7 +66,6 @@ KERNEL_type=${Kernel} - ${LUCI_EDITION}
 CURRENT_Device=${CURRENT_Device}
 EOF
 echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 信息检测完毕]" > /tmp/AutoUpdate.log
-exit 0
 }
 
 function firmware_upgrade() {
