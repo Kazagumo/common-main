@@ -355,7 +355,8 @@ function Bendi_xuanzhe() {
   echo
   ECHOB " 请输入您要升级固件名称前面对应的数值(1~X),输入[0或N]则为退出程序"
   echo
-  ECHOG " 选择同一源码作者和LUCI版本的，可进行选择保留配置或者不保留配置升级，否则都不保留配置升级"
+  ECHOG " 有多选时,第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
+  ECHOG " 其他的固件因为作者或者LUCI不同型号，都不保留配置升级"
   export YUMINGIP="  请输入数字(1~N)"
   while :; do
   YMXZ=""
