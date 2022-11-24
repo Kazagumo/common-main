@@ -843,18 +843,21 @@ function menu2() {
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}成功编译过的机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    aaaa="保留缓存,再次编译"
   elif [[ "${SUCCESS_FAILED}" == "makeconfig" ]]; then  
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}上回制作了${Font}${Yellow}${TARGET_PROFILE2}机型的.config${Font}${Blue}配置文件${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    aaaa="继续制作.config配置文件"
   else
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Red}大兄弟啊,上回编译${Yellow}[${TARGET_PROFILE2}]${Font}${Red}于失败告终了${Font}"
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    aaaa="保留缓存,再次编译"
   fi
   echo
   echo
-  echo -e " 1${Red}.${Font}${Green}保留缓存,再次编译${Font}"
+  echo -e " 1${Red}.${Font}${Green}${aaaa}${Font}"
   echo
   echo -e " 2${Red}.${Font}${Green}重新选择源码编译${Font}"
   echo
