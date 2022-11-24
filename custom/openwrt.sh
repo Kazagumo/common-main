@@ -206,6 +206,9 @@ menu() {
   read -p " ${XUANZHEOP}： " CHOOSE
   case $CHOOSE in
     1)
+      clear
+      echo
+      ECHOY " 开始执行资料读取"
       bash /etc/replace -u
     break
     ;;
