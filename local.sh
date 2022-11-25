@@ -418,6 +418,17 @@ cd ${HOME_PATH}
 make defconfig
 [[ -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
 make -j8 download |tee ${HOME_PATH}/build_logo/build.log
+
+echo "
+SUCCESS_FAILED="xzdl"
+FOLDER_NAME2="${FOLDER_NAME}"
+REPO_BRANCH2="${REPO_BRANCH}"
+LUCI_EDITION2="${LUCI_EDITION}"
+TARGET_PROFILE2="${TARGET_PROFILE}"
+" > ${HOME_PATH}/key-buildzu
+sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
+sudo chmod +x ${HOME_PATH}/key-buildzu
+
 if [[ `grep -c "make with -j1 V=s or V=sc" ${HOME_PATH}/build_logo/build.log` -eq '0' ]] || [[ `grep -c "ERROR" ${HOME_PATH}/build_logo/build.log` -eq '0' ]]; then
   print_ok "DL文件下载成功"
 else
@@ -489,11 +500,10 @@ fi
 
 sleep 3
 if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "${TARGET_BOARD}"` -eq '0' ]]; then
-  SUCCESS_FAILED="fail"
   print_error "编译失败~~!"
   ECHOY "在 openwrt/build_logo/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
   echo "
-  SUCCESS_FAILED="${SUCCESS_FAILED}"
+  SUCCESS_FAILED="fail"
   FOLDER_NAME2="${FOLDER_NAME}"
   REPO_BRANCH2="${REPO_BRANCH}"
   LUCI_EDITION2="${LUCI_EDITION}"
@@ -503,10 +513,9 @@ if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "${TARGET_BOARD}"` -eq '0' ]]; then
   sudo chmod +x ${HOME_PATH}/key-buildzu
   exit 1
 else
-  SUCCESS_FAILED="success"
   cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
   echo "
-  SUCCESS_FAILED="${SUCCESS_FAILED}"
+  SUCCESS_FAILED="success"
   FOLDER_NAME2="${FOLDER_NAME}"
   REPO_BRANCH2="${REPO_BRANCH}"
   LUCI_EDITION2="${LUCI_EDITION}"
@@ -863,6 +872,12 @@ function menu2() {
     echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="继续制作.config配置文件"
     bbbbb="制作.config配置文件"
+  elif [[ "${SUCCESS_FAILED}" == "xzdl" ]]; then
+    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
+    echo -e " ${Red}大兄弟啊,上回下载完DL就没搞成了,继续搞下去?${Font}"
+    echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    aaaa="接着上次继续再搞下去?"
+    bbbbb="编译"
   else
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Red}大兄弟啊,上回编译${Yellow}[${TARGET_PROFILE2}]${Font}${Red}于失败告终了${Font}"
