@@ -24,55 +24,48 @@ function Diy_Part1() {
 }
 
 function GET_TARGET_INFO() {
-	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="phicomm_k3"
-	elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="phicomm_k2p"
-	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3g_v2) ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="xiaomi_mir3g-v2"
-	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="xiaomi_mir3g"
-	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="xiaomi_mir3p"
+	if [[ "${TARGET_BOARD}" == "x86" ]]; then
+	  export TARGET_PROFILEX="generic"
+	elif [[ -z "${TARGET_PROFILE}" ]]; then
+	  export TARGET_PROFILEX="generic"
 	else
-		export TARGET_PROFILE="${TARGET_PROFILE}"
+	  export TARGET_PROFILEX="${TARGET_PROFILE}"
 	fi
+	
 	
 	case "${TARGET_BOARD}" in
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
 		export Firmware_SFX=".bin"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade${Firmware_SFX}"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs${Firmware_SFX}"
 	;;
-	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
+	x86)
 		export Firmware_SFX=".img.gz"
-		export Legacy_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined${Firmware_SFX}"
-		export UEFI_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined-efi${Firmware_SFX}"
+		export Legacy_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs-combined${Firmware_SFX}"
+		export UEFI_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs-combined-efi${Firmware_SFX}"
+	;;
+	rockchip | bcm27xx | mxs | sunxi | zynq)
+		export Firmware_SFX=".img.gz"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs-combined${Firmware_SFX}"
 	;;
 	mvebu)
 		case "${TARGET_SUBTARGET}" in
 		cortexa53 | cortexa72)
 			export Firmware_SFX=".img.gz"
-			export Legacy_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined${Firmware_SFX}"
-			export UEFI_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined-efi${Firmware_SFX}"
+			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs-combined${Firmware_SFX}"
 		;;
 		esac
 	;;
 	bcm53xx)
 		export Firmware_SFX=".trx"
-		export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs${Firmware_SFX}"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs${Firmware_SFX}"
 	;;
 	octeon | oxnas | pistachio)
 		export Firmware_SFX=".tar"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-generic-${TARGET_PROFILE}-squashfs${Firmware_SFX}"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-${TARGET_PROFILE}-squashfs${Firmware_SFX}"
 	;;
 	*)
 		export Firmware_SFX=".bin"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade${Firmware_SFX}"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs${Firmware_SFX}"
 	;;
 	esac
 	
