@@ -700,7 +700,7 @@ fi
 if [[ "${OpenClash_branch}" != "0" ]] && [[ ! "${OpenClash_branch}" == "${clash_branch}" ]]; then
   find . -name 'luci-app-openclash' | xargs -i rm -rf {}
   if [[ ! "${OpenClash_branch}" == "master" ]] && [[ ! "${OpenClash_branch}" == "dev" ]]; then
-    if [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
+    if [[ "${SOURCE_CODE}" =~ (OFFICIAL|Xwrt) ]]; then
       masterdev="dev"
     else
       masterdev="master"
