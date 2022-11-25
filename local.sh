@@ -415,8 +415,9 @@ function Bendi_DownloadDLFile() {
 ECHOGG "下载DL文件，请耐心等候..."
 cd ${HOME_PATH}
 make defconfig
+[[ -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
 make -j8 download |tee ${HOME_PATH}/build_logo/build.log
-if [[ `grep -c "make with -j1 V=s or V=sc" ${HOME_PATH}/build.log` -eq '0' ]] || [[ `grep -c "ERROR" ${HOME_PATH}/build.log` -eq '0' ]]; then
+if [[ `grep -c "make with -j1 V=s or V=sc" ${HOME_PATH}/build_logo/build.log` -eq '0' ]] || [[ `grep -c "ERROR" ${HOME_PATH}/build_logo/build.log` -eq '0' ]]; then
   print_ok "DL文件下载成功"
 else
   clear
