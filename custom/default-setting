@@ -36,5 +36,3 @@ fi
 
 sed -i 's?=== WARNING! =====================================?=================== WARNING! ====================?g' /etc/profile
 
-sed -i '/= "OpenWrt"/d' /usr/lib/lua/luci/version.lua
-
