@@ -18,10 +18,10 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]] && [[ "${wangluo}" == 
   rm -rf /etc/networkdetection
   reboot -f
 else
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒")-网络正常]" >> /tmp/networkdetection.log
   sed -i '/networkdetection/d' /etc/crontabs/root >/dev/null 2>&1
   /etc/init.d/cron restart
   rm -rf /etc/networkdetection
-  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒")-网络正常]" >> /tmp/networkdetection.log
 fi
 
 exit 0
