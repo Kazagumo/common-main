@@ -37,7 +37,7 @@ yarn --version
 }
 
 function install_dependencies(){
-svn co -r96154 "https://github.com/openwrt/openwrt/trunk/tools/padjffs2/src" "padjffs2"
+svn co -r96154 "https://github.com/openwrt/openwrt/trunk/tools/padjffs2/src" "padjffs2" > /dev/null 2>&1
 pushd "padjffs2"
 make
 rm -rf "/usr/bin/padjffs2"
@@ -46,7 +46,7 @@ popd
 
 sudo rm -rf padjffs2
 
-svn co -r19250 "https://github.com/openwrt/luci/trunk/modules/luci-base/src" "po2lmo"
+svn co -r19250 "https://github.com/openwrt/luci/trunk/modules/luci-base/src" "po2lmo" > /dev/null 2>&1
 pushd "po2lmo"
 make po2lmo
 rm -rf "/usr/bin/po2lmo"
@@ -61,6 +61,12 @@ popd
 
 ${INS} autoremove -y --purge
 ${INS} clean
+
+if [[ "${ubuntuyilai}" == "1" ]]; then
+	echo "开始您的表演....."
+else
+	echo "开始安装完成了哈....."
+fi
 }
 
 function main(){
