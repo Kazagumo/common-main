@@ -316,6 +316,11 @@ fi
 # 给固件LUCI做个标记
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+
+# 给源码增加passwall为默认自选
+if [[ `grep -c "luci-app-passwall luci-app-openclash" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall luci-app-openclash ?g' include/target.mk
+fi
 }
 
 
@@ -368,8 +373,8 @@ master)
 esac
 
 # 给源码增加passwall为默认自选
-if [[ `grep -c "luci-app-passwall" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall ?g' include/target.mk
+if [[ `grep -c "luci-app-passwall luci-app-openclash" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall luci-app-openclash ?g' include/target.mk
 fi
 }
 
@@ -425,8 +430,8 @@ openwrt-18.06-k5.4)
 esac
   
 # 给源码增加luci-app-ssr-plus为默认自选
-if [[ `grep -c "luci-app-ssr-plus" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-ssr-plus ?g' ${HOME_PATH}/include/target.mk
+if [[ `grep -c "luci-app-ssr-plus luci-app-openclash" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-ssr-plus luci-app-openclash ?g' ${HOME_PATH}/include/target.mk
 fi
 }
 
