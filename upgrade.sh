@@ -143,7 +143,7 @@ function Diy_Part3() {
 		fi
 	;;
 	*)
-		UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX})"
+		UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX} |grep -v rootfs)"
 		if [[ -n ${UP_ZHONGZHUAN} ]]; then
 		  MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
 		  cp ${UP_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}
