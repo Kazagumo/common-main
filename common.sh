@@ -410,7 +410,9 @@ master)
     sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings luci luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
   fi
   
+if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
   sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+fi
     
   export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
   [[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
@@ -451,10 +453,7 @@ echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${R
   
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
-  if [[ `grep -c 'dnsmasq-full' "include/target.mk"` -ge '1' ]]; then
-    sed -i 's/dnsmasq-full//g' "include/target.mk"
-  fi
+if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash?g' "include/target.mk"
 fi
 
@@ -491,10 +490,7 @@ echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${R
 
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
-  if [[ `grep -c 'dnsmasq-full' "include/target.mk"` -ge '1' ]]; then
-    sed -i 's/dnsmasq-full//g' "include/target.mk"
-  fi
+if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]] && [[ `grep -c 'default-settings' "include/target.mk"` -eq '0' ]]; then
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash?g' "include/target.mk"
 fi
 
