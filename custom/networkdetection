@@ -11,7 +11,7 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]] && [[ "${wangluo}" == 
   echo "[没检测到网络，重启系统于$(date "+%Y年%m月%d日%H时%M分%S秒")]" >> /mnt/network.log
   reboot -f
 else
-  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒")-网络正常]" >> /mnt/network.log
+  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒")-网络正常]" >> /tmp/networkdetection.log
 fi
 
 exit 0
