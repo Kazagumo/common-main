@@ -1216,7 +1216,10 @@ echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
 echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
 echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
+}
 
+
+function Diy_Publicarea2() {
 if [[ "${Delete_NotRequired}" == "1" ]]; then
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
 fi
@@ -1401,7 +1404,7 @@ sudo tar -czf ipk.tar.gz ipk && sync && sudo rm -rf ipk
 if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
 fi
-for X in $(cat ${CLEAR_PATH} |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed "s/.*${TARGET_BOARD}//g" | cut -d '-' -f3-5); do
+for X in $(cat ${CLEAR_PATH} |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed "s/.*${TARGET_BOARD}//g" | cut -d '-' -f3-); do
    rm -rf *"$X"*
 done
 
@@ -1569,6 +1572,7 @@ fi
 function Diy_menu5() {
 Diy_prevent
 Make_defconfig
+Diy_Publicarea2
 Diy_adguardhome
 Diy_upgrade2
 }
