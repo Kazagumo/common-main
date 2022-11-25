@@ -1184,7 +1184,7 @@ if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]];
   fi
 fi
 cd ${HOME_PATH}
-mkdir -p ${HOME_PATH}/build_logo
+[[ -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
 ./scripts/diffconfig.sh > ${HOME_PATH}/build_logo/config.txt
 }
 
