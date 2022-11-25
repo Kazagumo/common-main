@@ -263,7 +263,6 @@ function Diy_wenjian() {
 
 rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
-echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${DEFAULT_PATH}"
 sed -i 's/root:::0:99999:7:::/root::0:0:99999:7:::/g' ${HOME_PATH}/package/base-files/files/etc/shadow
 
 rm -rf "${FILES_PATH}/etc/init.d/Postapplication"
@@ -563,6 +562,7 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 
 function Diy_distrib() {
 if [[ ! "${SOURCE_CODE}" == "COOLSNOWWOLF" ]] || [[ ! "${SOURCE_CODE}" == "AMLOGIC" ]]; then
+echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${DEFAULT_PATH}"
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
 sed -i '/luciversion/d' "${ZZZ_PATH}"
