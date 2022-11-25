@@ -19,6 +19,10 @@ if [[ `grep -c "passwall" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
   sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 fi
 
+if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/crontabs/root` -eq '0' ]]; then
+  rm -rf /etc/networkdetection
+fi
+
 export luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
 if [[ -f /etc/index.htm ]] && [[ `grep -c "pcdata(ver.distversion)%><!--" "${luci_web}"` -eq '0' ]]; then
   sed -i 's/distversion)%>/distversion)%><!--/g' /etc/index.htm
