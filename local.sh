@@ -6,7 +6,7 @@
 #	Dscription: Compile openwrt firmware
 #	github: https://github.com/281677160/build-actions
 #====================================================
-cd ~
+
 # 字体颜色配置
 Green="\033[32m"
 Red="\033[31m"
