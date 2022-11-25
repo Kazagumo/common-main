@@ -448,9 +448,6 @@ find . -name 'default-settings' | xargs -i rm -rf {}
 # 给固件LUCI做个标记
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
   
 svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
@@ -501,9 +498,6 @@ if [[ `grep -c 'dnsmasq' "include/target.mk"` -ge '1' ]] && [[ `grep -c 'default
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash?g' "include/target.mk"
 fi
 
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
-
 export ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
 [[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 
@@ -517,6 +511,8 @@ elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
   rm -rf ${HOME_PATH}/feeds/packages/devel/packr && svn export https://github.com/281677160/common-main/trunk/OFFICIAL/1907/packr ${HOME_PATH}/feeds/packages/devel/packr
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang && svn export https://github.com/coolsnowwolf/packages/trunk/lang/golang ${HOME_PATH}/feeds/packages/lang/golang
 fi
 
@@ -704,12 +700,17 @@ fi
 if [[ "${OpenClash_branch}" != "0" ]] && [[ ! "${OpenClash_branch}" == "${clash_branch}" ]]; then
   find . -name 'luci-app-openclash' | xargs -i rm -rf {}
   if [[ ! "${OpenClash_branch}" == "master" ]] && [[ ! "${OpenClash_branch}" == "dev" ]]; then
-    git clone -b master --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
+    if [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
+      masterdev="dev"
+    else
+      masterdev="master"
+    fi
+    git clone -b "${masterdev}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
     if [[ $? -ne 0 ]]; then
       echo "luci-app-openclash下载失败"
     else
-      echo "master" > "${jiance_clash}"
-      echo "因没发现正确分支数据，正在使用master分支的openclash"
+      echo "${masterdev}" > "${jiance_clash}"
+      echo "因没发现正确分支数据，正在使用"${masterdev}"分支的openclash"
     fi
   else
     git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
