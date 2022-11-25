@@ -149,6 +149,7 @@ fi
 function Bendi_Dependent() {
 ECHOG "下载common.sh运行文件"
 cd ${GITHUB_WORKSPACE}
+sudo rm -rf common.sh
 wget -O common.sh https://raw.githubusercontent.com/281677160/common-main/main/common.sh
 if [[ $? -ne 0 ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/common.sh > common.sh
@@ -277,7 +278,7 @@ cd ${GITHUB_WORKSPACE}
 source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> ${GITHUB_ENV}
 source ${GITHUB_ENV}
-rm -rf build && cp -Rf DIY-SETUP build
+sudo rm -rf build && cp -Rf DIY-SETUP build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
 judge "扩展文件下载"
 ECHOGG "检测是否缺少文件"
@@ -291,7 +292,7 @@ sudo chmod -R +x build
 function Bendi_Download() {
 ECHOGG "下载${SOURCE_CODE}-${LUCI_EDITION}源码"
 cd ${GITHUB_WORKSPACE}
-rm -rf ${HOME_PATH}
+sudo rm -rf ${HOME_PATH}
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
 judge "源码下载"
 if [[ -d "${GITHUB_WORKSPACE}/build" ]]; then
