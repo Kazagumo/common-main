@@ -117,7 +117,7 @@ function Diy_Part3() {
 	GET_TARGET_INFO
 	BIN_PATH="$HOME_PATH/bin/Firmware"
 	echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
-	rm -rf ${BIN_PATH} && Mkdir ${BIN_PATH}
+	[[ ! -d "${BIN_PATH}" ]] && mkdir -p ${BIN_PATH} || rm -rf ${BIN_PATH}/*
 	
 	cd ${FIRMWARE_PATH}
 	if [[ `ls -1 |grep -c ".img"` -ge '1' ]] && [[ `ls -1 |grep -c ".img.gz"` == '0' ]]; then
@@ -150,15 +150,6 @@ function Diy_Part3() {
 		else
 		  echo "没找到固件"
 		fi
-
 	;;
 	esac
-}
-
-Mkdir() {
-	_DIR=${1}
-	if [ ! -d "${_DIR}" ];then
-		mkdir -p ${_DIR}
-	fi
-	unset _DIR
 }
