@@ -1402,7 +1402,7 @@ if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
 fi
 for X in $(cat ${CLEAR_PATH} |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed "s/.*${TARGET_BOARD}//g" | cut -d '-' -f3-5); do
-   rm -rf "${X}"
+   rm -rf *"$X"*
 done
 
 if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
