@@ -24,56 +24,7 @@ function Diy_Part1() {
 }
 
 function GET_TARGET_INFO() {
-	if [[ "${TARGET_BOARD}" == "x86" ]]; then
-	  export TARGET_PROFILEX="generic"
-	elif [[ -z "${TARGET_PROFILE}" ]]; then
-	  export TARGET_PROFILEX="generic"
-	else
-	  export TARGET_PROFILEX="${TARGET_PROFILE}"
-	fi
 	
-	
-	case "${TARGET_BOARD}" in
-	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
-		export Firmware_SFX=".bin"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs${Firmware_SFX}"
-	;;
-	x86)
-		export Firmware_SFX=".img.gz"
-		export Legacy_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs-combined${Firmware_SFX}"
-		export UEFI_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs-combined-efi${Firmware_SFX}"
-	;;
-	rockchip | bcm27xx | mxs | sunxi | zynq)
-		export Firmware_SFX=".img.gz"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs-combined${Firmware_SFX}"
-	;;
-	mvebu)
-		case "${TARGET_SUBTARGET}" in
-		cortexa53 | cortexa72)
-			export Firmware_SFX=".img.gz"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs-combined${Firmware_SFX}"
-		;;
-		esac
-	;;
-	bcm53xx)
-		export Firmware_SFX=".trx"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs${Firmware_SFX}"
-	;;
-	octeon | oxnas | pistachio)
-		export Firmware_SFX=".tar"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-${TARGET_PROFILE}-squashfs${Firmware_SFX}"
-	;;
-	*)
-		export Firmware_SFX=".bin"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILEX}-squashfs${Firmware_SFX}"
-	;;
-	esac
-	
-	if [[ -f "$FILES_PATH/usr/bin/AutoUpdate" ]]; then
-	  export AutoUpdate_Version=$(egrep -o "Version=V[0-9]\.[0-9]" $FILES_PATH/usr/bin/AutoUpdate |cut -d "=" -f2 | sed 's/^.//g')
-	else
-	  export AutoUpdate_Version="7.1"
-	fi
 	In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
 	Github_Release="${GITHUB_LINK}/releases/tag/AutoUpdate"
 	Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
@@ -83,15 +34,59 @@ function GET_TARGET_INFO() {
 	Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/AutoUpdate"
 	LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
 	CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
-	if [[ ! ${bendi_script} == "1" ]]; then
-	  echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
-	  [[ -n "${Legacy_Firmware}" ]] && echo "Legacy_Firmware=${Legacy_Firmware}" >> ${GITHUB_ENV}
-	  [[ -n "${UEFI_Firmware}" ]] && echo "UEFI_Firmware=${UEFI_Firmware}" >> ${GITHUB_ENV}
-	  [[ -n "${Up_Firmware}" ]] && echo "Up_Firmware=${Up_Firmware}" >> ${GITHUB_ENV}
-	  echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
-	  echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
-	  echo "Github_Release=${Github_Release}" >> ${GITHUB_ENV}
+	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
+	echo "Github_Release=${Github_Release}" >> ${GITHUB_ENV}
+	
+	
+	case "${TARGET_BOARD}" in
+	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
+		export Firmware_SFX=".bin"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+	;;
+	x86)
+		export Firmware_SFX=".img.gz"
+		export UEFI_Firmware="${LUCI_EDITION}-${Openwrt_Version}-uefi"
+		export Legacy_Firmware="${LUCI_EDITION}-${Openwrt_Version}-legacy"
+	;;
+	rockchip | bcm27xx | mxs | sunxi | zynq)
+		export Firmware_SFX=".img.gz"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+	;;
+	mvebu)
+		case "${TARGET_SUBTARGET}" in
+		cortexa53 | cortexa72)
+			export Firmware_SFX=".img.gz"
+			export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+		;;
+		esac
+	;;
+	bcm53xx)
+		export Firmware_SFX=".trx"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+	;;
+	octeon | oxnas | pistachio)
+		export Firmware_SFX=".tar"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+	;;
+	*)
+		export Firmware_SFX=".bin"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+	;;
+	esac
+	
+	
+	if [[ -f "$FILES_PATH/usr/bin/AutoUpdate" ]]; then
+	  export AutoUpdate_Version=$(egrep -o "Version=V[0-9]\.[0-9]" $FILES_PATH/usr/bin/AutoUpdate |cut -d "=" -f2 | sed 's/^.//g')
+	else
+	  export AutoUpdate_Version="7.1"
 	fi
+	
+	echo "Legac_Firmware=${Legacy_Firmware}${Firmware_SFX}" >> ${GITHUB_ENV}
+	echo "EFI_Firmware=${UEFI_Firmware}${Firmware_SFX}" >> ${GITHUB_ENV}
+	echo "Up_Firmware=${AutoBuild_Firmware}${Firmware_SFX}" >> ${GITHUB_ENV}
+	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
+	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
+
 }
 
 function Diy_Part2() {
@@ -120,134 +115,44 @@ EOF
 
 function Diy_Part3() {
 	GET_TARGET_INFO
-	export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}"
-	export Firmware_Path="$HOME_PATH/upgrade"
-	export Transfer_Path="$HOME_PATH/bin/transfer"
-	export Discard_Path="$HOME_PATH/bin/targets/discard"
-	rm -rf $HOME_PATH/bin/Firmware && Mkdir $HOME_PATH/bin/Firmware
-	rm -rf "${Transfer_Path}" && Mkdir "${Transfer_Path}"
-	rm -rf "${Discard_Path}" && Mkdir "${Discard_Path}"
-	cd "${Firmware_Path}"
-	if [[ `ls -1 ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls -1 ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
+	BIN_PATH="$HOME_PATH/bin/Firmware"
+	echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
+	rm -rf ${BIN_PATH} && Mkdir ${BIN_PATH}
+	
+	cd ${FIRMWARE_PATH}
+	if [[ `ls -1 |grep -c ".img"` -ge '1' ]] && [[ `ls -1 |grep -c ".img.gz"` == '0' ]]; then
 		gzip *.img
 	fi
 	
 	case "${TARGET_BOARD}" in
-	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
-		if [[ -n ${Rename} ]]; then
-			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
-			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
-		else
-			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
-			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
-		fi	
-	;;
-	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
-		if [[ `ls -1 "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
-			mv -f ${Firmware_Path}/*ext4* ${Discard_Path}
-		fi
-		if [[ `ls -1 "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
-			mv -f ${Firmware_Path}/*rootfs* ${Discard_Path}
-		fi
-		if [[ `ls -1 "${Firmware_Path}" | grep -c "${Firmware_SFX}"` -ge '1' ]]; then
-			mv -f ${Firmware_Path}/*${Firmware_SFX}* "${Transfer_Path}"
-			if [[ `ls -1 "${Transfer_Path}" | grep -c "efi"` -eq '1' ]]; then
-				mv -f "${Transfer_Path}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
-			fi
-			if [[ `ls -1 "${Transfer_Path}" | grep -c "squashfs"` -eq '1' ]]; then
-				mv -f "${Transfer_Path}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
-			fi
-		fi
-	;;
-	mvebu)
-		case "${TARGET_SUBTARGET}" in
-		cortexa53 | cortexa72)
-			if [[ `ls -1 "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
-				mv -f ${Firmware_Path}/*ext4* ${Discard_Path}
-			fi
-			if [[ `ls -1 "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
-				mv -f ${Firmware_Path}/*rootfs* ${Discard_Path}
-			fi
-			if [[ `ls -1 "${Firmware_Path}" | grep -c "${Firmware_SFX}"` -ge '1' ]]; then
-				mv -f ${Firmware_Path}/*${Firmware_SFX}* "${Transfer_Path}"
-				if [[ `ls -1 "${Transfer_Path}" | grep -c "efi"` -eq '1' ]]; then
-					mv -f "${Transfer_Path}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
-				fi
-				if [[ `ls -1 "${Transfer_Path}" | grep -c "squashfs"` -eq '1' ]]; then
-					mv -f "${Transfer_Path}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
-				fi
-			fi
-		;;
-		esac
-	;;
-	bcm53xx)
-		if [[ -n ${Rename} ]]; then
-			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
-			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls -1 ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
-		else
-			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
-			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls -1 ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
-		fi
-	;;
-	octeon | oxnas | pistachio)
-		if [[ -n ${Rename} ]]; then
-			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
-			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls -1 ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
-		else
-			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
-			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls -1 ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
-		fi
-	;;
-	*)
-		if [[ -n ${Rename} ]]; then
-			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
-			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
-		else
-			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
-			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
-		fi
-	;;
-	esac
-
-	cd "${Firmware_Path}"
-	case "${TARGET_BOARD}" in
 	x86)
-		[[ -f ${Legacy_Firmware} ]] && {
-			MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
-			SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
-			SHA5BIT="${MD5}${SHA256}"
-			cp ${Legacy_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-legacy-${SHA5BIT}${Firmware_SFX}
-		}
-		[[ -f ${UEFI_Firmware} ]] && {
-			MD5=$(md5sum ${UEFI_Firmware} | cut -c1-3)
-			SHA256=$(sha256sum ${UEFI_Firmware} | cut -c1-3)
-			SHA5BIT="${MD5}${SHA256}"
-			cp ${UEFI_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-uefi-${SHA5BIT}${Firmware_SFX}
-		}
+		EFI_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*efi.*img.gz)"
+		if [[ -n ${EFI_ZHONGZHUAN} ]]; then
+		  EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} | cut -c1-3)"
+		  cp ${EFI_ZHONGZHUAN} ${BIN_PATH}/${UEFI_Firmware}-${EFIMD5}${Firmware_SFX}
+		else
+		  echo "没找到uefi固件"
+		fi
+		
+		LEGA_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*img.gz |grep -v rootfs |grep -v efi)"
+		if [[ -n ${LEGA_ZHONGZHUAN} ]]; then
+		  LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} | cut -c1-3)"
+		  cp ${LEGA_ZHONGZHUAN} ${BIN_PATH}/${Legacy_Firmware}-${LEGAMD5}${Firmware_SFX}
+		else
+		  echo "没找到legacy固件"
+		fi
 	;;
 	*)
-		[[ -f ${Up_Firmware} ]] && {
-			MD5=$(md5sum ${Up_Firmware} | cut -c1-3)
-			SHA256=$(sha256sum ${Up_Firmware} | cut -c1-3)
-			SHA5BIT="${MD5}${SHA256}"
-			cp ${Up_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-sysupgrade-${SHA5BIT}${Firmware_SFX}
-		} || {
-			echo "Firmware is not detected !"
-		}
+		UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX})"
+		if [[ -n ${UP_ZHONGZHUAN} ]]; then
+		  MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
+		  cp ${UP_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}
+		else
+		  echo "没找到固件"
+		fi
+
 	;;
 	esac
-	cd $HOME_PATH
-	rm -rf "${Firmware_Path}"
-	rm -rf "${Transfer_Path}"
-	rm -rf "${Discard_Path}"
 }
 
 Mkdir() {
