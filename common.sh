@@ -561,26 +561,34 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 
 
 function Diy_distrib() {
-if [[ ! "${SOURCE_CODE}" == "COOLSNOWWOLF" ]] || [[ ! "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${DEFAULT_PATH}"
-sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
-sed -i '/luciversion/d' "${ZZZ_PATH}"
-sed -i '/luciname/d' "${ZZZ_PATH}"
-sed -i '/exit 0/d' "${ZZZ_PATH}"
+case "${SOURCE_CODE}" in
+COOLSNOWWOLF)
+  #No action required
+;;
+AMLOGIC)
+  #No action required
+;;
+*)
+  echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${DEFAULT_PATH}"
+  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+  sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
+  sed -i '/luciversion/d' "${ZZZ_PATH}"
+  sed -i '/luciname/d' "${ZZZ_PATH}"
+  sed -i '/exit 0/d' "${ZZZ_PATH}"
 
-cat >>"${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-exit 0
-EOF
-fi
+  echo "
+  sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+  echo "DISTRIB_REVISION=''${LUCI_EDITION}''" >> /etc/openwrt_release
+  sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+  echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+  sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+  echo "luciversion    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
+  sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+  echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+  exit 0
+  " >> "${ZZZ_PATH}"
+;;
+esac
 }
 
 
