@@ -10,8 +10,8 @@ function Diy_Part1() {
 		echo "正在执行：给源码增加定时更新固件插件和设置插件和ttyd成默认自选"
 		git clone -b ceshi https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
 		[[ ! -d "$FILES_PATH/usr/bin" ]] && mkdir -p $FILES_PATH/usr/bin
-		cp $BUILD_PATH/AutoUpdate.sh $FILES_PATH/usr/bin/AutoUpdate
-		cp $BUILD_PATH/replace.sh $FILES_PATH/etc/replace
+		cp ${HOME_PATH}/build/common/autoupdate/AutoUpdate.sh $FILES_PATH/usr/bin/AutoUpdate
+		cp ${HOME_PATH}/build/common/autoupdate/replace.sh $FILES_PATH/etc/replace
 		sudo chmod +x $FILES_PATH/etc/replace
 		sudo chmod +x $FILES_PATH/usr/bin/AutoUpdate
 		if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
