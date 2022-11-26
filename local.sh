@@ -688,6 +688,7 @@ else
     ECHOB "同步上游源码完成"
   fi
 fi
+source common.sh && Diy_distrib
 }
 
 function Bendi_xuanzhe() {
