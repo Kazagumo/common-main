@@ -65,13 +65,8 @@ ECHOY " 开始执行资料读取,读取完毕显示选择固件界面"
 
 source /etc/openwrt_update
 
-A="$(wget -V |grep 'GNU Wget' |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")"
-B="1.16.1"
-if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1>num2)?"0":"1"}'` -eq '0' ]]; then
-  WGETGNU="wget -q --show-progress"
-else
-  WGETGNU="wget -q"
-fi
+
+WGETGNU="wget -q --show-progress"
 
 Kernel=$(grep 'Version' /usr/lib/opkg/info/kernel.control |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
