@@ -227,6 +227,8 @@ kk=$(grep "${local_firmw}" "${GUJIAN_liebiaoone}")
 sed -i "/${kk}/d" "${GUJIAN_liebiaoone}"
 sed -i "1i${kk}" "${GUJIAN_liebiaoone}"
 sed -i s/[[:space:]]//g "${GUJIAN_liebiaoone}"
+LOCAL_Version=$(echo "${CURRENT_Version}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
+CLOUD_Version=$(echo "${kk}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
 cat "${GUJIAN_liebiaoone}" |awk '$0=NR" "$0' > ${GUJIAN_liebiaotwo}
 XYZDSZ="$(cat "${GUJIAN_liebiaotwo}" | awk 'END {print}' |awk '{print $(1)}')"
 }
@@ -361,12 +363,19 @@ function Bendi_xuanzhe() {
   cat "${GUJIAN_liebiaoone}" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   ECHOG " ******************************************************************" 
   ECHOB " 请输入您要升级固件名称前面对应的数值(1~X),输入[0或N]则为退出程序"
-  if [[ "${XYZDSZ}" -lt "2"]]; then
-    ECHOG " 第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
-    ECHOG " 其他的固件因为作者或者LUCI不同型号，都不保留配置升级"
-  else
+  if [[ "${XYZDSZ}" -eq "1" ]]; then
     echo
     ECHOYY " 没发现其他源码作者的固件,需要转换的话请先编译其他作者源码的固件"
+    if [[ "${LOCAL_Version}" -eq "${CLOUD_Version}" ]]; then
+      ECHOG " 您当前版本与云端版本一致,无升级必要"
+    elif [[ "${LOCAL_Version}" -lt "${CLOUD_Version}" ]]; then
+      ECHOG " 发现云端有最新版本,您可以进行升级"
+    elif [[ "${LOCAL_Version}" -gt "${CLOUD_Version}" ]]; then
+      ECHOG " 不得了啊,您现在所用版本比云端最高版本还高呢!"
+    fi
+  else
+    ECHOG " 第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
+    ECHOG " 其他的固件因为作者或者LUCI不同型号，都不保留配置升级"
   fi
   echo
   export YUMINGIP="  请输入数字(1~N)"
@@ -377,7 +386,7 @@ function Bendi_xuanzhe() {
     CUrrenty="N"
   elif [[ -z "${YMXZ}" ]]; then
     CUrrenty="x"
-  elif [[ "${YMXZ}" -gt "${XYZDSZ}" ]]; then
+  elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
     CUrrenty="Y"
     YMXZ=${YMXZ}
   else
