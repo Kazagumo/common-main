@@ -1223,7 +1223,7 @@ echo "正在编译：${TARGET_PROFILE}"
 if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
   echo "PROMPT_TING=${amlogic_model}" >> ${GITHUB_ENV}
 else
-  echo "PROMPT_TING=${TARGET_PROFILE}" >> ${GITHUB_ENV}
+  echo "PROMPT_TING=${LUCI_EDITION}-${TARGET_PROFILE}" >> ${GITHUB_ENV}
 fi
 
 echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
