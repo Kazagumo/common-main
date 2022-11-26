@@ -361,8 +361,13 @@ function Bendi_xuanzhe() {
   cat "${GUJIAN_liebiaoone}" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   ECHOG " ******************************************************************" 
   ECHOB " 请输入您要升级固件名称前面对应的数值(1~X),输入[0或N]则为退出程序"
-  ECHOG " 有多选时,第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
-  ECHOG " 其他的固件因为作者或者LUCI不同型号，都不保留配置升级"
+  if [[ "${XYZDSZ}" -lt "2"]]; then
+    ECHOG " 第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
+    ECHOG " 其他的固件因为作者或者LUCI不同型号，都不保留配置升级"
+  else
+    echo
+    ECHOYY " 没发现其他源码作者的固件,需要转换的话请先编译其他作者源码的固件"
+  fi
   echo
   export YUMINGIP="  请输入数字(1~N)"
   while :; do
@@ -372,7 +377,7 @@ function Bendi_xuanzhe() {
     CUrrenty="N"
   elif [[ -z "${YMXZ}" ]]; then
     CUrrenty="x"
-  elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
+  elif [[ "${YMXZ}" -gt "${XYZDSZ}" ]]; then
     CUrrenty="Y"
     YMXZ=${YMXZ}
   else
