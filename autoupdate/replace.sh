@@ -238,7 +238,7 @@ echo "$local_firmw $cloud_firmw"
 function firmware_upgrade() {
 bb="$(echo ${CLOUD_Firmware} |grep -o "\-${DEFAULT_Device}.*")"
 cloud_firmw=$(echo "${CLOUD_Firmware}" |sed "s/${bb}//g")
-
+echo "$local_firmw $cloud_firmw"
 ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检查固件剩余空间值"
 TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
 let X=$(grep -n "${CLOUD_Firmware}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
