@@ -39,8 +39,8 @@ function ECHOYY() {
   echo -e "${Yellow} $1 ${Font}"
 }
 function ECHOG() {
-  echo -e "${Green} $1 ${Font}"
   echo
+  echo -e "${Green} $1 ${Font}"
 }
 function print_ok() {
   echo
@@ -231,14 +231,12 @@ sed -i "1i${kk}" "${GUJIAN_liebiaoone}"
 sed -i s/[[:space:]]//g "${GUJIAN_liebiaoone}"
 cat "${GUJIAN_liebiaoone}" |awk '$0=NR" "$0' > ${GUJIAN_liebiaotwo}
 XYZDSZ="$(cat "${GUJIAN_liebiaotwo}" | awk 'END {print}' |awk '{print $(1)}')"
-
-echo "$local_firmw $cloud_firmw"
 }
 
 function firmware_upgrade() {
 bb="$(echo ${CLOUD_Firmware} |grep -o "\-${DEFAULT_Device}.*")"
 cloud_firmw=$(echo "${CLOUD_Firmware}" |sed "s/${bb}//g")
-echo "$local_firmw $cloud_firmw"
+
 ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检查固件剩余空间值"
 TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
 let X=$(grep -n "${CLOUD_Firmware}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
@@ -250,7 +248,7 @@ else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],下载固件空间充足]"
   sleep 2
 fi
-
+echo "${local_firmw} ${cloud_firmw}"
 if [[ "${local_firmw}" == "${cloud_firmw}" ]]; then
   echo
   ECHOYY "您选择的固件为您现在所用的固件为同一个作者同一个LUCI版本,"
@@ -364,7 +362,6 @@ function Bendi_xuanzhe() {
   ECHOG " ******************************************************************" 
   echo
   ECHOB " 请输入您要升级固件名称前面对应的数值(1~X),输入[0或N]则为退出程序"
-  echo
   ECHOG " 有多选时,第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
   ECHOG " 其他的固件因为作者或者LUCI不同型号，都不保留配置升级"
   export YUMINGIP="  请输入数字(1~N)"
@@ -384,8 +381,7 @@ function Bendi_xuanzhe() {
   case $CUrrenty in
   Y)
     CLOUD_Firmware=$(cat ${GUJIAN_liebiaoone} |awk ''NR==${YMXZ}'')
-    echo
-    ECHOG " 您选择了[${CLOUD_Firmware}]固件"
+    ECHOY " 您选择了[${CLOUD_Firmware}]固件"
     sleep 2
     firmware_upgrade
   break
