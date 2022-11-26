@@ -78,11 +78,14 @@ GUJIAN_liebiaotwo="${Download_Path}/gujianliebiaotwo"
 
 ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您网络是否联网]"
 sleep 2
-curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+curl -s "myip.ipip.net" | grep -qo "中国" && wangluo='1'
 if [[ "${wangluo}" == "1" ]]; then
   curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
-if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
+if [[ "${wangluo}" == "1" ]]; then
+  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='3'
+fi
+if [[ "${wangluo}" == "2" ]] && [[ "${wangluo}" == "3" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您可能没进行联网,请检查网络?"
   exit 1
 else
