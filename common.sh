@@ -1533,10 +1533,10 @@ elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; th
   TIME l "定时自动更新信息"
   TIME z "插件版本: ${AutoUpdate_Version}"
   if [[ ${TARGET_BOARD} == "x86" ]]; then
-    TIME b "传统固件: ${Legacy_Firmware}"
-    [[ ! "${EFI_NO}" == "1" ]] && TIME b "UEFI固件: ${UEFI_Firmware}"
+    TIME b "传统固件: ${AutoBuild_Uefi}${Firmware_SFX}"
+    [[ ! "${EFI_NO}" == "1" ]] && TIME b "UEFI固件: ${AutoBuild_Uefi}${Firmware_SFX}"
   else
-    TIME b "固件名称: ${Up_Firmware}"
+    TIME b "固件名称: ${AutoBuild_Firmware}${Firmware_SFX}"
   fi
   TIME b "固件后缀: ${Firmware_SFX}"
   TIME b "固件版本: ${Openwrt_Version}"
