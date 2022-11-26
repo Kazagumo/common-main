@@ -35,7 +35,7 @@ function Diy_Part2() {
 	Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${TARGET_BOARD}"
 	Github_API2="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
 	API_PATH="/tmp/Downloads/zzz_api"
-	Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}"
+	Release_download="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
 	LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
 	CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
