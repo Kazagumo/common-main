@@ -5,22 +5,26 @@
 
 
 function Diy_Part1() {
-  if [[ -f "$BUILD_PATH/AutoUpdate.sh" ]]; then
-    echo "正在执行：给源码增加定时更新固件插件和设置插件和ttyd成默认自选"
-    find . -name 'luci-app-autoupdate' | xargs -i rm -rf {}
-    git clone -b ceshi https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
-    [[ ! -d "$FILES_PATH/usr/bin" ]] && mkdir $FILES_PATH/usr/bin
-    cp $BUILD_PATH/AutoUpdate.sh $FILES_PATH/usr/bin/AutoUpdate
-    cp $BUILD_PATH/replace.sh $FILES_PATH/etc/replace
-    sudo chmod +x $FILES_PATH/etc/replace
-    sudo chmod +x $FILES_PATH/usr/bin/AutoUpdate
-    if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
-      sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
-    fi
-    [[ -d $HOME_PATH/package/luci-app-autoupdate ]] && echo "增加定时更新固件的插件成功"
-  else
-    echo "没发现AutoUpdate.sh文件存在，不能增加在线升级固件程序"
-  fi
+	find . -name 'luci-app-autoupdate' | xargs -i rm -rf {}
+	if [[ -f "$BUILD_PATH/AutoUpdate.sh" ]]; then
+		echo "正在执行：给源码增加定时更新固件插件和设置插件和ttyd成默认自选"
+		git clone -b ceshi https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
+		[[ ! -d "$FILES_PATH/usr/bin" ]] && mkdir -p $FILES_PATH/usr/bin
+		cp $BUILD_PATH/AutoUpdate.sh $FILES_PATH/usr/bin/AutoUpdate
+		cp $BUILD_PATH/replace.sh $FILES_PATH/etc/replace
+		sudo chmod +x $FILES_PATH/etc/replace
+		sudo chmod +x $FILES_PATH/usr/bin/AutoUpdate
+		if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
+			sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
+		fi
+		if [[ -d "$HOME_PATH/package/luci-app-autoupdate" ]]; then
+			echo "增加定时更新固件的插件成功"
+		else
+			echo "插件源码下载失败"
+		fi
+	else
+		echo "没发现AutoUpdate.sh文件存在，不能增加luci-app-autoupdate"
+	fi
 }
 
 function GET_TARGET_INFO() {
@@ -128,7 +132,7 @@ function Diy_Part3() {
 	x86)
 		EFI_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*efi.*img.gz)"
 		if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
-		  EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} | cut -c1-3)"
+		  EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
 		  cp ${EFI_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}
 		else
 		  echo "没找到uefi固件"
@@ -136,7 +140,7 @@ function Diy_Part3() {
 		
 		LEGA_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*img.gz |grep -v rootfs |grep -v efi)"
 		if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
-		  LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} | cut -c1-3)"
+		  LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
 		  cp ${LEGA_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}
 		else
 		  echo "没找到legacy固件"
