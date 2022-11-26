@@ -59,6 +59,10 @@ function print_gg() {
 }
 
 function information_acquisition() {
+clear
+echo
+ECHOY " 开始执行资料读取,读取完毕显示选择固件界面"
+
 source /etc/openwrt_update
 
 A="$(wget -V |grep 'GNU Wget' |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")"
