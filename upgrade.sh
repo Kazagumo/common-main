@@ -45,8 +45,8 @@ function GET_TARGET_INFO() {
 	;;
 	x86)
 		export Firmware_SFX=".img.gz"
-		export UEFI_Firmware="${LUCI_EDITION}-${Openwrt_Version}-uefi"
-		export Legacy_Firmware="${LUCI_EDITION}-${Openwrt_Version}-legacy"
+		export AutoBuild_Uefi="${LUCI_EDITION}-${Openwrt_Version}-uefi"
+		export AutoBuild_Legacy="${LUCI_EDITION}-${Openwrt_Version}-legacy"
 	;;
 	rockchip | bcm27xx | mxs | sunxi | zynq)
 		export Firmware_SFX=".img.gz"
@@ -81,8 +81,8 @@ function GET_TARGET_INFO() {
 	  export AutoUpdate_Version="7.1"
 	fi
 	
-	echo "Legac_Firmware=${Legacy_Firmware}${Firmware_SFX}" >> ${GITHUB_ENV}
-	echo "EFI_Firmware=${UEFI_Firmware}${Firmware_SFX}" >> ${GITHUB_ENV}
+	echo "UEFI_Firmware=${AutoBuild_Uefi}${Firmware_SFX}" >> ${GITHUB_ENV}
+	echo "Legacy_Firmware=${AutoBuild_Legacy}${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "Up_Firmware=${AutoBuild_Firmware}${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
@@ -129,7 +129,7 @@ function Diy_Part3() {
 		EFI_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*efi.*img.gz)"
 		if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
 		  EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} | cut -c1-3)"
-		  cp ${EFI_ZHONGZHUAN} ${BIN_PATH}/${UEFI_Firmware}-${EFIMD5}${Firmware_SFX}
+		  cp ${EFI_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}
 		else
 		  echo "没找到uefi固件"
 		fi
@@ -137,7 +137,7 @@ function Diy_Part3() {
 		LEGA_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*img.gz |grep -v rootfs |grep -v efi)"
 		if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
 		  LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} | cut -c1-3)"
-		  cp ${LEGA_ZHONGZHUAN} ${BIN_PATH}/${Legacy_Firmware}-${LEGAMD5}${Firmware_SFX}
+		  cp ${LEGA_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}
 		else
 		  echo "没找到legacy固件"
 		fi
