@@ -27,15 +27,15 @@ function Diy_Part1() {
 	fi
 }
 
-function GET_TARGET_INFO() {
-	
+
+function Diy_Part2() {
 	In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
-	Github_Release="${GITHUB_LINK}/releases/tag/AutoUpdate"
+	Github_Release="${GITHUB_LINK}/releases/tag/${TARGET_BOARD}"
 	Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
-	Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/AutoUpdate"
-	Github_API2="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/AutoUpdate/zzz_api"
+	Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${TARGET_BOARD}"
+	Github_API2="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
 	API_PATH="/tmp/Downloads/zzz_api"
-	Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/AutoUpdate"
+	Release_download="https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}"
 	LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
 	CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
@@ -91,10 +91,6 @@ function GET_TARGET_INFO() {
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
 
-}
-
-function Diy_Part2() {
-	GET_TARGET_INFO
 	echo "
 		GITHUB_LINK=${GITHUB_LINK}
 		GIT_REPOSITORY=${GIT_REPOSITORY}
@@ -119,7 +115,6 @@ function Diy_Part2() {
 }
 
 function Diy_Part3() {
-	GET_TARGET_INFO
 	BIN_PATH="${HOME_PATH}/bin/Firmware"
 	echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
 	[[ ! -d "${BIN_PATH}" ]] && mkdir -p ${BIN_PATH} || rm -rf ${BIN_PATH}/*
