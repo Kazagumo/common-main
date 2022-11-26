@@ -966,7 +966,7 @@ break
 break
 ;;
 *)
-   XUANZHEOP="请输入正确的数字编号!"
+   XUANZHEOP="请输入正确的数字编号："
 ;;
 esac
 done
