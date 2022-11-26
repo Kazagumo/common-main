@@ -12,18 +12,26 @@ Kernel=$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 PKG_List="${Download_Path}/Installed_PKG_List"
 
-curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+
+curl -s "myip.ipip.net" | grep -qo "中国" && CHN_NET=1
+if [[ ! "${CHN_NET}" == "1" ]]; then
+  curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || wangluo='1'
+fi
 if [[ "${wangluo}" == "1" ]]; then
-  curl --connect-timeout 6 "google.com" > "/dev/null" 2>&1 || wangluo='2'
+  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   echo "您可能没进行联网,请检查网络?" > /tmp/cloud_version
   exit 1
 fi
 
-wget -q ${Github_API2} -O ${API_PATH}
-if [[ $? -ne 0 ]];then
+if [[ "${CHN_NET}" == "1" ]]; then
+  wget -q ${Github_API2} -O ${API_PATH}
+else
   wget -q ${Github_API1} -O ${API_PATH}
+fi
+if [[ $? -ne 0 ]];then
+  wget -q ${Github_API2} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
