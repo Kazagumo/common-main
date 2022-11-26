@@ -561,13 +561,13 @@ AMLOGIC)
   #No action required
 ;;
 *)
-  echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${ZZZ_PATH}"
-  echo "sed -i '/= "OpenWrt"/d' /usr/lib/lua/luci/version.lua" >> "${ZZZ_PATH}"
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   sed -i '/DISTRIB_/d' "${ZZZ_PATH}"
-  sed -i '/luciversion/d' "${ZZZ_PATH}"
-  sed -i '/luciname/d' "${ZZZ_PATH}"
+  sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
   sed -i '/exit 0/d' "${ZZZ_PATH}"
+  
+  echo "sed -i 's?Development Snapshot?OpenWrt / ${SOURCE} - ${LUCI_EDITION}?g' /usr/lib/lua/luci/version.lua" >> "${ZZZ_PATH}"
+  echo "sed -i '/= "OpenWrt"/d' /usr/lib/lua/luci/version.lua" >> "${ZZZ_PATH}"
 
   echo "
   sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
