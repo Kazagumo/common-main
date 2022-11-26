@@ -80,11 +80,14 @@ PKG_List="${Download_Path}/Installed_PKG_List"
 GUJIAN_liebiaoone="${Download_Path}/gujianliebiaoone"
 GUJIAN_liebiaotwo="${Download_Path}/gujianliebiaotwo"
 
-ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您网络是否联网]"
+ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您网络是否联网]"
 sleep 2
-curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
+curl -s "myip.ipip.net" | grep -qo "中国" && CHN_NET=1
+if [[ ! "${CHN_NET}" == "1" ]]; then
+  curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || wangluo='1'
+fi
 if [[ "${wangluo}" == "1" ]]; then
-  curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || wangluo='2'
+  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您可能没进行联网,请检查网络?"
@@ -94,13 +97,13 @@ else
   sleep 2
 fi
 
-ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测网络类型]"
+ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测网络类型]"
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
   DOWNLOAD=https://ghproxy.com/${Release_download}
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络需要使用代理下载固件,网速或许有影响]"
   sleep 2
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
+  ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
   sleep 2
   echo
   ${WGETGNU} ${Github_API2} -O ${API_PATH}
@@ -108,7 +111,7 @@ else
   DOWNLOAD=${Release_download}
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
   sleep 2
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
+  ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
   echo
   ${WGETGNU} ${Github_API1} -O ${API_PATH}
 fi
@@ -233,6 +236,7 @@ XYZDSZ="$(cat "${GUJIAN_liebiaotwo}" | awk 'END {print}' |awk '{print $(1)}')"
 function firmware_upgrade() {
 cloud_firmw=$(echo "${CLOUD_Firmware}" |head -n 5|cut -d '-' -f 1-2)
 
+ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检查固件剩余空间值"
 TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
 let X=$(grep -n "${CLOUD_Firmware}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
@@ -275,9 +279,8 @@ else
    tongzhi="不保留配置"
 fi
 
-
 cd "${Download_Path}"
-ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
+ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
 echo
 ${WGETGNU} "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
@@ -291,6 +294,7 @@ else
   sleep 2
 fi
 
+ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 对比固件MD5和SHA256SUM值,预防固件下载过程中有损坏]"
 export LOCAL_MD5=$(md5sum ${CLOUD_Firmware} | cut -c1-3)
 export LOCAL_256=$(sha256sum ${CLOUD_Firmware} | cut -c1-3)
 export MD5_256=$(echo ${CLOUD_Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
@@ -312,7 +316,7 @@ else
 fi
 
 cd "${Download_Path}"
-ECHOB "[倒计10秒后,执行[${tongzhi}]更新,更新期间请不要断开电源或重启设备 ...]"
+ECHOG "[倒计10秒后,执行[${tongzhi}]更新,更新期间请不要断开电源或重启设备 ...]"
 seconds=10
 while [ $seconds -gt 0 ];do
   echo -n $seconds
