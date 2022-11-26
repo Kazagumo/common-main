@@ -392,7 +392,7 @@ function Bendi_xuanzhe() {
   break
   ;;
   *)
-    export YUMINGIP="  敬告,请输入正确数值"
+    export YUMINGIP="  敬告,请输入正确数值："
   ;;
   esac
   done
