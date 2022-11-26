@@ -1532,14 +1532,13 @@ elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; th
   echo
   TIME l "定时自动更新信息"
   TIME z "插件版本: ${AutoUpdate_Version}"
-  if [[ ${Firmware_SFX} == ".img.gz" ]]; then
-    TIME b "传统固件: ${Legac_Firmware}"
-    [[ ! "${EFI_NO}" == "1" ]] && TIME b "UEFI固件: ${EFI_Firmware}"
-    TIME b "固件后缀: ${Firmware_SFX}"
+  if [[ ${TARGET_BOARD} == "x86" ]]; then
+    TIME b "传统固件: ${Legacy_Firmware}"
+    [[ ! "${EFI_NO}" == "1" ]] && TIME b "UEFI固件: ${UEFI_Firmware}"
   else
     TIME b "固件名称: ${Up_Firmware}"
-    TIME b "固件后缀: ${Firmware_SFX}"
   fi
+  TIME b "固件后缀: ${Firmware_SFX}"
   TIME b "固件版本: ${Openwrt_Version}"
   TIME b "云端路径: ${Github_Release}"
   TIME g "《编译成功后，会自动把固件发布到指定地址，然后才会生成云端路径》"
