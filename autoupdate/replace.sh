@@ -255,8 +255,9 @@ if [[ "${local_firmw}" == "${cloud_firmw}" ]]; then
   echo
   ECHOYY "可以选择保留配置或不保留配置升级"
   echo
+  xuzqxz="输入[Y/y]为保留配置，输入[N/n]为不保留配置"
   while :; do
-  read -p " [输入[Y/y]为保留配置，输入[N/n]为不保留配置]： " Bendi_Wsl
+  read -p " ${xuzqxz}： " Bendi_Wsl
   case ${Bendi_Wsl} in
   [Yy])
     Upgrade_Options='sysupgrade -f /mnt/upback.tar.gz'
@@ -270,8 +271,7 @@ if [[ "${local_firmw}" == "${cloud_firmw}" ]]; then
   break
   ;;
   *)
-    ECHOYY "请输入正确选[Y/n]"
-  break
+    xuzqxz="请输入正确选[Y/n]"
   ;;
   esac
   done
@@ -425,7 +425,7 @@ function menu() {
   break
   ;;
   *)
-    XUANZop="请输入正确的数字编号!"
+    XUANZop="请输入正确的数字编号："
   ;;
   esac
   done
