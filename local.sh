@@ -926,7 +926,7 @@ function menu2() {
   break
   ;;
   *)
-    XUANZop="请输入正确的数字编号!"
+    XUANZop="请输入正确的数字编号"
   ;;
   esac
   done
@@ -966,7 +966,7 @@ break
 break
 ;;
 *)
-   XUANZHEOP="请输入正确的数字编号："
+   XUANZHEOP="请输入正确的数字编号"
 ;;
 esac
 done
