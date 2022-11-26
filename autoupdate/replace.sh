@@ -228,13 +228,16 @@ local_firmw="${LUCI_EDITION}-${SOURCE}"
 kk=$(grep "${local_firmw}" "${GUJIAN_liebiaoone}")
 sed -i "/${kk}/d" "${GUJIAN_liebiaoone}"
 sed -i "1i${kk}" "${GUJIAN_liebiaoone}"
+bb="$(echo $kk |grep -o "\-${DEFAULT_Device}.*")"
+cloud_firmw=$(echo "${kk}" |sed "s/${bb}//g")
 sed -i s/[[:space:]]//g "${GUJIAN_liebiaoone}"
 cat "${GUJIAN_liebiaoone}" |awk '$0=NR" "$0' > ${GUJIAN_liebiaotwo}
 XYZDSZ="$(cat "${GUJIAN_liebiaotwo}" | awk 'END {print}' |awk '{print $(1)}')"
+
+echo "$local_firmw $cloud_firmw"
 }
 
 function firmware_upgrade() {
-cloud_firmw=$(echo "${CLOUD_Firmware}" |head -n 5|cut -d '-' -f 1-2)
 
 ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检查固件剩余空间值"
 TMP_Available=$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')
