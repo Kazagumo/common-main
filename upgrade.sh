@@ -11,9 +11,9 @@ function Diy_Part1() {
 		git clone -b ceshi https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
 		[[ ! -d "$FILES_PATH/usr/bin" ]] && mkdir -p $FILES_PATH/usr/bin
 		cp ${HOME_PATH}/build/common/autoupdate/AutoUpdate.sh $FILES_PATH/usr/bin/AutoUpdate
-		cp ${HOME_PATH}/build/common/autoupdate/replace.sh $FILES_PATH/etc/replace
-		sudo chmod +x $FILES_PATH/etc/replace
+		cp ${HOME_PATH}/build/common/autoupdate/replace.sh $FILES_PATH/usr/bin/replace
 		sudo chmod +x $FILES_PATH/usr/bin/AutoUpdate
+		sudo chmod +x $FILES_PATH/usr/bin/replace
 		if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
 			sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
 		fi
@@ -94,27 +94,28 @@ function GET_TARGET_INFO() {
 }
 
 function Diy_Part2() {
-GET_TARGET_INFO
-touch ${In_Firmware_Info}
-sudo chmod +x ${In_Firmware_Info}
-cat >${In_Firmware_Info} <<-EOF
-GITHUB_LINK=${GITHUB_LINK}
-GIT_REPOSITORY=${GIT_REPOSITORY}
-SOURCE=${SOURCE}
-LUCI_EDITION=${LUCI_EDITION}
-DEFAULT_Device=${TARGET_PROFILE}
-Firmware_SFX=${Firmware_SFX}
-TARGET_BOARD=${TARGET_BOARD}
-CURRENT_Version=${Openwrt_Version}
-CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
-Download_Path=/tmp/Downloads
-Version=${AutoUpdate_Version}
-API_PATH=${API_PATH}
-Github_API1=${Github_API1}
-Github_API2=${Github_API2}
-Github_Release=${Github_Release}
-Release_download=${Release_download}
-EOF
+	GET_TARGET_INFO
+	echo "
+		GITHUB_LINK=${GITHUB_LINK}
+		GIT_REPOSITORY=${GIT_REPOSITORY}
+		SOURCE=${SOURCE}
+		LUCI_EDITION=${LUCI_EDITION}
+		DEFAULT_Device=${TARGET_PROFILE}
+		Firmware_SFX=${Firmware_SFX}
+		TARGET_BOARD=${TARGET_BOARD}
+		CURRENT_Version=${Openwrt_Version}
+		CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
+		Download_Path=/tmp/Downloads
+		Version=${AutoUpdate_Version}
+		API_PATH=${API_PATH}
+		Github_API1=${Github_API1}
+		Github_API2=${Github_API2}
+		Github_Release=${Github_Release}
+		Release_download=${Release_download}
+	" > "${In_Firmware_Info}"
+	sed -i '/^$/d' "${In_Firmware_Info}"
+	sed -i 's/^[ ]*//g' "${In_Firmware_Info}"
+	sudo chmod +x ${In_Firmware_Info}
 }
 
 function Diy_Part3() {
