@@ -91,26 +91,23 @@ function Diy_Part2() {
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
 
-	echo "
-		GITHUB_LINK=${GITHUB_LINK}
-		GIT_REPOSITORY=${GIT_REPOSITORY}
-		SOURCE=${SOURCE}
-		LUCI_EDITION=${LUCI_EDITION}
-		DEFAULT_Device=${TARGET_PROFILE}
-		Firmware_SFX=${Firmware_SFX}
-		TARGET_BOARD=${TARGET_BOARD}
-		CURRENT_Version=${Openwrt_Version}
-		CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
-		Download_Path=/tmp/Downloads
-		Version=${AutoUpdate_Version}
-		API_PATH=${API_PATH}
-		Github_API1=${Github_API1}
-		Github_API2=${Github_API2}
-		Github_Release=${Github_Release}
-		Release_download=${Release_download}
-	" > "${In_Firmware_Info}"
-	sed -i '/^$/d' "${In_Firmware_Info}"
-	sed -i 's/^[ ]*//g' "${In_Firmware_Info}"
+	cat >${In_Firmware_Info} <<-EOF
+GITHUB_LINK=${GITHUB_LINK}
+SOURCE=${SOURCE}
+LUCI_EDITION=${LUCI_EDITION}
+DEFAULT_Device=${TARGET_PROFILE}
+Firmware_SFX=${Firmware_SFX}
+TARGET_BOARD=${TARGET_BOARD}
+CURRENT_Version=${Openwrt_Version}
+CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
+Download_Path=/tmp/Downloads
+Version=${AutoUpdate_Version}
+API_PATH=${API_PATH}
+Github_API1=${Github_API1}
+Github_API2=${Github_API2}
+Github_Release=${Github_Release}
+Release_download=${Release_download}
+EOF
 	sudo chmod +x ${In_Firmware_Info}
 }
 
