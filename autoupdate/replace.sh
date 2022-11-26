@@ -248,7 +248,7 @@ else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],下载固件空间充足]"
   sleep 2
 fi
-echo "${local_firmw} ${cloud_firmw}"
+
 if [[ "${local_firmw}" == "${cloud_firmw}" ]]; then
   echo
   ECHOYY "您选择的固件为您现在所用的固件为同一个作者同一个LUCI版本,"
@@ -345,25 +345,28 @@ else
   ${Upgrade_Options} ${CLOUD_Firmware}
 fi
 }
-  
+
 function Bendi_xuanzhe() {
   clear
   echo
+  echo " Openwrt-AutoUpdate Script ${Version}"
   echo
-  ECHOYY " 当前使用固件：${SOURCE} / ${LUCI_EDITION} / ${Kernel}"
-  ECHOYY " 当前固件格式：${BOOT_Type}${Firmware_SFX}"
-  ECHOYY " 当前设备型号：${DEFAULT_Device}"
+  echo
+  echo -e "${Green} 当前使用固件${Font}：${Blue}${SOURCE} / ${LUCI_EDITION} / ${Kernel}${Font}"
+  echo -e "${Green} 当前固件格式${Font}：${Blue}${BOOT_Type}${Firmware_SFX}${Font}"
+  echo -e "${Green} 当前设备型号${Font}：${Blue}${DEFAULT_Device}${Font}"
   echo
   echo
   ECHOR " 以下为可选升级固件："
-  ECHOG " ******************************************************************"  
+  ECHOG " ******************************************************************" 
+  echo
   cat "${GUJIAN_liebiaoone}" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   echo
   ECHOG " ******************************************************************" 
-  echo
   ECHOB " 请输入您要升级固件名称前面对应的数值(1~X),输入[0或N]则为退出程序"
   ECHOG " 有多选时,第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
   ECHOG " 其他的固件因为作者或者LUCI不同型号，都不保留配置升级"
+  echo
   export YUMINGIP="  请输入数字(1~N)"
   while :; do
   YMXZ=""
