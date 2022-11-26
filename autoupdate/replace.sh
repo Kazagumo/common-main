@@ -106,14 +106,14 @@ if [ ! "${Google_Check}" == 301 ]; then
   ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
   sleep 2
   echo
-  ${WGETGNU} ${Github_API2} -O ${API_PATH}
+  wget -q ${Github_API2} -O ${API_PATH}
 else
   DOWNLOAD=${Release_download}
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
   sleep 2
   ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
   echo
-  ${WGETGNU} ${Github_API1} -O ${API_PATH}
+  wget -q ${Github_API1} -O ${API_PATH}
 fi
 if [[ -f "/tmp/Downloads/zzz_api" ]] && [[ ! -s "/tmp/Downloads/zzz_api" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取数据失败,Github地址不正确,或此地址没云端存在,或您的仓库为私库,或网络抽风了再试试看!]"
@@ -361,7 +361,6 @@ function Bendi_xuanzhe() {
   ECHOG " ******************************************************************" 
   echo
   cat "${GUJIAN_liebiaoone}" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
-  echo
   ECHOG " ******************************************************************" 
   ECHOB " 请输入您要升级固件名称前面对应的数值(1~X),输入[0或N]则为退出程序"
   ECHOG " 有多选时,第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
