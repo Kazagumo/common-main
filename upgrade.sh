@@ -127,7 +127,7 @@ function Diy_Part3() {
 	case "${TARGET_BOARD}" in
 	x86)
 		EFI_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*efi.*img.gz)"
-		if [[ -n "${EFI_ZHONGZHUAN}" ]]; then
+		if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
 		  EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} | cut -c1-3)"
 		  cp ${EFI_ZHONGZHUAN} ${BIN_PATH}/${UEFI_Firmware}-${EFIMD5}${Firmware_SFX}
 		else
@@ -135,7 +135,7 @@ function Diy_Part3() {
 		fi
 		
 		LEGA_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*img.gz |grep -v rootfs |grep -v efi)"
-		if [[ -n "${LEGA_ZHONGZHUAN}" ]]; then
+		if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
 		  LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} | cut -c1-3)"
 		  cp ${LEGA_ZHONGZHUAN} ${BIN_PATH}/${Legacy_Firmware}-${LEGAMD5}${Firmware_SFX}
 		else
@@ -143,13 +143,11 @@ function Diy_Part3() {
 		fi
 	;;
 	*)
-		UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX} |grep -v rootfs)"
-		if [[ -n "${UP_ZHONGZHUAN}" ]]; then
-		  MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
-		  cp ${UP_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}
+		UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*sysupgrade${Firmware_SFX} |grep -v rootfs |grep -v ext4  |grep -v factory)"
+		if [[ ! -f "${UP_ZHONGZHUAN}" ]]; then
+		  UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX} |grep -v rootfs |grep -v ext4  |grep -v factory)"
 		fi
-		if [[ -z "${UP_ZHONGZHUAN}" ]]; then
-		  UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*sysupgrade${Firmware_SFX} |grep -v rootfs)"
+		if [[ -f "${UP_ZHONGZHUAN}" ]]; then
 		  MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
 		  cp ${UP_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}
 		else
