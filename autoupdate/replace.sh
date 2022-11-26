@@ -105,14 +105,12 @@ if [ ! "${Google_Check}" == 301 ]; then
   sleep 2
   ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
   sleep 2
-  echo
   wget -q ${Github_API2} -O ${API_PATH}
 else
   DOWNLOAD=${Release_download}
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
   sleep 2
   ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
-  echo
   wget -q ${Github_API1} -O ${API_PATH}
 fi
 if [[ -f "/tmp/Downloads/zzz_api" ]] && [[ ! -s "/tmp/Downloads/zzz_api" ]]; then
@@ -120,7 +118,7 @@ if [[ -f "/tmp/Downloads/zzz_api" ]] && [[ ! -s "/tmp/Downloads/zzz_api" ]]; the
   exit 1
 else
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 云端API下载完成,开始获取固件信息]"
-  sleep 2
+  sleep 3
 fi
 
 case "${TARGET_BOARD}" in
@@ -245,13 +243,13 @@ if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间不足，不能下载]"
   exit 1
 else
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],下载固件空间充足]"
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 固件tmp空间值[${TMP_Available}M],云端固件体积[${CLOUD_Firmware_Size}M],空间充足]"
   sleep 2
 fi
 
 if [[ "${local_firmw}" == "${cloud_firmw}" ]]; then
   echo
-  ECHOYY "您选择的固件为您现在所用的固件为同一个作者同一个LUCI版本,"
+  ECHOYY "此固件跟您现在所用的固件为同一个源码作者同一个LUCI版本,"
   echo
   ECHOYY "可以选择保留配置或不保留配置升级"
   echo
