@@ -23,10 +23,8 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	$(INSTALL_DIR) $(1)/bin
-	$(INSTALL_BIN) ./files/bin/autoupdate $(1)/bin
-	$(INSTALL_DIR) $(1)/etc/autoupdate
-	$(CP) ./files/etc/autoupdate/* $(1)/etc/autoupdate
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_BIN) ./files/default-setting $(1)/etc/uci-defaults/66-default-settings
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
