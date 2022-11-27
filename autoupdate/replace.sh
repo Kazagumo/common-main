@@ -75,7 +75,6 @@ else
   WGETO="-o"
 fi
 
-
 Kernel=$(grep 'Version' /usr/lib/opkg/info/kernel.control |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
@@ -107,20 +106,19 @@ else
 fi
 
 ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测网络类型]"
-Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
-if [ ! "${Google_Check}" == 301 ]; then
+if [[ "${CHN_NET}" == "0" ]]; then
+  DOWNLOAD=${Release_download}
+  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
+  sleep 2
+  ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
+  ${WGETGNU} ${Github_API1} ${WGETO} ${API_PATH}
+else
   DOWNLOAD=https://ghproxy.com/${Release_download}
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络需要使用代理下载固件,网速或许有影响]"
   sleep 2
   ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
   sleep 2
   ${WGETGNU} ${Github_API2} ${WGETO} ${API_PATH}
-else
-  DOWNLOAD=${Release_download}
-  ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
-  sleep 2
-  ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
-  ${WGETGNU} ${Github_API1} ${WGETO} ${API_PATH}
 fi
 
 if [[ -f "${API_PATH}" ]] && [[ `grep -c "url" ${API_PATH}` -ge '1' ]]; then
