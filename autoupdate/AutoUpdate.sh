@@ -124,7 +124,7 @@ if [ ! "${Google_Check}" == 301 ]; then
 else
   DOWNLOAD=${Release_download}
 fi
-wget -q --no-cookie --no-check-certificate ${DOWNLOAD}/${CLOUD_Firmware} -O ${CLOUD_Firmware}
+wget -q --no-check-certificate ${DOWNLOAD}/${CLOUD_Firmware} -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
   curl -fsSL -o ${CLOUD_Firmware} ${DOWNLOAD}/${CLOUD_Firmware}
 fi
