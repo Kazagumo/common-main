@@ -121,7 +121,7 @@ if [ ! "${Google_Check}" == 301 ]; then
 else
   DOWNLOAD=${Release_download}
 fi
-wget -q "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
+curl -fsSL -o ${CLOUD_Firmware} ${DOWNLOAD}/${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
   curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
 fi
