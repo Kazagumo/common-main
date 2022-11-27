@@ -83,8 +83,8 @@ function Diy_Part2() {
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
 
 cat >"${In_Firmware_Info}" <<-EOF
-GITHUB_LINK="${GITHUB_LINK}"
-SOURCE="${SOURCE}"
+GITHUB_LINK=${GITHUB_LINK}
+SOURCE=${SOURCE}
 LUCI_EDITION="${LUCI_EDITION}"
 DEFAULT_Device="${TARGET_PROFILE}"
 Firmware_SFX="${Firmware_SFX}"
