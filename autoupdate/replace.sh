@@ -65,9 +65,6 @@ ECHOY " 开始执行资料读取,读取完毕显示选择固件界面"
 
 source /etc/openwrt_update
 
-
-WGETGNU="wget -q --show-progress"
-
 Kernel=$(grep 'Version' /usr/lib/opkg/info/kernel.control |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
@@ -100,20 +97,21 @@ if [ ! "${Google_Check}" == 301 ]; then
   sleep 2
   ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
   sleep 2
-  wget -q ${Github_API2} -O ${API_PATH}
+  curl -fsSL -o ${API_PATH} ${Github_API2}
 else
   DOWNLOAD=${Release_download}
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
   sleep 2
   ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
-  wget -q ${Github_API1} -O ${API_PATH}
+  curl -fsSL -o ${API_PATH} ${Github_API1}
 fi
-if [[ -f "/tmp/Downloads/zzz_api" ]] && [[ ! -s "/tmp/Downloads/zzz_api" ]]; then
-  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取数据失败,Github地址不正确,或此地址没云端存在,或您的仓库为私库,或网络抽风了再试试看!]"
-  exit 1
-else
+
+if [[ -f "${API_PATH}" ]] && [[ `grep -c "url" ${API_PATH}` -ge '1' ]]; then
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 云端API下载完成,开始获取固件信息]"
   sleep 3
+else
+  ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取数据失败,Github地址不正确,或此地址没云端存在,或您的仓库为私库,或网络抽风了再试试看!]"
+  exit 1
 fi
 
 case "${TARGET_BOARD}" in
@@ -222,8 +220,6 @@ kk=$(grep "${local_firmw}" "${GUJIAN_liebiaoone}")
 sed -i "/${kk}/d" "${GUJIAN_liebiaoone}"
 sed -i "1i${kk}" "${GUJIAN_liebiaoone}"
 sed -i s/[[:space:]]//g "${GUJIAN_liebiaoone}"
-LOCAL_Version=$(echo "${CURRENT_Version}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
-CLOUD_Version=$(echo "${kk}"|egrep -o [0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+[0-9]+)
 cat "${GUJIAN_liebiaoone}" |awk '$0=NR" "$0' > ${GUJIAN_liebiaotwo}
 XYZDSZ="$(cat "${GUJIAN_liebiaotwo}" | awk 'END {print}' |awk '{print $(1)}')"
 }
@@ -358,20 +354,8 @@ function Bendi_xuanzhe() {
   cat "${GUJIAN_liebiaoone}" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   ECHOG " ******************************************************************" 
   ECHOB " 请输入您要升级固件名称前面对应的数值(1~X),输入[0或N]则为退出程序"
-  if [[ "${XYZDSZ}" -eq "1" ]]; then
-    echo
-    ECHOYY " 没发现其他源码作者的固件,需要转换的话请先编译其他作者源码的固件"
-    if [[ "${LOCAL_Version}" -eq "${CLOUD_Version}" ]]; then
-      ECHOG " 您当前版本与云端版本一致,无升级必要"
-    elif [[ "${LOCAL_Version}" -lt "${CLOUD_Version}" ]]; then
-      ECHOG " 发现云端有最新版本,您可以进行升级"
-    elif [[ "${LOCAL_Version}" -gt "${CLOUD_Version}" ]]; then
-      ECHOG " 不得了啊,您现在所用版本比云端最高版本还高呢!"
-    fi
-  else
-    ECHOG " 第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
-    ECHOG " 其他的固件因为作者或者LUCI不同型号，都不保留配置升级"
-  fi
+  ECHOG " 有多选时,第一个为您现在所用固件的同类型，可进行选择保留配置或者不保留配置升级"
+  ECHOG " 其他的固件因为作者或者LUCI不同型号，都不保留配置升级"
   echo
   export YUMINGIP="  请输入数字(1~N)"
   while :; do
@@ -401,7 +385,7 @@ function Bendi_xuanzhe() {
   break
   ;;
   *)
-    export YUMINGIP="  敬告,请输入正确数值"
+    export YUMINGIP="  敬告,请输入正确数值："
   ;;
   esac
   done
@@ -432,7 +416,7 @@ function menu() {
   break
   ;;
   *)
-    XUANZop="请输入正确的数字编号"
+    XUANZop="请输入正确的数字编号："
   ;;
   esac
   done
