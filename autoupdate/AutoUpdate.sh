@@ -38,8 +38,6 @@ if [[ -f "${API_PATH}" ]] && [[ `grep -c "url" ${API_PATH}` -ge '1' ]]; then
 else
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
   exit 1
-else
-  echo "云端API下载完成,开始获取固件信息" > /tmp/cloud_version
 fi
 
 case "${TARGET_BOARD}" in
