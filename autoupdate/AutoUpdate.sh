@@ -26,14 +26,16 @@ if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
 fi
 
 if [[ "${CHN_NET}" == "1" ]]; then
-  wget -q ${Github_API2} -O ${API_PATH}
+  curl -fsSL -o ${API_PATH} ${Github_API2}
 else
-  wget -q ${Github_API1} -O ${API_PATH}
+  curl -fsSL -o ${API_PATH} ${Github_API1}
 fi
 if [[ $? -ne 0 ]];then
   wget -q ${Github_API2} -O ${API_PATH}
 fi
-if [[ $? -ne 0 ]];then
+if [[ -f "${API_PATH}" ]] && [[ `grep -c "url" ${API_PATH}` -ge '1' ]]; then
+  echo "获取API数据成功!" > /tmp/cloud_version
+else
   echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
   exit 1
 else
@@ -102,9 +104,9 @@ else
   DOWNLOAD=${Release_download}
 fi
 echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]" >> /tmp/AutoUpdate.log
-wget -q "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
+curl -fsSL -o ${CLOUD_Firmware} ${DOWNLOAD}/${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
-  curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
+  wget -q "${DOWNLOAD}/${CLOUD_Firmware}" -O ${CLOUD_Firmware}
 fi
 if [[ $? -ne 0 ]];then
   echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件失败,请检查网络再尝试或手动安装固件]" >> /tmp/AutoUpdate.log
