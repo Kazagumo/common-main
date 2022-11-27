@@ -83,21 +83,21 @@ function Diy_Part2() {
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
 
 tee -a "${In_Firmware_Info}" << EOF > /dev/null
-GITHUB_LINK=${GITHUB_LINK}
-SOURCE=${SOURCE}
-LUCI_EDITION=${LUCI_EDITION}
-DEFAULT_Device=${TARGET_PROFILE}
-Firmware_SFX=${Firmware_SFX}
-TARGET_BOARD=${TARGET_BOARD}
-CURRENT_Version=${Openwrt_Version}
-CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
-Download_Path=/tmp/Downloads
-Version=${AutoUpdate_Version}
-API_PATH=${API_PATH}
-Github_API1=${Github_API1}
-Github_API2=${Github_API2}
-Github_Release=${Github_Release}
-Release_download=${Release_download}
+GITHUB_LINK="${GITHUB_LINK}"
+SOURCE="${SOURCE}"
+LUCI_EDITION="${LUCI_EDITION}"
+DEFAULT_Device="${TARGET_PROFILE}"
+Firmware_SFX="${Firmware_SFX}"
+TARGET_BOARD="${TARGET_BOARD}"
+CURRENT_Version="${Openwrt_Version}"
+CLOUD_CHAZHAO="${CLOUD_CHAZHAO}"
+Download_Path="/tmp/Downloads"
+Version="${AutoUpdate_Version}"
+API_PATH="${API_PATH}"
+Github_API1="${Github_API1}"
+Github_API2="${Github_API2}"
+Github_Release="${Github_Release}"
+Release_download="${Release_download}"
 EOF
 	bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/autoupdate/replacebianliang.sh)
 	sudo chmod +x ${In_Firmware_Info}
