@@ -82,7 +82,7 @@ function Diy_Part2() {
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
 
-tee -a "${In_Firmware_Info}" << EOF > /dev/null
+tee "${In_Firmware_Info}" << EOF > /dev/null
 GITHUB_LINK="${GITHUB_LINK}"
 SOURCE="${SOURCE}"
 LUCI_EDITION="${LUCI_EDITION}"
