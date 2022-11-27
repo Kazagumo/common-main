@@ -4,12 +4,6 @@
 START=99
 
 run_zzz_default() {
-    
-	if [ -f "/etc/default-setting" ]; then
-		/etc/default-setting
-                rm -rf /etc/default-setting
-	fi
-	
 	if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
 		echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
 		/etc/init.d/cron restart
@@ -28,8 +22,7 @@ run_zzz_default() {
 }
 
 start()
-{       
-	Postapplication
+{
 	run_autotimeset
 }
 
