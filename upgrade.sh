@@ -8,7 +8,6 @@ function Diy_Part1() {
 	find . -name 'luci-app-autoupdate' | xargs -i rm -rf {}
 	echo "正在执行：给源码增加定时更新固件插件和设置插件和ttyd成默认自选"
 	git clone -b ceshi https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
-	[[ ! -d "$FILES_PATH/usr/bin" ]] && mkdir -p $FILES_PATH/usr/bin
 	if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
 		sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
 	fi
@@ -25,7 +24,7 @@ function Diy_Part2() {
 	Github_Release="${GITHUB_LINK}/releases/tag/${TARGET_BOARD}"
 	Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
 	Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${TARGET_BOARD}"
-	Github_API2="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
+	Github_API2="https://ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
 	API_PATH="/tmp/Downloads/zzz_api"
 	Release_download="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
 	LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
