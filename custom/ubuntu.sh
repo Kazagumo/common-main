@@ -36,15 +36,6 @@ node --version
 yarn --version
 }
 
-svn co -r19250 "https://github.com/openwrt/luci/trunk/modules/luci-base/src" "po2lmo" > /dev/null 2>&1
-pushd "po2lmo"
-make po2lmo
-rm -rf "/usr/bin/po2lmo"
-cp -fp "po2lmo" "/usr/bin/po2lmo"
-popd
-
-sudo rm -rf po2lmo
-
 ${INS} autoremove -y --purge
 ${INS} clean
 
