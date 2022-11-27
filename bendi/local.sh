@@ -183,7 +183,7 @@ cd ${GITHUB_WORKSPACE}
 export BENDI_SHANCHUBAK="1"
 if [[ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]]; then
   ECHOG "下载DIY-SETUP自定义配置文件"
-  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/tongbu.sh)
+  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh)
   judge "DIY-SETUP自定义配置文件下载"
   source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
@@ -194,7 +194,7 @@ fi
 function Bendi_Tongbu() {
 cd ${GITHUB_WORKSPACE}
 echo "开始同步上游DIY-SETUP文件"
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/tongbu.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh)
 if [[ $? -ne 0 ]]; then
   ECHOB "同步上游仓库失败，请检查网络"
 else
