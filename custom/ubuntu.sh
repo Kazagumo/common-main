@@ -55,7 +55,6 @@ function main(){
 	install_mustrelyon
 	ophub_amlogic-s9xxx
 	update_apt_source
-	install_dependencies
 }
 
 main
