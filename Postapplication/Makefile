@@ -24,7 +24,7 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_BIN) ./files/default-setting $(1)/etc/uci-defaults/66-default-settings
+	$(INSTALL_BIN) ./files/default-setting $(1)/etc/uci-defaults/66-default-setting
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
