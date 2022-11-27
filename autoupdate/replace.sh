@@ -65,6 +65,17 @@ ECHOY " 开始执行资料读取,读取完毕显示选择固件界面"
 
 source /etc/openwrt_update
 
+A="$(wget -V |grep 'GNU Wget' |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")"
+B="1.16.1"
+if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1>num2)?"0":"1"}'` -eq '0' ]]; then
+  WGETGNU="wget -q --show-progress"
+  WGETO="-O"
+else
+  WGETGNU="curl -# -L"
+  WGETO="-o"
+fi
+
+
 Kernel=$(grep 'Version' /usr/lib/opkg/info/kernel.control |egrep -o "[0-9]+\.[0-9]+\.[0-9]+")
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -rf "${Download_Path}"/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
@@ -74,12 +85,18 @@ GUJIAN_liebiaotwo="${Download_Path}/gujianliebiaotwo"
 
 ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 检测您网络是否联网]"
 sleep 2
-curl -s "myip.ipip.net" | grep -qo "中国" && CHN_NET=1
-if [[ ! "${CHN_NET}" == "1" ]]; then
-  curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || wangluo='1'
+wget -qT 10 --no-check-certificate ${Github_API1} -O ${API_PATH}
+if [[ -f "${API_PATH}" ]] && [[ `grep -c "url" ${API_PATH}` -ge '1' ]]; then
+  CHN_NET="1"
+else
+  CHN_NET="0"
+fi
+
+if [[ "${CHN_NET}" == "0" ]]; then
+  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 fi
 if [[ "${wangluo}" == "1" ]]; then
-  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='2'
+  curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您可能没进行联网,请检查网络?"
@@ -97,13 +114,13 @@ if [ ! "${Google_Check}" == 301 ]; then
   sleep 2
   ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
   sleep 2
-  curl -fsSL -o ${API_PATH} ${Github_API2}
+  ${WGETGNU} ${Github_API2} ${WGETO} ${API_PATH}
 else
   DOWNLOAD=${Release_download}
   ECHOB "[$(date "+%Y年%m月%d日%H时%M分%S秒") 您的网络可畅游全世界!]"
   sleep 2
   ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 获取云端API]"
-  curl -fsSL -o ${API_PATH} ${Github_API1}
+  ${WGETGNU} ${Github_API1} ${WGETO} ${API_PATH}
 fi
 
 if [[ -f "${API_PATH}" ]] && [[ `grep -c "url" ${API_PATH}` -ge '1' ]]; then
@@ -274,9 +291,9 @@ fi
 cd "${Download_Path}"
 ECHOG "[$(date "+%Y年%m月%d日%H时%M分%S秒") 正在下载云端固件,请耐心等待..]"
 echo
-curl -# -L -O ${DOWNLOAD}/${CLOUD_Firmware}
+${WGETGNU} ${DOWNLOAD}/${CLOUD_Firmware} ${WGETO} ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
-  curl -fsSL -o ${CLOUD_Firmware} ${DOWNLOAD}/${CLOUD_Firmware}
+  wget --no-check-certificate ${DOWNLOAD}/${CLOUD_Firmware} -O ${CLOUD_Firmware}
 fi
 if [[ $? -ne 0 ]];then
   ECHOR "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件失败,请检查网络再尝试或手动安装固件]"
