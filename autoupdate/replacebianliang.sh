@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tee -a "/home/danshui/lede/package/base-files/files/etc/openwrt_update" << EOF > /dev/null
+tee -a "${In_Firmware_Info}" << EOF > /dev/null
 ledezx="18.06-Lede"
 lienolzx1="17.01-Lienol"
 lienolzx2="19.07-Lienol"
