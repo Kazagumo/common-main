@@ -36,16 +36,6 @@ node --version
 yarn --version
 }
 
-function install_dependencies(){
-svn co -r96154 "https://github.com/openwrt/openwrt/trunk/tools/padjffs2/src" "padjffs2" > /dev/null 2>&1
-pushd "padjffs2"
-make
-rm -rf "/usr/bin/padjffs2"
-cp -fp "padjffs2" "/usr/bin/padjffs2"
-popd
-
-sudo rm -rf padjffs2
-
 svn co -r19250 "https://github.com/openwrt/luci/trunk/modules/luci-base/src" "po2lmo" > /dev/null 2>&1
 pushd "po2lmo"
 make po2lmo
@@ -54,10 +44,6 @@ cp -fp "po2lmo" "/usr/bin/po2lmo"
 popd
 
 sudo rm -rf po2lmo
-
-curl -fL "https://build-scripts.immortalwrt.eu.org/modify-firmware.sh" -o "/usr/bin/modify-firmware"
-chmod 0755 "/usr/bin/modify-firmware"
-popd
 
 ${INS} autoremove -y --purge
 ${INS} clean
