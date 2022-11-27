@@ -13,25 +13,29 @@ opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 PKG_List="${Download_Path}/Installed_PKG_List"
 
 
-curl -s "myip.ipip.net" | grep -qo "中国" && CHN_NET=1
-if [[ ! "${CHN_NET}" == "1" ]]; then
-  curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || wangluo='1'
+wget -qT 10 --no-check-certificate ${Github_API1} -O ${API_PATH}
+if [[ -f "${API_PATH}" ]] && [[ `grep -c "url" ${API_PATH}` -ge '1' ]]; then
+  CHN_NET="1"
+else
+  CHN_NET="0"
+fi
+
+if [[ "${CHN_NET}" == "0" ]]; then
+  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='1'
 fi
 if [[ "${wangluo}" == "1" ]]; then
-  curl --connect-timeout 10 "baidu.com" > "/dev/null" 2>&1 || wangluo='2'
+  curl --connect-timeout 10 "google.com" > "/dev/null" 2>&1 || wangluo='2'
 fi
 if [[ "${wangluo}" == "1" ]] && [[ "${wangluo}" == "2" ]]; then
   echo "您可能没进行联网,请检查网络?" > /tmp/cloud_version
   exit 1
 fi
 
-if [[ "${CHN_NET}" == "1" ]]; then
-  curl -fsSL -o ${API_PATH} ${Github_API2}
-else
-  curl -fsSL -o ${API_PATH} ${Github_API1}
+if [[ "${CHN_NET}" == "0" ]]; then
+  wget -q --no-check-certificate ${Github_API2} -O ${API_PATH}
 fi
 if [[ $? -ne 0 ]];then
-  wget -q ${Github_API2} -O ${API_PATH}
+  curl -fsSL -o ${API_PATH} ${Github_API2}
 fi
 if [[ -f "${API_PATH}" ]] && [[ `grep -c "url" ${API_PATH}` -ge '1' ]]; then
   echo "获取API数据成功!" > /tmp/cloud_version
@@ -113,7 +117,6 @@ else
   echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件成功!]" >> /tmp/AutoUpdate.log
 fi
 
-
 cd "${Download_Path}"
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
@@ -121,9 +124,9 @@ if [ ! "${Google_Check}" == 301 ]; then
 else
   DOWNLOAD=${Release_download}
 fi
-curl -fsSL -o ${CLOUD_Firmware} ${DOWNLOAD}/${CLOUD_Firmware}
+wget -q --no-cookie --no-check-certificate ${DOWNLOAD}/${CLOUD_Firmware} -O ${CLOUD_Firmware}
 if [[ $? -ne 0 ]];then
-  curl -# -L -O "${DOWNLOAD}/${CLOUD_Firmware}"
+  curl -fsSL -o ${CLOUD_Firmware} ${DOWNLOAD}/${CLOUD_Firmware}
 fi
 if [[ $? -ne 0 ]];then
   echo "[$(date "+%Y年%m月%d日%H时%M分%S秒") 下载云端固件失败,请检查网络再尝试或手动安装固件]" >> /tmp/AutoUpdate.log
