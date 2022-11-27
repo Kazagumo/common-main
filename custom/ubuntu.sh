@@ -34,7 +34,6 @@ ${INS} install -y yarn
 
 node --version
 yarn --version
-}
 
 ${INS} autoremove -y --purge
 ${INS} clean
