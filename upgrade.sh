@@ -20,17 +20,17 @@ function Diy_Part1() {
 
 
 function Diy_Part2() {
-	In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
-	Github_Release="${GITHUB_LINK}/releases/tag/${TARGET_BOARD}"
-	Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
-	Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${TARGET_BOARD}"
-	Github_API2="https://ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
-	API_PATH="/tmp/Downloads/zzz_api"
-	Release_download="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
-	LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
-	CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
-	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
-	echo "Github_Release=${Github_Release}" >> ${GITHUB_ENV}
+	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
+	export Github_Release="${GITHUB_LINK}/releases/tag/${TARGET_BOARD}"
+	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
+	export Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${TARGET_BOARD}"
+	export Github_API2="https://ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
+	export API_PATH="/tmp/Downloads/zzz_api"
+	export Release_download="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
+	export LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
+	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
+	export echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
+	export echo "Github_Release=${Github_Release}" >> ${GITHUB_ENV}
 	
 	
 	case "${TARGET_BOARD}" in
@@ -99,6 +99,7 @@ Github_API2=${Github_API2}
 Github_Release=${Github_Release}
 Release_download=${Release_download}
 EOF
+	bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/autoupdate/replacebianliang.sh)
 	sudo chmod +x ${In_Firmware_Info}
 }
 
