@@ -84,12 +84,12 @@ function Diy_Part2() {
 
 cat >"${In_Firmware_Info}" <<-EOF
 GITHUB_LINK=${GITHUB_LINK}
+CURRENT_Version=${Openwrt_Version}
 SOURCE="${SOURCE}"
 LUCI_EDITION="${LUCI_EDITION}"
 DEFAULT_Device="${TARGET_PROFILE}"
 Firmware_SFX="${Firmware_SFX}"
 TARGET_BOARD="${TARGET_BOARD}"
-CURRENT_Version="${Openwrt_Version}"
 CLOUD_CHAZHAO="${CLOUD_CHAZHAO}"
 Download_Path="/tmp/Downloads"
 Version="${AutoUpdate_Version}"
