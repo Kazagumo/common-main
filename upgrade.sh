@@ -84,7 +84,7 @@ function Diy_Part2() {
 
 cat >"${In_Firmware_Info}" <<-EOF
 GITHUB_LINK=${GITHUB_LINK}
-SOURCE=${SOURCE}
+SOURCE="${SOURCE}"
 LUCI_EDITION="${LUCI_EDITION}"
 DEFAULT_Device="${TARGET_PROFILE}"
 Firmware_SFX="${Firmware_SFX}"
