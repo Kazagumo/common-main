@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo tee -a "/etc/openwrt_update" << EOF > /dev/null
+tee -a "/etc/openwrt_update" << EOF > /dev/null
 ledezx="18.06-Lede"
 lienolzx1="17.01-Lienol"
 lienolzx2="19.07-Lienol"
