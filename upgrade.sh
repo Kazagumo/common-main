@@ -108,17 +108,21 @@ EOF
 }
 
 function Diy_Part3() {
+	echo "1"
 	BIN_PATH="${HOME_PATH}/bin/Firmware"
+	echo "2"
 	echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
+	echo "3"
 	[[ ! -d "${BIN_PATH}" ]] && mkdir -p "${BIN_PATH}" || rm -rf "${BIN_PATH}"/*
-	
+	echo "4"
 	cd "${FIRMWARE_PATH}"
 	if [[ `ls -1 |grep -c ".img"` -ge '1' ]] && [[ `ls -1 |grep -c ".img.gz"` -eq '0' ]]; then
 		gzip *.img
 	fi
-	
+	echo "5"
 	case "${TARGET_BOARD}" in
 	x86)
+		echo "6"
 		EFI_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*efi.*img.gz)"
 		echo "看看1固件信息，${EFI_ZHONGZHUAN}"
 		if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
