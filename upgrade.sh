@@ -122,10 +122,10 @@ function Diy_Part3() {
 		  EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
 		  echo "看看1MD5信息，${EFIMD5}"
 		  cp -Rf "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}"
-		  if [[ -f "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}" ]]
+		  if [[ -f "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}" ]]; then
 		    echo "固件到了 ${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}?"
-		  else
 		    echo "既然没固件 ${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}?"
+		  else
 		    echo "固件不能复制么?那我用中国移动看看"
 		    mv -f "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}"
 		    if [[ -f "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}" ]]; then
@@ -144,7 +144,7 @@ function Diy_Part3() {
 		  LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
 		  echo "看看2MD5信息，${LEGAMD5}"
 		  cp -Rf "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}"
-		  if [[ -f "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}" ]]
+		  if [[ -f "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}" ]]; then
 		    echo "固件到了 ${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}?"
 		  else
 		    echo "既然没固件 ${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}?"
