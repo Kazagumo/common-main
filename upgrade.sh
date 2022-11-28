@@ -11,7 +11,7 @@ function Diy_Part1() {
 	if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
 		sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
 	fi
-	if [[ -d "$HOME_PATH/package/luci-app-autoupdate" ]]; then
+	if [[ -d "${HOME_PATH}/package/luci-app-autoupdate" ]]; then
 		echo "增加定时更新固件的插件成功"
 	else
 		echo "插件源码下载失败"
@@ -157,4 +157,5 @@ function Diy_Part3() {
 		fi
 	;;
 	esac
+	cd ${HOME_PATH}
 }
