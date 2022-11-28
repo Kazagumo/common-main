@@ -118,7 +118,7 @@ function Diy_Part3() {
 		EFI_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*efi.*img.gz)"
 		if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
 		  EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
-		  cp ${EFI_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}
+		  cp "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}"
 		else
 		  echo "没找到uefi固件"
 		fi
@@ -126,7 +126,7 @@ function Diy_Part3() {
 		LEGA_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*img.gz |grep -v rootfs |grep -v efi)"
 		if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
 		  LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
-		  cp ${LEGA_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}
+		  cp -Rf "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}"
 		else
 		  echo "没找到legacy固件"
 		fi
@@ -138,7 +138,7 @@ function Diy_Part3() {
 		fi
 		if [[ -f "${UP_ZHONGZHUAN}" ]]; then
 		  MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
-		  cp ${UP_ZHONGZHUAN} ${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}
+		  cp "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}"
 		else
 		  echo "没找到固件"
 		fi
