@@ -1400,7 +1400,7 @@ fi
 
 function Diy_upgrade3() {
 if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
-  echo "#### ${TARGET_BOARD}架构云端固件,最新发布于$(date +"%Y年%m月%d号-%H点%M分")" > AutoUpdate_log.txt
+  cd ${HOME_PATH}
   source ${BUILD_PATH}/upgrade.sh && Diy_Part3
 fi
 }
