@@ -259,6 +259,7 @@ TIME r ""
 
 
 function Diy_wenjian() {
+cd ${HOME_PATH}
 # 拉取源码之后增加应用文件
 
 rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
@@ -293,6 +294,7 @@ EOF
 
 
 function Diy_clean() {
+cd ${HOME_PATH}
 if [[ -n "${BENDI_VERSION}" ]]; then
   ./scripts/feeds clean
   ./scripts/feeds update -a
@@ -304,6 +306,7 @@ fi
 
 
 function Diy_COOLSNOWWOLF() {
+cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（LEDE）
   find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
@@ -324,6 +327,7 @@ fi
 
 
 function Diy_LIENOL() {
+cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（Lienol）
   find . -name 'luci-app-ttyd' -o -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
@@ -379,6 +383,7 @@ fi
 
 
 function Diy_IMMORTALWRT() {
+cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（天灵）
   find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
@@ -438,6 +443,7 @@ fi
 
 
 function Diy_XWRT() {
+cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（X-WRT）
   find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
@@ -472,6 +478,7 @@ fi
 
 
 function Diy_OFFICIAL() {
+cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（X-WRT）
   find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
@@ -513,6 +520,7 @@ fi
 
 
 function Diy_AMLOGIC() {
+cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（LEDE - N1等）
   find . -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
@@ -547,6 +555,7 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 
 
 function Diy_distrib() {
+cd ${HOME_PATH}
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
   #No action required
@@ -580,6 +589,7 @@ esac
 
 
 function Diy_chajianyuan() {
+cd ${HOME_PATH}
 case "${COLLECTED_PACKAGES}" in
 true)
 echo "正在执行：给feeds.conf.default增加插件源"
@@ -611,6 +621,7 @@ esac
 
 
 function Diy_files() {
+cd ${HOME_PATH}
 echo "正在执行：files大法，设置固件无烦恼"
 if [[ -n "${BENDI_VERSION}" ]]; then
   cp -Rf ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/* ${BUILD_PATH}/
@@ -634,6 +645,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
 
 
 function Diy_Publicarea() {
+cd ${HOME_PATH}
 # diy-part.sh文件的延伸
 rm -rf ${HOME_PATH}/CHONGTU && touch ${HOME_PATH}/CHONGTU
 sed -i '/lan.gateway=/d' "${GENE_PATH}"
@@ -921,15 +933,16 @@ fi
 
 function Diy_upgrade1() {
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
+  cd ${HOME_PATH}
   source ${BUILD_PATH}/upgrade.sh && Diy_Part1
 fi
 }
 
 
 function Diy_Language() {
+cd ${HOME_PATH}
 if [[ "$(. ${FILES_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" != "18" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
-  cd ${HOME_PATH}
   cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
   sudo chmod +x ${HOME_PATH}/zh_Hans.sh
   /bin/bash ${HOME_PATH}/zh_Hans.sh
@@ -939,6 +952,7 @@ fi
 
 
 function Diy_feeds() {
+cd ${HOME_PATH}
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
 ./scripts/feeds update -a
@@ -960,6 +974,7 @@ fi
 
 
 function Diy_IPv6helper() {
+cd ${HOME_PATH}
 if [[ "${Package_IPv6helper}" == "1" ]] || [[ "${Create_IPV6_interface}" == "1" ]]; then
 echo '
 CONFIG_PACKAGE_ipv6helper=y
@@ -976,6 +991,7 @@ fi
 
 
 function Diy_prevent() {
+cd ${HOME_PATH}
 Diy_IPv6helper
 echo "正在执行：判断插件有否冲突减少编译错误"
 make defconfig > /dev/null 2>&1
@@ -1200,6 +1216,7 @@ cd ${HOME_PATH}
 
 
 function Make_defconfig() {
+cd ${HOME_PATH}
 echo "正在执行：识别源码编译为何机型"
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
@@ -1230,6 +1247,7 @@ echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 
 
 function Diy_Publicarea2() {
+cd ${HOME_PATH}
 if [[ "${Delete_NotRequired}" == "1" ]]; then
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
 fi
@@ -1259,6 +1277,7 @@ fi
 
 
 function Diy_adguardhome() {
+cd ${HOME_PATH}
 if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_amd64"
   Archclash="linux-amd64"
@@ -1353,6 +1372,7 @@ fi
 
 
 function Diy_upgrade2() {
+cd ${HOME_PATH}
 sed -i '/#\!\/bin\//d' "${DEFAULT_PATH}"
 sed -i '1i\#!/bin/sh' "${DEFAULT_PATH}"
 sed -i 's/^[ ]*//g' "${DEFAULT_PATH}"
