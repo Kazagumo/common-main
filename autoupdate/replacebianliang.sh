@@ -1,8 +1,9 @@
 #!/bin/bash
 
+tee -a "${In_Firmware_Info}" << EOF > /dev/null
 ledezx="18.06-Lede"
-lienolzx1="17.01-Lienol"
-lienolzx2="19.07-Lienol"
+lienolzx1="19.07-Lienol"
+lienolzx2="19.07-cannotuse-Lienol"
 lienolzx3="21.02-Lienol"
 lienolzx4="master-Lienol"
 immortalwrtzx1="18.06-Immortalwrt"
@@ -42,3 +43,5 @@ xwrtzx26="pr-ipq40xx-rt-ac42u-Xwrt"
 xwrtzx27="pr-rm-ax6000-Xwrt"
 xwrtzx28="switch_ports_status-Xwrt"
 xwrtzx29="switch-Xwrt"
+EOF
+exit 0
