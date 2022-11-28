@@ -29,8 +29,6 @@ function Diy_Part2() {
 	export Release_download="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
 	export LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
 	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
-	export echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
-	export echo "Github_Release=${Github_Release}" >> ${GITHUB_ENV}
 	
 	
 	case "${TARGET_BOARD}" in
@@ -69,7 +67,6 @@ function Diy_Part2() {
 	;;
 	esac
 	
-	
 	if [[ -f "$FILES_PATH/usr/bin/AutoUpdate" ]]; then
 	  export AutoUpdate_Version=$(egrep -o "Version=V[0-9]\.[0-9]" $FILES_PATH/usr/bin/AutoUpdate |cut -d "=" -f2 | sed 's/^.//g')
 	else
@@ -79,8 +76,12 @@ function Diy_Part2() {
 	[[ -n "${AutoBuild_Uefi}" ]] && echo "AutoBuild_Uefi=${AutoBuild_Uefi}" >> ${GITHUB_ENV}
 	[[ -n "${AutoBuild_Legacy}" ]] && echo "AutoBuild_Legacy=${AutoBuild_Legacy}" >> ${GITHUB_ENV}
 	[[ -n "${AutoBuild_Firmware}" ]] && echo "AutoBuild_Firmware=${AutoBuild_Firmware}" >> ${GITHUB_ENV}
+	
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
+	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
+	echo "Github_Release=${Github_Release}" >> ${GITHUB_ENV}
+
 
 cat >"${In_Firmware_Info}" <<-EOF
 GITHUB_LINK=${GITHUB_LINK}
