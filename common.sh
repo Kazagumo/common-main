@@ -55,11 +55,11 @@ LIENOL)
     export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "19.07-cannotuse" ]]; then
     export PACKAGE_BRANCH="19.07"
-    export LUCI_EDITION="19.07"
+    export LUCI_EDITION="19.07-cannotuse"
     export DIY_WORK="${FOLDER_NAME}CANNO"
   elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
     export PACKAGE_BRANCH="19.07"
-    export LUCI_EDITION="17.01"
+    export LUCI_EDITION="19.07"
     export DIY_WORK="${FOLDER_NAME}1907"
   fi
 ;;
