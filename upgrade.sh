@@ -120,7 +120,7 @@ function Diy_Part3() {
 	case "${TARGET_BOARD}" in
 	x86)
 		if [[ `ls -1 | grep -c "efi"` -ge '1' ]]; then
-			EFI_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*efi.*img.gz)"
+			EFI_ZHONGZHUAN="$(ls -1 |egrep .*squashfs.*efi.*img.gz)"
 			if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
 		  		EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
 		  		cp -Rf "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}"
@@ -129,12 +129,14 @@ function Diy_Part3() {
 			echo "没找到uefi固件"
 		fi
 		
-		LEGA_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*img.gz |grep -v rootfs |grep -v efi)"
-		if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
-		  LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
-		  cp -Rf "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}"
+		if [[ `ls -1 | grep -c "squashfs"` -ge '1' ]]; then
+			LEGA_ZHONGZHUAN="$(ls -1 |egrep .*squashfs.*img.gz |grep -v rootfs |grep -v efi)"
+			if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
+				LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
+				cp -Rf "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}"
+			fi
 		else
-		  echo "没找到legacy固件"
+			echo "没找到可用固件"
 		fi
 	;;
 	*)
