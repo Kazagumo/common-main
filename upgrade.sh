@@ -124,25 +124,29 @@ function Diy_Part3() {
 			if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
 		  		EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
 		  		cp -Rf "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}"
+			else
+				echo "没找到可用的.img.gz格式"
 			fi
 		else
 			echo "没找到uefi固件"
 		fi
 		
 		if [[ `ls -1 | grep -c "squashfs"` -ge '1' ]]; then
-			LEGA_ZHONGZHUAN="$(ls -1 |egrep .*squashfs.*img.gz |grep -v rootfs |grep -v efi)"
+			LEGA_ZHONGZHUAN="$(ls -1 |egrep .*squashfs.*img.gz |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|root")"
 			if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
 				LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
 				cp -Rf "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}"
+			else
+				echo "没找到可用的.img.gz格式"
 			fi
 		else
 			echo "没找到可用固件"
 		fi
 	;;
 	*)
-		UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*sysupgrade${Firmware_SFX} |grep -v rootfs |grep -v ext4  |grep -v factory)"
+		UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*sysupgrade${Firmware_SFX} |grep -v "rootfs\|ext4\|factory")"
 		if [[ ! -f "${UP_ZHONGZHUAN}" ]]; then
-		  UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX} |grep -v rootfs |grep -v ext4  |grep -v factory)"
+		  UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX} |grep -v "rootfs\|ext4\|factory")"
 		fi
 		if [[ -f "${UP_ZHONGZHUAN}" ]]; then
 		  MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
