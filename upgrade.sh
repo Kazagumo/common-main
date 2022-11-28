@@ -153,7 +153,7 @@ function Diy_Part3() {
 			MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
 			cp -Rf "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}"
 		else
-			echo "没找到固件"
+			echo "没找到可用固件"
 		fi
 	;;
 	esac
