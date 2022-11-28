@@ -108,61 +108,31 @@ EOF
 }
 
 function Diy_Part3() {
-	echo "1"
 	BIN_PATH="${HOME_PATH}/bin/Firmware"
-	echo "2"
 	echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
-	echo "3"
 	[[ ! -d "${BIN_PATH}" ]] && mkdir -p "${BIN_PATH}" || rm -rf "${BIN_PATH}"/*
-	echo "4"
+	
 	cd "${FIRMWARE_PATH}"
 	if [[ `ls -1 |grep -c ".img"` -ge '1' ]] && [[ `ls -1 |grep -c ".img.gz"` -eq '0' ]]; then
 		gzip *.img
 	fi
-	echo "5"
+	
 	case "${TARGET_BOARD}" in
 	x86)
-		echo "6"
-		EFI_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*efi.*img.gz)"
-		echo "看看1固件信息，${EFI_ZHONGZHUAN}"
-		if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
-		  EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
-		  echo "看看1MD5信息，${EFIMD5}"
-		  cp -Rf "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}"
-		  if [[ -f "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}" ]]; then
-		    echo "固件到了 ${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}?"
-		    echo "既然没固件 ${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}?"
-		  else
-		    echo "固件不能复制么?那我用中国移动看看"
-		    mv -f "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}"
-		    if [[ -f "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}" ]]; then
-		      echo "中国移动果然行"
-		    else
-		      echo "中国移动也不行啊"
-		    fi
-		  fi
+		if [[ `ls -1 | grep -c "efi"` -ge '1' ]]; then
+			EFI_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*efi.*img.gz)"
+			if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
+		  		EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
+		  		cp -Rf "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}"
+			fi
 		else
-		  echo "没找到uefi固件"
+			echo "没找到uefi固件"
 		fi
 		
 		LEGA_ZHONGZHUAN="$(ls -1 |egrep .*x86.*squashfs.*img.gz |grep -v rootfs |grep -v efi)"
-		echo "看看2固件信息，${EFI_ZHONGZHUAN}"
 		if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
 		  LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
-		  echo "看看2MD5信息，${LEGAMD5}"
 		  cp -Rf "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}"
-		  if [[ -f "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}" ]]; then
-		    echo "固件到了 ${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}?"
-		  else
-		    echo "既然没固件 ${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}?"
-		    echo "固件不能复制么?那我用中国移动看看"
-		    mv -f "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}"
-		    if [[ -f "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}" ]]; then
-		      echo "中国移动果然行"
-		    else
-		      echo "中国移动也不行啊"
-		    fi
-		  fi
 		else
 		  echo "没找到legacy固件"
 		fi
@@ -180,5 +150,4 @@ function Diy_Part3() {
 		fi
 	;;
 	esac
-	cd ${HOME_PATH}
 }
