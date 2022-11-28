@@ -73,9 +73,12 @@ function Diy_Part2() {
 	  export AutoUpdate_Version="7.1"
 	fi
 	
-	[[ -n "${AutoBuild_Uefi}" ]] && echo "AutoBuild_Uefi=${AutoBuild_Uefi}" >> ${GITHUB_ENV}
-	[[ -n "${AutoBuild_Legacy}" ]] && echo "AutoBuild_Legacy=${AutoBuild_Legacy}" >> ${GITHUB_ENV}
-	[[ -n "${AutoBuild_Firmware}" ]] && echo "AutoBuild_Firmware=${AutoBuild_Firmware}" >> ${GITHUB_ENV}
+	if [[ "${TARGET_BOARD}" == "x86" ]]; then
+	  echo "AutoBuild_Uefi=${AutoBuild_Uefi}" >> ${GITHUB_ENV}
+	  echo "AutoBuild_Legacy=${AutoBuild_Legacy}" >> ${GITHUB_ENV}
+	else
+	  echo "AutoBuild_Firmware=${AutoBuild_Firmware}" >> ${GITHUB_ENV}
+	fi
 	
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
