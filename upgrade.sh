@@ -144,15 +144,16 @@ function Diy_Part3() {
 		fi
 	;;
 	*)
-		UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*sysupgrade${Firmware_SFX} |grep -v "rootfs\|ext4\|factory")"
-		if [[ ! -f "${UP_ZHONGZHUAN}" ]]; then
-		  UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX} |grep -v "rootfs\|ext4\|factory")"
+		if [[ `ls -1 | grep -c "sysupgrade"` -ge '1' ]]; then
+			UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*sysupgrade.*${Firmware_SFX} |grep -v "rootfs\|ext4\|factory")"
+		else
+			UP_ZHONGZHUAN="$(ls -1 |egrep .*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX} |grep -v "rootfs\|ext4\|factory")"
 		fi
 		if [[ -f "${UP_ZHONGZHUAN}" ]]; then
-		  MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
-		  cp -Rf "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}"
+			MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
+			cp -Rf "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}"
 		else
-		  echo "没找到固件"
+			echo "没找到固件"
 		fi
 	;;
 	esac
