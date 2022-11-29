@@ -721,7 +721,7 @@ function Bendi_xuanzhe() {
   echo
   echo -e "${Blue}  请输入您要编译源码前面对应的数值(1~X),输入[N]则为退出程序${Font}"
   echo
-  echo -e "${Green}  跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
+  echo -e "${Green}  您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
   echo
   echo -e "${Red}  如果您在这个步骤自建了机型文件夹,请按[0]回车进行刷新机型列表${Font}"
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
