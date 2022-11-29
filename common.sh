@@ -1146,6 +1146,7 @@ if [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `gre
   echo -e "\nCONFIG_GRUB_IMAGES=y" >> "${HOME_PATH}/.config"
   PARTSIZE="$(egrep -o "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
   if [[ "${PARTSIZE}" -lt "600" ]];then
+    sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
     echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=600" >> ${HOME_PATH}/.config
   fi
 fi
@@ -1155,6 +1156,7 @@ if [[ `grep -c "CONFIG_TARGET_mxs=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `gre
   echo -e "\nCONFIG_GRUB_IMAGES=y" >> "${HOME_PATH}/.config"
   PARTSIZE="$(egrep -o "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
   if [[ "${PARTSIZE}" -lt "600" ]];then
+    sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
     echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=600" >> ${HOME_PATH}/.config
   fi
 fi
@@ -1166,6 +1168,7 @@ if [[ `grep -c "CONFIG_TARGET_armvirt=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${HOME_PATH}/.config"
   PARTSIZE="$(egrep -o "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
   if [[ "${PARTSIZE}" -lt "600" ]];then
+    sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
     echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=600" >> ${HOME_PATH}/.config
   fi
 fi
