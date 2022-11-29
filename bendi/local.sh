@@ -710,6 +710,7 @@ function Bendi_xuanzhe() {
   clear
   echo 
   echo
+  echo "  0、刷新机型列表"
   ls -1 "DIY-SETUP" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   ls -1 "DIY-SETUP" |awk '$0=NR" "$0' > GITHUB_ENN
   XYZDSZ="$(cat GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
