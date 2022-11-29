@@ -23,14 +23,12 @@ if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/cront
   rm -rf /etc/networkdetection
 fi
 
-export luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
-if [[ -f /etc/index.htm ]] && [[ `grep -c "pcdata(ver.distversion)%><!--" "${luci_web}"` -eq '0' ]]; then
-  sed -i 's/distversion)%>/distversion)%><!--/g' /etc/index.htm
-  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' /etc/index.htm
+luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
+if [[ -f /etc/index.htm ]] && [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"` -eq '1' ]]; then
+  sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
   sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' /etc/index.htm
-elif [[ `grep -c "pcdata(ver.distversion)%>" "${luci_web}"` -eq '1' ]] && [[ `grep -c "pcdata(ver.distversion)%><!--" "${luci_web}"` -eq '0' ]]; then
-  sed -i 's/distversion)%>/distversion)%><!--/g' "${luci_web}"
-  sed -i 's/luciversion)%>)/luciversion)%>)-->/g' "${luci_web}"
+elif [[ ! -f /etc/index.htm ]] && [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"` -eq '1' ]]; then
+  sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
   sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "${luci_web}"
 fi
 
