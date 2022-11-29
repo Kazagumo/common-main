@@ -1,7 +1,5 @@
 #!/bin/sh
 
-touch /etc/crontabs/root
-
 chmod -R 0775 /etc/init.d /usr/share
 
 source /etc/openwrt_release
