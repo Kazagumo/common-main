@@ -721,7 +721,7 @@ function Bendi_xuanzhe() {
   echo
   echo -e "${Green}  跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
   echo
-  echo -e "${Red}  如果您在这个步骤自建了机型文件夹,请按[0]回车进行刷新机型选择${Font}"
+  echo -e "${Red}  如果您在这个步骤自建了机型文件夹,请按[0]回车进行刷新机型列表${Font}"
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     echo
     echo -e "${Yellow}  您使用的为WSL系统,若要自行建立文件夹${Font}"
