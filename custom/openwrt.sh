@@ -64,7 +64,7 @@ function xiugai_ip() {
   while :; do
   domainy=""
   read -p " ${YUMING}：" domain
-  if [[ -n "${domain}" ]] && [[ "$(echo ${domain} |egrep -c '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')" == '1' ]]; then
+  if [[ -n "${domain}" ]] && [[ "$(echo ${domain} |grep -Eoc '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')" == '1' ]]; then
     domainy="Y"
   fi
   case $domainy in
