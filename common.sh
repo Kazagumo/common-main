@@ -792,11 +792,6 @@ fi
 if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
    sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
    sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${ZZZ_PATH}"
-   sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${DEFAULT_PATH}"
-   if [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
-     sed -i "s?OpenWrt?immortalwrt?g" "${ZZZ_PATH}"
-     sed -i "s?OpenWrt?immortalwrt?g" "${DEFAULT_PATH}"
-   fi
 fi
 
 if [[ "${Delete_NotRequired}" == "1" ]]; then
