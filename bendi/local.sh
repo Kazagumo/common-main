@@ -710,10 +710,13 @@ function Bendi_xuanzhe() {
   clear
   echo 
   echo
-  echo "  0、刷新机型列表"
-  ls -1 "DIY-SETUP" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
+  jixingliebiao="$(echo "0、刷新机型列表" |awk '{print "  " $0}')"
   ls -1 "DIY-SETUP" |awk '$0=NR" "$0' > GITHUB_ENN
+  ls -1 "DIY-SETUP" > GITHUB_EVN
   XYZDSZ="$(cat GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
+  rm -rf GITHUB_ENN
+  echo "${jixingliebiao}"
+  ls -1 "DIY-SETUP" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   echo
   echo
   echo -e "${Blue}  请输入您要编译源码前面对应的数值(1~X)${Font}"
@@ -747,9 +750,9 @@ function Bendi_xuanzhe() {
   fi
   case $CUrrenty in
   Y)
-    export FOLDER_NAME3="$(grep "${YMXZ}" GITHUB_ENN |awk '{print $(2)}')"
+    export FOLDER_NAME3=$(cat GITHUB_ENN |awk ''NR==${YMXZ}'')
     export FOLDER_NAME="${FOLDER_NAME3}"
-    ECHOY " 您选择了使用 ${FOLDER_NAME3} 编译固件,3秒后将进行启动编译"
+    ECHOY " 您选择了使用 ${FOLDER_NAME} 编译固件,3秒后将进行启动编译"
     rm -rf GITHUB_ENN
     sleep 2
     Bendi_menu
