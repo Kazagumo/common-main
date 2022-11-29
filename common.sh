@@ -1224,6 +1224,19 @@ echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 }
 
+function CPU_Makedefconfig() {
+export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' build/${FOLDER_NAME}/.config)"
+export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' build/${FOLDER_NAME}/.config)"
+if [[ `grep -c "CONFIG_TARGET_x86_64=y" build/${FOLDER_NAME}/.config` -eq '1' ]]; then
+  export TARGET_PROFILE="x86-64"
+elif [[ `grep -c "CONFIG_TARGET_x86=y" build/${FOLDER_NAME}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" build/${FOLDER_NAME}/.config` == '0' ]]; then
+  export TARGET_PROFILE="x86-32"
+elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  export TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+else
+  export TARGET_PROFILE="${TARGET_BOARD}"
+fi
+}
 
 function Diy_Publicarea2() {
 cd ${HOME_PATH}
