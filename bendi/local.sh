@@ -718,6 +718,8 @@ function Bendi_xuanzhe() {
   echo -e "${Blue}  请输入您要编译源码前面对应的数值(1~X),输入[0或N]则为退出程序${Font}"
   echo
   echo -e "${Green}  跟云编译一样,您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
+  echo
+  echo -e "${Red}  如果您在这个步骤自建了机型文件夹,请按[0]回车进行刷新机型选择${Font}"
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     echo
     echo -e "${Yellow}  您使用的为WSL系统,若要自行建立文件夹${Font}"
@@ -729,7 +731,9 @@ function Bendi_xuanzhe() {
   while :; do
   YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
-  if [[ "${YMXZ}" == "0" ]] || [[ "${YMXZ}" == "N" ]] || [[ "${YMXZ}" == "n" ]]; then
+  if [[ "${YMXZ}" == "0" ]]; then
+    CUrrenty="0"
+  elif [[ "${YMXZ}" == "N" ]] || [[ "${YMXZ}" == "n" ]]; then
     CUrrenty="N"
   elif [[ -z "${YMXZ}" ]]; then
     CUrrenty="x"
@@ -752,6 +756,11 @@ function Bendi_xuanzhe() {
     rm -rf GITHUB_ENN
     echo
     exit 0
+  break
+  ;;
+  0)
+    Bendi_xuanzhe
+    echo
   break
   ;;
   *)
