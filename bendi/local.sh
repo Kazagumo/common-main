@@ -205,7 +205,7 @@ fi
 function Bendi_Version() {
   cd ${GITHUB_WORKSPACE}
   if [[ -d "DIY-SETUP" ]]; then
-    A="$(grep "BENDI_VERSION=" "DIY-SETUP/${FOLDER_NAME}/version/bendi_version" |egrep -o "[0-9]+\.[0-9]+")"
+    A="$(grep "BENDI_VERSION=" "DIY-SETUP/${FOLDER_NAME}/version/bendi_version" |grep -Eo "[0-9]+\.[0-9]+")"
     [[ -z ${A} ]] && A="0.9"
     B="${BENDI_VERSION}"
     if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1<num2)?"0":"1"}'` -eq '0' ]]; then
@@ -1028,7 +1028,7 @@ if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "DIY-SETUP/${FOLDER_NAME2}/${CONFIG
   elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
     TARGET_PROFILE3="Armvirt_64"
   else
-    TARGET_PROFILE3="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+    TARGET_PROFILE3="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
   fi
   [[ -z "${TARGET_PROFILE3}" ]] && TARGET_PROFILE3="未知"
 fi
