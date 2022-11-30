@@ -1,7 +1,8 @@
-	"admin/system/ttyd": {
+{
+	"admin/services/ttyd": {
 		"title": "Terminal",
 		"order": 10,
-		"action": {
+    "action": {
 			"type": "firstchild"
 		},
 		"depends": {
@@ -9,7 +10,8 @@
 			"uci": { "ttyd": true }
 		}
 	},
-	"admin/system/ttyd/ttyd": {
+
+	"admin/services/ttyd/ttyd": {
 		"title": "Terminal",
 		"order": 1,
 		"action": {
@@ -17,7 +19,8 @@
 			"path": "ttyd/term"
 		}
 	},
-	"admin/system/ttyd/config": {
+
+	"admin/services/ttyd/config": {
 		"title": "Config",
 		"order": 2,
 		"action": {
