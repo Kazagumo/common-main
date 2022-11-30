@@ -127,6 +127,10 @@ fi
 }
 
 function BENDI_Diskcapacity() {
+if [[ -d "${GITHUB_WORKSPACE}/DIY-SETUP" ]]; then
+  source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
+fi
+
 Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
 Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
 Cipan_Avail="$(df -hT $PWD|awk 'NR==2'|awk '{print $(5)}' |cut -d 'G' -f1)"
