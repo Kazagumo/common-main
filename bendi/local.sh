@@ -673,6 +673,7 @@ fi
 function Bendi_Restore() {
 rm -rf ${HOME_PATH}/build
 mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
+cp -rf ${HOME_PATH}/build/common/*.sh ${BUILD_PATH}/
 sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
 
