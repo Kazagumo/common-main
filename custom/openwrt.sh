@@ -75,7 +75,7 @@ function xiugai_ip() {
     ECHOG "您的IP为：${domain}"
     ECHOY "正在为您清空密码"
     if [[ "$USER" == "admin" ]]; then
-      passwd -d admin
+      sed -i 's/admin:.*/admin::0:0:99999:7:::/g' /etc/shadow
       passwd -d root
       judge
     else
@@ -97,7 +97,7 @@ read -p "否清空密码(shi fou qing kong mi ma)[Y/n]：" YN
 case ${YN} in
 [Yy]) 
     if [[ "$USER" == "admin" ]]; then
-      passwd -d admin
+      sed -i 's/admin:.*/admin::0:0:99999:7:::/g' /etc/shadow
       passwd -d root
     else
       passwd -d root
