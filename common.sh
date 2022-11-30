@@ -577,7 +577,7 @@ else
   sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
   echo \"luciversion    = '${SOURCE}'\" >> /usr/lib/lua/luci/version.lua
   sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-  echo \"luciname    = - '${LUCI_EDITION}'\" >> /usr/lib/lua/luci/version.lua
+  echo \"luciname    = '- ${LUCI_EDITION}'\" >> /usr/lib/lua/luci/version.lua
   exit 0
   " >> "${ZZZ_PATH}"
 fi
