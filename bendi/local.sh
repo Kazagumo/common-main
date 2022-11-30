@@ -285,7 +285,7 @@ ECHOGG "检测是否缺少文件"
 source common.sh && Diy_settings
 [[ -f "${DEFAULT_PATH}" ]] && source common.sh && Diy_wenjian
 echo
-cp -Rf build/common/*.sh build/${FOLDER_NAME}/
+cp -rf build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
 }
 
@@ -303,6 +303,15 @@ else
   cd ${HOME_PATH}
   source ${GITHUB_WORKSPACE}/common.sh && Diy_checkout
 fi
+}
+
+function Bendi_Restore() {
+rm -rf ${HOME_PATH}/build
+mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
+if [[ ! -f "${BUILD_PATH}/common.sh" ]]
+  cp -rf ${HOME_PATH}/build/common/*.sh ${BUILD_PATH}/
+fi
+sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
 
 function Bendi_SourceClean() {
@@ -668,13 +677,6 @@ elif [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     source ${GITHUB_WORKSPACE}/common.sh && Diy_chajianyuan
   fi
 fi
-}
-
-function Bendi_Restore() {
-rm -rf ${HOME_PATH}/build
-mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
-cp -rf ${HOME_PATH}/build/common/*.sh ${BUILD_PATH}/
-sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
 
 function Bendi_gitpull() {
