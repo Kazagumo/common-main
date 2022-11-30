@@ -289,7 +289,9 @@ ECHOGG "检测是否缺少文件"
 source common.sh && Diy_settings
 [[ -f "${DEFAULT_PATH}" ]] && source common.sh && Diy_wenjian
 echo
-cp -rf ${GITHUB_WORKSPACE}/build/common/*.sh build/${FOLDER_NAME}/
+cp -Rf build/common.sh build/${FOLDER_NAME}/common.sh
+cp -Rf build/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
+cp -Rf ${GITHUB_WORKSPACE}/build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
 }
 
