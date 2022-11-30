@@ -318,6 +318,8 @@ function Bendi_Restore() {
 rm -rf ${HOME_PATH}/build
 mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 if [[ ! -f "${BUILD_PATH}/common.sh" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/common.sh ${BUILD_PATH}/common.sh
+  cp -Rf ${HOME_PATH}/build/commonupgrade.sh ${BUILD_PATH}/upgrade.sh
   cp -rf ${HOME_PATH}/build/common/*.sh ${BUILD_PATH}/
 fi
 sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
