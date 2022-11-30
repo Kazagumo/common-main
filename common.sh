@@ -560,6 +560,7 @@ function Diy_distrib() {
   sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
   sed -i '/exit 0/d' "${ZZZ_PATH}"
 
+if [[ "$(. ${FILES_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
   echo "
   sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
   echo \"DISTRIB_DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release
@@ -569,6 +570,17 @@ function Diy_distrib() {
   echo \"luciname    = '${SOURCE}'\" >> /usr/lib/lua/luci/version.lua
   exit 0
   " >> "${ZZZ_PATH}"
+else
+  echo "
+  sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+  echo \"DISTRIB_DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release
+  sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+  echo \"luciversion    = '${SOURCE}'\" >> /usr/lib/lua/luci/version.lua
+  sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+  echo \"luciname    = - '${LUCI_EDITION}'\" >> /usr/lib/lua/luci/version.lua
+  exit 0
+  " >> "${ZZZ_PATH}"
+fi
 }
 
 
