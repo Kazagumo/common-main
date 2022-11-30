@@ -1290,7 +1290,7 @@ Exclude_E5)
     mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
     echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
     export chonglaixx="E5-重新编译"
-    cd ${FOLDER_NAME}
+    export Continue_selecting="1"
   fi
 ;;
 *)
@@ -1311,7 +1311,7 @@ Exclude_E5)
     mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
     echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
     export chonglaixx="非${CPU_optimization}"
-    cd ${FOLDER_NAME}
+    export Continue_selecting="1"
   fi
 ;;
 esac
