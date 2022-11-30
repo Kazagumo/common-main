@@ -1269,6 +1269,7 @@ else
 fi
 
 cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
+echo "${cpu_model}"
 
 case "${CPU_optimization}" in
 Exclude_E5)
