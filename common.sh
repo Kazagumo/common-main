@@ -1290,6 +1290,8 @@ Exclude_E5)
     echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
     export chonglaixx="E5-重新编译"
     export Continue_selecting="1"
+  else
+    echo "${cpu_model}"
   fi
 ;;
 *)
@@ -1311,6 +1313,8 @@ Exclude_E5)
     echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
     export chonglaixx="非${CPU_optimization}"
     export Continue_selecting="1"
+  else
+    echo "${cpu_model}"
   fi
 ;;
 esac
