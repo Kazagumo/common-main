@@ -1254,7 +1254,9 @@ echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 }
 
-function CPU_Makedefconfig() {
+function CPU_Priority() {
+cd ${GITHUB_WORKSPACE}
+
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' build/${FOLDER_NAME}/.config)"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' build/${FOLDER_NAME}/.config)"
 if [[ `grep -c "CONFIG_TARGET_x86_64=y" build/${FOLDER_NAME}/.config` -eq '1' ]]; then
@@ -1266,6 +1268,53 @@ elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; t
 else
   export TARGET_PROFILE="${TARGET_BOARD}"
 fi
+
+cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
+
+case "${CPU_optimization}" in
+Exclude_E5)
+  if [[ `echo "${cpu_model}" |grep -c "E5"` -ge '1' ]]; then
+    git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
+    ARGET_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
+    TARGET1="$(grep 'target: \[' "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+    TARGET2="target: \\[${FOLDER_NAME}\\]"
+    PATHS1="$(egrep "\- '.*'" "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
+    PATHS2="- 'build/${FOLDER_NAME}/start-up/start'"
+    if [[ -n ${PATHS1} ]] && [[ -n ${TARGET1} ]]; then
+      sed -i "s?${PATHS1}?${PATHS2}?g" "${ARGET_PATH}"
+      sed -i "s?${TARGET1}?${TARGET2}?g" "${ARGET_PATH}"
+    else
+      echo "获取变量失败,请勿胡乱修改compile.yml文件"
+      exit 1
+    fi
+    mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
+    echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
+    export chonglaixx="E5-重新编译"
+    cd ${FOLDER_NAME}
+  fi
+;;
+*)
+  if [[ `echo "${cpu_model}" |grep -c "${CPU_optimization}"` -eq '0' ]]; then
+    git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
+    ARGET_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
+    TARGET1="$(grep 'target: \[' "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+    TARGET2="target: \\[${FOLDER_NAME}\\]"
+    PATHS1="$(egrep "\- '.*'" "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
+    PATHS2="- 'build/${FOLDER_NAME}/start-up/start'"
+    if [[ -n ${PATHS1} ]] && [[ -n ${TARGET1} ]]; then
+      sed -i "s?${PATHS1}?${PATHS2}?g" "${ARGET_PATH}"
+      sed -i "s?${TARGET1}?${TARGET2}?g" "${ARGET_PATH}"
+    else
+      echo "获取变量失败,请勿胡乱修改compile.yml文件"
+      exit 1
+    fi
+    mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
+    echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
+    export chonglaixx="非${CPU_optimization}"
+    cd ${FOLDER_NAME}
+  fi
+;;
+esac
 }
 
 function Diy_Publicarea2() {
