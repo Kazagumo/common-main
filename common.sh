@@ -264,7 +264,10 @@ cd ${HOME_PATH}
 
 rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
-sed -i 's/root:::0:99999:7:::/root::0:0:99999:7:::/g' ${HOME_PATH}/package/base-files/files/etc/shadow
+sed -i 's/root:.*/root::0:0:99999:7:::/g' ${HOME_PATH}/package/base-files/files/etc/shadow
+if [[ `grep -Eoc "admin:.*" ${HOME_PATH}/package/base-files/files/etc/shadow` -eq '1' ]]; then
+  sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${HOME_PATH}/package/base-files/files/etc/shadow
+fi
 
 rm -rf "${FILES_PATH}/etc/init.d/Postapplication"
 cp ${HOME_PATH}/build/common/custom/Postapplication "${FILES_PATH}/etc/init.d/Postapplication"
@@ -555,31 +558,36 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 
 
 function Diy_distrib() {
-  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-  sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
-  sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
-  sed -i '/exit 0/d' "${ZZZ_PATH}"
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
+sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+
+sed -i '/0:0:99999:7/d' "${ZZZ_PATH}"
+cat >> "${ZZZ_PATH}" <<-EOF
+sed -i 's/root::0:0:99999:7:::/root:\$1\$V4UetPzk\$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
+EOF
 
 if [[ "$(. ${FILES_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
-  echo "
-  sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-  echo \"DISTRIB_DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release
-  sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-  echo \"luciversion    = '${LUCI_EDITION}'\" >> /usr/lib/lua/luci/version.lua
-  sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-  echo \"luciname    = '${SOURCE}'\" >> /usr/lib/lua/luci/version.lua
-  exit 0
-  " >> "${ZZZ_PATH}"
+cat >> "${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i 'luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
+exit 0
+EOF
 else
-  echo "
-  sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-  echo \"DISTRIB_DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release
-  sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-  echo \"luciversion    = '${SOURCE}'\" >> /usr/lib/lua/luci/version.lua
-  sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-  echo \"luciname    = '- ${LUCI_EDITION}'\" >> /usr/lib/lua/luci/version.lua
-  exit 0
-  " >> "${ZZZ_PATH}"
+cat >> "${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo \"luciversion    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo \"luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+exit 0
+EOF
 fi
 }
 
