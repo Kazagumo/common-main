@@ -97,6 +97,7 @@ case ${YN} in
 [Yy]) 
     if [[ "$USER" == "admin" ]]; then
       passwd -d admin
+      passwd -d root
     else
       passwd -d root
     fi
