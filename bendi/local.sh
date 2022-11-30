@@ -250,6 +250,9 @@ if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   done
 fi
 
+clear
+echo
+echo
 if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   Menuconfig_Config="true"
   ECHOG "请耐心等待程序运行至窗口弹出进行机型和插件配置!"
