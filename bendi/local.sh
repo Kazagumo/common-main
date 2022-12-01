@@ -768,7 +768,7 @@ function Bendi_xuanzhe() {
     export FOLDER_NAME3=$(cat GITHUB_EVN |awk ''NR==${YMXZ}'')
     export FOLDER_NAME="${FOLDER_NAME3}"
     ECHOY " 您选择了使用 ${FOLDER_NAME} 编译固件,3秒后将进行启动编译"
-    rm -rf GITHUB_ENN
+    rm -rf GITHUB_EVN
     sleep 2
     Bendi_menu
   break
