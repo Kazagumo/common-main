@@ -548,7 +548,9 @@ function Diy_distrib() {
 cd ${HOME_PATH}
 export ZZZ_PATH="$(find ${HOME_PATH} -type f -name '*default-settings' |grep 'package' |grep 'files')"
 echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+echo "${ZZZ_PATH}"
 ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep menu.d)"
+echo "${ttydjson}"
 [[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 [[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p ${HOME_PATH}/doc
 if [[ -f "${HOME_PATH}/doc/default-settings" ]]; then
