@@ -547,7 +547,7 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 function Diy_distrib() {
 cd ${HOME_PATH}
 ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep menu.d)"
-curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+[[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 
 export ZZZ_PATH="$(find ${HOME_PATH} -type f -name '*default-settings' |grep 'package' |grep 'files')"
 echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
