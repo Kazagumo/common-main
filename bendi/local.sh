@@ -288,14 +288,15 @@ source ${GITHUB_ENV}
 sudo rm -rf build && cp -Rf DIY-SETUP build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
 judge "扩展文件下载"
-ECHOGG "检测是否缺少文件"
-source common.sh && Diy_settings
-[[ -f "${DEFAULT_PATH}" ]] && source common.sh && Diy_wenjian
-echo
 cp -Rf build/common/common.sh build/${FOLDER_NAME}/common.sh
 cp -Rf build/common/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
 cp -Rf ${GITHUB_WORKSPACE}/build/common/*.sh build/${FOLDER_NAME}/
 sudo chmod -R +x build
+
+ECHOGG "检测是否缺少文件"
+source common.sh && Diy_settings
+[[ -f "${DEFAULT_PATH}" ]] && source common.sh && Diy_wenjian
+echo
 }
 
 function Bendi_Download() {
