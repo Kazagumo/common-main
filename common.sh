@@ -547,10 +547,8 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 function Diy_distrib() {
 echo "正在执行：烦恼"
 cd ${HOME_PATH}
-export ZZZ_PAT=$(find . -type f -name '*default-settings' |grep 'package' |grep 'files')
-echo "${ZZZ_PAT}"
-export ZZZ_PATH=$(find ${HOME_PATH} -type f -name '*default-settings' |grep 'package' |grep 'files')
-echo "${ZZZ_PATH}"
+export ZZZ_PAT="$(find . -type f -name '*default-settings' |grep 'package' |grep 'files' |sed 's/.*package//g')"
+export ZZZ_PATH="${HOME_PATH}/package${ZZZ_PAT}"
 echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
 echo "${ZZZ_PATH}"
 ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep menu.d)"
