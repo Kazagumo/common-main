@@ -37,20 +37,14 @@ yarn --version
 
 ${INS} autoremove -y --purge
 ${INS} clean
-
-if [[ "${ubuntuyilai}" == "1" ]]; then
-	echo "开始您的表演....."
-else
-	echo "开始安装完成了哈....."
-fi
 }
 
 function main(){
-	if [[ "${ubuntuyilai}" == "1" ]]; then
-		INS="sudo -E apt-get -qq"
+	if [[ -n "${BENDI_VERSION}" ]]; then
+		INS="sudo apt-get"
 		echo "开始安装依赖....."
 	else
-		INS="sudo apt-get"
+		INS="sudo -E apt-get -qq"
 	fi
 	install_mustrelyon
 	ophub_amlogic-s9xxx
