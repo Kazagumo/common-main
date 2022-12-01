@@ -316,6 +316,8 @@ fi
 }
 
 function Bendi_Restore() {
+export ZZZ_PATH="$(find ${HOME_PATH} -type f -name '*default-settings' |grep 'package' |grep 'files')"
+echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
 rm -rf ${HOME_PATH}/build
 mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 if [[ ! -f "${BUILD_PATH}/common.sh" ]]; then
