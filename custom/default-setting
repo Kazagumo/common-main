@@ -10,6 +10,10 @@ if [[ "${DISTRIB_ID}" == "ImmortalWrt" ]]; then
   sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 fi
 
+if [[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]]; then
+  sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
+fi
+
 if [[ `grep -c "danshui" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
   sed -i '/danshui/d' /etc/opkg/distfeeds.conf
 fi
