@@ -333,7 +333,7 @@ function Diy_LIENOL() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（Lienol）
-  find . -name 'luci-app-ttyd' -o -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+  find . -name 'luci-app-eqos' -o -name 'luci-theme-argon' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' -o -name 'luci-app-frpc' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
   find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
