@@ -38,13 +38,11 @@ COOLSNOWWOLF)
   export SOURCE_OWNER="Lede's"
   export PACKAGE_BRANCH="master"
   export DIY_WORK="${FOLDER_NAME}MASTER"
-  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
   export SOURCE_OWNER="Lienol's"
-  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="master"
@@ -67,7 +65,6 @@ IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
   export SOURCE_OWNER="ctcgfw's"
-  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings"
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     export PACKAGE_BRANCH="openwrt-21.02"
     export LUCI_EDITION="21.02"
@@ -99,7 +96,6 @@ XWRT)
   else
     export DIY_WORK="${FOLDER_NAME}${REPO_BRANCH}"
   fi
-  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
@@ -122,7 +118,6 @@ OFFICIAL)
     export LUCI_EDITION="22.03"
     export DIY_WORK="${FOLDER_NAME}2203"
   fi
-  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings"
 ;;
 AMLOGIC)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
@@ -131,7 +126,6 @@ AMLOGIC)
   export SOURCE_OWNER="Lede's"
   export PACKAGE_BRANCH="master"
   export DIY_WORK="${FOLDER_NAME}AMLOGIC"
-  export ZZZ_PATH="${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings"
 ;;
 *)
   TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL和AMLOGIC"
@@ -168,8 +162,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 else
   echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 fi
-  
-echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_ENV}
 echo "FILES_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
 echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
@@ -555,6 +548,10 @@ function Diy_distrib() {
 cd ${HOME_PATH}
 ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep menu.d)"
 curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+
+export ZZZ_PATH="$(find ${HOME_PATH} -type f -name '*default-settings' |grep 'package' |grep 'files')"
+echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
 sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
