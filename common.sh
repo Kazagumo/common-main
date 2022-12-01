@@ -92,8 +92,8 @@ XWRT)
   export SOURCE_OWNER="ptpt52"
   export PACKAGE_BRANCH="official-master"
   export LUCI_EDITION="${REPO_BRANCH}"
-  if [[ "${REPO_BRANCH}" == "21.02" ]]; then
-    export DIY_WORK="${FOLDER_NAME}2102"
+  if [[ "${REPO_BRANCH}" == "21.10" ]]; then
+    export DIY_WORK="${FOLDER_NAME}2110"
   elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
     export DIY_WORK="${FOLDER_NAME}2203"
   else
