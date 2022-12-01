@@ -545,14 +545,11 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 
 
 function Diy_distrib() {
-echo "正在执行：烦恼"
 cd ${HOME_PATH}
-export ZZZ_PAT="$(find . -type f -name '*default-settings' |grep 'package' |grep 'files' |sed 's/.*package//g')"
-export ZZZ_PATH="${HOME_PATH}/package${ZZZ_PAT}"
+export ZZZ_PA="$(find . -type f -name '*default-settings' |grep 'package' |grep 'files' |sed "s/.*package\///g")"
+export ZZZ_PATH="${HOME_PATH}/package/${ZZZ_PA}"
 echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-echo "${ZZZ_PATH}"
 ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep menu.d)"
-echo "${ttydjson}"
 [[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 [[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p ${HOME_PATH}/doc
 if [[ -f "${HOME_PATH}/doc/default-settings" ]]; then
