@@ -325,7 +325,7 @@ if [[ ! -f "${BUILD_PATH}/common.sh" ]]; then
   cp -Rf ${HOME_PATH}/build/commonupgrade.sh ${BUILD_PATH}/upgrade.sh
   cp -rf ${HOME_PATH}/build/common/*.sh ${BUILD_PATH}/
 fi
-sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
+# sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
 
 function Bendi_SourceClean() {
