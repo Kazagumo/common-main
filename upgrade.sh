@@ -125,10 +125,10 @@ function Diy_Part3() {
 		  		EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
 		  		cp -Rf "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Uefi}-${EFIMD5}${Firmware_SFX}"
 			else
-				echo "没找到可用的.img.gz格式"
+				echo "没找到在线升级可用的${Firmware_SFX}格式固件"
 			fi
 		else
-			echo "没找到uefi固件"
+			echo "没有uefi格式固件"
 		fi
 		
 		if [[ `ls -1 | grep -c "squashfs"` -ge '1' ]]; then
@@ -137,10 +137,10 @@ function Diy_Part3() {
 				LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
 				cp -Rf "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Legacy}-${LEGAMD5}${Firmware_SFX}"
 			else
-				echo "没找到可用的.img.gz格式"
+				echo "没找到在线升级可用的${Firmware_SFX}格式固件"
 			fi
 		else
-			echo "没找到可用固件"
+			echo "没有squashfs格式固件"
 		fi
 	;;
 	*)
@@ -153,7 +153,7 @@ function Diy_Part3() {
 			MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
 			cp -Rf "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}"
 		else
-			echo "没找到可用固件"
+			echo "没找到在线升级可用的${Firmware_SFX}格式固件"
 		fi
 	;;
 	esac
