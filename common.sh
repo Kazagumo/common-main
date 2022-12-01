@@ -1272,7 +1272,7 @@ cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq 
 echo "${cpu_model}"
 
 case "${CPU_optimization}" in
-'弃用E5')
+'弃用E5系列')
   if [[ `echo "${cpu_model}" |grep -c "E5"` -ge '1' ]]; then
     git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
     ARGET_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
