@@ -550,6 +550,9 @@ export ZZZ_PA="$(find . -type f -name '*default-settings' |grep 'package' |grep 
 export ZZZ_PATH="${HOME_PATH}/package/${ZZZ_PA}"
 echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
 
+export ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep menu.d |cut -d '/' -f2-)"
+[[ -n "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+
 [[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p ${HOME_PATH}/doc
 if [[ -f "${HOME_PATH}/doc/default-settings" ]]; then
   cp -Rf ${HOME_PATH}/doc/default-settings "${ZZZ_PATH}"
