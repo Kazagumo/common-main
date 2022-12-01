@@ -316,14 +316,14 @@ fi
 }
 
 function Bendi_Restore() {
-export ZZZ_PATH="$(find ${HOME_PATH} -type f -name '*default-settings' |grep 'package' |grep 'files')"
-echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
 rm -rf ${HOME_PATH}/build
 mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
 if [[ ! -f "${BUILD_PATH}/common.sh" ]]; then
   cp -Rf ${HOME_PATH}/build/common/common.sh ${BUILD_PATH}/common.sh
   cp -Rf ${HOME_PATH}/build/commonupgrade.sh ${BUILD_PATH}/upgrade.sh
   cp -rf ${HOME_PATH}/build/common/*.sh ${BUILD_PATH}/
+else
+  source ${BUILD_PATH}/common.sh && Diy_distrib
 fi
 # sed -i '/-rl/d' "${BUILD_PATH}/${DIY_PART_SH}"
 }
