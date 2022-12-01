@@ -546,10 +546,10 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 
 function Diy_distrib() {
 cd ${HOME_PATH}
-ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep menu.d)"
-[[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 export ZZZ_PATH="$(find ${HOME_PATH} -type f -name '*default-settings' |grep 'package' |grep 'files')"
 echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep menu.d)"
+[[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 [[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p ${HOME_PATH}/doc
 if [[ -f "${HOME_PATH}/doc/default-settings" ]]; then
   cp -Rf ${HOME_PATH}/doc/default-settings "${ZZZ_PATH}"
@@ -560,11 +560,18 @@ fi
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
 sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
+sed -i '/0:0:99999:7/d' "${ZZZ_PATH}"
+sed -i '/to-ports 53/d' "${ZZZ_PATH}"
 sed -i '/exit 0/d' "${ZZZ_PATH}"
 
-sed -i '/0:0:99999:7/d' "${ZZZ_PATH}"
+
 cat >> "${ZZZ_PATH}" <<-EOF
-sed -i 's/root::0:0:99999:7:::/root:\$1\$V4UetPzk\$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
+sed -i 's/root::0:0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
+sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user
+echo 'iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
+echo 'iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
+echo '[ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
+echo '[ -n "$(command -v ip6tables)" ] && ip6tables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53' >> /etc/firewall.user
 EOF
 
 if [[ "$(. ${FILES_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
