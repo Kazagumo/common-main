@@ -1269,6 +1269,8 @@ elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' ${HOME_PATH}/.config` -e
 else
   export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 fi
+echo "${TARGET_PROFILE}"
+
 
 cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
 echo "${cpu_model}"
