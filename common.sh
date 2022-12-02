@@ -963,6 +963,9 @@ cat >> "${HOME_PATH}/.config" <<-EOF
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_default-settings=y
 EOF
+if [ "${CACHEWRTBUILD_SWITCH}" == "true" ]]; then
+  echo -e "\nCONFIG_DEVEL=y\nCONFIG_CCACHE=y\n" >> ${HOME_PATH}/.config
+fi
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
   collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
