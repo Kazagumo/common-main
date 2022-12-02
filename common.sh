@@ -1390,11 +1390,11 @@ elif [[ `grep -c "CONFIG_ARCH=\"mips64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
 elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_mipsle_softfloat"
   Archclash="linux-mipsle-softfloat"
-  echo "CPU架构：mipsle"
+  echo "CPU架构：mipsel"
 elif [[ `grep -c "CONFIG_ARCH=\"mips64el\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_mips64le_softfloat"
   Archclash="linux-mips64le"
-  echo "CPU架构：mips64le"
+  echo "CPU架构：mips64el"
 else
   echo "不了解您的CPU为何架构"
   weizhicpu="1"
