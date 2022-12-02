@@ -1258,16 +1258,16 @@ echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 
 
 function CPU_Priority() {
-export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' build/${FOLDER_NAME}/.config)"
-export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' build/${FOLDER_NAME}/.config)"
-if [[ `grep -Eoc 'CONFIG_ARCH="x86_64"' build/${FOLDER_NAME}/.config` -eq '1' ]]; then
+export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' build/${FOLDER_NAME}/${CONFIG_FILE})"
+export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' build/${FOLDER_NAME}/${CONFIG_FILE})"
+if [[ `grep -Eoc 'CONFIG_ARCH="x86_64"' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
   export TARGET_PROFILE="x86-64"
-elif [[ `grep -Eoc 'CONFIG_ARCH="i386"' build/${FOLDER_NAME}/.config` -eq '1' ]]; then
+elif [[ `grep -Eoc 'CONFIG_ARCH="i386"' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
   export TARGET_PROFILE="x86-32"
-elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' ${HOME_PATH}/.config` -eq '1' ]]; then
+elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
   export TARGET_PROFILE="Armvirt_64"
 else
-  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE} | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 fi
 echo "${TARGET_PROFILE}"
 
