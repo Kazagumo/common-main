@@ -562,7 +562,6 @@ sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
 sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
 sed -i '/0:0:99999:7/d' "${ZZZ_PATH}"
-sed -i '/REDIRECT --to-ports 53/d' "${ZZZ_PATH}"
 sed -i '/exit 0/d' "${ZZZ_PATH}"
 
 
