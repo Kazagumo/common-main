@@ -969,7 +969,10 @@ cd ${HOME_PATH}
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
-
+cat >> "${HOME_PATH}/.config" <<-EOF
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_default-settings=y
+EOF
 if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
   collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
