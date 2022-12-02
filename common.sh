@@ -1272,8 +1272,6 @@ elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' build/${FOLDER_NAME}/${C
 else
   export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE} | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 fi
-echo "${TARGET_PROFILE}"
-
 
 cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
 echo "${cpu_model}"
@@ -1299,7 +1297,7 @@ case "${CPU_optimization}" in
     export chonglaixx="E5-重新编译"
     export Continue_selecting="1"
   else
-    echo "${cpu_model}"
+    echo "非E5系列CPU"
   fi
 ;;
 *)
@@ -1322,7 +1320,7 @@ case "${CPU_optimization}" in
     export chonglaixx="非${CPU_optimization}-重新编译"
     export Continue_selecting="1"
   else
-    echo "${cpu_model}"
+    echo "正是您选择的${CPU_optimization}CPU"
   fi
 ;;
 esac
