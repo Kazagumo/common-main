@@ -1231,14 +1231,14 @@ cd ${HOME_PATH}
 echo "正在执行：识别源码编译为何机型"
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
-if [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+if [[ `grep -Eoc 'CONFIG_ARCH="x86_64"' ${HOME_PATH}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="x86-64"
-elif [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` == '0' ]]; then
-  export TARGET_PROFILE="x86_32"
-elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+elif [[ `grep -Eoc 'CONFIG_ARCH="i386"' ${HOME_PATH}/.config` -eq '1' ]]; then
+  export TARGET_PROFILE="x86-32"
+elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' ${HOME_PATH}/.config` -eq '1' ]]; then
+  export TARGET_PROFILE="Armvirt_64"
 else
-  export TARGET_PROFILE="${TARGET_BOARD}"
+  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 fi
 export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
@@ -1256,18 +1256,18 @@ echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 }
 
-function CPU_Priority() {
 
+function CPU_Priority() {
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' build/${FOLDER_NAME}/.config)"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' build/${FOLDER_NAME}/.config)"
-if [[ `grep -c "CONFIG_TARGET_x86_64=y" build/${FOLDER_NAME}/.config` -eq '1' ]]; then
+if [[ `grep -Eoc 'CONFIG_ARCH="x86_64"' build/${FOLDER_NAME}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="x86-64"
-elif [[ `grep -c "CONFIG_TARGET_x86=y" build/${FOLDER_NAME}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" build/${FOLDER_NAME}/.config` == '0' ]]; then
+elif [[ `grep -Eoc 'CONFIG_ARCH="i386"' build/${FOLDER_NAME}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="x86-32"
-elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' ${HOME_PATH}/.config` -eq '1' ]]; then
+  export TARGET_PROFILE="Armvirt_64"
 else
-  export TARGET_PROFILE="${TARGET_BOARD}"
+  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 fi
 
 cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
@@ -1358,48 +1358,49 @@ cd ${HOME_PATH}
 if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_amd64"
   Archclash="linux-amd64"
-  echo "amd64架构"
+  echo "CPU架构：amd64"
 elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_386"
   Archclash="linux-386"
-  echo "X86 32位架构"
+  echo "CPU架构：X86 32"
 elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_arm64"
   Archclash="linux-arm64"
-  echo "arm64架构"
+  echo "CPU架构：arm64"
 elif [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_armv7"
   Archclash="linux-armv7"
-  echo "armv7架构"
+  echo "CPU架构：armv7"
 elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '1' ]]; then
   Arch="linux_armv6"
   Archclash="linux-armv6"
-  echo "armv6架构"
+  echo "CPU架构：armv6"
 elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '0' ]]; then
   Arch="linux_armv5"
   Archclash="linux-armv5"
-  echo "armv6架构"
+  echo "CPU架构：armv6"
 elif [[ `grep -c "CONFIG_ARCH=\"mips\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_mips_softfloat"
   Archclash="linux-mips-softfloat"
-  echo "mips架构"
+  echo "CPU架构：mips"
 elif [[ `grep -c "CONFIG_ARCH=\"mips64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_mips64_softfloat"
   Archclash="linux-mips64"
-  echo "mips架构"
+  echo "CPU架构：mips64"
 elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_mipsle_softfloat"
   Archclash="linux-mipsle-softfloat"
-  echo "mipsle架构"
+  echo "CPU架构：mipsle"
 elif [[ `grep -c "CONFIG_ARCH=\"mips64el\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_mips64le_softfloat"
   Archclash="linux-mips64le"
-  echo "mipsle架构"
+  echo "CPU架构：mips64le"
 else
-  echo "I don't know what the architecture is"
+  echo "不了解您的CPU为何架构"
+  weizhicpu="1"
 fi
 
-if [[ "${OpenClash_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+if [[ ! "${weizhicpu}" == "1" ]] && [[ "${OpenClash_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "正在执行：给openclash下载核心"
   rm -rf ${HOME_PATH}/files/etc/openclash/core
   rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
@@ -1423,7 +1424,7 @@ if [[ "${OpenClash_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-open
   rm -rf ${HOME_PATH}/clash-neihe
 fi
 
-if [[ "${AdGuardHome_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "正在执行：给adguardhome下载核心"
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
   downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
