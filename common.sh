@@ -266,7 +266,7 @@ function build_openwrt() {
           export kaisbianyixx="编译"
         fi
         echo "${cpu_youxuan}"
-        git clone -b main https://github.com/${{github.repository}}.git ${FOLDER_NAME}
+        git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
         export ARGET_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
         export TARGET1="$(grep 'target: \[' "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         export TARGET2="target: \\[${FOLDER_NAME}\\]"
