@@ -1363,6 +1363,14 @@ case "${CPU_optimization}" in
   fi
 ;;
 esac
+
+if [[ "${Continue_selecting}" == "1" ]]; then
+  cd ${FOLDER_NAME}
+  git add .
+  git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}"
+  git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
+  exit 1
+fi
 }
 
 function Diy_Publicarea2() {
