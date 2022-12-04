@@ -47,7 +47,7 @@ function settings_variable() {
           
           export SOURCE_CODE2="SOURCE_CODE\\=\\\"IMMORTALWRT\\\""
           export REPO_BRANCH2="REPO_BRANCH\\=\\\"${INPUTS_REPO_BRANCH}\\\""
-          export CONFIG_FILE2="CONFIG_FILE\\=\\\"Configs/${INPUTS_CONFIG_FILE}\\\""
+          export CONFIG_FILE2="CONFIG_FILE\\=\\\"Configs\/${INPUTS_CONFIG_FILE}\\\""
           export UPLOAD_FIRMWARE2="UPLOAD_FIRMWARE\\=\\\"${INPUTS_UPLOAD_FIRMWARE}\\\""
           export UPLOAD_RELEASE2="UPLOAD_RELEASE\\=\\\"${INPUTS_UPLOAD_RELEASE}\\\""
           export CACHEWRTBUILD_SWITCH2="CACHEWRTBUILD_SWITCH\\=\\\"${INPUTS_CACHEWRTBUILD_SWITCH}\\\""
