@@ -61,7 +61,7 @@ function settings_variable() {
           sed -i "s?${UPLOAD_FIRMWARE1}?${UPLOAD_FIRMWARE2}?g" build/${FOLDER_NAME}/settings.ini
           sed -i "s?${UPLOAD_RELEASE1}?${UPLOAD_RELEASE2}?g" build/${FOLDER_NAME}/settings.ini
           sed -i "s?${CACHEWRTBUILD_SWITCH1}?${CACHEWRTBUILD_SWITCH2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" build/${FOLDER_NAME}/settings.ini
+          sed -i "s?${UPDATE_FIRMWARE_ONLINE1}?${UPDATE_FIRMWARE_ONLINE2}?g" build/${FOLDER_NAME}/settings.ini
           sed -i "s?${COLLECTED_PACKAGES1}?${COLLECTED_PACKAGES2}?g" build/${FOLDER_NAME}/settings.ini
           sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" build/${FOLDER_NAME}/settings.ini
           sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" build/${FOLDER_NAME}/settings.ini
