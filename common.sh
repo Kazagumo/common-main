@@ -253,6 +253,7 @@ TIME r ""
 }
 
 function build_openwrt() {
+cd cd ${GITHUB_WORKSPACE}
 if [[ `echo "${cpu_youxuan}" |grep -Eoc 'E5'` -eq '1' ]]; then
   export cpu_youxuan="qiyonge5"
   export kaisbianyixx="弃用E5-编译"
