@@ -32,7 +32,7 @@ function settings_variable() {
         elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'pushplus' ]]; then
           INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"PUSH\\\""
         fi
-        
+        echo "${INPUTS_REPO_BRANCH}"
         if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
           SOURCE_CODE1="$(grep "SOURCE_CODE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
           REPO_BRANCH1="$(grep "REPO_BRANCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
