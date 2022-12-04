@@ -24,16 +24,16 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 
 function settings_variable() {
-        export ymlpath="build/${FOLDER_NAME}/settings.ini"
+        ymlpath="build/${FOLDER_NAME}/settings.ini"
         if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
-          export INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
+          INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
         elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'Telegram' ]]; then
-          export INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"TG\\\""
+          INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"TG\\\""
         elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'pushplus' ]]; then
-          export INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"PUSH\\\""
+          INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"PUSH\\\""
         fi
         
-        if [[ -n "${${INPUTS_REPO_BRANCH}" ]]; then
+        if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
           SOURCE_CODE1="$(grep "SOURCE_CODE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
           REPO_BRANCH1="$(grep "REPO_BRANCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
           CONFIG_FILE1="$(grep "CONFIG_FILE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -45,15 +45,15 @@ function settings_variable() {
           CPU_SELECTION1="$(grep "CPU_SELECTION=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
           INFORMATION_NOTICE1="$(grep "INFORMATION_NOTICE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
           
-          export SOURCE_CODE2="SOURCE_CODE\\=\\\"IMMORTALWRT\\\""
-          export REPO_BRANCH2="REPO_BRANCH\\=\\\"${INPUTS_REPO_BRANCH}\\\""
-          export CONFIG_FILE2="CONFIG_FILE\\=\\\"Configs\/${INPUTS_CONFIG_FILE}\\\""
-          export UPLOAD_FIRMWARE2="UPLOAD_FIRMWARE\\=\\\"${INPUTS_UPLOAD_FIRMWARE}\\\""
-          export UPLOAD_RELEASE2="UPLOAD_RELEASE\\=\\\"${INPUTS_UPLOAD_RELEASE}\\\""
-          export CACHEWRTBUILD_SWITCH2="CACHEWRTBUILD_SWITCH\\=\\\"${INPUTS_CACHEWRTBUILD_SWITCH}\\\""
-          export UPDATE_FIRMWARE_ONLINE2="UPDATE_FIRMWARE_ONLINE\\=\\\"${INPUTS_UPDATE_FIRMWARE_ONLINE}\\\""
-          export COLLECTED_PACKAGES2="COLLECTED_PACKAGES\\=\\\"${INPUTS_COLLECTED_PACKAGES}\\\""
-          export CPU_SELECTION2="CPU_SELECTION\\=\\\"${INPUTS_CPU_SELECTION}\\\""
+          SOURCE_CODE2="SOURCE_CODE\\=\\\"IMMORTALWRT\\\""
+          REPO_BRANCH2="REPO_BRANCH\\=\\\"${INPUTS_REPO_BRANCH}\\\""
+          CONFIG_FILE2="CONFIG_FILE\\=\\\"Configs/${INPUTS_CONFIG_FILE}\\\""
+          UPLOAD_FIRMWARE2="UPLOAD_FIRMWARE\\=\\\"${INPUTS_UPLOAD_FIRMWARE}\\\""
+          UPLOAD_RELEASE2="UPLOAD_RELEASE\\=\\\"${INPUTS_UPLOAD_RELEASE}\\\""
+          CACHEWRTBUILD_SWITCH2="CACHEWRTBUILD_SWITCH\\=\\\"${INPUTS_CACHEWRTBUILD_SWITCH}\\\""
+          UPDATE_FIRMWARE_ONLINE2="UPDATE_FIRMWARE_ONLINE\\=\\\"${INPUTS_UPDATE_FIRMWARE_ONLINE}\\\""
+          COLLECTED_PACKAGES2="COLLECTED_PACKAGES\\=\\\"${INPUTS_COLLECTED_PACKAGES}\\\""
+          CPU_SELECTION2="CPU_SELECTION\\=\\\"${INPUTS_CPU_SELECTION}\\\""
         
           sed -i "s?${SOURCE_CODE1}?${SOURCE_CODE2}?g" build/${FOLDER_NAME}/settings.ini
           sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" build/${FOLDER_NAME}/settings.ini
