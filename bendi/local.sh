@@ -632,6 +632,14 @@ function Bendi_Packaging() {
     ECHOYY "您设置的内核版本为：${amlogic_kernel}"
   fi
   echo
+  read -p " 自动打包最新内核：" auto_kernel
+  export auto_kernel=${auto_kernel:-"false"}
+  if [[ "${auto_kernel}" == "false" ]]; then
+    ECHOYY "关闭自动打包最新内核"
+  else
+    ECHOYY "开启自动打包最新内核"
+  fi
+  echo
   ECHOGG "设置ROOTFS分区大小[ 直接回车则默认：960 ]"
   read -p " 请输入ROOTFS分区大小：" rootfs_size
   export rootfs_size=${rootfs_size:-"960"}
