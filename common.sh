@@ -270,6 +270,7 @@ else
 fi
 echo "${cpu_youxuan}"
 git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
+cp -Rf build/${GIT_REPOSITORY}/settings.ini ${FOLDER_NAME}/build/${GIT_REPOSITORY}/settings.ini
 export ARGET_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
 export TARGET1="$(grep 'target: \[' "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
