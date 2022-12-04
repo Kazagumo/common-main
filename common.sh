@@ -24,48 +24,59 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 
 function settings_variable() {
-        ymlpath="build/${FOLDER_NAME}/settings.ini"
-        if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
-          INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
-        elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'Telegram' ]]; then
-          INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"TG\\\""
-        elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'pushplus' ]]; then
-          INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"PUSH\\\""
-        fi
-        echo "${INPUTS_REPO_BRANCH}"
-        if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
-          SOURCE_CODE1="$(grep "SOURCE_CODE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          REPO_BRANCH1="$(grep "REPO_BRANCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          CONFIG_FILE1="$(grep "CONFIG_FILE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          UPLOAD_FIRMWARE1="$(grep "UPLOAD_FIRMWARE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          UPLOAD_RELEASE1="$(grep "UPLOAD_RELEASE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          CACHEWRTBUILD_SWITCH1="$(grep "CACHEWRTBUILD_SWITCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          UPDATE_FIRMWARE_ONLINE1="$(grep "UPDATE_FIRMWARE_ONLINE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          COLLECTED_PACKAGES1="$(grep "COLLECTED_PACKAGES=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          CPU_SELECTION1="$(grep "CPU_SELECTION=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          INFORMATION_NOTICE1="$(grep "INFORMATION_NOTICE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          
-          SOURCE_CODE2="SOURCE_CODE\\=\\\"IMMORTALWRT\\\""
-          REPO_BRANCH2="REPO_BRANCH\\=\\\"${INPUTS_REPO_BRANCH}\\\""
-          CONFIG_FILE2="CONFIG_FILE\\=\\\"${INPUTS_CONFIG_FILE}\\\""
-          UPLOAD_FIRMWARE2="UPLOAD_FIRMWARE\\=\\\"${INPUTS_UPLOAD_FIRMWARE}\\\""
-          UPLOAD_RELEASE2="UPLOAD_RELEASE\\=\\\"${INPUTS_UPLOAD_RELEASE}\\\""
-          CACHEWRTBUILD_SWITCH2="CACHEWRTBUILD_SWITCH\\=\\\"${INPUTS_CACHEWRTBUILD_SWITCH}\\\""
-          UPDATE_FIRMWARE_ONLINE2="UPDATE_FIRMWARE_ONLINE\\=\\\"${INPUTS_UPDATE_FIRMWARE_ONLINE}\\\""
-          COLLECTED_PACKAGES2="COLLECTED_PACKAGES\\=\\\"${INPUTS_COLLECTED_PACKAGES}\\\""
-          CPU_SELECTION2="CPU_SELECTION\\=\\\"${INPUTS_CPU_SELECTION}\\\""
+ymlpath="build/${FOLDER_NAME}/settings.ini"
+if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
+  INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
+elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'Telegram' ]]; then
+  INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"TG\\\""
+elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'pushplus' ]]; then
+  INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"PUSH\\\""
+fi
         
-          sed -i "s?${SOURCE_CODE1}?${SOURCE_CODE2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${UPLOAD_FIRMWARE1}?${UPLOAD_FIRMWARE2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${UPLOAD_RELEASE1}?${UPLOAD_RELEASE2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${CACHEWRTBUILD_SWITCH1}?${CACHEWRTBUILD_SWITCH2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${UPDATE_FIRMWARE_ONLINE1}?${UPDATE_FIRMWARE_ONLINE2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${COLLECTED_PACKAGES1}?${COLLECTED_PACKAGES2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" build/${FOLDER_NAME}/settings.ini
-          sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" build/${FOLDER_NAME}/settings.ini
-        fi
+if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
+  if [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]]; then
+    export INPUTS_CPU_SELECTION="弃用E5"
+  elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
+    export INPUTS_CPU_SELECTION="8370C"
+  elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8272'` -eq '1' ]]; then
+    export INPUTS_CPU_SELECTION="8272CL"
+  elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8171'` -eq '1' ]]; then
+    export INPUTS_CPU_SELECTION="8171M"
+  else
+    export INPUTS_CPU_SELECTION="弃用E5"
+  fi
+  SOURCE_CODE1="$(grep "SOURCE_CODE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  REPO_BRANCH1="$(grep "REPO_BRANCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  CONFIG_FILE1="$(grep "CONFIG_FILE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  UPLOAD_FIRMWARE1="$(grep "UPLOAD_FIRMWARE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  UPLOAD_RELEASE1="$(grep "UPLOAD_RELEASE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  CACHEWRTBUILD_SWITCH1="$(grep "CACHEWRTBUILD_SWITCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  UPDATE_FIRMWARE_ONLINE1="$(grep "UPDATE_FIRMWARE_ONLINE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  COLLECTED_PACKAGES1="$(grep "COLLECTED_PACKAGES=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  CPU_SELECTION1="$(grep "CPU_SELECTION=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  INFORMATION_NOTICE1="$(grep "INFORMATION_NOTICE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+          
+  SOURCE_CODE2="SOURCE_CODE\\=\\\"IMMORTALWRT\\\""
+  REPO_BRANCH2="REPO_BRANCH\\=\\\"${INPUTS_REPO_BRANCH}\\\""
+  CONFIG_FILE2="CONFIG_FILE\\=\\\"${INPUTS_CONFIG_FILE}\\\""
+  UPLOAD_FIRMWARE2="UPLOAD_FIRMWARE\\=\\\"${INPUTS_UPLOAD_FIRMWARE}\\\""
+  UPLOAD_RELEASE2="UPLOAD_RELEASE\\=\\\"${INPUTS_UPLOAD_RELEASE}\\\""
+  CACHEWRTBUILD_SWITCH2="CACHEWRTBUILD_SWITCH\\=\\\"${INPUTS_CACHEWRTBUILD_SWITCH}\\\""
+  UPDATE_FIRMWARE_ONLINE2="UPDATE_FIRMWARE_ONLINE\\=\\\"${INPUTS_UPDATE_FIRMWARE_ONLINE}\\\""
+  COLLECTED_PACKAGES2="COLLECTED_PACKAGES\\=\\\"${INPUTS_COLLECTED_PACKAGES}\\\""
+  CPU_SELECTION2="CPU_SELECTION\\=\\\"${INPUTS_CPU_SELECTION}\\\""
+        
+  sed -i "s?${SOURCE_CODE1}?${SOURCE_CODE2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${UPLOAD_FIRMWARE1}?${UPLOAD_FIRMWARE2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${UPLOAD_RELEASE1}?${UPLOAD_RELEASE2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${CACHEWRTBUILD_SWITCH1}?${CACHEWRTBUILD_SWITCH2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${UPDATE_FIRMWARE_ONLINE1}?${UPDATE_FIRMWARE_ONLINE2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${COLLECTED_PACKAGES1}?${COLLECTED_PACKAGES2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" build/${FOLDER_NAME}/settings.ini
+fi
 }
 
 function Diy_variable() {
@@ -1376,6 +1387,7 @@ else
 fi
 
 if [[ "${Continue_selecting}" == "1" ]]; then
+  git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
   YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
   TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
   TARGET2="target: \\[${FOLDER_NAME}\\]"
@@ -1787,5 +1799,5 @@ Diy_Notice
 
 function Diy_menu1() {
 Diy_variable
-# Diy_settings
+Diy_settings
 }
