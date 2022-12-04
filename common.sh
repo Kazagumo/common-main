@@ -253,9 +253,9 @@ TIME r ""
 }
 
 function build_openwrt() {
-cd cd ${GITHUB_WORKSPACE}
+cd ${GITHUB_WORKSPACE}
 if [[ `echo "${CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]]; then
-  export CPU_SELECTION="qiyonge5"
+  export CPU_SELECTION="QIYONG_E5"
   export kaisbianyixx="弃用E5-编译"
 elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
   export CPU_SELECTION="8370"
@@ -272,22 +272,22 @@ fi
 echo "${CPU_SELECTION}"
 git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
 cp -Rf build/${GIT_REPOSITORY}/settings.ini ${FOLDER_NAME}/build/${GIT_REPOSITORY}/settings.ini
-export ARGET_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
-export TARGET1="$(grep 'target: \[' "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+export YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
+export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
-export PATHS1="$(grep -Eo "\- '.*'" "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
+export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
 export PATHS2="- 'build/${FOLDER_NAME}/start-up/start'"
-export cpu1="$(grep "CPU_OPTIMIZATION=" "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+export cpu1="$(grep "CPU_OPTIMIZATION=" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
 export cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTION}\\\""
 if [[ -n ${PATHS1} ]] && [[ -n ${TARGET1} ]]; then
-  sed -i "s?${PATHS1}?${PATHS2}?g" "${ARGET_PATH}"
-  sed -i "s?${TARGET1}?${TARGET2}?g" "${ARGET_PATH}"
+  sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
+  sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
 else
   echo "获取变量失败,请勿胡乱修改compile.yml文件"
   exit 1
 fi
 if [[ -n ${cpu1} ]] && [[ -n ${cpu2} ]]; then
-  sed -i "s?${cpu1}?${cpu2}?g" "${ARGET_PATH}"
+  sed -i "s?${cpu1}?${cpu2}?g" "${YML_PATH}"
 else
   echo "获取变量失败,请勿胡乱修改定时启动编译时的数值设置"
   exit 1
