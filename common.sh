@@ -1787,5 +1787,5 @@ Diy_Notice
 
 function Diy_menu1() {
 Diy_variable
-Diy_settings
+# Diy_settings
 }
