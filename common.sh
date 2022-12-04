@@ -254,22 +254,22 @@ TIME r ""
 
 function build_openwrt() {
 cd cd ${GITHUB_WORKSPACE}
-if [[ `echo "${cpu_youxuan}" |grep -Eoc 'E5'` -eq '1' ]]; then
-  export cpu_youxuan="qiyonge5"
+if [[ `echo "${CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]]; then
+  export CPU_SELECTION="qiyonge5"
   export kaisbianyixx="弃用E5-编译"
-elif [[ `echo "${cpu_youxuan}" |grep -Eoc '8370'` -eq '1' ]]; then
-  export cpu_youxuan="8370"
+elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
+  export CPU_SELECTION="8370"
   export kaisbianyixx="选择8370-编译"
-elif [[ `echo "${cpu_youxuan}" |grep -Eoc '8272'` -eq '1' ]]; then
-  export cpu_youxuan="8272"
+elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8272'` -eq '1' ]]; then
+  export CPU_SELECTION="8272"
   export kaisbianyixx="选择8272-编译"
-elif [[ `echo "${cpu_youxuan}" |grep -Eoc '8171'` -eq '1' ]]; then
-  export cpu_youxuan="8171"
+elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8171'` -eq '1' ]]; then
+  export CPU_SELECTION="8171"
   export kaisbianyixx="选择8171-编译"
 else
   export kaisbianyixx="编译"
 fi
-echo "${cpu_youxuan}"
+echo "${CPU_SELECTION}"
 git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
 cp -Rf build/${GIT_REPOSITORY}/settings.ini ${FOLDER_NAME}/build/${GIT_REPOSITORY}/settings.ini
 export ARGET_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
@@ -277,8 +277,8 @@ export TARGET1="$(grep 'target: \[' "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
 export PATHS1="$(grep -Eo "\- '.*'" "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
 export PATHS2="- 'build/${FOLDER_NAME}/start-up/start'"
-export cpu1="$(grep "CPU_optimization=" "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-export cpu2="CPU_optimization\\=\\\"${cpu_youxuan}\\\""
+export cpu1="$(grep "CPU_OPTIMIZATION=" "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+export cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTION}\\\""
 if [[ -n ${PATHS1} ]] && [[ -n ${TARGET1} ]]; then
   sed -i "s?${PATHS1}?${PATHS2}?g" "${ARGET_PATH}"
   sed -i "s?${TARGET1}?${TARGET2}?g" "${ARGET_PATH}"
