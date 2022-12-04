@@ -1319,8 +1319,8 @@ fi
 cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
 echo "${cpu_model}"
 
-case "${CPU_optimization}" in
-'qiyonge5')
+case "${CPU_OPTIMIZATION}" in
+'QIYONG_E5')
   if [[ `echo "${cpu_model}" |grep -c "E5"` -ge '1' ]]; then
     git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
     ARGET_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
@@ -1344,7 +1344,7 @@ case "${CPU_optimization}" in
   fi
 ;;
 *)
-  if [[ `echo "${cpu_model}" |grep -c "${CPU_optimization}"` -eq '0' ]]; then
+  if [[ `echo "${cpu_model}" |grep -c "${CPU_OPTIMIZATION}"` -eq '0' ]]; then
     git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
     ARGET_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
     TARGET1="$(grep 'target: \[' "${ARGET_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
@@ -1363,7 +1363,7 @@ case "${CPU_optimization}" in
     export chonglaixx="非${CPU_optimization}-重新编译"
     export Continue_selecting="1"
   else
-    echo "正是您选择的${CPU_optimization}CPU"
+    echo "正是您选择的${CPU_OPTIMIZATION}CPU"
   fi
 ;;
 esac
