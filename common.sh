@@ -951,6 +951,11 @@ AMLOGIC)
   else
     echo "amlogic_kernel=5.4.210_5.10.135_5.15.50" >> ${GITHUB_ENV}
   fi
+  if [[ -n "${auto_kernel}" ]]; then
+    echo "auto_kernel=${rootfs_size}" >> ${GITHUB_ENV}
+  else
+    echo "auto_kernel=true" >> ${GITHUB_ENV}
+  fi
   if [[ -n "${rootfs_size}" ]]; then
     echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
   else
@@ -1610,6 +1615,11 @@ if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
      TIME g "打包机型: ${amlogic_model}"
      TIME g "打包内核: ${amlogic_kernel}"
      TIME g "分区大小: ${rootfs_size}"
+     if [[ "${auto_kernel}" == "true" ]]; then
+       TIME g "自动检测最新内核: 是"
+     else
+       TIME g "自动检测最新内核: 不是"
+     fi
   else
      TIME b "内核版本: ${LINUX_KERNEL}"
      TIME r "自动打包: 没开启自动打包设置"
