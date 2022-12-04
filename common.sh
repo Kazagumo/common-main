@@ -162,6 +162,9 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 else
   echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 fi
+echo "CPU_SELECTION=${CPU_SELECTION}" >> ${GITHUB_ENV}
+echo "RETAIN_DAYS=${RETAIN_DAYS}" >> ${GITHUB_ENV}
+echo "KEEP_LATEST=${KEEP_LATEST}" >> ${GITHUB_ENV}
 
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_ENV}
 echo "FILES_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
