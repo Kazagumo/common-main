@@ -32,7 +32,7 @@ ymlsettings="build/${FOLDER_NAME}/start-up/settings.ini"
 echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
 echo "2"
 cp -Rf "${ymlpath}" "${ymlsettings}"
-
+echo "3"
 if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
   INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
 elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'Telegram' ]]; then
