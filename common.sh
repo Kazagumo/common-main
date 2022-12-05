@@ -1424,7 +1424,7 @@ fi
 if [[ "${Continue_selecting}" == "1" ]]; then
   git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
   rm -rf ${FOLDER_NAME}/*
-  cp -Rf .github/workflows ${FOLDER_NAME}/workflows
+  cp -Rf .github ${FOLDER_NAME}/.github
   cp -Rf build ${FOLDER_NAME}/build
   mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
   if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
