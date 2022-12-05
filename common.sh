@@ -1413,6 +1413,7 @@ E5)
   fi
 ;;
 *)
+  echo "${CPU_OPTIMIZATION},变量检测有错误"
   export Continue_selecting="0"
 ;;
 esac
