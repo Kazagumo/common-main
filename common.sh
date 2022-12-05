@@ -56,7 +56,7 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   CPU_SELECTION1="$(grep "CPU_SELECTION=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
   INFORMATION_NOTICE1="$(grep "INFORMATION_NOTICE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
           
-  SOURCE_CODE2="SOURCE_CODE\\=\\\"IMMORTALWRT\\\""
+  SOURCE_CODE2="SOURCE_CODE\\=\\\"${SOURCE_CODE}\\\""
   REPO_BRANCH2="REPO_BRANCH\\=\\\"${INPUTS_REPO_BRANCH}\\\""
   CONFIG_FILE2="CONFIG_FILE\\=\\\"${INPUTS_CONFIG_FILE}\\\""
   UPLOAD_FIRMWARE2="UPLOAD_FIRMWARE\\=\\\"${INPUTS_UPLOAD_FIRMWARE}\\\""
