@@ -95,14 +95,14 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
   if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
-    START_SECOND="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
+    t1="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     t2=`date -d "$END_TIME" +%s`
-    SECONDS=$((t2-START_SECOND))
+    SECONDS=$((t2-t1))
     HOUR=$(( $SECONDS/3600 ))
     MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
     echo "${MIN}"
-    if [[ "${MIN}" -lt "6" ]]; then
+    if [[ "${MIN}" -lt "5" ]]; then
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECOND}.ini"
       echo "运行start-up/${START_SECOND}.ini"
     else
@@ -380,9 +380,9 @@ else
 fi
 if [[ `ls -1 "build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
   START_SECON="$(ls -1 "build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
-  START_TIMEs=`date +'%Y-%m-%d %H:%M:%S'`
-  START_SECONDSs=$(date --date="$START_TIMEs" +%s)
-  mv "build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDSs}.ini
+  START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+  START_SECONDS=$(date --date="$START_TIME" +%s)
+  mv "build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
 fi
 echo "${START_SECONDSs}.ini"
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
@@ -1444,10 +1444,10 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   cp -Rf .github/workflows ${FOLDER_NAME}/.github/workflows
   
   if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
-    START_SECON="$(ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
+    t1="$(ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     t2=`date -d "$END_TIME" +%s`
-    SECONDS=$((t2-START_SECON))
+    SECONDS=$((t2-t1))
     HOUR=$(( $SECONDS/3600 ))
     MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
     echo "${MIN}"
@@ -1455,6 +1455,8 @@ if [[ "${Continue_selecting}" == "1" ]]; then
       START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
       START_SECONDS=$(date --date="$START_TIME" +%s)
       mv "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+    else
+      rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini
     fi
   fi
   echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
