@@ -25,6 +25,11 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 function settings_variable() {
 ymlpath="build/${FOLDER_NAME}/settings.ini"
+mkdir -p build/${FOLDER_NAME}/start-up
+ymlsettings="build/${FOLDER_NAME}/start-up/settings.ini"
+echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
+cp -Rf "${ymlpath}" "${ymlsettings}"
+
 if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
   INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
 elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'Telegram' ]]; then
@@ -66,16 +71,16 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   COLLECTED_PACKAGES2="COLLECTED_PACKAGES\\=\\\"${INPUTS_COLLECTED_PACKAGES}\\\""
   CPU_SELECTION2="CPU_SELECTION\\=\\\"${INPUTS_CPU_SELECTION}\\\""
         
-  sed -i "s?${SOURCE_CODE1}?${SOURCE_CODE2}?g" build/${FOLDER_NAME}/settings.ini
-  sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" build/${FOLDER_NAME}/settings.ini
-  sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" build/${FOLDER_NAME}/settings.ini
-  sed -i "s?${UPLOAD_FIRMWARE1}?${UPLOAD_FIRMWARE2}?g" build/${FOLDER_NAME}/settings.ini
-  sed -i "s?${UPLOAD_RELEASE1}?${UPLOAD_RELEASE2}?g" build/${FOLDER_NAME}/settings.ini
-  sed -i "s?${CACHEWRTBUILD_SWITCH1}?${CACHEWRTBUILD_SWITCH2}?g" build/${FOLDER_NAME}/settings.ini
-  sed -i "s?${UPDATE_FIRMWARE_ONLINE1}?${UPDATE_FIRMWARE_ONLINE2}?g" build/${FOLDER_NAME}/settings.ini
-  sed -i "s?${COLLECTED_PACKAGES1}?${COLLECTED_PACKAGES2}?g" build/${FOLDER_NAME}/settings.ini
-  sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" build/${FOLDER_NAME}/settings.ini
-  sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" build/${FOLDER_NAME}/settings.ini
+  sed -i "s?${SOURCE_CODE1}?${SOURCE_CODE2}?g" "${ymlsettings}"
+  sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" "${ymlsettings}"
+  sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" "${ymlsettings}"
+  sed -i "s?${UPLOAD_FIRMWARE1}?${UPLOAD_FIRMWARE2}?g" "${ymlsettings}"
+  sed -i "s?${UPLOAD_RELEASE1}?${UPLOAD_RELEASE2}?g" "${ymlsettings}"
+  sed -i "s?${CACHEWRTBUILD_SWITCH1}?${CACHEWRTBUILD_SWITCH2}?g" "${ymlsettings}"
+  sed -i "s?${UPDATE_FIRMWARE_ONLINE1}?${UPDATE_FIRMWARE_ONLINE2}?g" "${ymlsettings}"
+  sed -i "s?${COLLECTED_PACKAGES1}?${COLLECTED_PACKAGES2}?g" "${ymlsettings}"
+  sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" "${ymlsettings}"
+  sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" "${ymlsettings}"
 fi
 }
 
@@ -348,8 +353,13 @@ else
   exit 1
 fi
 cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${CONFIG_FILE}
-mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
+[[ -d "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" ]] && mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
+START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+START_SECONDS=$(date --date="$START_TIME" +%s)
+if [[ -f "${ymlsettings}" ]]; then
+  mv "${FOLDER_NAME}/${ymlsettings}" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+fi
 cd ${FOLDER_NAME}
 git add .
 git commit -m "${kaisbianyixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
