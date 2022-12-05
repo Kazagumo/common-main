@@ -1445,9 +1445,17 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   
   if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
     START_SECON="$(ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
-    START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-    START_SECONDS=$(date --date="$START_TIME" +%s)
-    mv "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+    END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+    t2=`date -d "$END_TIME" +%s`
+    SECONDS=$((t2-START_SECON))
+    HOUR=$(( $SECONDS/3600 ))
+    MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
+    echo "${MIN}"
+    if [[ "${MIN}" -lt "40" ]]; then
+      START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+      START_SECONDS=$(date --date="$START_TIME" +%s)
+      mv "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+    fi
   fi
   echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
   cd ${FOLDER_NAME}
