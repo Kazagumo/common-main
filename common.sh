@@ -380,10 +380,11 @@ else
 fi
 if [[ `ls -1 "build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
   START_SECON="$(ls -1 "build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
-  START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-  START_SECONDS=$(date --date="$START_TIME" +%s)
-  mv "build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+  START_TIMEs=`date +'%Y-%m-%d %H:%M:%S'`
+  START_SECONDSs=$(date --date="$START_TIMEs" +%s)
+  mv "build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDSs}.ini
 fi
+echo "${START_SECONDSs}.ini"
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
 cd ${FOLDER_NAME}
 git add .
