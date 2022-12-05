@@ -99,7 +99,8 @@ else
   if [[ -n "${START_SECOND}" ]]; then
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     END_SECONDS=$(date --date="$END_TIME" +%s)
-    SECONDS=$((END_SECONDS-START_SECOND))
+    SECONDS=$((END_SECONDS-START_SECONDS))
+    HOUR=$(( $SECONDS/3600 ))
     MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
     if [[ "${MIN}" -lt "6" ]]; then
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECOND}.ini"
