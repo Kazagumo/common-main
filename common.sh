@@ -103,8 +103,8 @@ else
     MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
     echo "${MIN}"
     if [[ "${MIN}" -lt "5" ]]; then
-      source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECOND}.ini"
-      echo "运行start-up/${START_SECOND}.ini"
+      source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${t1}.ini"
+      echo "运行start-up/${t1}.ini"
     else
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
     fi
