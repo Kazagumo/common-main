@@ -1423,31 +1423,15 @@ fi
 
 if [[ "${Continue_selecting}" == "1" ]]; then
   git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
-  YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
-  TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-  TARGET2="target: \\[${FOLDER_NAME}\\]"
-  PATHS1="$(egrep "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
-  PATHS2="- 'build/${FOLDER_NAME}/start-up/start'"
-  if [[ -n ${PATHS1} ]] && [[ -n ${TARGET1} ]]; then
-    sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
-    sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
-  else
-    echo "获取变量失败,请勿胡乱修改compile.yml文件"
-    exit 1
-  fi
+  rm -rf ${FOLDER_NAME}/*
+  cp -Rf .github/workflows ${FOLDER_NAME}/workflows
+  cp -Rf build ${FOLDER_NAME}/build
   mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
   if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
     START_SECON="$(ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
-    END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-    END_SECONDS=$(date --date="$END_TIME" +%s)
-    SECONDS=$((END_SECONDS-START_SECOND))
-    HOUR=$(( $SECONDS/3600 ))
-    MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
-    if [[ "${MIN}" -lt "40" ]]; then
-      START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-      START_SECONDS=$(date --date="$START_TIME" +%s)
-      mv "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
-    fi
+    START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+    START_SECONDS=$(date --date="$START_TIME" +%s)
+    mv "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
   fi
   echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
   cd ${FOLDER_NAME}
