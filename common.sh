@@ -1395,15 +1395,27 @@ cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq 
 echo "${cpu_model}"
 
 
-if [[ "${CPU_OPTIMIZATION}" == "E5" ]]; then
-  export chonglaixx="E5-重新编译"
-  export Continue_selecting="1"
-elif [[ "${CPU_OPTIMIZATION}" =~ (8370|8272|8171) ]]; then
-  export chonglaixx="非${CPU_OPTIMIZATION}-重新编译"
-  export Continue_selecting="1"
-else
+case "${CPU_OPTIMIZATION}" in
+E5)
+  if [[ `echo "${cpu_model}" |grep -Eoc "E5"` -eq '1' ]]; then
+    export chonglaixx="E5-重新编译"
+    export Continue_selecting="1"
+  else
+    export Continue_selecting="0"
+  fi
+;;
+8370|8272|8171)
+  if [[ `echo "${cpu_model}" |grep -Eoc "${CPU_OPTIMIZATION}"` -eq '0' ]]; then
+    export chonglaixx="非${CPU_OPTIMIZATION}-重新编译"
+    export Continue_selecting="1"
+  else
+    export Continue_selecting="0"
+  fi
+;;
+*)
   export Continue_selecting="0"
-fi
+;;
+esac
 
 if [[ "${Continue_selecting}" == "1" ]]; then
   cd ${GITHUB_WORKSPACE}
