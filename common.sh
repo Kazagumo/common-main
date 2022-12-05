@@ -26,9 +26,11 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 function settings_variable() {
 ymlpath="build/${FOLDER_NAME}/settings.ini"
 mkdir -p build/${FOLDER_NAME}/start-up
+echo "1"
 rm -rf build/${FOLDER_NAME}/start-up/*.ini
 ymlsettings="build/${FOLDER_NAME}/start-up/settings.ini"
 echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
+echo "2"
 cp -Rf "${ymlpath}" "${ymlsettings}"
 
 if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
