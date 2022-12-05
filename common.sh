@@ -85,8 +85,8 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" "${ymlsettings}"
   sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" "${ymlsettings}"
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-  START_SECONDS=$(date --date="$START_TIME" +%s)
-  mv "${ymlsettings}" build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+  t1=`date -d "$START_TIME" +%s`
+  mv "${ymlsettings}" build/${FOLDER_NAME}/start-up/${t1}.ini
 fi
 }
 
@@ -97,12 +97,12 @@ else
   if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
     START_SECOND="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-    END_SECONDS=$(date --date="$END_TIME" +%s)
-    SECONDS=$((END_SECONDS-START_SECONDS))
+    t2=`date -d "$END_TIME" +%s`
+    SECONDS=$((t2-START_SECOND))
     HOUR=$(( $SECONDS/3600 ))
     MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
     echo "${MIN}"
-    if [[ "${MIN}" -lt "15" ]]; then
+    if [[ "${MIN}" -lt "6" ]]; then
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECOND}.ini"
       echo "运行start-up/${START_SECOND}.ini"
     else
