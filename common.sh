@@ -334,6 +334,21 @@ TIME r ""
 
 function build_openwrt() {
 cd ${GITHUB_WORKSPACE}
+if [[ `echo "${CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]]; then
+  export CPU_SELECTIO="E5"
+  export kaisbianyixx="弃用E5-编译"
+elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
+  export CPU_SELECTIO="8370"
+  export kaisbianyixx="选择8370-编译"
+elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8272'` -eq '1' ]]; then
+  export CPU_SELECTIO="8272"
+  export kaisbianyixx="选择8272-编译"
+elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8171'` -eq '1' ]]; then
+  export CPU_SELECTIO="8171"
+  export kaisbianyixx="选择8171-编译"
+else
+  export kaisbianyixx="编译"
+fi
 git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
 export YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
 export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
@@ -341,7 +356,7 @@ export TARGET2="target: \\[${FOLDER_NAME}\\]"
 export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
 export PATHS2="- 'build/${FOLDER_NAME}/start-up/start'"
 export cpu1="$(grep "CPU_OPTIMIZATION=" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-export cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTION}\\\""
+export cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTIO}\\\""
 if [[ -n ${PATHS1} ]] && [[ -n ${TARGET1} ]]; then
   sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
   sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
