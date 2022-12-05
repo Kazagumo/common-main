@@ -377,7 +377,7 @@ if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" ]]; then
 else
   rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/*.ini
 fi
-if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
+if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
   START_SECON="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   START_SECONDS=$(date --date="$START_TIME" +%s)
