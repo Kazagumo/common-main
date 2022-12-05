@@ -43,15 +43,15 @@ fi
         
 if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   if [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]]; then
-    export INPUTS_CPU_SELECTION="弃用E5"
+    export INPUTS_CPU_SELECTION="E5"
   elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
-    export INPUTS_CPU_SELECTION="8370C"
+    export INPUTS_CPU_SELECTION="8370"
   elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8272'` -eq '1' ]]; then
-    export INPUTS_CPU_SELECTION="8272CL"
+    export INPUTS_CPU_SELECTION="8272"
   elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8171'` -eq '1' ]]; then
-    export INPUTS_CPU_SELECTION="8171M"
+    export INPUTS_CPU_SELECTION="8171"
   else
-    export INPUTS_CPU_SELECTION="弃用E5"
+    export INPUTS_CPU_SELECTION="E5"
   fi
   SOURCE_CODE1="$(grep "SOURCE_CODE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
   REPO_BRANCH1="$(grep "REPO_BRANCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -334,22 +334,6 @@ TIME r ""
 
 function build_openwrt() {
 cd ${GITHUB_WORKSPACE}
-if [[ `echo "${CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]]; then
-  export CPU_SELECTION="E5"
-  export kaisbianyixx="弃用E5-编译"
-elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
-  export CPU_SELECTION="8370"
-  export kaisbianyixx="选择8370-编译"
-elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8272'` -eq '1' ]]; then
-  export CPU_SELECTION="8272"
-  export kaisbianyixx="选择8272-编译"
-elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8171'` -eq '1' ]]; then
-  export CPU_SELECTION="8171"
-  export kaisbianyixx="选择8171-编译"
-else
-  export kaisbianyixx="编译"
-fi
-echo "${CPU_SELECTION}"
 git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
 export YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
 export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
