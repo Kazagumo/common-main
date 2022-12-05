@@ -101,10 +101,9 @@ else
     SECONDS=$((t2-t1))
     HOUR=$(( $SECONDS/3600 ))
     MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
-    echo "${MIN}"
     if [[ "${MIN}" -lt "3" ]]; then
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${t1}.ini"
-      echo "运行start-up/${t1}.ini"
+      echo "运行${t1}.ini"
     else
       rm -rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${t1}.ini
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
