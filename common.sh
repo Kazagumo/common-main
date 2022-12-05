@@ -26,13 +26,10 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 function settings_variable() {
 ymlpath="build/${FOLDER_NAME}/settings.ini"
 mkdir -p build/${FOLDER_NAME}/start-up
-echo "1"
 rm -rf build/${FOLDER_NAME}/start-up/*.ini
 ymlsettings="build/${FOLDER_NAME}/start-up/settings.ini"
 echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
-echo "2"
 cp -Rf "${ymlpath}" "${ymlsettings}"
-echo "3"
 if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
   INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
 elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'Telegram' ]]; then
@@ -94,7 +91,6 @@ function Diy_variable() {
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
-  echo "6"
   if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
     START_SECOND="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
@@ -374,6 +370,13 @@ else
 fi
 cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${CONFIG_FILE}
 [[ -d "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" ]] && mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
+
+if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
+  START_SECON="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini' |grep -Eo '[0-9]+')"
+  START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+  START_SECONDS=$(date --date="$START_TIME" +%s)
+  mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+fi
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
 cd ${FOLDER_NAME}
 git add .
@@ -1425,6 +1428,19 @@ if [[ "${Continue_selecting}" == "1" ]]; then
     exit 1
   fi
   mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
+  if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
+    START_SECON="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini' |grep -Eo '[0-9]+')"
+    END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+    END_SECONDS=$(date --date="$END_TIME" +%s)
+    SECONDS=$((END_SECONDS-START_SECOND))
+    HOUR=$(( $SECONDS/3600 ))
+    MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
+      if [[ "${MIN}" -lt "40" ]]; then
+        START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+        START_SECONDS=$(date --date="$START_TIME" +%s)
+        mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+      fi
+  fi
   echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
   cd ${FOLDER_NAME}
   git add .
