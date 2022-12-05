@@ -344,7 +344,6 @@ else
 fi
 echo "${CPU_SELECTION}"
 git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
-cp -Rf build/${FOLDER_NAME}/settings.ini ${FOLDER_NAME}/build/${FOLDER_NAME}/settings.ini
 export YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
 export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
@@ -370,7 +369,7 @@ cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
 START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
 START_SECONDS=$(date --date="$START_TIME" +%s)
-if [[ -f "${ymlsettings}" ]]; then
+if [[ -f "${FOLDER_NAME}/${ymlsettings}" ]]; then
   mv "${FOLDER_NAME}/${ymlsettings}" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
 fi
 cd ${FOLDER_NAME}
