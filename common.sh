@@ -26,7 +26,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 function settings_variable() {
 ymlpath="build/${FOLDER_NAME}/settings.ini"
 mkdir -p build/${FOLDER_NAME}/start-up
-rm -rf build/${FOLDER_NAME}/start-up/*.ini
+rm -rf build/${FOLDER_NAME}/start-up/*.ini*
 ymlsettings="build/${FOLDER_NAME}/start-up/settings.ini"
 echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
 cp -Rf "${ymlpath}" "${ymlsettings}"
@@ -92,7 +92,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
   if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
-    START_SECOND="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |grep -Eo '[0-9]+')"
+    START_SECOND="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     END_SECONDS=$(date --date="$END_TIME" +%s)
     SECONDS=$((END_SECONDS-START_SECONDS))
@@ -372,7 +372,7 @@ cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${
 [[ -d "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" ]] && mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
 
 if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
-  START_SECON="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |grep -Eo '[0-9]+')"
+  START_SECON="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   START_SECONDS=$(date --date="$START_TIME" +%s)
   mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
@@ -1429,7 +1429,7 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   fi
   mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
   if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
-    START_SECON="$(ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |grep -Eo '[0-9]+')"
+    START_SECON="$(ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     END_SECONDS=$(date --date="$END_TIME" +%s)
     SECONDS=$((END_SECONDS-START_SECOND))
