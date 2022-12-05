@@ -381,8 +381,6 @@ if [[ `ls -1 "build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   START_SECONDS=$(date --date="$START_TIME" +%s)
   mv "build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
-else
-  echo "没存入ini"
 fi
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
 cd ${FOLDER_NAME}
