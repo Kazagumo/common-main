@@ -73,7 +73,7 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   UPDATE_FIRMWARE_ONLINE2="UPDATE_FIRMWARE_ONLINE\\=\\\"${INPUTS_UPDATE_FIRMWARE_ONLINE}\\\""
   COLLECTED_PACKAGES2="COLLECTED_PACKAGES\\=\\\"${INPUTS_COLLECTED_PACKAGES}\\\""
   CPU_SELECTION2="CPU_SELECTION\\=\\\"${INPUTS_CPU_SELECTION}\\\""
-        
+
   sed -i "s?${SOURCE_CODE1}?${SOURCE_CODE2}?g" "${ymlsettings}"
   sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" "${ymlsettings}"
   sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" "${ymlsettings}"
@@ -84,6 +84,9 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   sed -i "s?${COLLECTED_PACKAGES1}?${COLLECTED_PACKAGES2}?g" "${ymlsettings}"
   sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" "${ymlsettings}"
   sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" "${ymlsettings}"
+  START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+  START_SECONDS=$(date --date="$START_TIME" +%s)
+  mv "${ymlsettings}" build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
 fi
 }
 
@@ -92,12 +95,13 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
   START_SECOND="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |grep -Eo '[0-9]+')"
+  echo "6"
   if [[ -n "${START_SECOND}" ]]; then
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     END_SECONDS=$(date --date="$END_TIME" +%s)
     SECONDS=$((END_SECONDS-START_SECOND))
     MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
-    if [[ "${MIN}" -lt "4" ]]; then
+    if [[ "${MIN}" -lt "6" ]]; then
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECOND}.ini"
     else
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
@@ -370,11 +374,6 @@ fi
 cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${CONFIG_FILE}
 [[ -d "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" ]] && mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
-START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-START_SECONDS=$(date --date="$START_TIME" +%s)
-if [[ -f "${FOLDER_NAME}/${ymlsettings}" ]]; then
-  mv "${FOLDER_NAME}/${ymlsettings}" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
-fi
 cd ${FOLDER_NAME}
 git add .
 git commit -m "${kaisbianyixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
