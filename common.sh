@@ -1440,6 +1440,8 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
   rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}
   cp -Rf build/${FOLDER_NAME} ${FOLDER_NAME}/build/${FOLDER_NAME}
+  rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/*.sh
+  cp -Rf build/${FOLDER_NAME}/diy-part.sh ${FOLDER_NAME}/build/${FOLDER_NAME}/diy-part.sh
   
   rm -rf ${FOLDER_NAME}/.github/workflows
   cp -Rf .github/workflows ${FOLDER_NAME}/.github/workflows
