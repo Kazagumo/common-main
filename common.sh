@@ -102,7 +102,7 @@ else
     HOUR=$(( $SECONDS/3600 ))
     MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
     echo "${MIN}"
-    if [[ "${MIN}" -lt "5" ]]; then
+    if [[ "${MIN}" -lt "3" ]]; then
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${t1}.ini"
       echo "运行start-up/${t1}.ini"
     else
@@ -1454,9 +1454,9 @@ if [[ "${Continue_selecting}" == "1" ]]; then
     if [[ "${MIN}" -lt "40" ]]; then
       START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
       START_SECONDS=$(date --date="$START_TIME" +%s)
-      mv "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+      mv "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
     else
-      rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini
+      rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${t1}.ini
     fi
   fi
   echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
