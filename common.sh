@@ -27,8 +27,6 @@ function settings_variable() {
 ymlpath="build/${FOLDER_NAME}/settings.ini"
 if [[ ! -d "build/${FOLDER_NAME}/start-up" ]]; then
   mkdir -p build/${FOLDER_NAME}/start-up
-else
-  rm -rf build/${FOLDER_NAME}/start-up/*.ini*
 fi
 ymlsettings="build/${FOLDER_NAME}/start-up/settings.ini"
 echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
@@ -372,8 +370,11 @@ else
   exit 1
 fi
 cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${CONFIG_FILE}
-[[ -d "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" ]] && mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
-
+if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" ]]; then
+  mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
+else
+  rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/*.ini
+fi
 if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
   START_SECON="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
