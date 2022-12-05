@@ -94,9 +94,9 @@ function Diy_variable() {
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
-  START_SECOND="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |grep -Eo '[0-9]+')"
   echo "6"
-  if [[ -n "${START_SECOND}" ]]; then
+  if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
+    START_SECOND="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     END_SECONDS=$(date --date="$END_TIME" +%s)
     SECONDS=$((END_SECONDS-START_SECONDS))
