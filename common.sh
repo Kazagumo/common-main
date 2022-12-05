@@ -88,7 +88,16 @@ function Diy_variable() {
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
-  source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
+  START_SECOND="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |grep -Eo '[0-9]+')"
+  END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+  END_SECONDS=$(date --date="$END_TIME" +%s)
+  SECONDS=$((END_SECONDS-START_SECOND))
+  MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
+  if [[ "${MIN}" -lt "4" ]]; then
+    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECOND}.ini"
+  else
+    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
+  fi
 fi
 
 case "${SOURCE_CODE}" in
