@@ -106,6 +106,7 @@ else
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${t1}.ini"
       echo "运行start-up/${t1}.ini"
     else
+      rm -rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${t1}.ini
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
     fi
   else
