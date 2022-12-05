@@ -93,7 +93,7 @@ fi
 function Diy_variable() {
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
-elif [[ -n "${REPO_BRANCH2}" ]]; then  
+else
   if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
     t1="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
@@ -108,9 +108,9 @@ elif [[ -n "${REPO_BRANCH2}" ]]; then
       rm -rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${t1}.ini
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
     fi
-   fi
-else
-  source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
+  else
+    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
+  fi
 fi
 
 case "${SOURCE_CODE}" in
