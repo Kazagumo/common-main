@@ -27,6 +27,8 @@ function settings_variable() {
 ymlpath="build/${FOLDER_NAME}/settings.ini"
 if [[ ! -d "build/${FOLDER_NAME}/start-up" ]]; then
   mkdir -p build/${FOLDER_NAME}/start-up
+else
+  rm -rf build/${FOLDER_NAME}/start-up/*.ini*
 fi
 ymlsettings="build/${FOLDER_NAME}/start-up/settings.ini"
 echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
@@ -375,11 +377,13 @@ if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" ]]; then
 else
   rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/*.ini
 fi
-if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
+if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
   START_SECON="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   START_SECONDS=$(date --date="$START_TIME" +%s)
-  mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+  mv "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+else
+  echo "没存入ini"
 fi
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
 cd ${FOLDER_NAME}
