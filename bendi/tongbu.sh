@@ -710,4 +710,8 @@ else
 fi
 }
 
+function tongbu_4() {
+  for X in $(find "${GITHUB_WORKSPACE}/repogx/build" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
+  rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*.bak
+}
 
