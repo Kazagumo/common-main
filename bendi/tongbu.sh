@@ -33,15 +33,45 @@ case "${TONGBU_CANGKU}" in
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md repogx/README.md
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE repogx/LICENSE
   for X in $(ls -1 ${GITHUB_WORKSPACE}/repogx/.github/workflows |grep -Eo .*.yml); do 
-  mv ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X} ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}.bak
+    cp -Rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X} ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}.bak
+  done 
+  
+  for X in $(grep 'SOURCE_CODE: AMLOGIC' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do 
+    yml_name="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
+    cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml" "${X}"
+    sed -i "s?name: Amlogic-编译晶晨系列?${yml_name}?g" "${X}"
   done
-
-  for X in $(grep 'SOURCE_CODE: AMLOGIC' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml" "${X}"; done
-  for X in $(grep 'SOURCE_CODE: OFFICIAL' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Official.yml" "${X}"; done
-  for X in $(grep 'SOURCE_CODE: XWRT' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml" "${X}"; done
-  for X in $(grep 'SOURCE_CODE: IMMORTALWRT' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml" "${X}"; done
-  for X in $(grep 'SOURCE_CODE: LIENOL' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lienol.yml" "${X}"; done
-  for X in $(grep 'SOURCE_CODE: COOLSNOWWOLF' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lede.yml" "${X}"; done
+  
+  for X in $(grep 'SOURCE_CODE: OFFICIAL' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do 
+    yml_name="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
+    cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Official.yml" "${X}"
+    sed -i "s?name: openwrt-官方?${yml_name}?g" "${X}"
+  done
+  
+  for X in $(grep 'SOURCE_CODE: XWRT' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do 
+    yml_name="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
+    cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml" "${X}"
+    sed -i "s?name: Xwrt-源码?${yml_name}?g" "${X}"
+  done
+  
+  for X in $(grep 'SOURCE_CODE: IMMORTALWRT' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do 
+    yml_name="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
+    cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml" "${X}"
+    sed -i "s?name: Immortalwrt-天灵?${yml_name}?g" "${X}"
+  done
+  
+  for X in $(grep 'SOURCE_CODE: LIENOL' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do 
+    yml_name="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
+    cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lienol.yml" "${X}"
+    sed -i "s?name: Lienol-源码?${yml_name}?g" "${X}"
+  done
+  
+  for X in $(grep 'SOURCE_CODE: COOLSNOWWOLF' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do 
+    yml_name="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
+    cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lede.yml" "${X}"
+    sed -i "s?name: Lede-大雕?${yml_name}?g" "${X}"
+  done
+  
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/compile.yml
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/synchronise.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/synchronise.yml
 ;;
