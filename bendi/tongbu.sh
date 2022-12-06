@@ -32,8 +32,8 @@ case "${TONGBU_CANGKU}" in
 1)
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md repogx/README.md
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE repogx/LICENSE
-  for X in $(ls -1 ${GITHUB_WORKSPACE}/repogx |grep -Eo .*.yml); do 
-  mv ${GITHUB_WORKSPACE}/repogx/${X} ${GITHUB_WORKSPACE}/repogx/${X}.bak
+  for X in $(ls -1 ${GITHUB_WORKSPACE}/repogx/.github/workflows |grep -Eo .*.yml); do 
+  mv ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X} ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}.bak
   done
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/* ${GITHUB_WORKSPACE}/repogx/.github/workflows
 ;;
