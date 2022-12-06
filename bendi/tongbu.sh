@@ -36,7 +36,7 @@ case "${TONGBU_CANGKU}" in
     cp -Rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X} ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}.bak
   done 
   
-  for X in $(grep 'SOURCE_CODE: AMLOGIC' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do 
+  for X in $(grep -Eo 'SOURCE_CODE: AMLOGIC' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do 
     yml_name="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml ${X}
     sed -i "s?name: Amlogic-编译晶晨系列?${yml_name}?g" "${X}"
