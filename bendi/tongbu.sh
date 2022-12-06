@@ -13,6 +13,7 @@ else
   fi
 fi
 
+function tongbu_1() {
 # 删除上游的.config和备份diy-part.sh、settings.ini
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 for X in $(find "DIY-SETUP" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
@@ -693,18 +694,20 @@ for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settin
    sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
   fi
 done
+}
 
-
-if [[ "${BENDI_SHANCHUBAK}" == "1" ]]; then
+function tongbu_2() {
   for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
   rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*.bak
-fi
+}
 
+function tongbu_3() {
 # 上游仓库用完，删除了
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f DIY-SETUP repogx/build
 else
   rm -rf shangyou
 fi
+}
 
-exit 0
+
