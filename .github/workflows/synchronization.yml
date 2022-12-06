@@ -50,7 +50,7 @@ jobs:
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE
-        sed -i 's/start-up/relevance/g' `grep -Eo "start-up" -rl $GITHUB_WORKSPACE/shangyou`
+        sed -i 's/start-up/relevance/g' $GITHUB_WORKSPACE/shangyou/common.sh
         chmod -R 775 $GITHUB_WORKSPACE/shangyou
         cd shangyou
         git add .
