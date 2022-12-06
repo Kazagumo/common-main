@@ -700,7 +700,7 @@ function tongbu_2() {
   for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
   
   for X in $(ls -1 ${GITHUB_WORKSPACE}/repogx/.github/workflows |grep -Eo .*.yml); do 
-    sed -i "s?\${{matrix.target}}?\${{ env.FOLDER_NAME }}?g" "${X}"
+    sed -i "s?\${{matrix.target}}?\${{ env.FOLDER_NAME }}?g" ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}
   done 
   rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*.bak
   
