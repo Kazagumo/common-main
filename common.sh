@@ -25,12 +25,12 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 function settings_variable() {
 ymlpath="build/${FOLDER_NAME}/settings.ini"
-if [[ ! -d "build/${FOLDER_NAME}/start-up" ]]; then
-  mkdir -p build/${FOLDER_NAME}/start-up
+if [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
+  mkdir -p build/${FOLDER_NAME}/relevance
 else
-  rm -rf build/${FOLDER_NAME}/start-up/*.ini*
+  rm -rf build/${FOLDER_NAME}/relevance/*.ini*
 fi
-ymlsettings="build/${FOLDER_NAME}/start-up/settings.ini"
+ymlsettings="build/${FOLDER_NAME}/relevance/settings.ini"
 echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
 cp -Rf "${ymlpath}" "${ymlsettings}"
 if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
@@ -98,7 +98,7 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" "${ymlsettings}"
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   t1=`date -d "$START_TIME" +%s`
-  mv "${ymlsettings}" build/${FOLDER_NAME}/start-up/${t1}.ini
+  mv "${ymlsettings}" build/${FOLDER_NAME}/relevance/${t1}.ini
 fi
 }
 
@@ -106,18 +106,18 @@ function Diy_variable() {
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
 else
-  if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
-    t1="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
+  if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
+    t1="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     t2=`date -d "$END_TIME" +%s`
     SECONDS=$((t2-t1))
     HOUR=$(( $SECONDS/3600 ))
     MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
     if [[ "${MIN}" -lt "3" ]]; then
-      source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${t1}.ini"
+      source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini"
       echo "运行${t1}.ini"
     else
-      rm -rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/start-up/${t1}.ini
+      rm -rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini
       source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
     fi
   else
@@ -368,7 +368,7 @@ export YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
 export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
 export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
-export PATHS2="- 'build/${FOLDER_NAME}/start-up/start'"
+export PATHS2="- 'build/${FOLDER_NAME}/relevance/start'"
 export cpu1="$(grep "CPU_OPTIMIZATION=" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
 export cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTIO}\\\""
 if [[ -n ${PATHS1} ]] && [[ -n ${TARGET1} ]]; then
@@ -385,19 +385,19 @@ else
   exit 1
 fi
 cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${CONFIG_FILE}
-if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" ]]; then
-  mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up
+if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
+  mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance
 else
-  rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/*.ini
+  rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
 fi
-if [[ `ls -1 "build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
-  START_SECON="$(ls -1 "build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
+if [[ `ls -1 "build/${FOLDER_NAME}/relevance" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
+  START_SECON="$(ls -1 "build/${FOLDER_NAME}/relevance" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   START_SECONDS=$(date --date="$START_TIME" +%s)
-  mv "build/${FOLDER_NAME}/start-up/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+  mv "build/${FOLDER_NAME}/relevance/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
 fi
 echo "${START_SECONDSs}.ini"
-echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
+echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
 cd ${FOLDER_NAME}
 git add .
 git commit -m "${kaisbianyixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
@@ -1459,8 +1459,8 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   rm -rf ${FOLDER_NAME}/.github/workflows
   cp -Rf .github/workflows ${FOLDER_NAME}/.github/workflows
   
-  if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
-    t1="$(ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
+  if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
+    t1="$(ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     t2=`date -d "$END_TIME" +%s`
     SECONDS=$((t2-t1))
@@ -1470,12 +1470,12 @@ if [[ "${Continue_selecting}" == "1" ]]; then
     if [[ "${MIN}" -lt "40" ]]; then
       START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
       START_SECONDS=$(date --date="$START_TIME" +%s)
-      mv "${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${START_SECONDS}.ini
+      mv "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
     else
-      rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/${t1}.ini
+      rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${t1}.ini
     fi
   fi
-  echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/start-up/start
+  echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
   cd ${FOLDER_NAME}
   git add .
   git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}"
