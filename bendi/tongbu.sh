@@ -44,9 +44,6 @@ case "${TONGBU_CANGKU}" in
   for X in $(grep 'SOURCE_CODE: COOLSNOWWOLF' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lede.yml" "${X}"; done
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/compile.yml
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/synchronise.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/synchronise.yml
-  
-  
-  
 ;;
 esac
 
