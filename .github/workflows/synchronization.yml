@@ -28,14 +28,14 @@ jobs:
     
     steps:
     - name: 准备结束
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       
     - name: 部署环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo -E apt-get -qq update > /dev/null 2>&1
-        sudo -E apt-get -qq install -y git subversion git-core wget curl grep > /dev/null 2>&1
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install -y git subversion git-core wget curl grep
         sudo timedatectl set-timezone "$TZ"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
@@ -50,10 +50,9 @@ jobs:
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE
-        sed -i 's/start-up/relevance/g' `grep -Eo "start-up" -rl ./`
+        sed -i 's/start-up/relevance/g' `grep -Eo "start-up" -rl $GITHUB_WORKSPACE/shangyou`
         chmod -R 775 $GITHUB_WORKSPACE/shangyou
         cd shangyou
         git add .
-        git commit -m "up"
+        git commit -m "Update $(date +%Y-%m%d-%H%M%S)"
         git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
-        echo "同步完成，请注意查看[diy-part.sh]和[settings.ini]文件的变化和设置好!"
