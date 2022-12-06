@@ -710,14 +710,10 @@ else
 fi
 }
 
-function tongbu_4() {
-  for X in $(find "${GITHUB_WORKSPACE}/repogx/build" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
-  rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*.bak
-}
-
 
 if [[ "${BENDI_SHANCHUBAK}" == "1" ]]; then
-  tongbu_4
+  tongbu_2
+  tongbu_3
 elif [[ "${BENDI_SHANCHUBAK}" == "2" ]]; then
   tongbu_1
   tongbu_3
