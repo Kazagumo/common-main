@@ -715,3 +715,16 @@ function tongbu_4() {
   rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*.bak
 }
 
+
+if [[ "${BENDI_SHANCHUBAK}" == "1" ]]; then
+  tongbu_4
+elif [[ "${BENDI_SHANCHUBAK}" == "2" ]]; then
+  tongbu_1
+  tongbu_3
+elif [[ "${BENDI_SHANCHUBAK}" == "3" ]]; then
+  tongbu_1
+  tongbu_2
+  tongbu_1
+fi
+
+
