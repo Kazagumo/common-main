@@ -1755,45 +1755,52 @@ else
 fi
 echo
 echo
+if [[ ${INFORMATION_NOTICE} == "TG" ]] || [[ ${INFORMATION_NOTICE} == "PUSH" ]]; then
+  TIME y "微信/电报通知: 开启"
+else
+  TIME r "微信/电报通知: 关闭"
+fi
 if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
   TIME y "上传固件在github actions: 开启"
 else
   TIME r "上传固件在github actions: 关闭"
 fi
-if [[ ${UPLOAD_CONFIG} == "true" ]]; then
-  TIME y "上传[.config]配置文件: 开启"
+if [[ ${UPLOAD_RELEAS} == "true" ]]; then
+  TIME y "发布固件(Releases): 开启"
 else
-  TIME r "上传[.config]配置文件: 关闭"
+  TIME r "发布固件(Releases): 关闭"
 fi
-if [[ ${UPLOAD_BIN_DIR} == "true" ]]; then
-  TIME y "上传BIN文件夹(固件+IPK): 开启"
+if [[ ${CACHEWRTBUILD_SWITCH} == "true" ]]; then
+  TIME y "是否开启缓存加速: 开启"
 else
-  TIME r "上传BIN文件夹(固件+IPK): 关闭"
+  TIME r "是否开启缓存加速: 关闭"
+fi
+if [[ ${COLLECTED_PACKAGES} == "true" ]]; then
+  TIME y "是否加入作者收集的插件包: 开启"
+else
+  TIME r "是否加入作者收集的插件包: 关闭"
 fi
 if [[ ${UPLOAD_WETRANSFER} == "true" ]]; then
   TIME y "上传固件至【WETRANSFER】: 开启"
 else
   TIME r "上传固件至【WETRANSFER】: 关闭"
 fi
-if [[ ${UPLOAD_RELEASE} == "true" ]]; then
-  TIME y "发布固件: 开启"
-else
-  TIME r "发布固件: 关闭"
-fi
-if [[ ${INFORMATION_NOTICE} == "true" ]]; then
-  TIME y "微信/电报通知: 开启"
-else
-  TIME r "微信/电报通知: 关闭"
-fi
 if [[ ${COMPILATION_INFORMATION} == "true" ]]; then
   TIME y "编译信息显示: 开启"
 fi
-if [[ ${UPDATE_FIRMWARE_ONLINE} == "true" ]]; then
-  TIME y "把定时自动更新插件编译进固件: 开启"
+if [[ ${SOURCE_CODE} == "AMLOGIC" ]]; then
+  if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
+    TIME y "N1和晶晨系列固件自动打包成 .img 固件: 开启"
+  else
+    TIME r "N1和晶晨系列固件自动打包成 .img 固件: 关闭"
+  fi
 else
-  TIME r "把定时自动更新插件编译进固件: 关闭"
+  if [[ ${UPDATE_FIRMWARE_ONLINE} == "true" ]]; then
+    TIME y "把定时自动更新插件编译进固件: 开启"
+  else
+    TIME r "把定时自动更新插件编译进固件: 关闭"
+  fi
 fi
-
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -z "${REPO_TOKEN}" ]]; then
   echo
   echo
