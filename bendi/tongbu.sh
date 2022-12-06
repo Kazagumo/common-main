@@ -725,7 +725,7 @@ elif [[ "${BENDI_SHANCHUBAK}" == "2" ]]; then
 elif [[ "${BENDI_SHANCHUBAK}" == "3" ]]; then
   tongbu_1
   tongbu_2
-  tongbu_1
+  tongbu_3
 fi
 
 
