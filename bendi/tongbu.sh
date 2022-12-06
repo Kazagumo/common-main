@@ -659,6 +659,7 @@ done
 
 if [[ "${BENDI_SHANCHUBAK}" == "1" ]]; then
   for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
+  rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*.bak
 fi
 
 # 上游仓库用完，删除了
