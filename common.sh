@@ -284,11 +284,11 @@ else
   export GIT_BUILD=build/${FOLDER_NAME}
 fi
 
-if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
-  TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[${GIT_BUILD}]文件夹内补齐"
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/seed/${CONFIG_FILE}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本seed缺少[${CONFIG_FILE}]名称的配置文件,请在[${GIT_BUILD}]文件夹内补齐"
   exit 1
 else
-  echo "${GIT_BUILD}/${CONFIG_FILE}文件存在"
+  echo "${GIT_BUILD}/seed/${CONFIG_FILE}文件存在"
 fi
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[${GIT_BUILD}]文件夹内补齐"
