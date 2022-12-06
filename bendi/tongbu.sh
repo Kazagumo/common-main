@@ -35,7 +35,16 @@ case "${TONGBU_CANGKU}" in
   for X in $(ls -1 ${GITHUB_WORKSPACE}/repogx/.github/workflows |grep -Eo .*.yml); do 
   mv ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X} ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}.bak
   done
-  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/* ${GITHUB_WORKSPACE}/repogx/.github/workflows
+
+  for X in $(grep 'SOURCE_CODE: AMLOGIC' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml" "${X}"; done
+  for X in $(grep 'SOURCE_CODE: OFFICIAL' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Official.yml" "${X}"; done
+  for X in $(grep 'SOURCE_CODE: XWRT' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml" "${X}"; done
+  for X in $(grep 'SOURCE_CODE: IMMORTALWRT' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml" "${X}"; done
+  for X in $(grep 'SOURCE_CODE: LIENOL' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lienol.yml" "${X}"; done
+  for X in $(grep 'SOURCE_CODE: COOLSNOWWOLF' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do cp -Rf "${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lede.yml" "${X}"; done
+  
+  
+  
 ;;
 esac
 
