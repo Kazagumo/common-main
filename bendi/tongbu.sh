@@ -32,42 +32,9 @@ case "${TONGBU_CANGKU}" in
 1)
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md repogx/README.md
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE repogx/LICENSE
-  
-  if [[ -n "$(ls -A "${GITHUB_WORKSPACE}/repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
-    CRON2="$(grep -A 1 'schedule:' repogx/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |cut -d "#" -f1 |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
-    CRON1="$(grep -A 1 'schedule:' shangyou/.github/workflows/build-openwrt.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed s/^#// |sed 's/^[ ]*//g' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')"
-    if [[ `grep 'cron:' repogx/.github/workflows/build-openwrt.yml |sed 's/^[ ]*//g' |grep '^-\ cron'` ]]; then
-      sed -i 's/^#\(.*schedule:\)/\1/' shangyou/.github/workflows/build-openwrt.yml
-      sed -i 's/^#\(.*- cron:\)/\1/' shangyou/.github/workflows/build-openwrt.yml
-    fi
-    TARGET1="$(grep 'target: \[' shangyou/.github/workflows/build-openwrt.yml  |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-    TARGET2="$(grep 'target: \[' repogx/.github/workflows/build-openwrt.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-    QIDONG1="$(grep -A 1 'paths:' shangyou/.github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')"
-    QIDONG2="- 'config'"
-    TARGE1="$(grep 'target: \[' shangyou/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-    TARGE2="$(grep 'target: \[' repogx/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-    BEIYONG1="$(grep -A 2 'target:' shangyou/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')"
-    BEIYONG2="$(grep -A 2 'target:' repogx/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')"
-  fi
-  
-  if [[ -n "$(ls -A "${GITHUB_WORKSPACE}/repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
-    if [[ -n "${BEIYONG1}" ]] && [[ -n "${BEIYONG2}" ]]; then
-      sed -i "s/${BEIYONG1}/${BEIYONG2}/g" shangyou/.github/workflows/build-openwrt.yml
-    fi
-    if [[ -n "${CRON1}" ]] && [[ -n "${CRON2}" ]]; then
-      sed -i "s/${CRON1}/${CRON2}/g" shangyou/.github/workflows/build-openwrt.yml
-    fi
-    if [[ -n "${TARGET1}" ]] && [[ -n "${TARGET2}" ]]; then
-      sed -i "s/${TARGET1}/${TARGET2}/g" shangyou/.github/workflows/build-openwrt.yml
-    fi
-    if [[ -n "${TARGE1}" ]] && [[ -n "${TARGE2}" ]]; then
-      sed -i "s/${TARGE1}/${TARGE2}/g" shangyou/.github/workflows/compile.yml
-    fi
-    if [[ -n "${QIDONG1}" ]] && [[ -n "${QIDONG2}" ]]; then
-      sed -i "s/${QIDONG1}/${QIDONG2}/g" shangyou/.github/workflows/compile.yml
-    fi
-  fi
-  
+  for X in $(ls -1 ${GITHUB_WORKSPACE}/repogx |grep -Eo .*.yml); do 
+  mv ${GITHUB_WORKSPACE}/repogx/${X} ${GITHUB_WORKSPACE}/repogx/${X}.bak
+  done
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/* ${GITHUB_WORKSPACE}/repogx/.github/workflows
 ;;
 esac
