@@ -1061,7 +1061,7 @@ AMLOGIC)
   else
     echo "amlogic_kernel=5.4.01_5.15.01" >> ${GITHUB_ENV}
   fi
-  if [[ -n "${auto_kernel}" ]]; then
+  if [[ "${auto_kernel}" == "true" ]] || [[ "${auto_kernel}" == "false" ]]; then
     echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
   else
     echo "auto_kernel=true" >> ${GITHUB_ENV}
