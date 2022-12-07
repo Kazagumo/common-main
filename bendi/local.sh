@@ -626,6 +626,7 @@ function Bendi_Packaging() {
         fi
       fi
     fi
+  fi
   if [[ ! -d "${FIRMWARE_PATH}" ]] || [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "tar.gz"` -eq '0' ]]; then
     mkdir -p "${FIRMWARE_PATH}"
     clear
