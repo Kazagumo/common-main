@@ -872,6 +872,7 @@ read -p "${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
 1)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
+  BENDI_SHANCHUBAK="2"
   Bendi_Tongbu
 break
 ;;
