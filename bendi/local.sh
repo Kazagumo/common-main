@@ -643,7 +643,6 @@ function Bendi_Packaging() {
   echo
   export YUMINGIP="  请输入[Y/n]"
   while :; do
-    read -p " 是否自动打包最新内核：" auto_kernel
     read -p "${YUMINGIP}：" auto_kernel
     [Yy])
       auto_kernel="true"
