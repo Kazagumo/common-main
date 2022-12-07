@@ -654,7 +654,7 @@ function Bendi_Packaging() {
   echo
   ECHOGG "设置打包的内核版本[任意键回车则默认 ${amkernel}]"
   echo
-  cat amlogic/kernelpub|awk '{print " " $0}'
+  cat amlogic/kernelpub|awk '{print "  " $0}'
   echo
   read -p " 请输入您要设置打包的内核版本：" amlogic_kernel
   export amlogic_kernel=${amlogic_kernel:-"${amkernel}"}
