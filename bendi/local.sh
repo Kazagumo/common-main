@@ -641,9 +641,9 @@ function Bendi_Packaging() {
   echo
   ECHOGG "是否自动打包最新内核[直接回车则默认 是]"
   echo
-  read -p " 是否自动打包最新内核：" auto_kernel
-    export YUMINGIP="  请输入数字(1~N)"
-    while :; do
+  export YUMINGIP="  请输入[Y/n]"
+  while :; do
+    read -p " 是否自动打包最新内核：" auto_kernel
     read -p "${YUMINGIP}：" auto_kernel
     [Yy])
       auto_kernel="true"
