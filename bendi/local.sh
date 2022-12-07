@@ -644,6 +644,7 @@ function Bendi_Packaging() {
   export YUMINGIP="  请输入[Y/n]"
   while :; do
     read -p "${YUMINGIP}：" auto_kernel
+    case $auto_kernel in
     [Yy])
       auto_kernel="true"
     break
@@ -656,7 +657,7 @@ function Bendi_Packaging() {
       export YUMINGIP="  敬告,请输入正确选择[Y/n]"
     ;;
     esac
-    done
+  done
   export auto_kernel=${auto_kernel:-"true"}
   if [[ "${auto_kernel}" == "false" ]]; then
     ECHOYY "关闭自动打包最新内核"
