@@ -620,7 +620,7 @@ function Bendi_Packaging() {
         if [[ $? -ne 0 ]]; then
           curl -fsSL https://api.github.com/repos/ophub/kernel/contents/pub/stable > amlogic/stable.api
         fi
-        if [[ `grep -c "name" amlogic/stable.api` -ep '0' ]]; then
+        if [[ `grep -c "name" amlogic/stable.api` -eq '0' ]]; then
           print_error "上游仓库amlogic内核版本API下载失败!"
           exit 1
         fi
