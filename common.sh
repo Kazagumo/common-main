@@ -1059,10 +1059,10 @@ AMLOGIC)
   if [[ -n "${amlogic_kernel}" ]]; then
     echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
   else
-    echo "amlogic_kernel=5.4.210_5.10.135_5.15.50" >> ${GITHUB_ENV}
+    echo "amlogic_kernel=5.4.01_5.15.01" >> ${GITHUB_ENV}
   fi
   if [[ -n "${auto_kernel}" ]]; then
-    echo "auto_kernel=${rootfs_size}" >> ${GITHUB_ENV}
+    echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
   else
     echo "auto_kernel=true" >> ${GITHUB_ENV}
   fi
