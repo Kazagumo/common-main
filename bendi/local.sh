@@ -599,12 +599,22 @@ echo
 function Bendi_Packaging() {
   cd ${GITHUB_WORKSPACE}
   export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
-  [[ -d "amlogic" ]] && sudo rm -rf amlogic
   if [[ -d "amlogic" ]]; then
-    ECHOR "已存在的amlogic文件夹无法删除，请重启系统再来尝试"
-    exit 1
+    t1="$(cat amlogic/kernel/START_TIME)"
+    END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+    t2=`date -d "$END_TIME" +%s`
+    SECONDS=$((t2-t1))
+    HOUR=$(( $SECONDS/3600 ))
+    if [[ "${HOUR}" -lt "12" ]]; then
+      echo "amlogic"
+    else
+      sudo rm -rf amlogic
+      if [[ -d "amlogic" ]]; then
+        ECHOR "已存在的amlogic文件夹无法删除，请重启系统再来尝试"
+        exit 1
+      fi
+    fi
   fi
-  
   if [[ ! -d "${FIRMWARE_PATH}" ]] || [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "tar.gz"` -eq '0' ]]; then
     mkdir -p "${FIRMWARE_PATH}"
     clear
@@ -622,6 +632,9 @@ function Bendi_Packaging() {
   git clone --depth 1 https://github.com/ophub/kernel amlogic/kernel
   judge "打包程序下载2"
   AMLOG_PATH="amlogic/kernel/pub/stable"
+  START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+  t1=`date -d "$START_TIME" +%s`
+  echo "${t1}" >${AMLOG_PATH}/START_TIME
   ls -1 amlogic/kernel/pub/stable | awk 'END {print}' >amlogic/kernel/amkernel
   amkernel="$(cat "amlogic/kernel/amkernel")"
   rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,*README*,LICENSE}
@@ -634,6 +647,7 @@ function Bendi_Packaging() {
   ECHOYY "您设置的机型为：${amlogic_model}"
   echo
   ECHOGG "设置打包的内核版本[直接回车则默认 ${amkernel}]"
+  ls -1 amlogic/kernel/pub/stable
   echo
   read -p " 请输入您要设置的内核：" amlogic_kernel
   export amlogic_kernel=${amlogic_kernel:-"${amkernel}"}
