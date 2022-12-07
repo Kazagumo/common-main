@@ -647,7 +647,8 @@ function Bendi_Packaging() {
   ECHOYY "您设置的机型为：${amlogic_model}"
   echo
   ECHOGG "设置打包的内核版本[直接回车则默认 ${amkernel}]"
-  ls -1 amlogic/kernel/pub/stable
+  echo
+  ls -1 amlogic/kernel/pub/stable|awk '{print "  " $0}'
   echo
   read -p " 请输入您要设置的内核：" amlogic_kernel
   export amlogic_kernel=${amlogic_kernel:-"${amkernel}"}
