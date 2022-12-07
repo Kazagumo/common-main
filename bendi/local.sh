@@ -196,6 +196,7 @@ fi
 
 function Bendi_Tongbu() {
 cd ${GITHUB_WORKSPACE}
+echo
 echo "开始同步上游DIY-SETUP文件"
 bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh)
 if [[ $? -ne 0 ]]; then
