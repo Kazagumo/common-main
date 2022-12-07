@@ -9,7 +9,6 @@ else
   rm -rf shangyou && git clone -b main https://github.com/281677160/autobuild shangyou
   if [[ ! -d "DIY-SETUP" ]]; then
     cp -Rf shangyou/build DIY-SETUP
-    BENDI_SHANCHUBAK="1"
   fi
 fi
 
