@@ -630,7 +630,14 @@ function Bendi_Packaging() {
   git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
   judge "打包程序下载1"
   wget -q --no-check-certificate https://api.github.com/repos/ophub/kernel/contents/pub/stable -O amlogic/stable.api
-  judge "打包程序下载2"
+  if [[ $? -ne 0 ]]; then
+    curl -fsSL https://api.github.com/repos/ophub/kernel/contents/pub/stable > amlogic/stable.api
+  fi
+  if [[ `grep -c "name" amlogic/stable.api` -ep '0' ]]; then
+    print_error "上游仓库amlogic内核版本API下载失败!"
+    exit 1
+  fi
+  sudo chmod +x common.sh
   grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "amlogic/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" >amlogic/kernelpub
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   t1=`date -d "$START_TIME" +%s`
