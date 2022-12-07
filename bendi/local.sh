@@ -184,48 +184,48 @@ fi
 
 function Bendi_DiySetup() {
 cd ${GITHUB_WORKSPACE}
-if [[ ! -f "DIY-SETUP/${FOLDER_NAME}/settings.ini" ]]; then
-  ECHOG "下载DIY-SETUP自定义配置文件"
+if [[ ! -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
+  ECHOG "下载operates自定义配置文件"
   bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh)
-  judge "DIY-SETUP自定义配置文件下载"
-  source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
+  judge "operates自定义配置文件下载"
+  source "operates/${FOLDER_NAME}/settings.ini"
 else
-  source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
+  source "operates/${FOLDER_NAME}/settings.ini"
 fi
 }
 
 function Bendi_Tongbu() {
 cd ${GITHUB_WORKSPACE}
 echo
-echo "开始同步上游DIY-SETUP文件"
+echo "开始同步上游operates文件"
 bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh)
 if [[ $? -ne 0 ]]; then
   ECHOB "同步上游仓库失败，请检查网络"
 else
-  ECHOB "同步上游仓库完成，请至DIY-SETUP检查设置，设置好最新配置再进行编译"
+  ECHOB "同步上游仓库完成，请至operates检查设置，设置好最新配置再进行编译"
 fi
 }
 
 function Bendi_Version() {
   cd ${GITHUB_WORKSPACE}
-  if [[ -d "DIY-SETUP" ]]; then
-    A="$(grep "BENDI_VERSION=" "DIY-SETUP/${FOLDER_NAME}/relevance/bendi_version" |grep -Eo "[0-9]+\.[0-9]+")"
+  if [[ -d "operates" ]]; then
+    A="$(grep "BENDI_VERSION=" "operates/${FOLDER_NAME}/relevance/bendi_version" |grep -Eo "[0-9]+\.[0-9]+")"
     [[ -z ${A} ]] && A="0.9"
     B="${BENDI_VERSION}"
     if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1<num2)?"0":"1"}'` -eq '0' ]]; then
       clear
       echo
       echo
-      ECHOY "上游DIY-SETUP文件有更新，是否同步更新DIY-SETUP文件?"
+      ECHOY "上游operates文件有更新，是否同步更新operates文件?"
       read -p " 按[Y/y]回车同步文件，任意键回车则跳过更新： " TB
       case ${TB} in
       [Yy]) 
-        ECHOG "正在同步DIY-SETUP文件，请稍后..."
+        ECHOG "正在同步operates文件，请稍后..."
         export BENDI_SHANCHUBAK="2"
         Bendi_Tongbu
       ;;
       *)
-        ECHOR "您已跳过更新DIY-SETUP文件"
+        ECHOR "您已跳过更新operates文件"
     ;;
     esac
     fi
@@ -237,7 +237,7 @@ if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   clear
   echo
   echo
-  ECHOYY "请在 DIY-SETUP/${FOLDER_NAME} 里面设置好自定义文件"
+  ECHOYY "请在 operates/${FOLDER_NAME} 里面设置好自定义文件"
   ECHOY "设置完毕后，按[W/w]回车继续编译"
   ZDYSZ="请输入您的选择"
   while :; do
@@ -286,10 +286,10 @@ source ${GITHUB_ENV}
 function Bendi_MainProgram() {
 ECHOGG "下载扩展文件"
 cd ${GITHUB_WORKSPACE}
-source "DIY-SETUP/${FOLDER_NAME}/settings.ini"
+source "operates/${FOLDER_NAME}/settings.ini"
 echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> ${GITHUB_ENV}
 source ${GITHUB_ENV}
-sudo rm -rf build && cp -Rf DIY-SETUP build
+sudo rm -rf build && cp -Rf operates build
 git clone -b main --depth 1 https://github.com/281677160/common-main build/common
 judge "扩展文件下载"
 cp -Rf build/common/common.sh build/${FOLDER_NAME}/common.sh
@@ -543,7 +543,7 @@ if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "${TARGET_BOARD}"` -eq '0' ]]; then
   sudo chmod +x ${HOME_PATH}/key-buildzu
   exit 1
 else
-  cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}
+  cp -Rf ${FIRMWARE_PATH}/config.buildinfo ${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/${CONFIG_FILE}
   echo "
   SUCCESS_FAILED="success"
   FOLDER_NAME2="${FOLDER_NAME}"
@@ -578,7 +578,7 @@ if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
 else
   print_ok "[ ${FOLDER_NAME}-${LUCI_EDITION2}-${TARGET_PROFILE} ]顺利编译完成~~~"
 fi
-ECHOGG "已为您把配置文件替换到DIY-SETUP/${FOLDER_NAME}/${CONFIG_FILE}里"
+ECHOGG "已为您把配置文件替换到operates/${FOLDER_NAME}/${CONFIG_FILE}里"
 ECHOY "编译日期：$(date +'%Y年%m月%d号')"
 END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
 START_SECONDS=$(date --date="$START_TIME" +%s)
@@ -761,14 +761,14 @@ function Bendi_xuanzhe() {
   if [[ ! -f "/etc/oprelyon" ]]; then
     Bendi_Dependent
   fi
-  if [[ ! -d "DIY-SETUP" ]]; then
+  if [[ ! -d "operates" ]]; then
     ECHOG "没有主要编译程序存在,正在下载中,请稍后..."
     sleep 3
     export BENDI_SHANCHUBAK='3'
     Bendi_DiySetup
   else
-    YY="$(ls -1 "DIY-SETUP" |awk 'NR==1')"
-    if [[ ! -f "DIY-SETUP/${YY}/settings.ini" ]]; then
+    YY="$(ls -1 "operates" |awk 'NR==1')"
+    if [[ ! -f "operates/${YY}/settings.ini" ]]; then
       ECHOG "没有主要编译程序存在,正在下载中,请稍后..."
       sleep 3
       export BENDI_SHANCHUBAK='3'
@@ -779,17 +779,17 @@ function Bendi_xuanzhe() {
   echo 
   echo
   jixingliebiao="$(echo "0、刷新列表" |awk '{print "  " $0}')"
-  ls -1 "DIY-SETUP" |awk '$0=NR" "$0' > GITHUB_ENN
-  ls -1 "DIY-SETUP" > GITHUB_EVN
+  ls -1 "operates" |awk '$0=NR" "$0' > GITHUB_ENN
+  ls -1 "operates" > GITHUB_EVN
   XYZDSZ="$(cat GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
   rm -rf GITHUB_ENN
   echo "${jixingliebiao}"
-  ls -1 "DIY-SETUP" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
+  ls -1 "operates" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   echo
   echo
   echo -e "${Blue}  请输入您要编译源码前面对应的数值(1~X),输入[N]则为退出程序${Font}"
   echo
-  echo -e "${Green}  您可以自行在DIY-SETUP内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
+  echo -e "${Green}  您可以自行在operates内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
   echo
   echo -e "${Red}  如果您在这个步骤自建了机型文件夹,请按[0]回车进行刷新机型列表${Font}"
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
@@ -902,7 +902,7 @@ echo -e "  ${Blue}1${Font}、${Yellow}单文件更新,只更新您现有机型�
 echo
 echo -e "  ${Blue}2${Font}、${Yellow}单文件更新,只更新您现有机型文件夹的diy-part.sh和settings.ini(不要备份文件)${Font}"
 echo
-echo -e "  ${Blue}3${Font}、${Yellow}删除您现有的DIY-SETUP文件夹,从上游重新拉取DIY-SETUP文件夹${Font}"
+echo -e "  ${Blue}3${Font}、${Yellow}删除您现有的operates文件夹,从上游重新拉取operates文件夹${Font}"
 echo
 echo -e "  ${Blue}4${Font}、${Yellow}返回上级菜单${Font}"
 echo
@@ -928,7 +928,7 @@ break
 ;;
 3)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
-  [[ -d "DIY-SETUP" ]] && rm -rf DIY-SETUP
+  [[ -d "operates" ]] && rm -rf operates
   Bendi_Tongbu
 break
 ;;
@@ -954,25 +954,25 @@ function menu2() {
   if [[ "${SUCCESS_FAILED}" == "success" ]]; then
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}上回成功编译机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
-    echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    echo -e " ${Blue}operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="保留缓存,再次编译?"
     bbbbb="编译"
   elif [[ "${SUCCESS_FAILED}" == "makeconfig" ]]; then  
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}上回制作了${Font}${Yellow}${TARGET_PROFILE2}机型的.config${Font}${Blue}配置文件${Font}"
-    echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    echo -e " ${Blue}operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="继续制作.config配置文件"
     bbbbb="制作.config配置文件?"
   elif [[ "${SUCCESS_FAILED}" == "xzdl" ]]; then
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Red}大兄弟啊,上回下载完DL就没搞成了,继续[${TARGET_PROFILE2}]搞下去?${Font}"
-    echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    echo -e " ${Blue}operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="接着上次继续再搞下去?"
     bbbbb="编译"
   else
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Red}大兄弟啊,上回编译${Yellow}[${TARGET_PROFILE2}]${Font}${Red}于失败告终了${Font}"
-    echo -e " ${Blue}DIY-SETUP/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    echo -e " ${Blue}operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="保留缓存,再特么的搞一搞?"
     bbbbb="编译"
   fi
@@ -982,7 +982,7 @@ function menu2() {
   echo
   echo -e " 2${Red}.${Font}${Green}重新选择源码${bbbbb}${Font}"
   echo
-  echo -e " 3${Red}.${Font}${Green}同步上游DIY-SETUP文件${Font}"
+  echo -e " 3${Red}.${Font}${Green}同步上游operates文件${Font}"
   echo
   echo -e " 4${Red}.${Font}${Green}打包N1或晶晨系列固件(您要有armvirt_64的.tar.gz固件)${Font}"
   echo
@@ -1029,7 +1029,7 @@ clear
 echo
 echo
 ECHOY " 1. 进行选择编译或制作配置文件源码"
-ECHOY " 2. 同步上游DIY-SETUP文件"
+ECHOY " 2. 同步上游operates文件"
 ECHOY " 3. 打包N1或晶晨系列固件(您要有armvirt_64的.tar.gz固件)"
 ECHOY " 4. 退出编译程序"
 echo
@@ -1092,21 +1092,21 @@ if [[ -f "${HOME_PATH}/key-buildzu" ]]; then
 else
   KAIDUAN_JIANCE="0"
 fi
-if [[ -f "DIY-SETUP/${FOLDER_NAME2}/settings.ini" ]]; then
+if [[ -f "operates/${FOLDER_NAME2}/settings.ini" ]]; then
   KAIDUAN_JIANCE="1"
-  source DIY-SETUP/${FOLDER_NAME2}/settings.ini
+  source operates/${FOLDER_NAME2}/settings.ini
 else
   KAIDUAN_JIANCE="0"
 fi
-if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" ]]; then
-  if [[ `grep -c "CONFIG_TARGET_x86_64=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
+if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "operates/${FOLDER_NAME2}/${CONFIG_FILE}" ]]; then
+  if [[ `grep -c "CONFIG_TARGET_x86_64=y" "operates/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
     TARGET_PROFILE3="x86-64"
-  elif [[ `grep -c "CONFIG_TARGET_x86=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` == '1' ]]; then
+  elif [[ `grep -c "CONFIG_TARGET_x86=y" "operates/${FOLDER_NAME2}/${CONFIG_FILE}"` == '1' ]]; then
     TARGET_PROFILE3="x86-32"
-  elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
+  elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "operates/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
     TARGET_PROFILE3="Armvirt_64"
   else
-    TARGET_PROFILE3="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" "DIY-SETUP/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+    TARGET_PROFILE3="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" "operates/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
   fi
   [[ -z "${TARGET_PROFILE3}" ]] && TARGET_PROFILE3="未知"
 fi

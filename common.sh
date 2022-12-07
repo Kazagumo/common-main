@@ -104,7 +104,7 @@ fi
 
 function Diy_variable() {
 if [[ -n "${BENDI_VERSION}" ]]; then
-  source "${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/settings.ini"
+  source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
 else
   if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
     t1="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
@@ -279,7 +279,7 @@ echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 function Diy_settings() {
 echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
 if [[ -n "${BENDI_VERSION}" ]]; then
-  export GIT_BUILD=DIY-SETUP/${FOLDER_NAME}
+  export GIT_BUILD=operates/${FOLDER_NAME}
 else
   export GIT_BUILD=build/${FOLDER_NAME}
   export CONFIG_FILE=seed/${CONFIG_FILE}
@@ -779,7 +779,7 @@ function Diy_files() {
 cd ${HOME_PATH}
 echo "正在执行：files大法，设置固件无烦恼"
 if [[ -n "${BENDI_VERSION}" ]]; then
-  cp -Rf ${GITHUB_WORKSPACE}/DIY-SETUP/${FOLDER_NAME}/* ${BUILD_PATH}/
+  cp -Rf ${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/* ${BUILD_PATH}/
   sudo chmod -R +x ${BUILD_PATH}
 fi
 

@@ -4,28 +4,28 @@
 
 # 第一步下载上游仓库
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
-  mv -f repogx/build DIY-SETUP
+  mv -f repogx/build operates
 else
   rm -rf shangyou && git clone -b main https://github.com/281677160/autobuild shangyou
-  if [[ ! -d "DIY-SETUP" ]]; then
-    cp -Rf shangyou/build DIY-SETUP
+  if [[ ! -d "operates" ]]; then
+    cp -Rf shangyou/build operates
   fi
 fi
 
 function tongbu_1() {
 # 删除上游的.config和备份diy-part.sh、settings.ini
 rm -rf shangyou/build/*/{diy,files,patches,seed}
-for X in $(find "DIY-SETUP" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
-for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
+for X in $(find "operates" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
+for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
 
 
 # 从上游仓库覆盖文件到本地仓库
-for X in $(grep "\"COOLSNOWWOLF\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
-for X in $(grep "\"LIENOL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
-for X in $(grep "\"IMMORTALWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
-for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
-for X in $(grep "\"OFFICIAL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
-for X in $(grep "\"AMLOGIC\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
+for X in $(grep "\"COOLSNOWWOLF\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
+for X in $(grep "\"LIENOL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
+for X in $(grep "\"IMMORTALWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
+for X in $(grep "\"XWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
+for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
+for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
 
 # 云仓库的修改文件
 case "${TONGBU_CANGKU}" in
@@ -79,13 +79,13 @@ esac
 
 # 修改本地文件
 if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
-rm -rf DIY-SETUP/*/relevance
-for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do 
+rm -rf operates/*/relevance
+for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do 
   mkdir -p "${X}/relevance"
   echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/relevance/bendi_version"
   echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/relevance/README.md"
 done
-for X in $(find "DIY-SETUP" -name "settings.ini"); do
+for X in $(find "operates" -name "settings.ini"); do
   sed -i '/SSH_ACTIONS/d' "${X}"
   sed -i '/UPLOAD_FIRMWARE/d' "${X}"
   sed -i '/UPLOAD_WETRANSFER/d' "${X}"
@@ -107,7 +107,7 @@ fi
 
 # 恢复settings.ini设置
 # N1
-for X in $(grep "\"AMLOGIC\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
+for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
   aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
@@ -205,7 +205,7 @@ for X in $(grep "\"AMLOGIC\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/set
 done
 
 # 天灵
-for X in $(grep "\"IMMORTALWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
+for X in $(grep "\"IMMORTALWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
   aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
@@ -303,7 +303,7 @@ for X in $(grep "\"IMMORTALWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\
 done
 
 # 大雕
-for X in $(grep "\"COOLSNOWWOLF\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
+for X in $(grep "\"COOLSNOWWOLF\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
   aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
@@ -401,7 +401,7 @@ for X in $(grep "\"COOLSNOWWOLF\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/
 done
 
 # LI大
-for X in $(grep "\"LIENOL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
+for X in $(grep "\"LIENOL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
   aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
@@ -499,7 +499,7 @@ for X in $(grep "\"LIENOL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/sett
 done
 
 # 官方的
-for X in $(grep "\"OFFICIAL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
+for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
   aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
@@ -597,7 +597,7 @@ for X in $(grep "\"OFFICIAL\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/se
 done
 
 # x_wrt
-for X in $(grep "\"XWRT\"" -rl "DIY-SETUP" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
+for X in $(grep "\"XWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
   aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
@@ -696,7 +696,7 @@ done
 }
 
 function tongbu_2() {
-  for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
+  for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
   rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*.bak
   
 }
@@ -704,7 +704,7 @@ function tongbu_2() {
 function tongbu_3() {
 # 上游仓库用完，删除了
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
-  mv -f DIY-SETUP repogx/build
+  mv -f operates repogx/build
 else
   rm -rf shangyou
 fi
