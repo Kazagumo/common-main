@@ -217,6 +217,7 @@ function Bendi_Version() {
       case ${TB} in
       [Yy]) 
         ECHOG "正在同步DIY-SETUP文件，请稍后..."
+        export BENDI_SHANCHUBAK="2"
         Bendi_Tongbu
       ;;
       *)
