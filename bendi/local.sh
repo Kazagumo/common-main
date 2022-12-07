@@ -600,7 +600,7 @@ function Bendi_Packaging() {
   cd ${GITHUB_WORKSPACE}
   export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
   if [[ -d "amlogic" ]]; then
-    t1="$(cat amlogic/kernel/START_TIME)"
+    t1="$(cat amlogic/START_TIME)"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     t2=`date -d "$END_TIME" +%s`
     SECONDS=$((t2-t1))
@@ -629,14 +629,13 @@ function Bendi_Packaging() {
   ECHOY "正在下载打包所需的程序,请耐心等候~~~"
   git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
   judge "打包程序下载1"
-  git clone --depth 1 https://github.com/ophub/kernel amlogic/kernel
+  wget -q --no-check-certificate https://api.github.com/repos/ophub/kernel/contents/pub/stable -O amlogic/stable.api
   judge "打包程序下载2"
-  AMLOG_PATH="amlogic/kernel/pub/stable"
+  grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "amlogic/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" >amlogic/kernelpub
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   t1=`date -d "$START_TIME" +%s`
-  echo "${t1}" >${AMLOG_PATH}/START_TIME
-  ls -1 amlogic/kernel/pub/stable | awk 'END {print}' >amlogic/kernel/amkernel
-  amkernel="$(cat "amlogic/kernel/amkernel")"
+  echo "${t1}" >amlogic/START_TIME
+  amkernel="$(cat amlogic/kernelpub |awk 'END {print}' |sed s/[[:space:]]//g)"
   rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,*README*,LICENSE}
   [ ! -d amlogic/openwrt-armvirt ] && mkdir -p amlogic/openwrt-armvirt
   
@@ -648,7 +647,7 @@ function Bendi_Packaging() {
   echo
   ECHOGG "设置打包的内核版本[任意键回车则默认 ${amkernel}]"
   echo
-  ls -1 amlogic/kernel/pub/stable|awk '{print "  " $0}'
+  cat amlogic/kernelpub|awk '{print " " $0}'
   echo
   read -p " 请输入您要设置打包的内核版本：" amlogic_kernel
   export amlogic_kernel=${amlogic_kernel:-"${amkernel}"}
