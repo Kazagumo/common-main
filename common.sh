@@ -42,7 +42,7 @@ elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'pushplus' ]]; then
 fi
         
 if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
-  if [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]]; then
+  if [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]] || [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'e5'` -eq '1' ]]; then
     export INPUTS_CPU_SELECTION="E5"
   elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
     export INPUTS_CPU_SELECTION="8370"
@@ -350,7 +350,7 @@ TIME r ""
 
 function build_openwrt() {
 cd ${GITHUB_WORKSPACE}
-if [[ `echo "${CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]]; then
+if [[ `echo "${CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]] || [[ `echo "${CPU_SELECTION}" |grep -Eoc 'e5'` -eq '1' ]]; then
   export CPU_SELECTIO="E5"
   export kaisbianyixx="弃用E5-编译"
 elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
