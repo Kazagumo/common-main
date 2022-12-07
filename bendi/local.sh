@@ -399,6 +399,7 @@ if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   REPO_BRANCH2="${REPO_BRANCH}"
   LUCI_EDITION2="${LUCI_EDITION}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
+  CONFIG_FILE="${CONFIG_FILE}"
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
   sudo chmod +x ${HOME_PATH}/key-buildzu
@@ -535,6 +536,7 @@ if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "${TARGET_BOARD}"` -eq '0' ]]; then
   REPO_BRANCH2="${REPO_BRANCH}"
   LUCI_EDITION2="${LUCI_EDITION}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
+  CONFIG_FILE="${CONFIG_FILE}"
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
   sudo chmod +x ${HOME_PATH}/key-buildzu
@@ -547,6 +549,7 @@ else
   REPO_BRANCH2="${REPO_BRANCH}"
   LUCI_EDITION2="${LUCI_EDITION}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
+  CONFIG_FILE="${CONFIG_FILE}"
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
   sudo chmod +x ${HOME_PATH}/key-buildzu
@@ -781,6 +784,7 @@ function Bendi_xuanzhe() {
   Y)
     export FOLDER_NAME3=$(cat GITHUB_EVN |awk ''NR==${YMXZ}'')
     export FOLDER_NAME="${FOLDER_NAME3}"
+    echo "FOLDER_NAME=${FOLDER_NAME}" >> ${GITHUB_ENV}
     ECHOY " 您选择了使用 ${FOLDER_NAME} 编译固件,3秒后将进行启动编译"
     rm -rf GITHUB_EVN
     sleep 2
@@ -1074,10 +1078,12 @@ if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "DIY-SETUP/${FOLDER_NAME2}/${CONFIG
 fi
 if [[ "${KAIDUAN_JIANCE}" == "1" ]]; then
   FOLDER_NAME="${FOLDER_NAME2}"
+  echo "FOLDER_NAME=${FOLDER_NAME}" >> ${GITHUB_ENV}
   BENDI_MEMU="menu2"
   menu2
 else
   FOLDER_NAME=""
+  echo "FOLDER_NAME=${FOLDER_NAME}" >> ${GITHUB_ENV}
   BENDI_MEMU="menu"
   menu
 fi
