@@ -280,7 +280,6 @@ function Diy_settings() {
 echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
 if [[ -n "${BENDI_VERSION}" ]]; then
   export GIT_BUILD=DIY-SETUP/${FOLDER_NAME}
-  export CONFIG_FILE=seed/${CONFIG_FILE}
 else
   export GIT_BUILD=build/${FOLDER_NAME}
   export CONFIG_FILE=seed/${CONFIG_FILE}
