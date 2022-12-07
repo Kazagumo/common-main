@@ -1120,7 +1120,7 @@ if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
   collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
   yhtheme="luci-theme-${Required_Topic}"
-  aa=$(grep -Eio "=${Required_Topic}" -rl "${HOME_PATH}" |grep Makefile)
+  aa=$(grep -i "=${Required_Topic}" -rl "${HOME_PATH}" |grep Makefile)
   if [[ -n "${aa}" ]]; then
     sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
   else
