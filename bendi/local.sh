@@ -723,14 +723,14 @@ function Bendi_xuanzhe() {
   if [[ ! -d "DIY-SETUP" ]]; then
     ECHOG "没有主要编译程序存在,正在下载中,请稍后..."
     sleep 3
-    BENDI_SHANCHUBAK='3'
+    export BENDI_SHANCHUBAK='3'
     Bendi_DiySetup
   else
     YY="$(ls -1 "DIY-SETUP" |awk 'NR==1')"
     if [[ ! -f "DIY-SETUP/${YY}/settings.ini" ]]; then
       ECHOG "没有主要编译程序存在,正在下载中,请稍后..."
       sleep 3
-      BENDI_SHANCHUBAK='3'
+      export BENDI_SHANCHUBAK='3'
       Bendi_DiySetup
     fi
   fi
@@ -872,7 +872,7 @@ read -p "${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
 1)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
-  BENDI_SHANCHUBAK="2"
+  export BENDI_SHANCHUBAK="2"
   Bendi_Tongbu
 break
 ;;
