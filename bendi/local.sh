@@ -612,9 +612,20 @@ function Bendi_Packaging() {
       if [[ -d "amlogic" ]]; then
         ECHOR "已存在的amlogic文件夹无法删除，请重启系统再来尝试"
         exit 1
+      else
+        ECHOY "正在下载打包所需的程序,请耐心等候~~~"
+        git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
+        judge "打包程序下载1"
+        wget -q --no-check-certificate https://api.github.com/repos/ophub/kernel/contents/pub/stable -O amlogic/stable.api
+        if [[ $? -ne 0 ]]; then
+          curl -fsSL https://api.github.com/repos/ophub/kernel/contents/pub/stable > amlogic/stable.api
+        fi
+        if [[ `grep -c "name" amlogic/stable.api` -ep '0' ]]; then
+          print_error "上游仓库amlogic内核版本API下载失败!"
+          exit 1
+        fi
       fi
     fi
-  fi
   if [[ ! -d "${FIRMWARE_PATH}" ]] || [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "tar.gz"` -eq '0' ]]; then
     mkdir -p "${FIRMWARE_PATH}"
     clear
@@ -623,18 +634,6 @@ function Bendi_Packaging() {
     if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
       ECHOY "提醒：Windows的WSL系统的话，千万别直接打开文件夹来存放固件，很容易出错的，要用WinSCP工具或SSH工具自带的文件管理器"
     fi
-    exit 1
-  fi
-
-  ECHOY "正在下载打包所需的程序,请耐心等候~~~"
-  git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
-  judge "打包程序下载1"
-  wget -q --no-check-certificate https://api.github.com/repos/ophub/kernel/contents/pub/stable -O amlogic/stable.api
-  if [[ $? -ne 0 ]]; then
-    curl -fsSL https://api.github.com/repos/ophub/kernel/contents/pub/stable > amlogic/stable.api
-  fi
-  if [[ `grep -c "name" amlogic/stable.api` -ep '0' ]]; then
-    print_error "上游仓库amlogic内核版本API下载失败!"
     exit 1
   fi
   sudo chmod +x common.sh
