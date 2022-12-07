@@ -606,6 +606,7 @@ function Bendi_Packaging() {
     SECONDS=$((t2-t1))
     HOUR=$(( $SECONDS/3600 ))
     if [[ "${HOUR}" -lt "12" ]]; then
+      sudo rm -rf amlogic/out/*
       echo "amlogic"
     else
       sudo rm -rf amlogic
