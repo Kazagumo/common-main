@@ -654,9 +654,9 @@ function Bendi_Packaging() {
   export amlogic_kernel=${amlogic_kernel:-"${amkernel}"}
   ECHOYY "您设置的内核版本为：${amlogic_kernel}"
   echo
-  ECHOGG "请选择是否自动打包最新内核"
+  ECHOGG "请选择是否自动打包最新内核[Y/n]"
   echo
-  export YUMINGIP=" 请输入[Y/n]选择"
+  export YUMINGIP=""
   while :; do
     read -p "${YUMINGIP}：" auto_kernel
     case $auto_kernel in
