@@ -618,7 +618,12 @@ function Bendi_Packaging() {
 
   ECHOY "正在下载打包所需的程序,请耐心等候~~~"
   git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
-  judge "打包程序下载"
+  judge "打包程序下载1"
+  git clone --depth 1 https://github.com/ophub/kernel amlogic/kernel
+  judge "打包程序下载2"
+  AMLOG_PATH="amlogic/kernel/pub/stable"
+  ls -1 amlogic/kernel/pub/stable | awk 'END {print}' >amlogic/kernel/amkernel
+  amkernel="$(cat "amlogic/kernel/amkernel")"
   rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,*README*,LICENSE}
   [ ! -d amlogic/openwrt-armvirt ] && mkdir -p amlogic/openwrt-armvirt
   
@@ -628,20 +633,32 @@ function Bendi_Packaging() {
   export amlogic_model=${amlogic_model:-"s905d"}
   ECHOYY "您设置的机型为：${amlogic_model}"
   echo
-  ECHOGG "设置打包的内核版本[直接回车则默认 5.15.xx 和 5.10.xx]"
-  ECHOY "内核说明：不给您设置定制版本内核的,自动检测您当前写的内核最高版本打包,"
-  ECHOYY "比如您要5.15内核的话,您不需要考虑啥,直接写5.15.01就行了,其他版本内核也一样"
+  ECHOGG "设置打包的内核版本[直接回车则默认 ${amkernel}]"
   echo
   read -p " 请输入您要设置的内核：" amlogic_kernel
-  export amlogic_kernel=${amlogic_kernel:-"5.15.01_5.10.02"}
-  if [[ "${amlogic_kernel}" == "5.15.01_5.10.02" ]]; then
-    ECHOYY "您设置的内核版本为：5.15.xx 和 5.10.xx "
-  else
-    ECHOYY "您设置的内核版本为：${amlogic_kernel}"
-  fi
+  export amlogic_kernel=${amlogic_kernel:-"${amkernel}"}
+  ECHOYY "您设置的内核版本为：${amlogic_kernel}"
   echo
-  read -p " 自动打包最新内核：" auto_kernel
-  export auto_kernel=${auto_kernel:-"false"}
+  ECHOGG "是否自动打包最新内核[直接回车则默认 是]"
+  echo
+  read -p " 是否自动打包最新内核：" auto_kernel
+    export YUMINGIP="  请输入数字(1~N)"
+    while :; do
+    read -p "${YUMINGIP}：" auto_kernel
+    [Yy])
+      auto_kernel="true"
+    break
+    ;;
+    [Nn])
+      auto_kernel="false"
+    break
+    ;;
+    *)
+      export YUMINGIP="  敬告,请输入正确选择[Y/n]"
+    ;;
+    esac
+    done
+  export auto_kernel=${auto_kernel:-"true"}
   if [[ "${auto_kernel}" == "false" ]]; then
     ECHOYY "关闭自动打包最新内核"
   else
@@ -665,7 +682,7 @@ function Bendi_Packaging() {
   fi
   cd ${GITHUB_WORKSPACE}/amlogic
   sudo chmod +x make
-  sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
+  sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size}
   if [[ $? -eq 0 ]];then
     echo
     print_ok "打包完成，固件存放在[amlogic/out]文件夹"
