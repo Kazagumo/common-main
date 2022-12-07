@@ -81,9 +81,9 @@ esac
 if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
 rm -rf DIY-SETUP/*/relevance
 for X in $(find "DIY-SETUP" -name "settings.ini" |sed 's/\/settings.ini//g'); do 
-  mkdir -p "${X}/version"
-  echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/version/bendi_version"
-  echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/version/README.md"
+  mkdir -p "${X}/relevance"
+  echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/relevance/bendi_version"
+  echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/relevance/README.md"
 done
 for X in $(find "DIY-SETUP" -name "settings.ini"); do
   sed -i '/SSH_ACTIONS/d' "${X}"
