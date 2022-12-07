@@ -855,13 +855,15 @@ echo
 echo
 echo -e "  ${Green}请选择更新方式${Font}"
 echo
-echo -e "  ${Blue}1${Font}、${Yellow}单文件更新,只更新您所有机型文件夹的diy-part.sh和settings.ini${Font}"
+echo -e "  ${Blue}1${Font}、${Yellow}单文件更新,只更新您现有机型文件夹的diy-part.sh和settings.ini(带备份文件)${Font}"
 echo
-echo -e "  ${Blue}2${Font}、${Yellow}删除您现有的DIY-SETUP文件夹,从上游重新拉取DIY-SETUP文件夹${Font}"
+echo -e "  ${Blue}2${Font}、${Yellow}单文件更新,只更新您现有机型文件夹的diy-part.sh和settings.ini(不要备份文件)${Font}"
 echo
-echo -e "  ${Blue}3${Font}、${Yellow}返回上级菜单${Font}"
+echo -e "  ${Blue}3${Font}、${Yellow}删除您现有的DIY-SETUP文件夹,从上游重新拉取DIY-SETUP文件夹${Font}"
 echo
-echo -e "  ${Blue}4${Font}、${Yellow}退出退出程序${Font}"
+echo -e "  ${Blue}4${Font}、${Yellow}返回上级菜单${Font}"
+echo
+echo -e "  ${Blue}5${Font}、${Yellow}退出退出程序${Font}"
 echo
 echo
 IYSETUP="  请输入数字确定您的选择"
@@ -877,15 +879,21 @@ break
 ;;
 2)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
-  [[ -d "DIY-SETUP" ]] && rm -rf DIY-SETUP
+  export BENDI_SHANCHUBAK="3"
   Bendi_Tongbu
 break
 ;;
 3)
-  ${BENDI_MEMU}
+  [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
+  [[ -d "DIY-SETUP" ]] && rm -rf DIY-SETUP
+  Bendi_Tongbu
 break
 ;;
 4)
+  ${BENDI_MEMU}
+break
+;;
+5)
   exit 0
 break
 ;;
