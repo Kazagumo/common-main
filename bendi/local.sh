@@ -600,7 +600,7 @@ function Bendi_Packaging() {
   cd ${GITHUB_WORKSPACE}
   export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
   if [[ -d "amlogic" ]]; then
-    t1="$(cat amlogic/START_TIME)"
+    t1="$(cat amlogic/start_time)"
     END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     t2=`date -d "$END_TIME" +%s`
     SECONDS=$((t2-t1))
@@ -642,7 +642,7 @@ function Bendi_Packaging() {
   grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "amlogic/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" >amlogic/kernelpub
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   t1=`date -d "$START_TIME" +%s`
-  echo "${t1}" >amlogic/START_TIME
+  echo "${t1}" >amlogic/start_time
   amkernel="$(cat amlogic/kernelpub |awk 'END {print}' |sed s/[[:space:]]//g)"
   rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,*README*,LICENSE}
   [ ! -d amlogic/openwrt-armvirt ] && mkdir -p amlogic/openwrt-armvirt
