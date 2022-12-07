@@ -650,13 +650,13 @@ function Bendi_Packaging() {
   echo
   ls -1 amlogic/kernel/pub/stable|awk '{print "  " $0}'
   echo
-  read -p " 请输入您要设置的内核：" amlogic_kernel
+  read -p " 请输入您要设置打包的内核版本：" amlogic_kernel
   export amlogic_kernel=${amlogic_kernel:-"${amkernel}"}
   ECHOYY "您设置的内核版本为：${amlogic_kernel}"
   echo
-  ECHOGG " 请选择是否自动打包最新内核"
+  ECHOGG "请选择是否自动打包最新内核"
   echo
-  export YUMINGIP="  请输入[Y/n]"
+  export YUMINGIP=" 请输入[Y/n]选择"
   while :; do
     read -p "${YUMINGIP}：" auto_kernel
     case $auto_kernel in
@@ -669,13 +669,13 @@ function Bendi_Packaging() {
     break
     ;;
     *)
-      export YUMINGIP="  敬告,请输入正确选择[Y/n]"
+      export YUMINGIP=" 敬告,请输入正确选择[Y/n]"
     ;;
     esac
   done
   export auto_kernel=${auto_kernel:-"true"}
   if [[ "${auto_kernel}" == "false" ]]; then
-    ECHOYY "关闭自动打包最新内核"
+    ECHOGG "关闭自动打包最新内核"
   else
     ECHOYY "开启自动打包最新内核"
   fi
@@ -684,6 +684,7 @@ function Bendi_Packaging() {
   read -p " 请输入ROOTFS分区大小：" rootfs_size
   export rootfs_size=${rootfs_size:-"960"}
   ECHOYY "您设置的ROOTFS分区大小为：${rootfs_size}"
+  ECHOG "设置完毕，开始进行打包操作"
   if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
     cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   else
