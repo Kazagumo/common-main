@@ -209,7 +209,7 @@ fi
 function Bendi_Version() {
   cd ${GITHUB_WORKSPACE}
   if [[ -d "DIY-SETUP" ]]; then
-    A="$(grep "BENDI_VERSION=" "DIY-SETUP/${FOLDER_NAME}/version/bendi_version" |grep -Eo "[0-9]+\.[0-9]+")"
+    A="$(grep "BENDI_VERSION=" "DIY-SETUP/${FOLDER_NAME}/relevance/bendi_version" |grep -Eo "[0-9]+\.[0-9]+")"
     [[ -z ${A} ]] && A="0.9"
     B="${BENDI_VERSION}"
     if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1<num2)?"0":"1"}'` -eq '0' ]]; then
