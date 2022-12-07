@@ -50,11 +50,9 @@ jobs:
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE
-        sed -i 's/DIY-SETUP/operates/g' $GITHUB_WORKSPACE/shangyou/common.sh
-        sed -i 's/DIY-SETUP/operates/g' $GITHUB_WORKSPACE/shangyou/bendi/local.sh
-        sed -i 's/DIY-SETUP/operates/g' $GITHUB_WORKSPACE/shangyou/bendi/tongbu.sh
         chmod -R 775 $GITHUB_WORKSPACE/shangyou
         cd shangyou
+        sed -i 's/DIY-SETUP/operates/g' `egrep "DIY-SETUP" -rl ./`
         git add .
         git commit -m "Update $(date +%Y-%m%d-%H%M%S)"
         git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
