@@ -453,6 +453,7 @@ FOLDER_NAME2="${FOLDER_NAME}"
 REPO_BRANCH2="${REPO_BRANCH}"
 LUCI_EDITION2="${LUCI_EDITION}"
 TARGET_PROFILE2="${TARGET_PROFILE}"
+CONFIG_FILE="${CONFIG_FILE}"
 " > ${HOME_PATH}/key-buildzu
 sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
 sudo chmod +x ${HOME_PATH}/key-buildzu
