@@ -641,12 +641,12 @@ function Bendi_Packaging() {
   [ ! -d amlogic/openwrt-armvirt ] && mkdir -p amlogic/openwrt-armvirt
   
   ECHOY "全部可打包机型：s922x s922x-n2 s922x-reva a311d s905x3 s905x2 s905x2-km3 s905l3a s912 s912-m8s s905d s905d-ki s905x s905w s905"
-  ECHOGG "设置要打包固件的机型[ 直接回车则默认(N1) ]"
+  ECHOGG "设置要打包固件的机型[ 任意键回车则默认(N1) ]"
   read -p " 请输入您要设置的机型：" amlogic_model
   export amlogic_model=${amlogic_model:-"s905d"}
   ECHOYY "您设置的机型为：${amlogic_model}"
   echo
-  ECHOGG "设置打包的内核版本[直接回车则默认 ${amkernel}]"
+  ECHOGG "设置打包的内核版本[任意键回车则默认 ${amkernel}]"
   echo
   ls -1 amlogic/kernel/pub/stable|awk '{print "  " $0}'
   echo
@@ -654,26 +654,19 @@ function Bendi_Packaging() {
   export amlogic_kernel=${amlogic_kernel:-"${amkernel}"}
   ECHOYY "您设置的内核版本为：${amlogic_kernel}"
   echo
-  ECHOGG "请选择是否自动打包最新内核[Y/n]"
+  ECHOGG "请选择是否自动打包您输入的内核版本同类型的最新内核[Y/y]"
   echo
-  export YUMINGIP=""
-  while :; do
-    read -p "${YUMINGIP}：" auto_kernel
-    case $auto_kernel in
-    [Yy])
-      auto_kernel="true"
-    break
-    ;;
-    [Nn])
-      auto_kernel="false"
-    break
-    ;;
-    *)
-      export YUMINGIP=" 敬告,请输入正确选择[Y/n]"
-    ;;
-    esac
-  done
-  export auto_kernel=${auto_kernel:-"true"}
+  export YUMINGIP=" 输入[Y/y]则为是,任意键回车则为否"
+  read -p "${YUMINGIP}：" auto_kernel
+  case $auto_kernel in
+  [Yy])
+    auto_kernel="true"
+  ;;
+  *)
+    auto_kernel="false"
+  ;;
+  esac
+  export auto_kernel=${auto_kernel}
   if [[ "${auto_kernel}" == "false" ]]; then
     ECHOGG "关闭自动打包最新内核"
   else
