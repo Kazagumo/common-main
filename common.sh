@@ -1120,7 +1120,8 @@ if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
   collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
   yhtheme="luci-theme-${Required_Topic}"
-  if [[ `find . -name "${yhtheme}" -type d |grep -v build_dir |grep -c "${yhtheme}"` -ge '1' ]]; then
+  aa=$(grep -Eio "=${Required_Topic}" -rl "${HOME_PATH}" |grep Makefile)
+  if [[ -n "${aa}" ]]; then
     sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
   else
     echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
