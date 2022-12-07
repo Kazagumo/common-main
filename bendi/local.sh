@@ -212,6 +212,9 @@ function Bendi_Version() {
     [[ -z ${A} ]] && A="0.9"
     B="${BENDI_VERSION}"
     if [[ `awk -v num1=${A} -v num2=${B} 'BEGIN{print(num1<num2)?"0":"1"}'` -eq '0' ]]; then
+      clear
+      echo
+      echo
       ECHOY "上游DIY-SETUP文件有更新，是否同步更新DIY-SETUP文件?"
       read -p " 按[Y/y]回车同步文件，任意键回车则跳过更新： " TB
       case ${TB} in
