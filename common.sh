@@ -98,11 +98,11 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" "${ymlsettings}"
   sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" "${ymlsettings}"
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-  t1=`date -d "$START_TIME" +%s`
+  export t1=`date -d "$START_TIME" +%s`
   echo "t1=${t1}" >> ${GITHUB_ENV}
   mv "${ymlsettings}" build/${FOLDER_NAME}/relevance/${t1}.ini
 else
-  t1="1234567"
+  export t1="1234567"
   echo "t1=${t1}" >> ${GITHUB_ENV}
 fi
 }
