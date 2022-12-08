@@ -381,7 +381,12 @@ export CPU_PASS1="$(grep "CPU_PASSWORD=" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -
 if [[ "${t1}" == "1234567" ]]; then
   export CPU_PASS2="CPU_PASSWORD\\=\\\"1234567\\\""
 else
-  export CPU_PASS2="CPU_PASSWORD\\=\\\"${t1}\\\""
+  if [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
+    START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+    START_SECONDS=$(date --date="$START_TIME" +%s)
+    mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
+  fi
+  export CPU_PASS2="CPU_PASSWORD\\=\\\"${START_SECONDS}\\\""
 fi
 
 if [[ -n "${CPU_PASS1}" ]]; then
@@ -402,12 +407,6 @@ else
   exit 1
 fi
 cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${CONFIG_FILE}
-
-if [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
-  START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-  START_SECONDS=$(date --date="$START_TIME" +%s)
-  mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
-fi
 
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
 cd ${FOLDER_NAME}
