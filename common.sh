@@ -1663,7 +1663,7 @@ fi
 
 function Diy_organize() {
 cd ${FIRMWARE_PATH}
-if [[ -d "PACKAGED_OUTPUTPATH" ]]; then
+if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
   sudo mv -f ${PACKAGED_OUTPUTPATH}/* ${FIRMWARE_PATH}/ && sync
 fi
 mkdir -p ipk
