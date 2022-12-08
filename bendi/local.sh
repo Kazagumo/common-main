@@ -628,7 +628,7 @@ function Bendi_Packaging() {
       fi
     fi
   fi
-  if [[ ! -d "${FIRMWARE_PATH}" ]] || [[ `ls -1 "${FIRMWARE_PATH}" | grep -c "tar.gz"` -eq '0' ]]; then
+  if [[ ! -d "${FIRMWARE_PATH}" ]] || [[ `ls -1 "${FIRMWARE_PATH}" |grep -Eoc "*armvirt-64-default-rootfs.tar.gz"` -eq '0' ]]; then
     mkdir -p "${FIRMWARE_PATH}"
     clear
     ECHOR "没发现 openwrt/bin/targets/armvirt/64 文件夹里存在.tar.gz固件，已为你创建了文件夹"
@@ -686,7 +686,7 @@ function Bendi_Packaging() {
   ECHOYY "您设置的ROOTFS分区大小为：${rootfs_size}"
   ECHOG "设置完毕，开始进行打包操作"
   if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
-    cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+    cp -Rf ${FIRMWARE_PATH}/*armvirt-64-default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   else
     armvirtargz="$(ls -1 "${FIRMWARE_PATH}" |grep ".*tar.gz" |awk 'END {print}')"
     cp -Rf ${FIRMWARE_PATH}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
