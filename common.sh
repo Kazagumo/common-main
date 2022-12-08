@@ -111,10 +111,9 @@ function Diy_variable() {
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
 else
-  t1="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
   if [[ "${t1}" == "1234567" ]]; then
     source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
-  elif [[ ! "${t1}" == "1234567" ]] && [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
+  elif [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
     source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini"
     echo "运行${t1}.ini"
   else
