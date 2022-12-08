@@ -113,6 +113,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 else
   if [[ -z "${t1}" ]]; then
     t1="$(grep "CPU_PASSWORD=" "${GITHUB_WORKSPACE}/.github/workflows/compile.yml" |grep -v '^#' |grep -Eo '[0-9]+')"
+    echo "${t1}"
   fi
   if [[ "${t1}" == "1234567" ]]; then
     source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
