@@ -24,24 +24,25 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 
 function settings_variable() {
-ymlpath="build/${FOLDER_NAME}/settings.ini"
-if [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
-  mkdir -p build/${FOLDER_NAME}/relevance
-else
-  rm -rf build/${FOLDER_NAME}/relevance/*.ini*
-fi
-ymlsettings="build/${FOLDER_NAME}/relevance/settings.ini"
-echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
-cp -Rf "${ymlpath}" "${ymlsettings}"
-if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
-  INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
-elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'Telegram' ]]; then
-  INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"TG\\\""
-elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'pushplus' ]]; then
-  INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"PUSH\\\""
-fi
-        
 if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
+  ymlpath="build/${FOLDER_NAME}/settings.ini"
+  if [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
+    mkdir -p build/${FOLDER_NAME}/relevance
+  else
+    rm -rf build/${FOLDER_NAME}/relevance/*.ini
+  fi
+  ymlsettings="build/${FOLDER_NAME}/relevance/settings.ini"
+  echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
+  cp -Rf "${ymlpath}" "${ymlsettings}"
+  if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
+    INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
+  elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'Telegram' ]]; then
+    INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"TG\\\""
+  elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'pushplus' ]]; then
+    INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"PUSH\\\""
+  fi
+        
+
   if [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]] || [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'e5'` -eq '1' ]]; then
     export INPUTS_CPU_SELECTION="E5"
   elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
@@ -97,8 +98,10 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" "${ymlsettings}"
   sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" "${ymlsettings}"
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-  t1=`date -d "$START_TIME" +%s`
+  export t1=`date -d "$START_TIME" +%s`
   mv "${ymlsettings}" build/${FOLDER_NAME}/relevance/${t1}.ini
+else
+  t1="1234567"
 fi
 }
 
@@ -106,20 +109,12 @@ function Diy_variable() {
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
 else
-  if [[ `ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
-    t1="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
-    END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-    t2=`date -d "$END_TIME" +%s`
-    SECONDS=$((t2-t1))
-    HOUR=$(( $SECONDS/3600 ))
-    MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
-    if [[ "${MIN}" -lt "10" ]]; then
-      source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini"
-      echo "运行${t1}.ini"
-    else
-      rm -rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini
-      source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
-    fi
+  t1="$(ls -1 "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
+  if [[ "${t1}" == "1234567" ]]; then
+    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
+  elif [[ ! "${t1}" == "1234567" ]] && [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
+    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini"
+    echo "运行${t1}.ini"
   else
     source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
   fi
@@ -375,7 +370,18 @@ export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#
 export PATHS2="- 'build/${FOLDER_NAME}/relevance/start'"
 export cpu1="$(grep "CPU_OPTIMIZATION=" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
 export cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTIO}\\\""
-if [[ -n ${PATHS1} ]] && [[ -n ${TARGET1} ]]; then
+export CPU_PASS1="$(grep "CPU_PASSWORD=" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+if [[ "${t1}" == "1234567" ]]; then
+  export CPU_PASS2="CPU_PASSWORD\\=\\\"1234567\\\""
+else
+  export CPU_PASS2="CPU_PASSWORD\\=\\\"${t1}\\\""
+fi
+
+if [[ -n "${CPU_PASS1}" ]]; then
+  sed -i "s?${CPU_PASS1}?${CPU_PASS2}?g" "${YML_PATH}"
+fi
+
+if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
   sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
   sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
 else
@@ -389,18 +395,13 @@ else
   exit 1
 fi
 cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${CONFIG_FILE}
-if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
-  mkdir -p ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance
-else
-  rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
-fi
-if [[ `ls -1 "build/${FOLDER_NAME}/relevance" |grep -Eoc '[0-9]+\.ini'` -ge '1' ]]; then
-  START_SECON="$(ls -1 "build/${FOLDER_NAME}/relevance" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
+
+if [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   START_SECONDS=$(date --date="$START_TIME" +%s)
-  mv "build/${FOLDER_NAME}/relevance/${START_SECON}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
+  mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
 fi
-echo "${START_SECONDSs}.ini"
+
 echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
 cd ${FOLDER_NAME}
 git add .
@@ -1470,22 +1471,6 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   rm -rf ${FOLDER_NAME}/.github/workflows
   cp -Rf .github/workflows ${FOLDER_NAME}/.github/workflows
   
-  if [[ `ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" |grep -Eoc '[0-9]+\.ini'` -eq '1' ]]; then
-    t1="$(ls -1 "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" |grep -Eo '[0-9]+\.ini' |awk 'END {print}' |grep -Eo '[0-9]+')"
-    END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-    t2=`date -d "$END_TIME" +%s`
-    SECONDS=$((t2-t1))
-    HOUR=$(( $SECONDS/3600 ))
-    MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
-    echo "${MIN}"
-    if [[ "${MIN}" -lt "10" ]]; then
-      START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-      START_SECONDS=$(date --date="$START_TIME" +%s)
-      mv "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
-    else
-      rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${t1}.ini
-    fi
-  fi
   echo "${SOURCE}$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
   cd ${FOLDER_NAME}
   git add .
