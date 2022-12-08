@@ -382,11 +382,10 @@ if [[ "${t1}" == "1234567" ]]; then
   export CPU_PASS2="CPU_PASSWORD\\=\\\"1234567\\\""
 else
   if [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
-    cp -Rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${t1}.ini
-    rm -fr ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/*.ini
+    rm -fr ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
     START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
     START_SECONDS=$(date --date="$START_TIME" +%s)
-    mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
+    mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
   fi
   export CPU_PASS2="CPU_PASSWORD\\=\\\"${START_SECONDS}\\\""
 fi
