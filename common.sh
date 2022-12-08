@@ -116,8 +116,10 @@ else
   fi
   if [[ "${t1}" == "1234567" ]]; then
     source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
+    echo "t1=1234567" >> ${GITHUB_ENV}
   elif [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
     source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini"
+    echo "t1=${t1}" >> ${GITHUB_ENV}
     echo "运行${t1}.ini"
   else
     source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
