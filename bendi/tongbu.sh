@@ -53,10 +53,12 @@ case "${TONGBU_CANGKU}" in
     if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml ${X}
       yml_name2="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
+      echo "${yml_name2}"
       TARGE1="$(grep 'target: \[' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+      echo "${TARGE1}"
       sed -i "s?${TARGE1}?${TARGE2}?g" "${X}"
       sed -i "s?${yml_name2}?${yml_name1}?g" "${X}"
-    elif [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then 
+    elif [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${X}
       yml_name2="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
       TARGE1="$(grep 'target: \[' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
