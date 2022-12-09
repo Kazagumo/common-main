@@ -38,7 +38,7 @@ case "${TONGBU_CANGKU}" in
     cp -Rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X} ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}.bak
   done 
   
-  for X in $(grep 'target: \[' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do
+  for X in $(grep 'target: \[' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows" |grep -v '.bak'); do
     echo "${X}"
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
     echo "${aa}"
@@ -46,6 +46,7 @@ case "${TONGBU_CANGKU}" in
     echo "${yml_name1}"
     TARGE2="target: \\[${aa}\\]"
     echo "${TARGE2}"
+    echo "${GITHUB_WORKSPACE}/repogx/build/${aa}"
     if [[ -d "${GITHUB_WORKSPACE}/repogx/build/${aa}" ]]; then
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/repogx/build/${aa}/settings.ini" | cut -d '"' -f2)"
       echo "${SOURCE_CODE1}"
