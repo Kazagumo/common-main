@@ -39,11 +39,16 @@ case "${TONGBU_CANGKU}" in
   done 
   
   for X in $(grep 'target: \[' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do
+    echo "${X}"
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
+    echo "${aa}"
     yml_name1="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
+    echo "${yml_name1}"
     TARGE2="target: \\[${aa}\\]"
+    echo "${TARGE2}"
     if [[ -d "repogx/build/${aa}" ]]; then
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "repogx/build/${aa}/settings.ini" | cut -d '"' -f2)"
+      echo "${SOURCE_CODE1}"
     fi
     if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml ${X}
