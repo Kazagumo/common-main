@@ -711,16 +711,80 @@ fi
 }
 
 
-if [[ "${BENDI_SHANCHUBAK}" == "1" ]]; then
-  tongbu_2
-  tongbu_3
-elif [[ "${BENDI_SHANCHUBAK}" == "2" ]]; then
-  tongbu_1
-  tongbu_3
-elif [[ "${BENDI_SHANCHUBAK}" == "3" ]]; then
-  tongbu_1
-  tongbu_2
-  tongbu_3
+function github_establish() {
+if [[ ! -d shangyou ]]; then
+  git clone -b main https://github.com/281677160/autobuild.git shangyou
 fi
+if [[ ! -d repogx ]]; then
+  rm -rf repogx && git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
+fi
+aa="${inputs_establish_sample}"
+bb="${inputs_establish_name}"
+if [[ ! -d "repogx/build/${bb}" ]]; then
+  cp -Rf repogx/build/"${aa}" repogx/build/"${bb}"
+  rm -rf repogx/build/${bb}/relevance/*ini
+  echo "[${bb}]文件夹创建完成"
+else
+  echo "[${bb}]文件夹已存在"
+fi
+SOURCE_CODE1="$(grep 'SOURCE_CODE=' "repogx/build/${bb}/settings.ini" | cut -d '"' -f2)"
+if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
+  cp -Rf shangyou/.github/workflows/Amlogic.yml repogx/.github/workflows/${bb}.yml
+  nn="Amlogic"
+elif [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
+  cp -Rf shangyou/.github/workflows/Immortalwrt.yml repogx/.github/workflows/${bb}.yml
+  nn="Immortalwrt"
+elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
+  cp -Rf shangyou/.github/workflows/Lede.yml repogx/.github/workflows/${bb}.yml
+  nn="Lede"
+elif [[ "${SOURCE_CODE1}" == "LIENOL" ]]; then
+  cp -Rf shangyou/.github/workflows/Lienol.yml repogx/.github/workflows/${bb}.yml
+  nn="Lienol"
+elif [[ "${SOURCE_CODE1}" == "OFFICIAL" ]]; then
+  cp -Rf shangyou/.github/workflows/Official.yml repogx/.github/workflows/${bb}.yml
+  nn="Official"
+elif [[ "${SOURCE_CODE1}" == "XWRT" ]]; then
+  cp -Rf shangyou/.github/workflows/Xwrt.yml repogx/.github/workflows/${bb}.yml
+  nn="Xwrt"
+fi
+        
+yml_name="$(grep 'name:' "repogx/.github/workflows/${bb}.yml"  |grep -v '^#' |awk 'NR==1')"
+sed -i "s?${yml_name}?name: ${nn}-${bb}?g" "repogx/.github/workflows/${bb}.yml"
+        
+TARGE1="target: \\[.*\\]"
+TARGE2="target: \\[${bb}\\]"
+sed -i "s/${TARGE1}/${TARGE2}/g" repogx/.github/workflows/${bb}.yml
+}
+
+function github_deletefile() {
+if [[ ! -d repogx ]]; then
+rm -rf repogx && git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
+fi
+aa="${inputs_Deletefile_name}"
+bb=(${aa//,/ })
+for cc in ${bb[@]}; do
+  if [[ -d "repogx/build/${cc}" ]]; then
+    rm -rf repogx/build/"$cc"
+    rm -rf $(grep -rl "target: \[$cc\]" "repogx/.github/workflows" |sed 's/^[ ]*//g' |grep -v '^#\|compile')
+    echo "已删除[${cc}]文件夹"
+  else
+    echo "[${cc}]文件夹不存在"
+  fi
+done
+}
+
+function menu1() {
+  tongbu_2
+  tongbu_3
+}
+function menu2() {
+  tongbu_1
+  tongbu_3
+}
+function menu3() {
+  tongbu_1
+  tongbu_2
+  tongbu_3
+}
 
 
