@@ -38,7 +38,7 @@ case "${TONGBU_CANGKU}" in
     cp -Rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X} ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}.bak
   done 
   
-  for W in $(ls -1 ${GITHUB_WORKSPACE}/repogx/.github/workflows |grep -Eo .*.yml |grep -v '.bak'); do
+  for W in $(ls -1 ${GITHUB_WORKSPACE}/repogx/.github/workflows |grep -v '.bak' |grep -Eo .*.yml); do
     X="${GITHUB_WORKSPACE}/repogx/.github/workflows/${W}"
     echo "${X}"
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
@@ -51,7 +51,7 @@ case "${TONGBU_CANGKU}" in
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
       echo "${SOURCE_CODE1}"
     fi
-    if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
+    if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]] && [[ "${aa}" == "${aa}" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml ${X}
       yml_name2="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
       echo "${yml_name2}"
@@ -65,7 +65,7 @@ case "${TONGBU_CANGKU}" in
       TARGE1="$(grep 'target: \[' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
       sed -i "s?${TARGE1}?${TARGE2}?g" "${X}"
       sed -i "s?${yml_name2}?${yml_name1}?g" "${X}"
-    elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
+    elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]] && [[ "${aa}" == "${aa}" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lede.yml ${X}
       yml_name2="$(grep 'name:' "${cc}"  |grep -v '^#' |awk 'NR==1')"   
       TARGE1="$(grep 'target: \[' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
