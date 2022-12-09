@@ -45,17 +45,15 @@ case "${TONGBU_CANGKU}" in
     echo "${aa}"
     yml_name1="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
     echo "${yml_name1}"
-    TARGE2="target: \\[${aa}\\]"
-    echo "${TARGE2}"
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
       echo "${SOURCE_CODE1}"
     fi
-    if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]] && [[ "${aa}" == "${aa}" ]]; then
+    if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml ${X}
     elif [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${X}
-    elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]] && [[ "${aa}" == "${aa}" ]]; then
+    elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lede.yml ${X}
     elif [[ "${SOURCE_CODE1}" == "LIENOL" ]]; then 
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lienol.yml ${X}
