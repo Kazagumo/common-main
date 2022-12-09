@@ -442,11 +442,6 @@ rm -rf ${HOME_PATH}/CHONGTU
 
 function Bendi_DownloadDLFile() {
 ECHOGG "下载DL文件，请耐心等候..."
-cd ${HOME_PATH}
-make defconfig
-[[ -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
-make -j8 download |tee ${HOME_PATH}/build_logo/build.log
-
 echo "
 SUCCESS_FAILED="xzdl"
 FOLDER_NAME2="${FOLDER_NAME}"
@@ -455,6 +450,10 @@ LUCI_EDITION2="${LUCI_EDITION}"
 TARGET_PROFILE2="${TARGET_PROFILE}"
 CONFIG_FILE="${CONFIG_FILE}"
 " > ${HOME_PATH}/key-buildzu
+cd ${HOME_PATH}
+make defconfig
+[[ -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
+make -j8 download |tee ${HOME_PATH}/build_logo/build.log
 sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
 sudo chmod +x ${HOME_PATH}/key-buildzu
 
@@ -489,7 +488,7 @@ fi
 function Bendi_Compile() {
 cd ${HOME_PATH}
 source ${GITHUB_ENV}
-START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+START_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
 Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
 Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
 RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
@@ -580,10 +579,8 @@ else
 fi
 ECHOGG "已为您把配置文件替换到operates/${FOLDER_NAME}/${CONFIG_FILE}里"
 ECHOY "编译日期：$(date +'%Y年%m月%d号')"
-END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-START_SECONDS=$(date --date="$START_TIME" +%s)
-END_SECONDS=$(date --date="$END_TIME" +%s)
-SECONDS=$((END_SECONDS-START_SECONDS))
+END_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
+SECONDS=$((END_TIME-START_TIME))
 HOUR=$(( $SECONDS/3600 ))
 MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
 SEC=$(( $SECONDS-${HOUR}*3600-${MIN}*60 ))
