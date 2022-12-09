@@ -761,7 +761,7 @@ sed -i "s?${yml_name}?name: ${nn}-${bb}?g" "repogx/.github/workflows/${bb}.yml"
         
 TARGE1="target: \\[.*\\]"
 TARGE2="target: \\[${bb}\\]"
-sed -i "s/${TARGE1}/${TARGE2}/g" repogx/.github/workflows/${bb}.yml
+sed -i "s?${TARGE1}?${TARGE2}?g" repogx/.github/workflows/${bb}.yml
 }
 
 function github_deletefile() {
