@@ -97,8 +97,7 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   sed -i "s?${COLLECTED_PACKAGES1}?${COLLECTED_PACKAGES2}?g" "${ymlsettings}"
   sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" "${ymlsettings}"
   sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" "${ymlsettings}"
-  START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-  export t1=`date -d "$START_TIME" +%s`
+  export t1=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
   echo "t1=${t1}" >> ${GITHUB_ENV}
   mv "${ymlsettings}" build/${FOLDER_NAME}/relevance/${t1}.ini
 else
@@ -270,9 +269,7 @@ echo "DEFAULT_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/defa
 echo "KEEPD_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
 echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/bin/config_generate" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
-START_Date=`date +'%Y-%m-%d %H:%M:%S'`
-Upgrade_Date=`date -d "$START_Date" +%s`
-echo "Upgrade_Date=${Upgrade_Date}" >> ${GITHUB_ENV}
+echo "Upgrade_Date=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`" >> ${GITHUB_ENV}
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
@@ -383,8 +380,7 @@ if [[ "${t1}" == "1234567" ]]; then
 else
   if [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
     rm -fr ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
-    START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
-    START_SECONDS=$(date --date="$START_TIME" +%s)
+    START_SECONDS=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
     mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
   fi
   export CPU_PASS2="CPU_PASSWORD\\=\\\"${START_SECONDS}\\\""
