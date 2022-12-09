@@ -27,7 +27,8 @@ function Diy_Part2() {
 	export Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${TARGET_BOARD}"
 	export Github_API2="https://ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
 	export API_PATH="/tmp/Downloads/zzz_api"
-	export Release_download="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
+	export Release_download1="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
+	export Release_download2="https://ghproxy.com/${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
 	export LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
 	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 	
@@ -102,7 +103,8 @@ API_PATH="${API_PATH}"
 Github_API1="${Github_API1}"
 Github_API2="${Github_API2}"
 Github_Release="${Github_Release}"
-Release_download="${Release_download}"
+Release_download1="${Release_download1}"
+Release_download2="${Release_download2}"
 EOF
 	sudo chmod +x ${In_Firmware_Info}
 	
@@ -122,7 +124,8 @@ API_PATH="${API_PATH}"
 Github_API1="${Github_API1}"
 Github_API2="${Github_API2}"
 Github_Release="${Github_Release}"
-Release_download="${Release_download}"
+Release_download1="${Release_download1}"
+Release_download2="${Release_download2}"
 EOF
 	bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/autoupdate/replacebianliang.sh)
 	sudo chmod +x ${In_Firmware_Replace}
