@@ -2,6 +2,7 @@
 
 # 同步上游操作
 
+function tongbu_0() {
 # 第一步下载上游仓库
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f repogx/build operates
@@ -11,6 +12,7 @@ else
     cp -Rf shangyou/build operates
   fi
 fi
+}
 
 function tongbu_1() {
 # 删除上游的.config和备份diy-part.sh、settings.ini
@@ -710,6 +712,12 @@ else
 fi
 }
 
+function menu4() {
+rm -rf repogx/*
+cp -Rf shangyou/* repogx/
+rm -rf repogx/.github/workflows/*
+cp -Rf shangyou/.github/workflows/* repogx/.github/workflows/
+}
 
 function github_establish() {
 if [[ ! -d shangyou ]]; then
@@ -774,14 +782,17 @@ done
 }
 
 function menu1() {
+  tongbu_0
   tongbu_2
   tongbu_3
 }
 function menu2() {
+  tongbu_0
   tongbu_1
   tongbu_3
 }
 function menu3() {
+  tongbu_0
   tongbu_1
   tongbu_2
   tongbu_3
