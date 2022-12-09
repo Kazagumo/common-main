@@ -38,7 +38,7 @@ case "${TONGBU_CANGKU}" in
     cp -Rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X} ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}.bak
   done 
   
-  for X in $(grep -Eo 'target: \[.*\]' -rl "repogx/.github/workflows"); do
+  for X in $(grep 'target: \[' -rl "${GITHUB_WORKSPACE}/repogx/.github/workflows"); do
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
     yml_name1="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
     TARGE2="target: \\[${aa}\\]"
