@@ -46,8 +46,8 @@ case "${TONGBU_CANGKU}" in
     echo "${yml_name1}"
     TARGE2="target: \\[${aa}\\]"
     echo "${TARGE2}"
-    if [[ -d "repogx/build/${aa}" ]]; then
-      SOURCE_CODE1="$(grep 'SOURCE_CODE=' "repogx/build/${aa}/settings.ini" | cut -d '"' -f2)"
+    if [[ -d "${GITHUB_WORKSPACE}/repogx/build/${aa}" ]]; then
+      SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/repogx/build/${aa}/settings.ini" | cut -d '"' -f2)"
       echo "${SOURCE_CODE1}"
     fi
     if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
