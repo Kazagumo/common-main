@@ -383,7 +383,7 @@ else
   export CPU_PASS2="CPU_PASSWORD\\=\\\"${START_SECONDS}\\\""
 fi
 
-if [[ -n "${CPU_PASS1}" ]]; then
+if [[ -n "${CPU_PASS1}" ]] && [[ -n "${CPU_PASS2}" ]]; then
   sed -i "s?${CPU_PASS1}?${CPU_PASS2}?g" "${YML_PATH}"
 fi
 
