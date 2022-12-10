@@ -40,14 +40,14 @@ case "${TONGBU_CANGKU}" in
   
   for W in $(ls -1 ${GITHUB_WORKSPACE}/repogx/.github/workflows |grep -v '.bak' |grep -Eo .*.yml); do
     X="${GITHUB_WORKSPACE}/repogx/.github/workflows/${W}"
-    echo "${X}"
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
-    echo "${aa}"
+    TARGE1="target: \\[.*\\]"
+    TARGE2="target: \\[${aa}\\]"
     yml_name1="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
-    echo "${yml_name1}"
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
-      echo "${SOURCE_CODE1}"
+    else
+      echo "build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在"
     fi
     if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml ${X}
@@ -62,14 +62,11 @@ case "${TONGBU_CANGKU}" in
     elif [[ "${SOURCE_CODE1}" == "XWRT" ]]; then 
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml ${X}
     else
-      echo "${SOURCE_CODE1}无此文件"
+      echo ""
     fi
-      yml_name2="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
-      echo "${yml_name2}"
-      TARGE1="target: \\[.*\\]"
-      TARGE2="target: \\[${aa}\\]"
-      sed -i "s?${TARGE1}?${TARGE2}?g" ${X}
-      sed -i "s?${yml_name2}?${yml_name1}?g" "${X}"
+    yml_name2="$(grep 'name:' "${X}"  |grep -v '^#' |awk 'NR==1')"
+    sed -i "s?${TARGE1}?${TARGE2}?g" ${X}
+    sed -i "s?${yml_name2}?${yml_name1}?g" "${X}"
   done
   
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/compile.yml
