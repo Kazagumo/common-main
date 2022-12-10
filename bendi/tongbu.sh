@@ -719,7 +719,7 @@ if [[ ! -d shangyou ]]; then
   git clone -b main https://github.com/281677160/autobuild.git shangyou
 fi
 if [[ ! -d repogx ]]; then
-  rm -rf repogx && git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
+  git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 fi
 aa="${inputs_establish_sample}"
 bb="${inputs_establish_name}"
@@ -730,7 +730,8 @@ if [[ ! -d "repogx/build/${bb}" ]]; then
 else
   echo "[${bb}]文件夹已存在"
 fi
-SOURCE_CODE1="$(grep 'SOURCE_CODE=' "repogx/build/${bb}/settings.ini" | cut -d '"' -f2)"
+
+SOURCE_CODE1="$(source "repogx/build/${bb}/settings.ini" && echo ${SOURCE_CODE})"
 if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
   cp -Rf shangyou/.github/workflows/Amlogic.yml repogx/.github/workflows/${bb}.yml
   nn="Amlogic"
@@ -761,7 +762,7 @@ sed -i "s?${TARGE1}?${TARGE2}?g" repogx/.github/workflows/${bb}.yml
 
 function github_deletefile() {
 if [[ ! -d repogx ]]; then
-rm -rf repogx && git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
+  git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 fi
 aa="${inputs_Deletefile_name}"
 bb=(${aa//,/ })
