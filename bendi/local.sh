@@ -763,15 +763,15 @@ function Bendi_xuanzhe() {
   fi
   if [[ ! -d "operates" ]]; then
     ECHOG "没有主要编译程序存在,正在下载中,请稍后..."
-    sleep 3
-    export BENDI_SHANCHUBAK='3'
+    sleep 2
+    export tongbumemu="menu3"
     Bendi_DiySetup
   else
     YY="$(ls -1 "operates" |awk 'NR==1')"
     if [[ ! -f "operates/${YY}/settings.ini" ]]; then
       ECHOG "没有主要编译程序存在,正在下载中,请稍后..."
-      sleep 3
-      export BENDI_SHANCHUBAK='3'
+      sleep 2
+      export tongbumemu="menu3"
       Bendi_DiySetup
     fi
   fi
