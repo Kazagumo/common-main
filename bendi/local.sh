@@ -1036,7 +1036,7 @@ while :; do
 read -p " ${XUANZHEOP}： " CHOOSE
 case $CHOOSE in
 1)
-  echo "dizhi"
+  Bendi_xuanzhe
 break
 ;;
 2)
