@@ -15,7 +15,7 @@ fi
 }
 
 function tongbu_1() {
-# 删除上游的.config和备份diy-part.sh、settings.ini
+# 删除上游的seed和备份diy-part.sh、settings.ini
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 for X in $(find "operates" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
 for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
@@ -38,7 +38,7 @@ case "${TONGBU_CANGKU}" in
     cp -Rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X} ${GITHUB_WORKSPACE}/repogx/.github/workflows/${X}.bak
   done 
   
-  for W in $(ls -1 ${GITHUB_WORKSPACE}/repogx/.github/workflows |grep -v '.bak' |grep -Eo .*.yml); do
+  for W in $(ls -1 ${GITHUB_WORKSPACE}/repogx/.github/workflows |grep -Eo .*.yml |grep -v '.bak'); do
     X="${GITHUB_WORKSPACE}/repogx/.github/workflows/${W}"
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
     TARGE1="target: \\[.*\\]"
@@ -103,7 +103,7 @@ done
 fi
 
 # 恢复settings.ini设置
-# N1
+# Amlogic
 for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
   aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
   bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
