@@ -205,8 +205,10 @@ echo "开始同步上游operates文件"
 curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh -o tongbu.sh
 source tongbu.sh && ${tongbumemu}
 if [[ $? -ne 0 ]]; then
+  rm -rf tongbu.sh
   ECHOB "同步上游仓库失败，请检查网络"
 else
+  rm -rf tongbu.sh
   ECHOB "同步上游仓库完成，请至operates检查设置，设置好最新配置再进行编译"
 fi
 }
