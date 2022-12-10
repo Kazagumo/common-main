@@ -658,6 +658,7 @@ fi
 if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
+  find . -name 'luci-app-ttyd' | xargs -i rm -rf {}
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
   rm -rf ${HOME_PATH}/feeds/packages/devel/packr && svn export https://github.com/281677160/common-main/trunk/OFFICIAL/1907/packr ${HOME_PATH}/feeds/packages/devel/packr
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
