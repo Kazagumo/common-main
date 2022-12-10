@@ -54,7 +54,6 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   else
     export INPUTS_CPU_SELECTION="E5"
   fi
-#  SOURCE_CODE1="$(grep "SOURCE_CODE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
   REPO_BRANCH1="$(grep "REPO_BRANCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
   CONFIG_FILE1="$(grep "CONFIG_FILE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
   UPLOAD_FIRMWARE1="$(grep "UPLOAD_FIRMWARE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -68,8 +67,7 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   COLLECTED_PACKAGES1="$(grep "COLLECTED_PACKAGES=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
   CPU_SELECTION1="$(grep "CPU_SELECTION=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
   INFORMATION_NOTICE1="$(grep "INFORMATION_NOTICE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-          
-#  SOURCE_CODE2="SOURCE_CODE\\=\\\"${SOURCE_CODE}\\\""
+  
   REPO_BRANCH2="REPO_BRANCH\\=\\\"${INPUTS_REPO_BRANCH}\\\""
   CONFIG_FILE2="CONFIG_FILE\\=\\\"${INPUTS_CONFIG_FILE}\\\""
   UPLOAD_FIRMWARE2="UPLOAD_FIRMWARE\\=\\\"${INPUTS_UPLOAD_FIRMWARE}\\\""
@@ -83,7 +81,6 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   COLLECTED_PACKAGES2="COLLECTED_PACKAGES\\=\\\"${INPUTS_COLLECTED_PACKAGES}\\\""
   CPU_SELECTION2="CPU_SELECTION\\=\\\"${INPUTS_CPU_SELECTION}\\\""
 
-#  sed -i "s?${SOURCE_CODE1}?${SOURCE_CODE2}?g" "${ymlsettings}"
   sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" "${ymlsettings}"
   sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" "${ymlsettings}"
   sed -i "s?${UPLOAD_FIRMWARE1}?${UPLOAD_FIRMWARE2}?g" "${ymlsettings}"
