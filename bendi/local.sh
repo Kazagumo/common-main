@@ -186,8 +186,10 @@ function Bendi_DiySetup() {
 cd ${GITHUB_WORKSPACE}
 if [[ ! -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
   ECHOG "下载operates自定义配置文件"
-  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh)
+  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh -o tongbu.sh
+  source tongbu.sh && menu3
   judge "operates自定义配置文件下载"
+  rm -rf tongbu.sh
   source "operates/${FOLDER_NAME}/settings.ini"
 else
   source "operates/${FOLDER_NAME}/settings.ini"
@@ -198,7 +200,8 @@ function Bendi_Tongbu() {
 cd ${GITHUB_WORKSPACE}
 echo
 echo "开始同步上游operates文件"
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh)
+curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/bendi/tongbu.sh -o tongbu.sh
+source tongbu.sh && ${tongbumemu}
 if [[ $? -ne 0 ]]; then
   ECHOB "同步上游仓库失败，请检查网络"
 else
@@ -221,7 +224,7 @@ function Bendi_Version() {
       case ${TB} in
       [Yy]) 
         ECHOG "正在同步operates文件，请稍后..."
-        export BENDI_SHANCHUBAK="2"
+        export tongbumemu="menu2"
         Bendi_Tongbu
       ;;
       *)
@@ -913,19 +916,20 @@ read -p "${IYSETUP}：" Bendi_upsetup
 case ${Bendi_upsetup} in
 1)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
-  export BENDI_SHANCHUBAK="2"
+  export tongbumemu="menu2"
   Bendi_Tongbu
 break
 ;;
 2)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
-  export BENDI_SHANCHUBAK="3"
+  export tongbumemu="menu3"
   Bendi_Tongbu
 break
 ;;
 3)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
   [[ -d "operates" ]] && rm -rf operates
+  export tongbumemu="menu4"
   Bendi_Tongbu
 break
 ;;
