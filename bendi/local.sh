@@ -927,8 +927,7 @@ break
 3)
   [[ ! -f "/etc/oprelyon" ]] && Bendi_Dependent
   [[ -d "operates" ]] && rm -rf operates
-  export tongbumemu="menu4"
-  Bendi_Tongbu
+  Bendi_DiySetup
 break
 ;;
 4)
