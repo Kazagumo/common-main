@@ -190,7 +190,9 @@ if [[ ! -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
   source tongbu.sh && menu3
   judge "operates自定义配置文件下载"
   rm -rf tongbu.sh
-  source "operates/${FOLDER_NAME}/settings.ini"
+  if [[ -n "${FOLDER_NAME}" ]]; then
+    source "operates/${FOLDER_NAME}/settings.ini"
+  fi
 else
   source "operates/${FOLDER_NAME}/settings.ini"
 fi
