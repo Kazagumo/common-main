@@ -715,10 +715,10 @@ cp -Rf shangyou/.github/workflows/* repogx/.github/workflows/
 }
 
 function github_establish() {
-if [[ ! -d shangyou ]]; then
+if [[ ! -d "shangyou" ]]; then
   git clone -b main https://github.com/281677160/autobuild.git shangyou
 fi
-if [[ ! -d repogx ]]; then
+if [[ ! -d "repogx" ]]; then
   git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 fi
 aa="${inputs_establish_sample}"
@@ -761,7 +761,7 @@ sed -i "s?${TARGE1}?${TARGE2}?g" repogx/.github/workflows/${bb}.yml
 }
 
 function github_deletefile() {
-if [[ ! -d repogx ]]; then
+if [[ ! -d "repogx" ]]; then
   git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 fi
 aa="${inputs_Deletefile_name}"
