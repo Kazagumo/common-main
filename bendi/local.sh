@@ -248,19 +248,24 @@ while :; do
 read -p " 请输入：" aa
 if [[ -z "${aa}" ]]; then
   ECHOR "文件名不能为空"
-elif [[ ! -d "operates/${aa}" ]]; then
-  ECHOR "${aa}文件,不存在"
 else
   echo " 删除${aa}"
+  echo
   github_deletefile2
+  exit 0
 fi
 done
 }
 function github_deletefile2() {
+aa="${aa}"
 bb=(${aa//,/ })
 for cc in ${bb[@]}; do
-  rm -rf operates/${cc}
-  ECHOG "已删除[${cc}]文件夹"
+  if [[ -d "operates/${cc}" ]]; then
+    rm -rf operates/${cc}
+    echo "已删除[${cc}]文件夹"
+  else
+    echo "[${cc}]文件夹不存在"
+  fi
 done
 }
 
