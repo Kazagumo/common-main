@@ -244,20 +244,22 @@ ECHOY "删除operates文件夹里面的机型文件夹"
 ls -1 operates |awk '{print "  " $0}'
 echo
 ECHOGG "请输入您要删除的文件夹名称,多个文件名的话请用英文的逗号分隔"
+while :; do
 read -p " 请输入：" aa
 if [[ -z "${aa}" ]]; then
   ECHOR "文件名不能为空"
   github_deletefile
+elif [[ ! -d "operates/${aa}" ]]; then
+  ECHOR "${aa}文件,不存在"
+  github_deletefile
+else
+  echo "删除${aa}"
 fi
-aa="${aa}"
+done
 bb=(${aa//,/ })
 for cc in ${bb[@]}; do
-  if [[ -d "operates/${cc}" ]]; then
-    rm -rf operates/${cc}
-    ECHOG "已删除[${cc}]文件夹"
-  else
-    ECHOR "[${cc}]文件夹不存在"
-  fi
+  rm -rf operates/${cc}
+  ECHOG "已删除[${cc}]文件夹"
 done
 }
 
