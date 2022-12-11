@@ -928,6 +928,39 @@ Bendi_Arrangement
 Bendi_shouweigongzhong
 }
 
+function BENDI_WENJIAN() {
+cd ${GITHUB_WORKSPACE}
+clear
+echo
+echo
+ECHOY " 1. 创建机型文件夹"
+ECHOY " 2. 删除机型文件夹"
+ECHOY " 3. 啥都不干,机型编译"
+echo
+XUANZHEOP="请输入数字"
+echo
+while :; do
+read -p " ${XUANZHEOP}： " CHOOSE
+case $CHOOSE in
+1)
+  github_establish
+break
+;;
+2)
+  github_deletefile
+break
+;;
+3)
+  echo
+break
+;;
+*)
+   XUANZHEOP="请输入正确的数字编号"
+;;
+esac
+done
+}
+
 function Bendi_UPDIYSETUP() {
 cd ${GITHUB_WORKSPACE}
 clear
