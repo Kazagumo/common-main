@@ -243,7 +243,12 @@ function github_deletefile() {
 ECHOY "删除operates文件夹里面的机型文件夹"
 ls -1 operates |awk '{print "  " $0}'
 echo
-read -p " 请输入您要删除的文件夹名称：" aa
+ECHOGG "请输入您要删除的文件夹名称,多个文件名的话请用英文的逗号分隔"
+read -p " 请输入：" aa
+if [[ -z "${aa}" ]]; then
+  ECHOR "文件名不能为空"
+  github_deletefile
+fi
 aa="${aa}"
 bb=(${aa//,/ })
 for cc in ${bb[@]}; do
@@ -260,17 +265,35 @@ function github_establish() {
 ECHOY "在operates文件夹里面创建机型文件夹"
 ls -1 operates |awk '{print "  " $0}'
 echo
-read -p " 请输入上面某一文件夹名称当您要创建的机型文件夹为蓝本：" aa
+ECHOGG "请输入上面某一文件夹名称,为您要创建的机型文件夹当蓝本"
+while :; do
+read -p " 请输入：" aa
+if [[ -z "${aa}" ]]; then
+  ECHOR "文件名不能为空"
+  github_establish
+elif [[ ! -d "operates/${aa}" ]]; then
+  ECHOR "operates文件夹里面,没有${aa}存在"
+  github_establish
+fi
+done
+
 echo
-read -p " 请输入您要创建的机型文件夹名称：" bb
+ECHOGG "请输入您要创建的机型文件夹名称"
+while :; do
+read -p " 请输入：" bb
+if [[ -z "${bb}" ]]; then
+  ECHOR "文件名不能为空"
+  github_establish
+elif [[ -d "operates/${bb}" ]]; then
+  ECHOR "operates文件夹里面,已存在${aa}"
+  github_establish
+fi
+done
+
 aa="${aa}"
 bb="${bb}"
-if [[ ! -d "operates/${bb}" ]]; then
-  cp -Rf operates/"${aa}" operates/"${bb}"
-  echo "[${bb}]文件夹创建完成"
-else
-  echo "[${bb}]文件夹已存在"
-fi
+cp -Rf operates/"${aa}" operates/"${bb}"
+ECHOY "[${bb}]文件夹创建完成"
 }
 
 function Bendi_EveryInquiry() {
