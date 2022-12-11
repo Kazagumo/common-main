@@ -861,9 +861,7 @@ function Bendi_xuanzhe() {
   echo
   echo -e "${Blue}  请输入您要编译源码前面对应的数值(1~X),输入[N]则为退出程序${Font}"
   echo
-  echo -e "${Green}  您可以自行在operates内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
-  echo
-  echo -e "${Red}  输入[0]回车,进行创建机型文件夹或删除机型文件夹${Font}"
+  echo -e "${Red}  输入[0]或[Y/y]回车,进行创建机型文件夹或删除机型文件夹${Font}"
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     echo
     echo -e "${Yellow}  您使用的为WSL系统,若要自行建立文件夹${Font}"
@@ -875,19 +873,19 @@ function Bendi_xuanzhe() {
   while :; do
   YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
-  if [[ "${YMXZ}" == "0" ]]; then
-    CUrrenty="0"
+  if [[ "${YMXZ}" == "0" ]] || [[ "${YMXZ}" == "Y" ]] || [[ "${YMXZ}" == "y" ]]; then
+    CUrrenty="Y"
   elif [[ "${YMXZ}" == "N" ]] || [[ "${YMXZ}" == "n" ]]; then
     CUrrenty="N"
   elif [[ -z "${YMXZ}" ]]; then
     CUrrenty="x"
   elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
-    CUrrenty="Y"
+    CUrrenty="B"
   else
     CUrrenty="x"
   fi
   case $CUrrenty in
-  Y)
+  B)
     export FOLDER_NAME3=$(cat GITHUB_EVN |awk ''NR==${YMXZ}'')
     export FOLDER_NAME="${FOLDER_NAME3}"
     echo "FOLDER_NAME=${FOLDER_NAME}" >> ${GITHUB_ENV}
@@ -903,7 +901,7 @@ function Bendi_xuanzhe() {
     exit 0
   break
   ;;
-  0)
+  Y)
     BENDI_WENJIAN
     echo
   break
@@ -971,7 +969,7 @@ echo
 echo
 ECHOY " 1. 创建机型文件夹"
 ECHOY " 2. 删除机型文件夹"
-ECHOY " 3. 啥都不干,机型编译"
+ECHOY " 3. 啥都不干,继续编译"
 echo
 XUANZHEOP="请输入数字"
 echo
