@@ -1591,7 +1591,7 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ "${OpenClash_Core}" == "1" ]] && [[ `grep
   rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
   mkdir -p ${HOME_PATH}/files/etc/openclash/core
   cd ${HOME_PATH}/clash-neihe
-  if [[ "${Archclash}" == "linux_amd64" ]]; then
+  if [[ "${Archclash}" == "linux-amd64" ]]; then
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/meta/clash-${Archclash}.tar.gz -O meta.tar.gz
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/dev/clash-${Archclash}.tar.gz -O clash.tar.gz
     curl -fsSL https://api.github.com/repos/vernesong/OpenClash/contents/core-lateset/premium  -o premium.api
