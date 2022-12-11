@@ -881,9 +881,9 @@ function Bendi_xuanzhe() {
   echo
   echo -e "${Blue}  请输入您要编译源码前面对应的数值(1~X),输入[N]则为退出程序${Font}"
   echo
-  echo -e "${Red}  输入[0]或[Y/y]回车,进行创建机型文件夹或删除机型文件夹${Font}"
+  echo -e "${Yellow}  输入[0]或[Y/y]回车,进行创建机型文件夹或删除机型文件夹${Font}"
   echo
-  export YUMINGIP="  请输入数字(1~N)"
+  export YUMINGIP="  请输入您的选择"
   while :; do
   YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
@@ -921,7 +921,7 @@ function Bendi_xuanzhe() {
   break
   ;;
   *)
-    export YUMINGIP="  敬告,请输入正确数值"
+    export YUMINGIP="  敬告,请输入正确选项"
   ;;
   esac
   done
