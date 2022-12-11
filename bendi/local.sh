@@ -239,6 +239,23 @@ function Bendi_Version() {
   fi
 }
 
+function github_deletefile() {
+ECHOY "删除operates文件夹里面的机型文件夹"
+ls -1 operates |awk '{print "  " $0}'
+read -p " 请输入您要删除的文件夹名称：" aa
+aa="${aa}"
+bb=(${aa//,/ })
+for cc in ${bb[@]}; do
+  if [[ -d "repogx/build/${cc}" ]]; then
+    rm -rf repogx/build/"$cc"
+    rm -rf $(grep -rl "target: \[$cc\]" "repogx/.github/workflows" |sed 's/^[ ]*//g' |grep -v '^#\|compile')
+    echo "已删除[${cc}]文件夹"
+  else
+    echo "[${cc}]文件夹不存在"
+  fi
+done
+}
+
 function Bendi_EveryInquiry() {
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   clear
