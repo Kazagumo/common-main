@@ -266,6 +266,7 @@ for cc in ${bb[@]}; do
     ECHOR "[${cc}]文件夹不存在"
   fi
 done
+BENDI_WENJIAN
 }
 
 function github_establish() {
@@ -307,6 +308,7 @@ done
 function github_establish3() {
 cp -Rf operates/"${aa}" operates/"${bb}"
 ECHOY "[${bb}]文件夹创建完成"
+BENDI_WENJIAN
 }
 
 function Bendi_EveryInquiry() {
