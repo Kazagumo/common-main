@@ -283,10 +283,10 @@ ECHOGG "请输入您要创建的机型文件夹名称"
 read -p " 请输入：" bb
 if [[ -z "${bb}" ]]; then
   ECHOR "文件名不能为空"
-  github_establish
+  github_establish2
 elif [[ -d "operates/${bb}" ]]; then
   ECHOR "operates文件夹里面,已存在${aa}"
-  github_establish
+  github_establish2
 fi
 
 aa="${aa}"
