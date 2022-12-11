@@ -253,7 +253,7 @@ elif [[ ! -d "operates/${aa}" ]]; then
   ECHOR "${aa}文件,不存在"
   github_deletefile
 else
-  echo "删除${aa}"
+  echo " 删除${aa}"
 fi
 done
 bb=(${aa//,/ })
