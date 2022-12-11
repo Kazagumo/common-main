@@ -1589,24 +1589,56 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ "${OpenClash_Core}" == "1" ]] && [[ `grep
   echo "正在执行：给openclash下载核心"
   rm -rf ${HOME_PATH}/files/etc/openclash/core
   rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
+  mkdir -p ${HOME_PATH}/files/etc/openclash/core
   cd ${HOME_PATH}/clash-neihe
-  wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/dev/clash-${Archclash}.tar.gz
-  if [[ $? -ne 0 ]];then
-    wget -q https://github.com/vernesong/OpenClash/releases/download/Clash/clash-${Archclash}.tar.gz
+  if [[ "${Archclash}" == "linux_amd64" ]]; then
+    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/meta/clash-${Archclash}.tar.gz -O meta.tar.gz
+    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/dev/clash-${Archclash}.tar.gz -O clash.tar.gz
+    curl -fsSL https://api.github.com/repos/vernesong/OpenClash/contents/core-lateset/premium  -o premium.api
+    amd64_kernel="$(grep -Eo "clash-${Archclash}-.*.gz" premium.api |grep -v 'v3' |awk 'NR==1')"
+    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/premium/${amd64_kernel} -O clash_tun.gz
+    tar -zxvf clash.tar.gz -O > clash
+    if [[ $? -eq 0 ]];then
+      mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
+      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
+      echo "OpenClash增加clash内核成功"
+    else
+      echo "OpenClash增加clash内核失败"
+    fi
+    tar -zxvf meta.tar.gz -O > clash_meta
+    if [[ $? -eq 0 ]];then
+      mv -f ${HOME_PATH}/clash-neihe/clash_meta ${HOME_PATH}/files/etc/openclash/core/clash_meta
+      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash_meta
+      echo "OpenClash增加clash_meta内核成功"
+    else
+      echo "OpenClash增加clash_meta内核失败"
+    fi
+    gzip -d clash_tun.gz
+    if [[ $? -eq 0 ]];then
+      mv -f ${HOME_PATH}/clash-neihe/clash_tun ${HOME_PATH}/files/etc/openclash/core/clash_tun
+      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash_tun
+      echo "OpenClash增加clash_tun内核成功"
+    else
+      echo "OpenClash增加clash_tun内核失败"
+    fi
   else
-    echo "OpenClash内核下载成功"
+    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/dev/clash-${Archclash}.tar.gz
+    if [[ $? -ne 0 ]];then
+      wget -q https://github.com/vernesong/OpenClash/releases/download/Clash/clash-${Archclash}.tar.gz
+    else
+      echo "OpenClash内核下载成功"
+    fi
+    tar -zxvf clash-${Archclash}.tar.gz
+    if [[ -f "${HOME_PATH}/clash-neihe/clash" ]]; then
+      mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
+      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
+      echo "OpenClash增加内核成功"
+    else
+      echo "OpenClash增加内核失败"
+    fi
+    cd ${HOME_PATH}
+    rm -rf ${HOME_PATH}/clash-neihe
   fi
-  tar -zxvf clash-${Archclash}.tar.gz
-  if [[ -f "${HOME_PATH}/clash-neihe/clash" ]]; then
-    mkdir -p ${HOME_PATH}/files/etc/openclash/core
-    mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
-    sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
-    echo "OpenClash增加内核成功"
-  else
-    echo "OpenClash增加内核失败"
-  fi
-  cd ${HOME_PATH}
-  rm -rf ${HOME_PATH}/clash-neihe
 fi
 
 if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
