@@ -270,8 +270,9 @@ for cc in ${bb[@]}; do
     ECHOR "[${cc}]文件夹不存在"
   fi
 done
-ECHOBB "5秒后返回主菜单"
-seconds=5
+ECHOBB "10秒后返回主菜单"
+sleep 1
+seconds=9
 while [ $seconds -gt 0 ];do
   echo -n " ${seconds}"
   sleep 1
@@ -320,8 +321,9 @@ done
 function github_establish3() {
 cp -Rf operates/"${aa}" operates/"${bb}"
 ECHOY "[${bb}]文件夹创建完成"
-ECHOBB "5秒后返回主菜单"
-seconds=5
+ECHOBB "10秒后返回主菜单"
+sleep 1
+seconds=9
 while [ $seconds -gt 0 ];do
   echo -n " ${seconds}"
   sleep 1
