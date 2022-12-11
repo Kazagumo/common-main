@@ -969,7 +969,7 @@ echo
 echo
 ECHOY " 1. 创建机型文件夹"
 ECHOY " 2. 删除机型文件夹"
-ECHOY " 3. 啥都不干,继续编译"
+ECHOY " 3. 啥都不干,回答选择机型继续编译"
 echo
 XUANZHEOP="请输入数字"
 echo
@@ -985,7 +985,7 @@ break
 break
 ;;
 3)
-  echo
+  Bendi_xuanzhe
 break
 ;;
 *)
