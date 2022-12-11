@@ -256,6 +256,23 @@ for cc in ${bb[@]}; do
 done
 }
 
+function github_establish() {
+ECHOY "在operates文件夹里面创建机型文件夹"
+ls -1 operates |awk '{print "  " $0}'
+echo
+read -p " 请输入上面某一文件夹名称当您要创建的机型文件夹为蓝本：" aa
+echo
+read -p " 请输入您要创建的机型文件夹名称：" bb
+aa="${aa}"
+bb="${bb}"
+if [[ ! -d "operates/${bb}" ]]; then
+  cp -Rf operates/"${aa}" operates/"${bb}"
+  echo "[${bb}]文件夹创建完成"
+else
+  echo "[${bb}]文件夹已存在"
+fi
+}
+
 function Bendi_EveryInquiry() {
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   clear
