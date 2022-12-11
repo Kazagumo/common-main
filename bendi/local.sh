@@ -47,6 +47,10 @@ function ECHOB() {
   echo -e "${Red} $1 ${Font}"
   echo
 }
+function ECHOBB() {
+  echo -e "${Blue} $1 ${Font}"
+  echo
+}
 function ECHOYY() {
   echo -e "${Yellow} $1 ${Font}"
 }
@@ -266,13 +270,13 @@ for cc in ${bb[@]}; do
     ECHOR "[${cc}]文件夹不存在"
   fi
 done
-echo " 3秒后返回主菜单"
+ECHOBB "5秒后返回主菜单"
 seconds=5
 while [ $seconds -gt 0 ];do
-  echo -n $seconds
+  echo -n " ${seconds}"
   sleep 1
-  seconds=$(($seconds - 1))
-  echo -ne " \r   \r"
+  seconds=$((${seconds} - 1))
+  echo -ne "\r   \r"
 done
 BENDI_WENJIAN
 }
@@ -316,13 +320,13 @@ done
 function github_establish3() {
 cp -Rf operates/"${aa}" operates/"${bb}"
 ECHOY "[${bb}]文件夹创建完成"
-echo " 5秒后返回主菜单"
+ECHOBB "5秒后返回主菜单"
 seconds=5
 while [ $seconds -gt 0 ];do
-  echo -n $seconds
+  echo -n " ${seconds}"
   sleep 1
-  seconds=$(($seconds - 1))
-  echo -ne " \r   \r"
+  seconds=$((${seconds} - 1))
+  echo -ne "\r   \r"
 done
 BENDI_WENJIAN
 }
