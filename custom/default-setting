@@ -29,7 +29,7 @@ if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/cront
 fi
 
 if [[ -f "/etc/config/openclash" ]]; then
-  num=`sed -n -e "/option enable '0'/=" /etc/config/openclash` && sed -i "${num}s/0/1/g" /etc/config/openclash
+  sed -i '/openclash.config.enable/{N;d;}' uci-app-openclash/root/etc/uci-defaults/luci-openclash
 fi
 
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
