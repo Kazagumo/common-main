@@ -726,7 +726,7 @@ done
 
 for X in ${HOME_PATH}/package ${HOME_PATH}/feeds; do
   ttydjson="$(find ${X} -type f -name "luci-app-ttyd.json" |grep menu.d)"
-  [[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+  [[ -n "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 done
 
 [[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p ${HOME_PATH}/doc
