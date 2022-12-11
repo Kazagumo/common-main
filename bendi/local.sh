@@ -266,7 +266,6 @@ ECHOY "在operates文件夹里面创建机型文件夹"
 ls -1 operates |awk '{print "  " $0}'
 echo
 ECHOGG "请输入上面某一文件夹名称,为您要创建的机型文件夹当蓝本"
-while :; do
 read -p " 请输入：" aa
 if [[ -z "${aa}" ]]; then
   ECHOR "文件名不能为空"
@@ -275,11 +274,12 @@ elif [[ ! -d "operates/${aa}" ]]; then
   ECHOR "operates文件夹里面,没有${aa}存在"
   github_establish
 fi
-done
+github_establish2
+}
 
+function github_establish2() {
 echo
 ECHOGG "请输入您要创建的机型文件夹名称"
-while :; do
 read -p " 请输入：" bb
 if [[ -z "${bb}" ]]; then
   ECHOR "文件名不能为空"
@@ -288,7 +288,6 @@ elif [[ -d "operates/${bb}" ]]; then
   ECHOR "operates文件夹里面,已存在${aa}"
   github_establish
 fi
-done
 
 aa="${aa}"
 bb="${bb}"
