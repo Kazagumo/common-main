@@ -868,7 +868,7 @@ function Bendi_xuanzhe() {
   break
   ;;
   0)
-    Bendi_xuanzhe
+    github_deletefile
     echo
   break
   ;;
