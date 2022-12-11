@@ -846,6 +846,7 @@ function Bendi_xuanzhe() {
 }
 
 function Bendi_menu2() {
+export ERCI="1"
 BENDI_Diskcapacity
 Bendi_Dependent
 Bendi_Version
@@ -967,7 +968,7 @@ function menu2() {
     bbbbb="制作.config配置文件?"
   elif [[ "${SUCCESS_FAILED}" == "xzdl" ]]; then
     echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
-    echo -e " ${Red}大兄弟啊,上回下载完DL就没搞成了,继续[${TARGET_PROFILE2}]搞下去?${Font}"
+    echo -e " ${Red}大兄弟啊,上回没搞成,继续[${FOLDER_NAME2}]搞下去?${Font}"
     echo -e " ${Blue}operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="接着上次继续再搞下去?"
     bbbbb="编译"
