@@ -724,8 +724,8 @@ for X in ${HOME_PATH}/package; do
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
 done
 
-for X in "package" "feeds"; do \
-  ttydjson="$(find ${X} -type f -name "luci-app-ttyd.json" |grep menu.d)"; \
+for i in ${HOME_PATH}/feeds; do
+  ttydjson="$(find ${i} -type f -name "luci-app-ttyd.json" |grep menu.d)"
   echo "${ttydjson}"
 done
 [[ -n "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
