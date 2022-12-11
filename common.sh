@@ -619,8 +619,8 @@ sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.
 if [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash ?g' "include/target.mk"
 elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-  dnsmq="$(grep -Eo 'dnsmasq.*' "include/target.mk" |awk '{print $(1)}')"
-  sed -i 's?${dnsmq}?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash ?g' "include/target.mk"
+  dnsmq="$(grep -Eo 'dnsmasq.*' "include/target.mk" |sed 's/^[ ]*//g' |awk '{print $(1)}')"
+  sed -i "s?${dnsmq}?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash?g" "include/target.mk"
 fi
 
 if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
@@ -657,8 +657,8 @@ sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.
 if [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash ?g' "include/target.mk"
 elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-  dnsmq="$(grep -Eo 'dnsmasq.*' "include/target.mk" |awk '{print $(1)}')"
-  sed -i 's?${dnsmq}?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash ?g' "include/target.mk"
+  dnsmq="$(grep -Eo 'dnsmasq.*' "include/target.mk" |sed 's/^[ ]*//g' |awk '{print $(1)}')"
+  sed -i "s?${dnsmq}?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash?g" "include/target.mk"
 fi
 
 if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
