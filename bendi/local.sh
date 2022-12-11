@@ -266,6 +266,14 @@ for cc in ${bb[@]}; do
     ECHOR "[${cc}]文件夹不存在"
   fi
 done
+echo " 3秒后返回主菜单"
+seconds=5
+while [ $seconds -gt 0 ];do
+  echo -n $seconds
+  sleep 1
+  seconds=$(($seconds - 1))
+  echo -ne " \r   \r"
+done
 BENDI_WENJIAN
 }
 
@@ -282,7 +290,7 @@ elif [[ ! -d "operates/${aa}" ]]; then
   ECHOR "operates文件夹里${aa}不存在"
 else
   echo
-  echo "以${aa}为蓝本创建文件夹"
+  echo " 以${aa}为蓝本创建文件夹"
   github_establish2
   exit 0
 fi
@@ -299,7 +307,7 @@ elif [[ -d "operates/${bb}" ]]; then
   ECHOR "operates文件夹里面,已存在${bb}"
 else
   echo
-  echo "创建${bb}文件夹"
+  echo " 创建${bb}文件夹"
   github_establish3
   exit 0
 fi
@@ -308,6 +316,14 @@ done
 function github_establish3() {
 cp -Rf operates/"${aa}" operates/"${bb}"
 ECHOY "[${bb}]文件夹创建完成"
+echo " 5秒后返回主菜单"
+seconds=5
+while [ $seconds -gt 0 ];do
+  echo -n $seconds
+  sleep 1
+  seconds=$(($seconds - 1))
+  echo -ne " \r   \r"
+done
 BENDI_WENJIAN
 }
 
