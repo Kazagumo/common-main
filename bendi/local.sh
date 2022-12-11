@@ -814,12 +814,10 @@ function Bendi_xuanzhe() {
   clear
   echo 
   echo
-  jixingliebiao="$(echo "0、刷新列表" |awk '{print "  " $0}')"
   ls -1 "operates" |awk '$0=NR" "$0' > GITHUB_ENN
   ls -1 "operates" > GITHUB_EVN
   XYZDSZ="$(cat GITHUB_ENN | awk 'END {print}' |awk '{print $(1)}')"
   rm -rf GITHUB_ENN
-  echo "${jixingliebiao}"
   ls -1 "operates" |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   echo
   echo
@@ -827,7 +825,7 @@ function Bendi_xuanzhe() {
   echo
   echo -e "${Green}  您可以自行在operates内建立机型文件夹来进行编译使用(不懂的请查看云编译教程)${Font}"
   echo
-  echo -e "${Red}  如果您在这个步骤自建了机型文件夹,请按[0]回车进行刷新机型列表${Font}"
+  echo -e "${Red}  输入[0]回车,进行创建机型文件夹或删除机型文件夹${Font}"
   if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     echo
     echo -e "${Yellow}  您使用的为WSL系统,若要自行建立文件夹${Font}"
@@ -868,7 +866,7 @@ function Bendi_xuanzhe() {
   break
   ;;
   0)
-    github_deletefile
+    BENDI_WENJIAN
     echo
   break
   ;;
