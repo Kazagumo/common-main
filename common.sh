@@ -1636,9 +1636,9 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ "${OpenClash_Core}" == "1" ]] && [[ `grep
     else
       echo "OpenClash增加内核失败"
     fi
-    cd ${HOME_PATH}
-    rm -rf ${HOME_PATH}/clash-neihe
   fi
+  cd ${HOME_PATH}
+  rm -rf ${HOME_PATH}/clash-neihe
 fi
 
 if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
