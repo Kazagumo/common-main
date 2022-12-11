@@ -249,22 +249,21 @@ read -p " 请输入：" aa
 if [[ -z "${aa}" ]]; then
   ECHOR "文件名不能为空"
 else
-  echo " 删除${aa}"
   echo
+  echo " 删除${aa}"
   github_deletefile2
   exit 0
 fi
 done
 }
 function github_deletefile2() {
-aa="${aa}"
 bb=(${aa//,/ })
 for cc in ${bb[@]}; do
   if [[ -d "operates/${cc}" ]]; then
     rm -rf operates/${cc}
-    echo "已删除[${cc}]文件夹"
+    ECHOY "已删除[${cc}]文件夹"
   else
-    echo "[${cc}]文件夹不存在"
+    ECHOR "[${cc}]文件夹不存在"
   fi
 done
 }
@@ -281,8 +280,10 @@ if [[ -z "${aa}" ]]; then
 elif [[ ! -d "operates/${aa}" ]]; then
   ECHOR "operates文件夹里${aa}不存在"
 else
+  echo
   echo "以${aa}为蓝本创建文件夹"
   github_establish2
+  exit 0
 fi
 done
 }
@@ -296,8 +297,10 @@ if [[ -z "${bb}" ]]; then
 elif [[ -d "operates/${bb}" ]]; then
   ECHOR "operates文件夹里面,已存在${bb}"
 else
+  echo
   echo "创建${bb}文件夹"
   github_establish3
+  exit 0
 fi
 done
 }
