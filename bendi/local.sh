@@ -904,7 +904,9 @@ function Bendi_xuanzhe() {
   B)
     export FOLDER_NAME3=$(cat GITHUB_EVN |awk ''NR==${YMXZ}'')
     export FOLDER_NAME="${FOLDER_NAME3}"
+    sed -i '/FOLDER_NAME=/d' "${GITHUB_ENV}"
     echo "FOLDER_NAME=${FOLDER_NAME}" >> ${GITHUB_ENV}
+    source ${GITHUB_ENV}
     ECHOY " 您选择了使用 ${FOLDER_NAME} 编译固件,3秒后将进行启动编译"
     rm -rf GITHUB_EVN
     sleep 2
