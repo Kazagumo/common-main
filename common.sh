@@ -725,7 +725,7 @@ for X in ${HOME_PATH}/package; do
 done
 
 
-ttydjson="$(grep -Eorl 'ttyd/config' "package" "feeds" |grep "luci-app-ttyd.json\|menu.d")"
+export ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
 [[ -n "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 
 [[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p ${HOME_PATH}/doc
