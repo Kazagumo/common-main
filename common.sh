@@ -448,7 +448,8 @@ sed -i '/AdGuardHome/d' "${KEEPD_PATH}"
 sed -i '/background/d' "${KEEPD_PATH}"
 cat >>"${KEEPD_PATH}" <<-EOF
 /etc/config/AdGuardHome.yaml
-/www/luci-static/argon/background
+/etc/clashqidong
+/www/luci-static/argon/background/
 EOF
 }
 
