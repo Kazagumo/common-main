@@ -28,8 +28,10 @@ if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/cront
   rm -rf /etc/networkdetection
 fi
 
-if [[ -f "/etc/config/openclash" ]]; then
-  sed -i '/openclash.config.enable/{N;d;}' uci-app-openclash/root/etc/uci-defaults/luci-openclash
+if [[ -f "/etc/clashqidong" ]]; then
+  chmod +x /etc/clashqidong
+  source /etc/clashqidong
+  rm -rf /etc/clashqidong
 fi
 
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
