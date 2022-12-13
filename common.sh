@@ -1460,7 +1460,9 @@ fi
 
 cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
 echo "${cpu_model}"
-
+if [[ -n "${CPU_SELECTIOY}" ]]; then
+  CPU_OPTIMIZATION="${CPU_SELECTIOY}"
+fi
 
 case "${CPU_OPTIMIZATION}" in
 E5|弃用E5系列|弃用E5)
