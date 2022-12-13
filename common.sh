@@ -385,6 +385,9 @@ fi
 
 if [[ -n "${CPU_PASS1}" ]] && [[ -n "${CPU_PASS2}" ]]; then
   sed -i "s?${CPU_PASS1}?${CPU_PASS2}?g" "${YML_PATH}"
+else
+  echo "获取变量失败,请勿胡乱修改compile.yml文件"
+  exit 1
 fi
 
 if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
