@@ -52,7 +52,6 @@ jobs:
         cd $GITHUB_WORKSPACE
         chmod -R 775 $GITHUB_WORKSPACE/shangyou
         cd shangyou
-        sed -i 's/DIY-SETUP/operates/g' `egrep "DIY-SETUP" -rl ./`
         git add .
         git commit -m "Update $(date +%Y-%m%d-%H%M%S)"
         git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
