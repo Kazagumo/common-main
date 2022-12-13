@@ -369,18 +369,18 @@ export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
 export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
 export PATHS2="- 'build/${FOLDER_NAME}/relevance/start'"
-export cpu1="$(grep "CPU_OPTIMIZATION=" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+export cpu1="CPU_OPTIMIZATION=.*"
 export cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTIO}\\\""
-export CPU_PASS1="$(grep "CPU_PASSWORD=" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(2)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+export CPU_PASS1="CPU_PASSWORD=.*"
 if [[ "${t1}" == "1234567" ]]; then
   export CPU_PASS2="CPU_PASSWORD\\=\\\"1234567\\\""
 else
   if [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
     rm -fr ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
-    START_SECONDS=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
-    mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${START_SECONDS}.ini
+    mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${t1}.ini
   fi
-  export CPU_PASS2="CPU_PASSWORD\\=\\\"${START_SECONDS}\\\""
+  export CPU_PASS2="CPU_PASSWORD\\=\\\"${t1}\\\""
+  echo "$CPU_PASS2"
 fi
 
 if [[ -n "${CPU_PASS1}" ]] && [[ -n "${CPU_PASS2}" ]]; then
