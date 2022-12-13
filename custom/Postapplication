@@ -22,9 +22,6 @@ run_zzz_default() {
 	/etc/init.d/network restart
         /etc/init.d/dnsmasq restart
 	/etc/init.d/system restart
-        if [[ -f '/etc/init.d/shadowsocksr' ]]; then
-          /etc/init.d/shadowsocksr restart
-        fi
 }
 
 start() {
