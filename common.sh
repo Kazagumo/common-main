@@ -732,9 +732,8 @@ for X in ${HOME_PATH}/package; do
 done
 
 
-ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
-ttydjson="${HOME_PATH}/${ttydjso}"
-[[ -n "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
+[[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
 
 [[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p ${HOME_PATH}/doc
 if [[ -f "${HOME_PATH}/doc/default-settings" ]]; then
@@ -889,7 +888,9 @@ if [[ "${OpenClash_branch}" != "0" && "${OpenClash_branch}" != "dev" && "${OpenC
 fi
 
 sj_clash=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
-jian_clash="$(ls -1 ${HOME_PATH}/package/luci-app-openclash |grep -Eo sj_[0-9]+)"
+if [[ -d "${HOME_PATH}/package/luci-app-openclash" ]]; then
+  jian_clash="$(ls -1 ${HOME_PATH}/package/luci-app-openclash |grep -Eo sj_[0-9]+)"
+fi
 jiance_clash="${HOME_PATH}/package/luci-app-openclash/${jian_clash}"
 t1="$(echo "${jian_clash}" |grep -Eo [0-9]+)"
 t2=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
