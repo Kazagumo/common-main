@@ -28,7 +28,7 @@ if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/cront
   rm -rf /etc/networkdetection
 fi
 
-if [[ $(uci get openclash.config.enable) == "1" ]]; then
+if [[ "$(uci get openclash.config.enable)" == "1" ]]; then
   uci -q set openclash.config.enable=1
   uci -q commit openclash
 fi
