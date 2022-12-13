@@ -879,35 +879,40 @@ if [[ ! "${COLLECTED_PACKAGES}" == "true" ]] && [[ ! "${OpenClash_branch}" == "0
   OpenClash_branch="0"
   echo "TIME r \"因没开作者收集的插件包,没OpenClash插件,对openclash的分支选择无效\"" >> ${HOME_PATH}/CHONGTU
 fi
-jiance_clash="${HOME_PATH}/package/luci-app-openclash/clash_branch"
+
+if [[ "${OpenClash_branch}" != "0" && "${OpenClash_branch}" != "dev" ]] || [[ "${OpenClash_branch}" != "0" && "${OpenClash_branch}" != "master" ]]; then
+  if [[ "${SOURCE_CODE}" =~ (OFFICIAL|Xwrt) ]]; then
+    OpenClash_branch="dev"
+  else
+    OpenClash_branch="master"
+  fi
+fi
+
+sj_clash=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
+jian_clash="$(ls -1 ${HOME_PATH}/package/luci-app-openclash |grep -Eo sj_[0-9]+)"
+jiance_clash="${HOME_PATH}/package/luci-app-openclash/${jian_clash}"
+t1="$(echo "${jian_clash}" |grep -Eo [0-9]+)"
+t2=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
+SECONDS=$((t2-t1))
+HOUR=$(( $SECONDS/3600 ))
+if [[ "${HOUR}" -lt "12" ]]; then
+  clashgs="1"
+else
+  clashgs="0"
+fi
 if [[ -f "${jiance_clash}" ]]; then
   clash_branch="$(cat ${jiance_clash})"
 else
   clash_branch="clash_branch"
 fi
-if [[ "${OpenClash_branch}" != "0" ]] && [[ ! "${OpenClash_branch}" == "${clash_branch}" ]]; then
+if [[ "${OpenClash_branch}" != "0" ]] && [[ "${OpenClash_branch}" != "${clash_branch}" ]] && [[ "${clashgs}" == "1" ]]; then
   find . -name 'luci-app-openclash' | xargs -i rm -rf {}
-  if [[ ! "${OpenClash_branch}" == "master" ]] && [[ ! "${OpenClash_branch}" == "dev" ]]; then
-    if [[ "${SOURCE_CODE}" =~ (OFFICIAL|Xwrt) ]]; then
-      masterdev="dev"
-    else
-      masterdev="master"
-    fi
-    git clone -b "${masterdev}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
-    if [[ $? -ne 0 ]]; then
-      echo "luci-app-openclash下载失败"
-    else
-      echo "${masterdev}" > "${jiance_clash}"
-      echo "因没发现正确分支数据，正在使用"${masterdev}"分支的openclash"
-    fi
+  git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
+  if [[ $? -ne 0 ]]; then
+    echo "luci-app-openclash下载失败"
   else
-    git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
-    if [[ $? -ne 0 ]]; then
-      echo "luci-app-openclash下载失败"
-    else
-      echo "${OpenClash_branch}" > "${jiance_clash}"
-      echo "正在使用"${OpenClash_branch}"分支的openclash"
-    fi
+    echo "${OpenClash_branch}" > "${HOME_PATH}/package/luci-app-openclash/sj_${sj_clash}"
+    echo "正在使用"${OpenClash_branch}"分支的openclash"
   fi
 fi
 
