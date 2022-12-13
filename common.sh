@@ -880,7 +880,7 @@ if [[ ! "${COLLECTED_PACKAGES}" == "true" ]] && [[ ! "${OpenClash_branch}" == "0
   echo "TIME r \"因没开作者收集的插件包,没OpenClash插件,对openclash的分支选择无效\"" >> ${HOME_PATH}/CHONGTU
 fi
 
-if [[ "${OpenClash_branch}" != "0" && "${OpenClash_branch}" != "dev" ]] || [[ "${OpenClash_branch}" != "0" && "${OpenClash_branch}" != "master" ]]; then
+if [[ "${OpenClash_branch}" != "0" && "${OpenClash_branch}" != "dev" && "${OpenClash_branch}" != "master" ]]; then
   if [[ "${SOURCE_CODE}" =~ (OFFICIAL|Xwrt) ]]; then
     OpenClash_branch="dev"
   else
