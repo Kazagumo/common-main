@@ -1461,7 +1461,7 @@ echo "${cpu_model}"
 
 
 case "${CPU_OPTIMIZATION}" in
-E5)
+E5|弃用E5系列|弃用E5)
   if [[ `echo "${cpu_model}" |grep -Eoc "E5"` -eq '1' ]]; then
     export chonglaixx="E5-重新编译"
     export Continue_selecting="1"
@@ -1470,7 +1470,7 @@ E5)
     export Continue_selecting="0"
   fi
 ;;
-8370|8272|8171)
+8370|8272|8171|8370C|8272CL|8171M)
   if [[ `echo "${cpu_model}" |grep -Eoc "${CPU_OPTIMIZATION}"` -eq '0' ]]; then
     export chonglaixx="非${CPU_OPTIMIZATION}-重新编译"
     export Continue_selecting="1"
