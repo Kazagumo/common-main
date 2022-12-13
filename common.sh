@@ -890,12 +890,12 @@ fi
 sj_clash=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
 if [[ -d "${HOME_PATH}/package/luci-app-openclash" ]]; then
   jian_clash="$(ls -1 ${HOME_PATH}/package/luci-app-openclash |grep -Eo sj_[0-9]+)"
+  jiance_clash="${HOME_PATH}/package/luci-app-openclash/${jian_clash}"
+  t1="$(echo "${jian_clash}" |grep -Eo [0-9]+)"
+  t2=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
+  SECONDS=$((t2-t1))
+  HOUR=$(( $SECONDS/3600 ))
 fi
-jiance_clash="${HOME_PATH}/package/luci-app-openclash/${jian_clash}"
-t1="$(echo "${jian_clash}" |grep -Eo [0-9]+)"
-t2=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
-SECONDS=$((t2-t1))
-HOUR=$(( $SECONDS/3600 ))
 if [[ "${HOUR}" -lt "12" ]]; then
   clashgs="1"
 else
