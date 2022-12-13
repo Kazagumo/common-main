@@ -1461,6 +1461,7 @@ fi
 
 cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
 echo "${cpu_model}"
+
 if [[ -n "${CPU_SELECTIOY}" ]]; then
   CPU_OPTIMIZATION="${CPU_SELECTIOY}"
 fi
@@ -1495,14 +1496,32 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
   rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}
   cp -Rf build/${FOLDER_NAME} ${FOLDER_NAME}/build/${FOLDER_NAME}
-  if [[ "${CPU_EMPTY}" == "1" ]]; then
-    rm -fr ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
-  fi
   rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/*.sh
   cp -Rf build/${FOLDER_NAME}/diy-part.sh ${FOLDER_NAME}/build/${FOLDER_NAME}/diy-part.sh
   
   rm -rf ${FOLDER_NAME}/.github/workflows
   cp -Rf .github/workflows ${FOLDER_NAME}/.github/workflows
+  
+  if [[ -n "${CPU_SELECTIOY}" ]]; then
+    YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
+    rm -fr ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
+    cpu1="CPU_OPTIMIZATION=.*"
+    cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTIOY}\\\""
+    CPU_PASS1="CPU_PASSWORD=.*"
+    CPU_PASS2="CPU_PASSWORD\\=\\\"1234567\\\""
+    if [[ -n "${cpu1}" ]] && [[ -n "${cpu2}" ]]; then
+      sed -i "s?${cpu1}?${cpu2}?g" "${YML_PATH}"
+    else
+      echo "获取变量失败,请勿胡乱修改compile.yml文件"
+      exit 1
+    fi
+    if [[ -n "${CPU_PASS1}" ]] && [[ -n "${CPU_PASS2}" ]]; then
+      sed -i "s?${CPU_PASS1}?${CPU_PASS2}?g" "${YML_PATH}"
+    else
+      echo "获取变量失败,请勿胡乱修改compile.yml文件"
+      exit 1
+    fi
+  fi
   
   restarts="$(cat "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start" |awk '$0=NR" "$0' |awk 'END {print}' |awk '{print $(1)}')"
   if [[ "${restarts}" -lt "3" ]]; then
