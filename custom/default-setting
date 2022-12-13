@@ -28,11 +28,6 @@ if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/cront
   rm -rf /etc/networkdetection
 fi
 
-if [[ "$(uci get openclash.config.enable)" == "1" ]]; then
-  uci -q set openclash.config.enable=1
-  uci -q commit openclash
-fi
-
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
 if [[ -f '/etc/index.htm' ]] && [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"` -eq '1' ]]; then
   sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
