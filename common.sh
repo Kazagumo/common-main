@@ -905,7 +905,9 @@ if [[ -f "${jiance_clash}" ]]; then
 else
   clash_branch="clash_branch"
 fi
-if [[ "${OpenClash_branch}" != "0" ]] && [[ "${OpenClash_branch}" != "${clash_branch}" ]] && [[ "${clashgs}" == "1" ]]; then
+if [[ "${OpenClash_branch}" != "0" ]] && [[ "${OpenClash_branch}" == "${clash_branch}" ]] && [[ "${clashgs}" == "1" ]]; then
+  echo "无需操作"
+else
   find . -name 'luci-app-openclash' | xargs -i rm -rf {}
   git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
   if [[ $? -ne 0 ]]; then
