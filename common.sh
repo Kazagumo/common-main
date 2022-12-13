@@ -1647,6 +1647,7 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ "${OpenClash_Core}" == "1" ]] && [[ `grep
     if [[ $? -eq 0 ]];then
       mv -f ${HOME_PATH}/clash-neihe/clash_tun ${HOME_PATH}/files/etc/openclash/core/clash_tun
       sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash_tun
+      echo "clash"
       echo "OpenClash增加clash_tun内核成功"
     else
       echo "OpenClash增加clash_tun内核失败"
