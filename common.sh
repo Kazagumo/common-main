@@ -991,19 +991,19 @@ if [[ "${Remove_IPv6}" == "1" ]]; then
   " >> "${DEFAULT_PATH}"
 fi
 
-if [[ "${Required_Topic}" == "0" ]]; then
+if [[ "${Required_Topic}" == "0" ]] || [[ -z "${Required_Topic}" ]]; then
   echo 
 elif [[ -n "${Required_Topic}" ]]; then
   echo "Required_Topic=${Required_Topic}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${Default_Theme}" == "0" ]]; then
+if [[ "${Default_Theme}" == "0" ]] || [[ -z "${Default_Theme}" ]]; then
   echo
 elif [[ -n "${Default_Theme}" ]]; then
   echo "Default_Theme=${Default_Theme}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${Personal_Signature}" == "0" ]]; then
+if [[ "${Personal_Signature}" == "0" ]] || [[ -z "${Personal_Signature}" ]]; then
   echo
 elif [[ -n "${Personal_Signature}" ]]; then
   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
@@ -1014,13 +1014,13 @@ if [[ "${Delete_NotRequired}" == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${Kernel_Patchver}" == "0" ]]; then
+if [[ "${Kernel_Patchver}" == "0" ]] || [[ -z "${Kernel_Patchver}" ]]; then
   echo
 elif [[ -n "${Kernel_Patchver}" ]]; then
   echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${IPv4_ipaddr}" == "0" ]]; then
+if [[ "${IPv4_ipaddr}" == "0" ]] || [[ -z "${IPv4_ipaddr}" ]]; then
   echo
 elif [[ -n "${IPv4_ipaddr}" ]]; then
   Kernel_Pat="$(echo ${IPv4_ipaddr} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -1032,7 +1032,7 @@ elif [[ -n "${IPv4_ipaddr}" ]]; then
    fi
 fi
 
-if [[ "${Netmask_netm}" == "0" ]]; then
+if [[ "${Netmask_netm}" == "0" ]] || [[ -z "${Netmask_netm}" ]]; then
   echo
 elif [[ -n "${Netmask_netm}" ]]; then
   Kernel_netm="$(echo ${Netmask_netm} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -1044,13 +1044,13 @@ elif [[ -n "${Netmask_netm}" ]]; then
   fi
 fi
 
-if [[ "${Op_name}" == "0" ]]; then
+if [[ "${Op_name}" == "0" ]] || [[ -z "${Op_name}" ]]; then
   echo
 elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
   sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
 fi
 
-if [[ "${Router_gateway}" == "0" ]]; then
+if [[ "${Router_gateway}" == "0" ]] || [[ -z "${Router_gateway}" ]]; then
   echo
 elif [[ -n "${Router_gateway}" ]]; then
   Router_gat="$(echo ${Router_gateway} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -1061,7 +1061,7 @@ elif [[ -n "${Router_gateway}" ]]; then
   fi
 fi
 
-if [[ "${Lan_DNS}" == "0" ]]; then
+if [[ "${Lan_DNS}" == "0" ]] || [[ -z "${Lan_DNS}" ]]; then
   echo
 elif [[ -n "${Lan_DNS}" ]]; then
   ipa_dns="$(echo ${Lan_DNS} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -1072,7 +1072,7 @@ elif [[ -n "${Lan_DNS}" ]]; then
   fi
 fi
 
-if [[ "${IPv4_Broadcast}" == "0" ]]; then
+if [[ "${IPv4_Broadcast}" == "0" ]] || [[ -z "${IPv4_Broadcast}" ]]; then
   echo
 elif [[ -n "${IPv4_Broadcast}" ]]; then
   IPv4_Bro="$(echo ${IPv4_Broadcast} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
