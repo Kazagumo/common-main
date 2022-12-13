@@ -991,28 +991,38 @@ if [[ "${Remove_IPv6}" == "1" ]]; then
   " >> "${DEFAULT_PATH}"
 fi
 
-if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
+if [[ "${Required_Topic}" == "0" ]]; then
+  echo 
+elif [[ -n "${Required_Topic}" ]]; then
   echo "Required_Topic=${Required_Topic}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
+if [[ "${Default_Theme}" == "0" ]]; then
+  echo
+elif [[ -n "${Default_Theme}" ]]; then
   echo "Default_Theme=${Default_Theme}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! "${Personal_Signature}" == "0" ]] && [[ -n "${Personal_Signature}" ]]; then
-   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
-   sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${ZZZ_PATH}"
+if [[ "${Personal_Signature}" == "0" ]]; then
+  echo
+elif [[ -n "${Personal_Signature}" ]]; then
+  sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
+  sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${ZZZ_PATH}"
 fi
 
 if [[ "${Delete_NotRequired}" == "1" ]]; then
    echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]]; then
+if [[ "${Kernel_Patchver}" == "0" ]]; then
+  echo
+elif [[ -n "${Kernel_Patchver}" ]]; then
   echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
 fi
 
-if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
+if [[ "${IPv4_ipaddr}" == "0" ]]; then
+  echo
+elif [[ -n "${IPv4_ipaddr}" ]]; then
   Kernel_Pat="$(echo ${IPv4_ipaddr} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   ipadd_Pat="$(echo ${ipadd} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
@@ -1022,45 +1032,55 @@ if [[ ! "${IPv4_ipaddr}" == "0" ]] && [[ -n "${IPv4_ipaddr}" ]]; then
    fi
 fi
 
-if [[ ! "${Netmask_netm}" == "0" ]] && [[ -n "${Netmask_netm}" ]]; then
+if [[ "${Netmask_netm}" == "0" ]]; then
+  echo
+elif [[ -n "${Netmask_netm}" ]]; then
   Kernel_netm="$(echo ${Netmask_netm} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   ipadd_mas="$(echo ${netmas} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Kernel_netm}" ]] && [[ -n "${ipadd_mas}" ]]; then
      sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
    else
      echo "TIME r \"因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
-   fi
+  fi
 fi
 
-if [[ ! "${Op_name}" == "0" ]] && [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
-   sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
+if [[ "${Op_name}" == "0" ]]; then
+  echo
+elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
+  sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
 fi
 
-if [[ ! "${Router_gateway}" == "0" ]] && [[ -n "${Router_gateway}" ]]; then
-   Router_gat="$(echo ${Router_gateway} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-   if [[ -n "${Router_gat}" ]]; then
-     sed -i "$lan\set network.lan.gateway='${Router_gateway}'" "${GENE_PATH}"
-   else
-     echo "TIME r \"因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
-   fi
+if [[ "${Router_gateway}" == "0" ]]; then
+  echo
+elif [[ -n "${Router_gateway}" ]]; then
+  Router_gat="$(echo ${Router_gateway} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${Router_gat}" ]]; then
+    sed -i "$lan\set network.lan.gateway='${Router_gateway}'" "${GENE_PATH}"
+  else
+    echo "TIME r \"因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
+  fi
 fi
 
-if [[ ! "${Lan_DNS}" == "0" ]] && [[ -n "${Lan_DNS}" ]]; then
+if [[ "${Lan_DNS}" == "0" ]]; then
+  echo
+elif [[ -n "${Lan_DNS}" ]]; then
   ipa_dns="$(echo ${Lan_DNS} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${ipa_dns}" ]]; then
      sed -i "$lan\set network.lan.dns='${Lan_DNS}'" "${GENE_PATH}"
-   else
-     echo "TIME r \"因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确\"" >> ${HOME_PATH}/CHONGTU
-   fi
+  else
+    echo "TIME r \"因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确\"" >> ${HOME_PATH}/CHONGTU
+  fi
 fi
 
-if [[ ! "${IPv4_Broadcast}" == "0" ]] && [[ -n "${IPv4_Broadcast}" ]]; then
+if [[ "${IPv4_Broadcast}" == "0" ]]; then
+  echo
+elif [[ -n "${IPv4_Broadcast}" ]]; then
   IPv4_Bro="$(echo ${IPv4_Broadcast} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${IPv4_Bro}" ]]; then
-     sed -i "$lan\set network.lan.broadcast='${IPv4_Broadcast}'" "${GENE_PATH}"
-   else
-     echo "TIME r \"因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确\"" >> ${HOME_PATH}/CHONGTU
-   fi
+    sed -i "$lan\set network.lan.broadcast='${IPv4_Broadcast}'" "${GENE_PATH}"
+  else
+    echo "TIME r \"因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确\"" >> ${HOME_PATH}/CHONGTU
+  fi
 fi
 
 if [[ "${Close_DHCP}" == "1" ]]; then
