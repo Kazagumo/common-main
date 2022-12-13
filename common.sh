@@ -106,6 +106,8 @@ fi
 function Diy_variable() {
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
+elif [[ "${Manually_Run}" == "1" ]]; then
+  source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
 else
   if [[ -z "${t1}" ]]; then
     t1="$(grep "CPU_PASSWORD=" "${GITHUB_WORKSPACE}/.github/workflows/compile.yml" |grep -v '^#' |grep -Eo '[0-9]+')"
