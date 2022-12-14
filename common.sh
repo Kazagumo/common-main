@@ -728,13 +728,15 @@ function Diy_distrib() {
 cd ${HOME_PATH}
 ZZZ_PATH1="$(find ./package -type f -name "*default-settings" |grep files |cut -d '/' -f2-)"
 if [[ -n "${ZZZ_PATH1}" ]]; then
-  echo "ZZZ_PATH=${HOME_PATH}/${ZZZ_PATH1}" >> ${GITHUB_ENV}
+  ZZZ_PATH="${HOME_PATH}/${ZZZ_PATH1}"
+  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   echo "${HOME_PATH}/${ZZZ_PATH1}"
 fi
 
 ttydjso="$(find ./ -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
 if [[ -n "${ttydjson}" ]]; then
   ttydjson="${HOME_PATH}/${ttydjso}"
+  echo "${ttydjson}"
 fi
 if [[ -f "${ttydjson}" ]]; then
 curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjson}"
