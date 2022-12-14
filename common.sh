@@ -928,7 +928,7 @@ if [[ "${OpenClash_branch}" == "0" ]]; then
 elif [[ "${OpenClash_branch}" == "${clash_branch}" ]] && [[ "${clashgs}" == "1" ]]; then
   echo ""
 else
-  find . -name 'luci-app-openclash' | xargs -i rm -rf {}
+  find . -type d -name 'luci-app-openclash' | xargs -i rm -rf {}
   git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
   if [[ $? -ne 0 ]]; then
     echo "luci-app-openclash下载失败"
