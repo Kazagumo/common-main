@@ -732,8 +732,10 @@ for X in ${HOME_PATH}/package; do
 done
 
 
-ttydjson="$(find . -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
-[[ -f "${ttydjson}" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json > "${ttydjson}"
+ttydjson="$(find "${HOME_PATH}" -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d)"
+if [[ -f "${ttydjson}" ]]; then
+curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjson}"
+fi
 
 [[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p ${HOME_PATH}/doc
 if [[ -f "${HOME_PATH}/doc/default-settings" ]]; then
