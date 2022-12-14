@@ -1087,7 +1087,7 @@ function menu2() {
       echo -e " ${Blue}当前operates/${FOLDER_NAME2}/seed文件夹是否存在${CONFIG_FILE1}名称文件${Font}：${Yellow}${JIXINGWENJIAN}${Font}"
       echo -e " ${Blue}当前operates/${FOLDER_NAME2}/${SEED_CONFIG1}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     else
-      echo -e " ${Red}${OPERATES_PATH}/${FOLDER_NAME2}文件夹不存在${Font}"
+      echo -e " ${Red}当前operates/${FOLDER_NAME2}文件夹不存在${Font}"
     fi
     aaaa="保留缓存,再次编译?"
     bbbbb="编译"
