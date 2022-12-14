@@ -82,6 +82,7 @@ for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do
   echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/relevance/bendi_version"
   echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/relevance/README.md"
 done
+
 for X in $(find "operates" -name "settings.ini"); do
   sed -i '/SSH_ACTIONS/d' "${X}"
   sed -i '/UPLOAD_FIRMWARE/d' "${X}"
@@ -99,6 +100,10 @@ for X in $(find "operates" -name "settings.ini"); do
     echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
   fi
   echo 'MAKE_CONFIGURATION="false"          # 单纯制作.config配置文件,不编译固件（true=开启）（false=关闭）' >> "${X}"
+done
+
+for X in $(find "operates" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do 
+sed -i 's?修改插件名字?修改插件名字(二次编译如果有要修改的插件名字不能使用此格式,要完整的把要修改的文件路径写上)?g' "${X}"
 done
 fi
 
