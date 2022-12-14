@@ -1593,7 +1593,9 @@ fi
 
 export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
 export KERNEL_patc="patches-${Kernel_Patchver}"
-if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ -n "${patchverl}" ]]; then
+if [[ "${Kernel_Patchver}" == "0" ]]; then
+  echo 
+elif [[ -n "${Kernel_Patchver}" ]] && [[ -n "${patchverl}" ]]; then
   if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
     sed -i "s/${patchverl}/${Kernel_Patchver}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
   else
@@ -1601,7 +1603,9 @@ if [[ ! "${Kernel_Patchver}" == "0" ]] && [[ -n "${Kernel_Patchver}" ]] && [[ -n
   fi
 fi
 
-if [[ ! "${Default_Theme}" == "0" ]] && [[ -n "${Default_Theme}" ]]; then
+if [[ ! "${Default_Theme}" == "0" ]]; then 
+  echo
+elif [[ -n "${Default_Theme}" ]]; then
   export defaultt=CONFIG_PACKAGE_luci-theme-${Default_Theme}=y
   if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
     echo "
