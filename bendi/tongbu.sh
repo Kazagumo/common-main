@@ -103,7 +103,7 @@ for X in $(find "operates" -name "settings.ini"); do
 done
 
 for X in $(find "operates" -type f -name "diy-part.sh"); do 
-  sed -i 's?修改插件名字?修改插件名字(二次编译不能使用此格式,要完整的把要修改的文件路径写上)?g' "${X}"
+  sed -i 's?修改插件名字?修改插件名字(二次编译不能使用此格式,要把修改文件路径完整的写上)?g' "${X}"
 done
 fi
 
