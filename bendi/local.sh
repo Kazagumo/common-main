@@ -988,7 +988,7 @@ echo
 echo
 ECHOY " 1. 创建机型文件夹"
 ECHOY " 2. 删除机型文件夹"
-ECHOY " 3. 啥都不干,回答选择机型继续编译"
+ECHOY " 3. 啥都不干,回到选择机型继续编译"
 echo
 XUANZHEOP="请输入数字"
 echo
@@ -1029,7 +1029,7 @@ echo -e "  ${Blue}3${Font}、${Yellow}删除您现有的operates文件夹,从上
 echo
 echo -e "  ${Blue}4${Font}、${Yellow}返回上级菜单${Font}"
 echo
-echo -e "  ${Blue}5${Font}、${Yellow}退出退出程序${Font}"
+echo -e "  ${Blue}5${Font}、${Yellow}退出程序${Font}"
 echo
 echo
 IYSETUP="  请输入数字确定您的选择"
@@ -1170,7 +1170,7 @@ echo
 ECHOY " 1. 进行选择编译或制作配置文件源码"
 ECHOY " 2. 同步上游operates文件"
 ECHOY " 3. 打包N1或晶晨系列固件(您要有armvirt_64的.tar.gz固件)"
-ECHOY " 4. 退出编译程序"
+ECHOY " 4. 退出程序"
 echo
 XUANZHEOP="请输入数字"
 echo
