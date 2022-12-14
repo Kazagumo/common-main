@@ -500,7 +500,6 @@ if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   REPO_BRANCH2="${REPO_BRANCH}"
   LUCI_EDITION2="${LUCI_EDITION}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
-  CONFIG_FILE="${CONFIG_FILE}"
   SOURCE2="${SOURCE}"
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
@@ -550,7 +549,6 @@ FOLDER_NAME2="${FOLDER_NAME}"
 REPO_BRANCH2="${REPO_BRANCH}"
 LUCI_EDITION2="${LUCI_EDITION}"
 TARGET_PROFILE2="${TARGET_PROFILE}"
-CONFIG_FILE="${CONFIG_FILE}"
 SOURCE2="${SOURCE}"
 " > ${HOME_PATH}/key-buildzu
 cd ${HOME_PATH}
@@ -639,7 +637,6 @@ if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "${TARGET_BOARD}"` -eq '0' ]]; then
   REPO_BRANCH2="${REPO_BRANCH}"
   LUCI_EDITION2="${LUCI_EDITION}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
-  CONFIG_FILE="${CONFIG_FILE}"
   SOURCE2="${SOURCE}"
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
@@ -653,7 +650,6 @@ else
   REPO_BRANCH2="${REPO_BRANCH}"
   LUCI_EDITION2="${LUCI_EDITION}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
-  CONFIG_FILE="${CONFIG_FILE}"
   SOURCE2="${SOURCE}"
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
@@ -1228,7 +1224,7 @@ else
 fi
 if [[ -f "operates/${FOLDER_NAME2}/settings.ini" ]]; then
   KAIDUAN_JIANCE="1"
-  source operates/${FOLDER_NAME2}/settings.ini
+  CONFIG_FILE="seed/$(source operates/${FOLDER_NAME2}/settings.ini && echo "${CONFIG_FILE}")"
 else
   KAIDUAN_JIANCE="0"
 fi
