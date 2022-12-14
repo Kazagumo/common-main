@@ -75,6 +75,7 @@ judge() {
 export BENDI_VERSION="2.0"
 export GITHUB_WORKSPACE="$PWD"
 export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
+export OPERATES_PATH="${GITHUB_WORKSPACE}/operates"
 export GITHUB_ENV="${GITHUB_WORKSPACE}/GITHUB_ENV"
 CURRENT_PATH="${GITHUB_WORKSPACE##*/}"
 echo '#!/bin/bash' >${GITHUB_ENV}
@@ -1081,28 +1082,36 @@ function menu2() {
     echo -e " ${Blue}上回使用机型文件夹${Font}：${Yellow}${FOLDER_NAME2}${Font}"
     echo -e " ${Blue}上回编译使用源码${Font}：${Yellow}${SOURCE2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}上回成功编译机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
-    echo -e " ${Blue}当前operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}使用配置文件名称${Font}：${Yellow}${CONFIG_FILE1}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}/seed文件夹是否存在${CONFIG_FILE1}名称文件${Font}：${Yellow}${JIXINGWENJIAN}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}/${SEED_CONFIG1}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="保留缓存,再次编译?"
     bbbbb="编译"
   elif [[ "${SUCCESS_FAILED}" == "makeconfig" ]]; then  
     echo -e " ${Blue}上回使用机型文件夹${Font}：${Yellow}${FOLDER_NAME2}${Font}"
     echo -e " ${Blue}上回编译使用源码${Font}：${Yellow}${SOURCE2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}上回制作了${Font}${Yellow}${TARGET_PROFILE2}机型的.config${Font}${Blue}配置文件${Font}"
-    echo -e " ${Blue}当前operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}使用配置文件名称${Font}：${Yellow}${CONFIG_FILE1}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}/seed文件夹是否存在${CONFIG_FILE1}名称文件${Font}：${Yellow}${JIXINGWENJIAN}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}/${SEED_CONFIG1}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="继续制作.config配置文件"
     bbbbb="制作.config配置文件?"
   elif [[ "${SUCCESS_FAILED}" == "xzdl" ]]; then
     echo -e " ${Blue}上回使用机型文件夹${Font}：${Yellow}${FOLDER_NAME2}${Font}"
     echo -e " ${Blue}上回编译使用源码${Font}：${Yellow}${SOURCE2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Red}大兄弟啊,上回没搞成,继续[${FOLDER_NAME2}]搞下去?${Font}"
-    echo -e " ${Blue}当前operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}使用配置文件名称${Font}：${Yellow}${CONFIG_FILE1}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}/seed文件夹是否存在${CONFIG_FILE1}名称文件${Font}：${Yellow}${JIXINGWENJIAN}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}/${SEED_CONFIG1}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="接着上次继续再搞下去?"
     bbbbb="编译"
   else
     echo -e " ${Blue}上回使用机型文件夹${Font}：${Yellow}${FOLDER_NAME2}${Font}"
     echo -e " ${Blue}上回编译使用源码${Font}：${Yellow}${SOURCE2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Red}大兄弟啊,上回编译${Yellow}[${TARGET_PROFILE2}]${Font}${Red}于失败告终了${Font}"
-    echo -e " ${Blue}当前operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}使用配置文件名称${Font}：${Yellow}${CONFIG_FILE1}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}/seed文件夹是否存在${CONFIG_FILE1}名称文件${Font}：${Yellow}${JIXINGWENJIAN}${Font}"
+    echo -e " ${Blue}当前operates/${FOLDER_NAME2}/${SEED_CONFIG1}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="保留缓存,再特么的搞一搞?"
     bbbbb="编译"
   fi
@@ -1224,21 +1233,31 @@ else
 fi
 if [[ -f "operates/${FOLDER_NAME2}/settings.ini" ]]; then
   KAIDUAN_JIANCE="1"
-  CONFIG_FILE="seed/$(source operates/${FOLDER_NAME2}/settings.ini && echo "${CONFIG_FILE}")"
+  CONFIG_FILE1="$(source ${OPERATES_PATH}/${FOLDER_NAME2}/settings.ini && echo "${CONFIG_FILE}")"
+  SEED_CONFIG1="seed/${CONFIG_FILE1}"
 else
   KAIDUAN_JIANCE="0"
 fi
-if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ -f "operates/${FOLDER_NAME2}/${CONFIG_FILE}" ]]; then
-  if [[ `grep -c "CONFIG_TARGET_x86_64=y" "operates/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
+
+if [[ -f "${OPERATES_PATH}/${FOLDER_NAME2}/${SEED_CONFIG1}" ]]; then
+  JIXINGWENJIAN="存在"
+else
+  JIXINGWENJIAN="不存在"
+fi
+
+if [[ "${KAIDUAN_JIANCE}" == "1" ]] && [[ "${JIXINGWENJIAN}" == "存在" ]]; then
+  if [[ `grep -c "CONFIG_TARGET_x86_64=y" "${OPERATES_PATH}/${FOLDER_NAME2}/${SEED_CONFIG1}"` -eq '1' ]]; then
     TARGET_PROFILE3="x86-64"
-  elif [[ `grep -c "CONFIG_TARGET_x86=y" "operates/${FOLDER_NAME2}/${CONFIG_FILE}"` == '1' ]]; then
+  elif [[ `grep -c "CONFIG_TARGET_x86=y" "${OPERATES_PATH}/${FOLDER_NAME2}/${SEED_CONFIG1}"` == '1' ]]; then
     TARGET_PROFILE3="x86-32"
-  elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "operates/${FOLDER_NAME2}/${CONFIG_FILE}"` -eq '1' ]]; then
+  elif [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" "${OPERATES_PATH}/${FOLDER_NAME2}/${SEED_CONFIG1}"` -eq '1' ]]; then
     TARGET_PROFILE3="Armvirt_64"
   else
-    TARGET_PROFILE3="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" "operates/${FOLDER_NAME2}/${CONFIG_FILE}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+    TARGET_PROFILE3="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" "${OPERATES_PATH}/${FOLDER_NAME2}/${SEED_CONFIG1}" | sed -r 's/.*DEVICE_(.*)=y/\1/')"
   fi
   [[ -z "${TARGET_PROFILE3}" ]] && TARGET_PROFILE3="未知"
+else
+  TARGET_PROFILE3="未知"
 fi
 if [[ "${KAIDUAN_JIANCE}" == "1" ]]; then
   FOLDER_NAME="${FOLDER_NAME2}"
