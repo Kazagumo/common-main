@@ -501,6 +501,7 @@ if [[ "${MAKE_CONFIGURATION}" == "true" ]]; then
   LUCI_EDITION2="${LUCI_EDITION}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
   CONFIG_FILE="${CONFIG_FILE}"
+  SOURCE2="${SOURCE}"
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
   sudo chmod +x ${HOME_PATH}/key-buildzu
@@ -550,6 +551,7 @@ REPO_BRANCH2="${REPO_BRANCH}"
 LUCI_EDITION2="${LUCI_EDITION}"
 TARGET_PROFILE2="${TARGET_PROFILE}"
 CONFIG_FILE="${CONFIG_FILE}"
+SOURCE2="${SOURCE}"
 " > ${HOME_PATH}/key-buildzu
 cd ${HOME_PATH}
 make defconfig
@@ -638,6 +640,7 @@ if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c "${TARGET_BOARD}"` -eq '0' ]]; then
   LUCI_EDITION2="${LUCI_EDITION}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
   CONFIG_FILE="${CONFIG_FILE}"
+  SOURCE2="${SOURCE}"
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
   sudo chmod +x ${HOME_PATH}/key-buildzu
@@ -651,6 +654,7 @@ else
   LUCI_EDITION2="${LUCI_EDITION}"
   TARGET_PROFILE2="${TARGET_PROFILE}"
   CONFIG_FILE="${CONFIG_FILE}"
+  SOURCE2="${SOURCE}"
   " > ${HOME_PATH}/key-buildzu
   sed -i 's/^[ ]*//g' ${HOME_PATH}/key-buildzu
   sudo chmod +x ${HOME_PATH}/key-buildzu
@@ -1055,7 +1059,11 @@ break
 break
 ;;
 4)
-  ${BENDI_MEMU}
+  if [[ -n "${BENDI_MEMU}" ]]; then
+    ${BENDI_MEMU}
+  else
+    menu
+  fi
 break
 ;;
 5)
@@ -1074,25 +1082,29 @@ function menu2() {
   echo
   echo
   if [[ "${SUCCESS_FAILED}" == "success" ]]; then
-    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
+    echo -e " ${Blue}当前使用机型文件夹${Font}：${Yellow}${FOLDER_NAME2}${Font}"
+    echo -e " ${Blue}当前编译使用源码${Font}：${Yellow}${SOURCE2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}上回成功编译机型${Font}：${Yellow}${TARGET_PROFILE2}${Font}"
     echo -e " ${Blue}operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="保留缓存,再次编译?"
     bbbbb="编译"
   elif [[ "${SUCCESS_FAILED}" == "makeconfig" ]]; then  
-    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
+    echo -e " ${Blue}当前使用机型文件夹${Font}：${Yellow}${FOLDER_NAME2}${Font}"
+    echo -e " ${Blue}当前编译使用源码${Font}：${Yellow}${SOURCE2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Blue}上回制作了${Font}${Yellow}${TARGET_PROFILE2}机型的.config${Font}${Blue}配置文件${Font}"
     echo -e " ${Blue}operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="继续制作.config配置文件"
     bbbbb="制作.config配置文件?"
   elif [[ "${SUCCESS_FAILED}" == "xzdl" ]]; then
-    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
+    echo -e " ${Blue}当前使用机型文件夹${Font}：${Yellow}${FOLDER_NAME2}${Font}"
+    echo -e " ${Blue}当前编译使用源码${Font}：${Yellow}${SOURCE2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Red}大兄弟啊,上回没搞成,继续[${FOLDER_NAME2}]搞下去?${Font}"
     echo -e " ${Blue}operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="接着上次继续再搞下去?"
     bbbbb="编译"
   else
-    echo -e " ${Blue}当前使用源码${Font}：${Yellow}${FOLDER_NAME2}-${LUCI_EDITION2}${Font}"
+    echo -e " ${Blue}当前使用机型文件夹${Font}：${Yellow}${FOLDER_NAME2}${Font}"
+    echo -e " ${Blue}当前编译使用源码${Font}：${Yellow}${SOURCE2}-${LUCI_EDITION2}${Font}"
     echo -e " ${Red}大兄弟啊,上回编译${Yellow}[${TARGET_PROFILE2}]${Font}${Red}于失败告终了${Font}"
     echo -e " ${Blue}operates/${FOLDER_NAME2}配置文件机型${Font}：${Yellow}${TARGET_PROFILE3}${Font}"
     aaaa="保留缓存,再特么的搞一搞?"
