@@ -734,7 +734,7 @@ if [[ -n "${ZZZ_PATH1}" ]]; then
 fi
 
 ttydjso="$(find ./ -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
-if [[ -n "${ttydjson}" ]]; then
+if [[ -n "${ttydjso}" ]]; then
   ttydjson="${HOME_PATH}/${ttydjso}"
   echo "${ttydjson}"
 fi
