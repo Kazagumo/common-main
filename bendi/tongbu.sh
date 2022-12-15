@@ -112,9 +112,9 @@ fi
 for X in $(find "operates" -type f -name "diy-part.sh" |grep -v '.bak'); do
   echo "${X}"
   # 后台IP设置
-  aa="$(source "${X}" && echo "${Ipv4_ipaddr}")"
+  aa=$(source $X && echo "${Ipv4_ipaddr}")
   echo "${aa}"
-  bb="$(source "${X}.bak" && echo "${Ipv4_ipaddr}")"
+  bb=$(source $X.bak && echo "${Ipv4_ipaddr}")
   echo "${bb}"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
     sed -i "s?${aa}?${bb}?g" "${X}"
