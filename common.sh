@@ -1617,14 +1617,14 @@ if [[ "${Delete_unnecessary_items}" == "1" ]]; then
 fi
 
 export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
-export KERNEL_patc="patches-${Kernel_Patchver}"
-if [[ "${Kernel_Patchver}" == "0" ]]; then
+export KERNEL_patc="patches-${Replace_Kernel}"
+if [[ "${Replace_Kernel}" == "0" ]]; then
   echo 
-elif [[ -n "${Kernel_Patchver}" ]] && [[ -n "${patchverl}" ]]; then
+elif [[ -n "${Replace_Kernel}" ]] && [[ -n "${patchverl}" ]]; then
   if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
-    sed -i "s/${patchverl}/${Kernel_Patchver}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
+    sed -i "s/${patchverl}/${Replace_Kernel}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
   else
-    echo "TIME r \"${TARGET_PROFILE}机型源码没发现[ ${Kernel_Patchver} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译\"" >> ${HOME_PATH}/CHONGTU
+    echo "TIME r \"${TARGET_PROFILE}机型源码没发现[ ${Replace_Kernel} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
