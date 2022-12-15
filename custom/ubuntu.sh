@@ -52,13 +52,16 @@ function main(){
 	if [[ -n "${BENDI_VERSION}" ]]; then
 		INS="sudo apt-get"
 		echo "开始升级ubuntu插件和安装依赖....."
+		install_mustrelyon
+		ophub_amlogic-s9xxx
+		update_apt_source
 	else
 		INS="sudo -E apt-get -qq"
+		Delete_useless
+		install_mustrelyon
+		ophub_amlogic-s9xxx
+		update_apt_source
 	fi
-	Delete_useless
-	install_mustrelyon
-	ophub_amlogic-s9xxx
-	update_apt_source
 }
 
 main
