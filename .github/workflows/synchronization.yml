@@ -50,22 +50,7 @@ jobs:
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE
-        sed -i "s?IPv4_ipaddr?Ipv4_ipaddr?g" shangyou/common.sh
-        sed -i "s?Required_Topic?Mandatory_theme?g" shangyou/common.sh
-        sed -i "s?Default_Theme?Default_theme?g" shangyou/common.sh
-        sed -i "s?Router_gateway?Gateway_Settings?g" shangyou/common.sh
-        sed -i "s?Lan_DNS?DNS_Settings?g" shangyou/common.sh
-        sed -i "s?IPv4_Broadcast?Broadcast_Ipv4?g" shangyou/common.sh
-        sed -i "s?Close_DHCP?Disable_DHCP?g" shangyou/common.sh
-        sed -i "s?Delete_Bridge?Disable_Bridge?g" shangyou/common.sh
-        sed -i "s?Create_IPV6_interface?Create_Ipv6_Lan?g" shangyou/common.sh
-        sed -i "s?Package_IPv6helper?Enable_IPV6_function?g" shangyou/common.sh
-        sed -i "s?Remove_IPv6?Disable_IPv6_option?g" shangyou/common.sh
-        sed -i "s?Personal_Signature?Customized_Information?g" shangyou/common.sh
-        sed -i "s?Confidentiality_free?Password_free_login?g" shangyou/common.sh
-        sed -i "s?ttyd_Nopassword?Ttyd_account_free_login?g" shangyou/common.sh
-        sed -i "s?Delete_NotRequired?Delete_unnecessary_items?g" shangyou/common.sh
-        sed -i "s?Remove_Firewall?Disable_53_redirection?g" shangyou/common.sh
+        sed -i "s?Kernel_Patchver?Replace_Kernel?g" shangyou/common.sh
         chmod -R 775 $GITHUB_WORKSPACE/shangyou
         cd shangyou
         git add .
