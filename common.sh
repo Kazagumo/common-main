@@ -958,10 +958,10 @@ EOF
 fi
 
 
-if [[ "${Package_IPv6helper}" == "1" ]]; then
-  Create_IPV6_interface="0"
-  Remove_IPv6="0"
-  echo "Package_IPv6helper=1" >> ${GITHUB_ENV}
+if [[ "${Enable_IPV6_function}" == "1" ]]; then
+  Create_Ipv6_Lan="0"
+  Disable_IPv6_option="0"
+  echo "Enable_IPV6_function=1" >> ${GITHUB_ENV}
   echo "
     uci set network.lan.ip6assign='64'
     uci commit network
@@ -978,9 +978,9 @@ if [[ "${Package_IPv6helper}" == "1" ]]; then
   " >> "${DEFAULT_PATH}"
 fi
 
-if [[ "${Create_IPV6_interface}" == "1" ]]; then
-  echo "Create_IPV6_interface=1" >> ${GITHUB_ENV}
-  export Remove_IPv6="0"
+if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
+  echo "Create_Ipv6_Lan=1" >> ${GITHUB_ENV}
+  export Disable_IPv6_option="0"
   echo "
     uci delete network.lan.ip6assign
     uci set network.lan.delegate='0'
@@ -1007,7 +1007,7 @@ if [[ "${Create_IPV6_interface}" == "1" ]]; then
   " >> "${DEFAULT_PATH}"
 fi
 
-if [[ "${Remove_IPv6}" == "1" ]]; then
+if [[ "${Disable_IPv6_option}" == "1" ]]; then
   echo "
     uci delete network.globals.ula_prefix
     uci delete network.lan.ip6assign
@@ -1027,27 +1027,27 @@ if [[ "${Remove_IPv6}" == "1" ]]; then
   " >> "${DEFAULT_PATH}"
 fi
 
-if [[ "${Required_Topic}" == "0" ]] || [[ -z "${Required_Topic}" ]]; then
+if [[ "${Mandatory_theme}" == "0" ]] || [[ -z "${Mandatory_theme}" ]]; then
   echo 
-elif [[ -n "${Required_Topic}" ]]; then
-  echo "Required_Topic=${Required_Topic}" >> ${GITHUB_ENV}
+elif [[ -n "${Mandatory_theme}" ]]; then
+  echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${Default_Theme}" == "0" ]] || [[ -z "${Default_Theme}" ]]; then
+if [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
   echo
-elif [[ -n "${Default_Theme}" ]]; then
-  echo "Default_Theme=${Default_Theme}" >> ${GITHUB_ENV}
+elif [[ -n "${Default_theme}" ]]; then
+  echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${Personal_Signature}" == "0" ]] || [[ -z "${Personal_Signature}" ]]; then
+if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
   echo
-elif [[ -n "${Personal_Signature}" ]]; then
+elif [[ -n "${Customized_Information}" ]]; then
   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
-  sed -i "s?OpenWrt ?${Personal_Signature} @ OpenWrt ?g" "${ZZZ_PATH}"
+  sed -i "s?OpenWrt ?${Customized_Information} @ OpenWrt ?g" "${ZZZ_PATH}"
 fi
 
-if [[ "${Delete_NotRequired}" == "1" ]]; then
-   echo "Delete_NotRequired=${Delete_NotRequired}" >> ${GITHUB_ENV}
+if [[ "${Delete_unnecessary_items}" == "1" ]]; then
+   echo "Delete_unnecessary_items=${Delete_unnecessary_items}" >> ${GITHUB_ENV}
 fi
 
 if [[ "${Kernel_Patchver}" == "0" ]] || [[ -z "${Kernel_Patchver}" ]]; then
@@ -1056,13 +1056,13 @@ elif [[ -n "${Kernel_Patchver}" ]]; then
   echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${IPv4_ipaddr}" == "0" ]] || [[ -z "${IPv4_ipaddr}" ]]; then
+if [[ "${Ipv4_ipaddr}" == "0" ]] || [[ -z "${Ipv4_ipaddr}" ]]; then
   echo
-elif [[ -n "${IPv4_ipaddr}" ]]; then
-  Kernel_Pat="$(echo ${IPv4_ipaddr} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+elif [[ -n "${Ipv4_ipaddr}" ]]; then
+  Kernel_Pat="$(echo ${Ipv4_ipaddr} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   ipadd_Pat="$(echo ${ipadd} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
-     sed -i "s/${ipadd}/${IPv4_ipaddr}/g" "${GENE_PATH}"
+     sed -i "s/${ipadd}/${Ipv4_ipaddr}/g" "${GENE_PATH}"
    else
      echo "TIME r \"因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
    fi
@@ -1086,56 +1086,56 @@ elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
   sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
 fi
 
-if [[ "${Router_gateway}" == "0" ]] || [[ -z "${Router_gateway}" ]]; then
+if [[ "${Gateway_Settings}" == "0" ]] || [[ -z "${Gateway_Settings}" ]]; then
   echo
-elif [[ -n "${Router_gateway}" ]]; then
-  Router_gat="$(echo ${Router_gateway} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+elif [[ -n "${Gateway_Settings}" ]]; then
+  Router_gat="$(echo ${Gateway_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Router_gat}" ]]; then
-    sed -i "$lan\set network.lan.gateway='${Router_gateway}'" "${GENE_PATH}"
+    sed -i "$lan\set network.lan.gateway='${Gateway_Settings}'" "${GENE_PATH}"
   else
     echo "TIME r \"因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
-if [[ "${Lan_DNS}" == "0" ]] || [[ -z "${Lan_DNS}" ]]; then
+if [[ "${DNS_Settings}" == "0" ]] || [[ -z "${DNS_Settings}" ]]; then
   echo
-elif [[ -n "${Lan_DNS}" ]]; then
-  ipa_dns="$(echo ${Lan_DNS} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+elif [[ -n "${DNS_Settings}" ]]; then
+  ipa_dns="$(echo ${DNS_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${ipa_dns}" ]]; then
-     sed -i "$lan\set network.lan.dns='${Lan_DNS}'" "${GENE_PATH}"
+     sed -i "$lan\set network.lan.dns='${DNS_Settings}'" "${GENE_PATH}"
   else
     echo "TIME r \"因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
-if [[ "${IPv4_Broadcast}" == "0" ]] || [[ -z "${IPv4_Broadcast}" ]]; then
+if [[ "${Broadcast_Ipv4}" == "0" ]] || [[ -z "${Broadcast_Ipv4}" ]]; then
   echo
-elif [[ -n "${IPv4_Broadcast}" ]]; then
-  IPv4_Bro="$(echo ${IPv4_Broadcast} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+elif [[ -n "${Broadcast_Ipv4}" ]]; then
+  IPv4_Bro="$(echo ${Broadcast_Ipv4} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${IPv4_Bro}" ]]; then
-    sed -i "$lan\set network.lan.broadcast='${IPv4_Broadcast}'" "${GENE_PATH}"
+    sed -i "$lan\set network.lan.broadcast='${Broadcast_Ipv4}'" "${GENE_PATH}"
   else
     echo "TIME r \"因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
-if [[ "${Close_DHCP}" == "1" ]]; then
+if [[ "${Disable_DHCP}" == "1" ]]; then
    sed -i "$lan\set dhcp.lan.ignore='1'" "${GENE_PATH}"
 fi
 
-if [[ "${Delete_Bridge}" == "1" ]]; then
+if [[ "${Disable_Bridge}" == "1" ]]; then
    sed -i "$lan\delete network.lan.type" "${GENE_PATH}"
 fi
 
-if [[ "${ttyd_Nopassword}" == "1" ]]; then
+if [[ "${Ttyd_account_free_login}" == "1" ]]; then
    sed -i "$lan\set ttyd.@ttyd[0].command='/bin/login -f root'" "${GENE_PATH}"
 fi
 
-if [[ "${Confidentiality_free}" == "1" ]]; then
+if [[ "${Password_free_login}" == "1" ]]; then
    sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
 fi
 
-if [[ "${Remove_Firewall}" == "1" ]]; then
+if [[ "${Disable_53_redirection}" == "1" ]]; then
    sed -i '/to-ports 53/d' "${ZZZ_PATH}"
 fi
 
@@ -1216,12 +1216,12 @@ CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_default-settings=y
 EOF
 
-if [[ "${Required_Topic}" == "0" ]]; then
+if [[ "${Mandatory_theme}" == "0" ]]; then
   echo "不进行默认主题修改"
-elif [[ -n "${Required_Topic}" ]]; then
+elif [[ -n "${Mandatory_theme}" ]]; then
   collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
-  yhtheme="luci-theme-${Required_Topic}"
+  yhtheme="luci-theme-${Mandatory_theme}"
   if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
     sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
     echo "默认主题修改完成，主题为：${yhtheme}"
@@ -1234,7 +1234,7 @@ fi
 
 function Diy_IPv6helper() {
 cd ${HOME_PATH}
-if [[ "${Package_IPv6helper}" == "1" ]] || [[ "${Create_IPV6_interface}" == "1" ]]; then
+if [[ "${Enable_IPV6_function}" == "1" ]] || [[ "${Create_Ipv6_Lan}" == "1" ]]; then
 echo '
 CONFIG_PACKAGE_ipv6helper=y
 CONFIG_PACKAGE_ip6tables=y
@@ -1603,7 +1603,7 @@ fi
 
 function Diy_Publicarea2() {
 cd ${HOME_PATH}
-if [[ "${Delete_NotRequired}" == "1" ]]; then
+if [[ "${Delete_unnecessary_items}" == "1" ]]; then
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
 fi
 
@@ -1619,17 +1619,17 @@ elif [[ -n "${Kernel_Patchver}" ]] && [[ -n "${patchverl}" ]]; then
   fi
 fi
 
-if [[ ! "${Default_Theme}" == "0" ]]; then 
+if [[ ! "${Default_theme}" == "0" ]]; then 
   echo
-elif [[ -n "${Default_Theme}" ]]; then
-  export defaultt=CONFIG_PACKAGE_luci-theme-${Default_Theme}=y
+elif [[ -n "${Default_theme}" ]]; then
+  export defaultt=CONFIG_PACKAGE_luci-theme-${Default_theme}=y
   if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
     echo "
-      uci set luci.main.mediaurlbase='/luci-static/${Default_Theme}'
+      uci set luci.main.mediaurlbase='/luci-static/${Default_theme}'
       uci commit luci
     " >> "${DEFAULT_PATH}"
   else
-     echo "TIME r \"没有选择luci-theme-${Default_Theme}此主题,将${Default_Theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
+     echo "TIME r \"没有选择luci-theme-${Default_theme}此主题,将${Default_theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 }
