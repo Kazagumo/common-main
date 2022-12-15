@@ -169,7 +169,8 @@ if [[ `grep -c "TIME" common.sh` -ge '1' ]]; then
    clear
    echo
    ECHOY "首次使用本脚本，需要先安装依赖，10秒后开始安装依赖"
-   ECHOYY "如果出现 YES OR NO 选择界面，直接按回车即可"
+   ECHOYY "升级ubuntu插件和安装依赖，时间或者会比较长(取决于您的网络质量)，请耐心等待"
+   ECHOY "如果出现 YES OR NO 选择界面，直接按回车即可"
    sleep 10
    echo
    source common.sh && Diy_update
