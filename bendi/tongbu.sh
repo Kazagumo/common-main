@@ -76,35 +76,35 @@ esac
 
 # 修改本地文件
 if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
-rm -rf operates/*/relevance
-for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do 
-  mkdir -p "${X}/relevance"
-  echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/relevance/bendi_version"
-  echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/relevance/README.md"
-done
+  rm -rf operates/*/relevance
+  for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do 
+    mkdir -p "${X}/relevance"
+    echo "BENDI_VERSION=${BENDI_VERSION}" > "${X}/relevance/bendi_version"
+    echo "bendi_version文件为检测版本用,请勿修改和删除" > "${X}/relevance/README.md"
+  done
 
-for X in $(find "operates" -name "settings.ini"); do
-  sed -i '/SSH_ACTIONS/d' "${X}"
-  sed -i '/UPLOAD_FIRMWARE/d' "${X}"
-  sed -i '/UPLOAD_WETRANSFER/d' "${X}"
-  sed -i '/UPLOAD_RELEASE/d' "${X}"
-  sed -i '/INFORMATION_NOTICE/d' "${X}"
-  sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
-  sed -i '/COMPILATION_INFORMATION/d' "${X}"
-  sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
-  sed -i '/CPU_SELECTION/d' "${X}"
-  sed -i '/RETAIN_DAYS/d' "${X}"
-  sed -i '/KEEP_LATEST/d' "${X}"
-  echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
-  if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
-    echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
-  fi
-  echo 'MAKE_CONFIGURATION="false"          # 单纯制作.config配置文件,不编译固件（true=开启）（false=关闭）' >> "${X}"
-done
+  for X in $(find "operates" -name "settings.ini"); do
+    sed -i '/SSH_ACTIONS/d' "${X}"
+    sed -i '/UPLOAD_FIRMWARE/d' "${X}"
+    sed -i '/UPLOAD_WETRANSFER/d' "${X}"
+    sed -i '/UPLOAD_RELEASE/d' "${X}"
+    sed -i '/INFORMATION_NOTICE/d' "${X}"
+    sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
+    sed -i '/COMPILATION_INFORMATION/d' "${X}"
+    sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
+    sed -i '/CPU_SELECTION/d' "${X}"
+    sed -i '/RETAIN_DAYS/d' "${X}"
+    sed -i '/KEEP_LATEST/d' "${X}"
+    echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
+    if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+      echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
+    fi
+    echo 'MAKE_CONFIGURATION="false"          # 单纯制作.config配置文件,不编译固件（true=开启）（false=关闭）' >> "${X}"
+  done
 
-for X in $(find "operates" -type f -name "diy-part.sh"); do 
-  sed -i 's?修改插件名字?修改插件名字(二次编译如若有更改名字的,不能照搬此格式,要把修改的文件路径完整的写上)?g' "${X}"
-done
+  for X in $(find "operates" -type f -name "diy-part.sh"); do 
+    sed -i 's?修改插件名字?修改插件名字(二次编译如若有更改名字的,不能照搬此格式,要把修改的文件路径完整的写上)?g' "${X}"
+  done
 fi
 
 # 恢复settings.ini设置
