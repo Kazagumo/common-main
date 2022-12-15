@@ -1227,6 +1227,7 @@ elif [[ -n "${Required_Topic}" ]]; then
   else
     echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
   fi
+fi
 }
 
 
