@@ -107,592 +107,268 @@ if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
   done
 fi
 
+
 # 恢复settings.ini设置
-# Amlogic
-for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
-  aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+for X in $(find "operates" -type f -name "diy-part.sh" |grep -v '.bak'); do
+  # 后台IP设置
+  aa="$(source "${X}" && echo "${Ipv4_ipaddr}")"
+  bb="$(source "${X}.bak" && echo "${Ipv4_ipaddr}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
-  if [[ ! "${cc}" == ".config" ]]; then
-    aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-     sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-    fi
-  fi
-  aa="$(grep "DIY_PART_SH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
   
-  aa="$(grep "SSH_ACTIONS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "SSH_ACTIONS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  aa="$(source "${X}" && echo "${Netmask_netm}")"
+  bb="$(source "${X}.bak" && echo "${Netmask_netm}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${Op_name}")"
+  bb="$(source "${X}.bak" && echo "${Op_name}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  # 默认主题设置
+  aa="$(source "${X}" && echo "${Mandatory_theme}")"
+  bb="$(source "${X}.bak" && echo "${Mandatory_theme}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPLOAD_RELEASE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_RELEASE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${Default_theme}")"
+  bb="$(source "${X}.bak" && echo "${Default_theme}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "INFORMATION_NOTICE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "INFORMATION_NOTICE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  # 旁路由选项
+  aa="$(source "${X}" && echo "${Gateway_Settings}")"
+  bb="$(source "${X}.bak" && echo "${Gateway_Settings}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${DNS_Settings}")"
+  bb="$(source "${X}.bak" && echo "${DNS_Settings}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${Broadcast_Ipv4}")"
+  bb="$(source "${X}.bak" && echo "${Broadcast_Ipv4}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${Disable_DHCP}")"
+  bb="$(source "${X}.bak" && echo "${Disable_DHCP}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "CPU_SELECTION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CPU_SELECTION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${Disable_Bridge}")"
+  bb="$(source "${X}.bak" && echo "${Disable_Bridge}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "RETAIN_DAYS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "RETAIN_DAYS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${Create_Ipv6_Lan}")"
+  bb="$(source "${X}.bak" && echo "${Create_Ipv6_Lan}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "KEEP_LATEST" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "KEEP_LATEST" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  # IPV6
+  aa="$(source "${X}" && echo "${Enable_IPV6_function}")"
+  bb="$(source "${X}.bak" && echo "${Enable_IPV6_function}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  aa="$(source "${X}" && echo "${Disable_IPv6_option}")"
+  bb="$(source "${X}.bak" && echo "${Disable_IPv6_option}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  # OpenClash分支
+  aa="$(source "${X}" && echo "${OpenClash_branch}")"
+  bb="$(source "${X}.bak" && echo "${OpenClash_branch}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  # OpenClash内核
+  aa="$(source "${X}" && echo "${OpenClash_Core}")"
+  bb="$(source "${X}.bak" && echo "${OpenClash_Core}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  # 个性签名
+  aa="$(source "${X}" && echo "${Customized_Information}")"
+  bb="$(source "${X}.bak" && echo "${Customized_Information}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  
+  # 更换固件内核
+  aa="$(source "${X}" && echo "${Replace_Kernel}")"
+  bb="$(source "${X}.bak" && echo "${Replace_Kernel}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  # 设置免密码登录(个别源码本身就没密码的)
+  aa="$(source "${X}" && echo "${Password_free_login}")"
+  bb="$(source "${X}.bak" && echo "${Password_free_login}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  # 增加AdGuardHome插件时把核心一起下载好
+  aa="$(source "${X}" && echo "${AdGuardHome_Core}")"
+  bb="$(source "${X}.bak" && echo "${AdGuardHome_Core}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  # 其他
+  aa="$(source "${X}" && echo "${Ttyd_account_free_login}")"
+  bb="$(source "${X}.bak" && echo "${Ttyd_account_free_login}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  aa="$(source "${X}" && echo "${Delete_unnecessary_items}")"
+  bb="$(source "${X}.bak" && echo "${Delete_unnecessary_items}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  aa="$(source "${X}" && echo "${Disable_53_redirection}")"
+  bb="$(source "${X}.bak" && echo "${Disable_53_redirection}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  aa="$(source "${X}" && echo "${Cancel_running}")"
+  bb="$(source "${X}.bak" && echo "${Cancel_running}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
   fi
 done
 
-# 天灵
-for X in $(grep "\"IMMORTALWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
-  aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+# 恢复settings.ini设置
+for X in $(find "operates" -type f -name "settings.ini" |grep -v '.bak'); do 
+  aa="$(source "${X}" && echo "${REPO_BRANCH}")"
+  bb="$(source "${X}.bak" && echo "${REPO_BRANCH}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
-  if [[ ! "${cc}" == ".config" ]]; then
-    aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-     sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-    fi
-  fi
-  aa="$(grep "DIY_PART_SH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  
-  aa="$(grep "SSH_ACTIONS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "SSH_ACTIONS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPLOAD_RELEASE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_RELEASE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "INFORMATION_NOTICE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "INFORMATION_NOTICE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "CPU_SELECTION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CPU_SELECTION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "RETAIN_DAYS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "RETAIN_DAYS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "KEEP_LATEST" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "KEEP_LATEST" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-done
 
-# 大雕
-for X in $(grep "\"COOLSNOWWOLF\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
-  aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  aa="$(source "${X}" && echo "${CONFIG_FILE}")"
+  bb="$(source "${X}.bak" && echo "${CONFIG_FILE}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
-  if [[ ! "${cc}" == ".config" ]]; then
-    aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-     sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-    fi
-  fi
-  aa="$(grep "DIY_PART_SH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
   
-  aa="$(grep "SSH_ACTIONS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "SSH_ACTIONS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  aa="$(source "${X}" && echo "${DIY_PART_SH}")"
+  bb="$(source "${X}.bak" && echo "${DIY_PART_SH}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPLOAD_RELEASE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_RELEASE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "INFORMATION_NOTICE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "INFORMATION_NOTICE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "CPU_SELECTION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CPU_SELECTION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "RETAIN_DAYS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "RETAIN_DAYS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "KEEP_LATEST" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "KEEP_LATEST" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-done
 
-# LI大
-for X in $(grep "\"LIENOL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
-  aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  aa="$(source "${X}" && echo "${CPU_SELECTION}")"
+  bb="$(source "${X}.bak" && echo "${CPU_SELECTION}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
-  if [[ ! "${cc}" == ".config" ]]; then
-    aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-     sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-    fi
-  fi
-  aa="$(grep "DIY_PART_SH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
   
-  aa="$(grep "SSH_ACTIONS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "SSH_ACTIONS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  aa="$(source "${X}" && echo "${INFORMATION_NOTICE}")"
+  bb="$(source "${X}.bak" && echo "${INFORMATION_NOTICE}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPLOAD_RELEASE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_RELEASE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "INFORMATION_NOTICE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "INFORMATION_NOTICE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "CPU_SELECTION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CPU_SELECTION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "RETAIN_DAYS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "RETAIN_DAYS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "KEEP_LATEST" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "KEEP_LATEST" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-done
 
-# 官方的
-for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
-  aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  aa="$(source "${X}" && echo "${UPLOAD_FIRMWARE}")"
+  bb="$(source "${X}.bak" && echo "${UPLOAD_FIRMWARE}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
-  if [[ ! "${cc}" == ".config" ]]; then
-    aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-     sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-    fi
-  fi
-  aa="$(grep "DIY_PART_SH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
   
-  aa="$(grep "SSH_ACTIONS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "SSH_ACTIONS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  aa="$(source "${X}" && echo "${UPLOAD_RELEASE}")"
+  bb="$(source "${X}.bak" && echo "${UPLOAD_RELEASE}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPLOAD_RELEASE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_RELEASE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "INFORMATION_NOTICE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "INFORMATION_NOTICE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "CPU_SELECTION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CPU_SELECTION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "RETAIN_DAYS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "RETAIN_DAYS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "KEEP_LATEST" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "KEEP_LATEST" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-done
 
-# x_wrt
-for X in $(grep "\"XWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do
-  aa="$(grep "REPO_BRANCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "REPO_BRANCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  aa="$(source "${X}" && echo "${CACHEWRTBUILD_SWITCH}")"
+  bb="$(source "${X}.bak" && echo "${CACHEWRTBUILD_SWITCH}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  cc="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |cut -d '"' -f2)"
-  if [[ ! "${cc}" == ".config" ]]; then
-    aa="$(grep "CONFIG_FILE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    bb="$(grep "CONFIG_FILE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-    if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-     sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-    fi
-  fi
-  aa="$(grep "DIY_PART_SH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "DIY_PART_SH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COLLECTED_PACKAGES" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "MODIFY_CONFIGURATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "PACKAGING_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "WSL_ROUTEPATH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "WSL_ROUTEPATH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
   
-  aa="$(grep "SSH_ACTIONS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "SSH_ACTIONS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  aa="$(source "${X}" && echo "${PACKAGING_FIRMWARE}")"
+  bb="$(source "${X}.bak" && echo "${PACKAGING_FIRMWARE}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_FIRMWARE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${UPDATE_FIRMWARE_ONLINE}")"
+  bb="$(source "${X}.bak" && echo "${UPDATE_FIRMWARE_ONLINE}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_WETRANSFER" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+
+  aa="$(source "${X}" && echo "${COLLECTED_PACKAGES}")"
+  bb="$(source "${X}.bak" && echo "${COLLECTED_PACKAGES}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPLOAD_RELEASE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPLOAD_RELEASE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${UPLOAD_WETRANSFER}")"
+  bb="$(source "${X}.bak" && echo "${UPLOAD_WETRANSFER}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "INFORMATION_NOTICE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "INFORMATION_NOTICE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+
+  aa="$(source "${X}" && echo "${COMPILATION_INFORMATION}")"
+  bb="$(source "${X}.bak" && echo "${COMPILATION_INFORMATION}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CACHEWRTBUILD_SWITCH" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${RETAIN_DAYS}")"
+  bb="$(source "${X}.bak" && echo "${RETAIN_DAYS}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "UPDATE_FIRMWARE_ONLINE" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${KEEP_LATEST}")"
+  bb="$(source "${X}.bak" && echo "${KEEP_LATEST}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "COMPILATION_INFORMATION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${MODIFY_CONFIGURATION}")"
+  bb="$(source "${X}.bak" && echo "${MODIFY_CONFIGURATION}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "CPU_SELECTION" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "CPU_SELECTION" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${WSL_ROUTEPATH}")"
+  bb="$(source "${X}.bak" && echo "${WSL_ROUTEPATH}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
-  aa="$(grep "RETAIN_DAYS" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "RETAIN_DAYS" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
+  
+  aa="$(source "${X}" && echo "${MAKE_CONFIGURATION}")"
+  bb="$(source "${X}.bak" && echo "${MAKE_CONFIGURATION}")"
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
-  fi
-  aa="$(grep "KEEP_LATEST" "${X}/settings.ini" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  bb="$(grep "KEEP_LATEST" "${X}/settings.ini.bak" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}')"
-  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
-   sed -i "s?${aa}?${bb}?g" "${X}/settings.ini"
+   sed -i "s?${aa}?${bb}?g" "${X}"
   fi
 done
 }
