@@ -259,6 +259,31 @@ for X in $(find "operates" -type f -name "diy-part.sh" |grep -v '.bak'); do
   if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
     sed -i "s?${aa}?${bb}?g" "${X}"
   fi
+  
+  # N1打包设置
+  aa="$(source "${X}" && echo "${amlogic_model}")"
+  bb="$(source "${X}.bak" && echo "${amlogic_model}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  aa="$(source "${X}" && echo "${amlogic_kernel}")"
+  bb="$(source "${X}.bak" && echo "${amlogic_kernel}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  aa="$(source "${X}" && echo "${auto_kernel}")"
+  bb="$(source "${X}.bak" && echo "${auto_kernel}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
+  
+  aa="$(source "${X}" && echo "${rootfs_size}")"
+  bb="$(source "${X}.bak" && echo "${rootfs_size}")"
+  if [[ -n "${aa}" ]] && [[ -n "${bb}" ]]; then
+    sed -i "s?${aa}?${bb}?g" "${X}"
+  fi
 done
 
 # 恢复settings.ini设置
