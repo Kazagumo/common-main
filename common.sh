@@ -855,9 +855,9 @@ sed -i '/lan.ignore=/d' "${GENE_PATH}"
 sed -i '/lan.type/d' "${GENE_PATH}"
 sed -i '/set ttyd/d' "${GENE_PATH}"
 lan="/set network.\$1.netmask/a"
-ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -v 'addr_offset' |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 netmas="$(grep "netmask:-" "${GENE_PATH}" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-opname="$(grep "hostname='" "${GENE_PATH}" |cut -d "'" -f2)"
+opname="$(grep "hostname=" "${GENE_PATH}" |grep -v '\$hostname' |cut -d "'" -f2)"
 if [[ `grep -c 'set network.${1}6.device' "${GENE_PATH}"` -ge '1' ]]; then
   ifnamee="uci set network.ipv6.device='@lan'"
   set_add="uci add_list firewall.@zone[0].network='ipv6'"
@@ -925,7 +925,7 @@ else
   clash_branch="clash_branch"
 fi
 if [[ "${OpenClash_branch}" == "0" ]]; then
-  echo ""
+  echo "不需要OpenClash插件"
 elif [[ "${OpenClash_branch}" == "${clash_branch}" ]] && [[ "${clashgs}" == "1" ]]; then
   echo ""
 else
@@ -959,6 +959,7 @@ fi
 
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
+  echo "加入IPV6功能"
   Create_Ipv6_Lan="0"
   Disable_IPv6_option="0"
   echo "Enable_IPV6_function=1" >> ${GITHUB_ENV}
@@ -979,6 +980,7 @@ if [[ "${Enable_IPV6_function}" == "1" ]]; then
 fi
 
 if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
+  echo "爱快+OP双系统时,爱快接管IPV6,在OP创建IPV6的lan口接收IPV6信息"
   echo "Create_Ipv6_Lan=1" >> ${GITHUB_ENV}
   export Disable_IPv6_option="0"
   echo "
@@ -1008,6 +1010,7 @@ if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
 fi
 
 if [[ "${Disable_IPv6_option}" == "1" ]]; then
+  echo "关闭固件里面所有IPv6选项和IPv6的DNS解析记录"
   echo "
     uci delete network.globals.ula_prefix
     uci delete network.lan.ip6assign
@@ -1028,81 +1031,87 @@ if [[ "${Disable_IPv6_option}" == "1" ]]; then
 fi
 
 if [[ "${Mandatory_theme}" == "0" ]] || [[ -z "${Mandatory_theme}" ]]; then
-  echo 
+  echo "无需替换bootstrap主题"
 elif [[ -n "${Mandatory_theme}" ]]; then
   echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
 fi
 
 if [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
-  echo
+  echo "无需设置默认主题"
 elif [[ -n "${Default_theme}" ]]; then
   echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
 fi
 
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
-  echo
+  echo "无需设置个性签名"
 elif [[ -n "${Customized_Information}" ]]; then
   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
   sed -i "s?OpenWrt ?${Customized_Information} @ OpenWrt ?g" "${ZZZ_PATH}"
+  echo "个性签名[${Customized_Information}]增加完成"
 fi
 
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
    echo "Delete_unnecessary_items=${Delete_unnecessary_items}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${Kernel_Patchver}" == "0" ]] || [[ -z "${Kernel_Patchver}" ]]; then
-  echo
-elif [[ -n "${Kernel_Patchver}" ]]; then
-  echo "Kernel_Patchver=${Kernel_Patchver}" >> ${GITHUB_ENV}
+if [[ "${Replace_Kernel}" == "0" ]] || [[ -z "${Replace_Kernel}" ]]; then
+  echo ""
+elif [[ -n "${Replace_Kernel}" ]]; then
+  echo "Replace_Kernel=${Replace_Kernel}" >> ${GITHUB_ENV}
 fi
 
 if [[ "${Ipv4_ipaddr}" == "0" ]] || [[ -z "${Ipv4_ipaddr}" ]]; then
-  echo
+  echo "使用源码默认后台IP"
 elif [[ -n "${Ipv4_ipaddr}" ]]; then
   Kernel_Pat="$(echo ${Ipv4_ipaddr} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   ipadd_Pat="$(echo ${ipadd} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
      sed -i "s/${ipadd}/${Ipv4_ipaddr}/g" "${GENE_PATH}"
+     echo "openwrt后台IP[${Ipv4_ipaddr}]修改完成"
    else
      echo "TIME r \"因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
    fi
 fi
 
 if [[ "${Netmask_netm}" == "0" ]] || [[ -z "${Netmask_netm}" ]]; then
-  echo
+  echo "使用默认子网掩码"
 elif [[ -n "${Netmask_netm}" ]]; then
   Kernel_netm="$(echo ${Netmask_netm} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   ipadd_mas="$(echo ${netmas} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Kernel_netm}" ]] && [[ -n "${ipadd_mas}" ]]; then
      sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
+     echo "子网掩码[${Netmask_netm}]修改完成"
    else
      echo "TIME r \"因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
 if [[ "${Op_name}" == "0" ]] || [[ -z "${Op_name}" ]]; then
-  echo
+  echo "使用源码默认主机名"
 elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
   sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
+  echo "主机名[${Op_name}]修改完成"
 fi
 
 if [[ "${Gateway_Settings}" == "0" ]] || [[ -z "${Gateway_Settings}" ]]; then
-  echo
+  echo "无需设置网关"
 elif [[ -n "${Gateway_Settings}" ]]; then
   Router_gat="$(echo ${Gateway_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Router_gat}" ]]; then
     sed -i "$lan\set network.lan.gateway='${Gateway_Settings}'" "${GENE_PATH}"
+    echo "网关[${Gateway_Settings}]修改完成"
   else
     echo "TIME r \"因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
 if [[ "${DNS_Settings}" == "0" ]] || [[ -z "${DNS_Settings}" ]]; then
-  echo
+  echo "无需设置DNS"
 elif [[ -n "${DNS_Settings}" ]]; then
   ipa_dns="$(echo ${DNS_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${ipa_dns}" ]]; then
      sed -i "$lan\set network.lan.dns='${DNS_Settings}'" "${GENE_PATH}"
+     echo "DNS[${DNS_Settings}]设置完成"
   else
     echo "TIME r \"因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确\"" >> ${HOME_PATH}/CHONGTU
   fi
