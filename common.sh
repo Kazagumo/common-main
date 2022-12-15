@@ -942,9 +942,10 @@ fi
 
 if [[ "${uci_openclash}" == "1" ]]; then
   uci_path="${HOME_PATH}/package/luci-app-openclash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
-  sed -i '/exit 0/d' "${uci_path}"
-  sed -i '/uci -q set openclash.config.enable/d' "${uci_path}"
-  sed -i '/uci -q commit openclash/d' "${uci_path}"
+  if [[ `grep -c "uci get openclash.config.enable" "${uci_path}"` -eq '0' ]]; then
+    sed -i '/exit 0/d' "${uci_path}"
+    sed -i '/uci -q set openclash.config.enable/d' "${uci_path}"
+    sed -i '/uci -q commit openclash/d' "${uci_path}"
 
 cat >>"${uci_path}" <<-EOF
 if [[ "$(uci get openclash.config.enable)" == "0" ]] || [[ -z "$(uci get openclash.config.enable)" ]]; then
@@ -953,6 +954,7 @@ if [[ "$(uci get openclash.config.enable)" == "0" ]] || [[ -z "$(uci get opencla
 fi
 exit 0
 EOF
+  fi
 fi
 
 
