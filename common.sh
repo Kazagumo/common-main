@@ -1215,23 +1215,18 @@ cat >> "${HOME_PATH}/.config" <<-EOF
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_default-settings=y
 EOF
-if [[ ! "${Required_Topic}" == "0" ]] && [[ -n "${Required_Topic}" ]]; then
+if [[ "${Required_Topic}" == "0" ]]; then
+  echo "不进行默认主题修改"
+elif [[ -n "${Required_Topic}" ]]; then
   collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
   yhtheme="luci-theme-${Required_Topic}"
-  for X in $(grep -i "=${Required_Topic}" -rl "${HOME_PATH}" |grep Makefile); do 
-    if [[ `grep -ic "=${Required_Topic}" "${X}"` -eq '0' ]]; then
-      cc="0"
-    else
-      cc="1"
-   fi
-  done
-  if [[ "${cc}" == '1' ]]; then
+  if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -eq "1" ]]; then
     sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
+    echo "默认主题修改完成，主题为：${yhtheme}"
   else
     echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
   fi
-fi
 }
 
 
