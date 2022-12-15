@@ -904,6 +904,7 @@ if [[ "${OpenClash_branch}" != "0" && "${OpenClash_branch}" != "dev" && "${OpenC
   fi
 fi
 
+uci_openclash="0"
 sj_clash=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
 if [[ -d "${HOME_PATH}/package/luci-app-openclash" ]]; then
   jian_clash="$(ls -1 ${HOME_PATH}/package/luci-app-openclash |grep -Eo sj_[0-9]+)"
@@ -934,8 +935,24 @@ else
     echo "luci-app-openclash下载失败"
   else
     echo "${OpenClash_branch}" > "${HOME_PATH}/package/luci-app-openclash/sj_${sj_clash}"
+    uci_openclash="1"
     echo "正在使用"${OpenClash_branch}"分支的openclash"
   fi
+fi
+
+if [[ "${uci_openclash}" == "1" ]]; then
+  uci_path="${HOME_PATH}/package/luci-app-openclash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
+  sed -i '/exit 0/d' "${uci_path}"
+  sed -i '/uci -q set openclash.config.enable/d' "${uci_path}"
+  sed -i '/uci -q commit openclash/d' "${uci_path}"
+
+cat >>"${uci_path}" <<-EOF
+if [[ "$(uci get openclash.config.enable)" == "0" ]] || [[ -z "$(uci get openclash.config.enable)" ]]; then
+  uci -q set openclash.config.enable=0
+  uci -q commit openclash
+fi
+exit 0
+EOF
 fi
 
 
