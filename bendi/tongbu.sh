@@ -168,9 +168,13 @@ elif [[ "${SOURCE_CODE1}" == "XWRT" ]]; then
   cp -Rf shangyou/.github/workflows/Xwrt.yml repogx/.github/workflows/${bb}.yml
   nn="Xwrt"
 fi
-        
-yml_name="$(grep 'name:' "repogx/.github/workflows/${bb}.yml"  |grep -v '^#' |awk 'NR==1')"
-sed -i "s?${yml_name}?name: ${nn}-${bb}?g" "repogx/.github/workflows/${bb}.yml"
+
+yml_name="$(grep 'name:' "repogx/.github/workflows/${bb}.yml" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+if [[ `echo "${bb}" |grep -ic "${nn}"` -eq '0' ]]; then
+  sed -i "s?${yml_name}?name: ${nn}-${bb}?g" "repogx/.github/workflows/${bb}.yml"
+else
+  sed -i "s?${yml_name}?name: ${bb}?g" "repogx/.github/workflows/${bb}.yml"
+fi
         
 TARGE1="target: \\[.*\\]"
 TARGE2="target: \\[${bb}\\]"
