@@ -109,7 +109,9 @@ fi
 
 function tongbu_2() {
   for X in $(find "operates" -name "*.bak"); do rm -rf "${X}"; done
-  for X in $(find "repogx/.github/workflows" -name "*.bak"); do rm -rf "${X}"; done
+  if [[ -d "repogx/.github/workflows" ]]; then
+    for X in $(find "repogx/.github/workflows" -name "*.bak"); do rm -rf "${X}"; done
+  fi
 }
 
 function tongbu_3() {
