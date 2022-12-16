@@ -45,8 +45,10 @@ case "${TONGBU_CANGKU}" in
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
     else
-      echo "build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件"
       rm -rf "${X}"
+      echo
+      echo -e "\033[31m build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件 \033[0m"
+      echo
     fi
     if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml ${X}
@@ -143,9 +145,13 @@ if [[ ! -d "repogx/build/${bb}" ]]; then
   cp -Rf repogx/build/"${aa}" repogx/build/"${bb}"
   rm -rf repogx/build/${bb}/relevance/*.ini
   rm -rf repogx/build/${bb}/*.bak
-  echo "[${bb}]文件夹创建完成"
+  echo
+  echo -e "\033[32m [${bb}]文件夹创建完成 \033[0m"
+  echo
 else
-  echo "[${bb}]文件夹已存在"
+  echo
+  echo -e "\033[31m [${bb}]文件夹已存在,无法继续创建,请更换其他名称再来 \033[0m"
+  echo
   exit 1
 fi
 
@@ -192,9 +198,13 @@ for cc in ${bb[@]}; do
   if [[ -d "repogx/build/${cc}" ]]; then
     rm -rf repogx/build/"$cc"
     rm -rf $(grep -rl "target: \[$cc\]" "repogx/.github/workflows" |sed 's/^[ ]*//g' |grep -v '^#\|compile')
-    echo "已删除[${cc}]文件夹"
+    echo
+    echo -e "\033[31m 已删除[${cc}]文件夹 \033[0m"
+    echo
   else
-    echo "[${cc}]文件夹不存在"
+    echo
+    echo -e "\033[31m [${cc}]文件夹不存在 \033[0m"
+    echo
   fi
 done
 }
