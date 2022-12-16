@@ -109,9 +109,8 @@ fi
 }
 
 function tongbu_2() {
-  for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do rm -rf "${X}"/*.bak; done
-  rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*.bak
-  
+  for X in $(find "operates" -name "*.bak"); do rm -rf "${X}"; done
+  for X in $(find "repogx/.github/workflows" -name "*.bak"); do rm -rf "${X}"; done
 }
 
 function tongbu_3() {
