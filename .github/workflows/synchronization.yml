@@ -50,7 +50,7 @@ jobs:
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE
-        sed -i "s?Kernel_Patchver?Replace_Kernel?g" shangyou/common.sh
+        sed -i "s?无需?不操作,?g" shangyou/common.sh
         chmod -R 775 $GITHUB_WORKSPACE/shangyou
         cd shangyou
         git add .
