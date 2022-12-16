@@ -35,7 +35,7 @@ case "${TONGBU_CANGKU}" in
 1)
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md repogx/README.md
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE repogx/LICENSE
-  for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.bak" |grep -v '.bak'); do cp -Rf "${X}" "${X}.bak"; done
+  for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak'); do cp -Rf "${X}" "${X}.bak"; done
   
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak'); do
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
