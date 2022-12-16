@@ -716,7 +716,7 @@ fi
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
-# 修复NTFS格式优盘不自动挂载
+echo "修复NTFS格式优盘不自动挂载"
 packages=" \
 block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
 kmod-usb-ohci kmod-usb-uhci kmod-usb-storage kmod-usb-storage-extras kmod-usb2 kmod-usb3 \
@@ -730,7 +730,7 @@ for x in $packages; do
   sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" ${HOME_PATH}/target/linux/armvirt/Makefile
 done
 
-# 修改cpufreq和autocore一些代码适配amlogic
+echo "修改cpufreq和autocore一些代码适配amlogic"
 sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' ${HOME_PATH}/feeds/luci/applications/luci-app-cpufreq/Makefile
 sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/package/lean/autocore/Makefile
 }
@@ -1118,11 +1118,12 @@ elif [[ -n "${DNS_Settings}" ]]; then
 fi
 
 if [[ "${Broadcast_Ipv4}" == "0" ]] || [[ -z "${Broadcast_Ipv4}" ]]; then
-  echo
+  echo "不操作,设置广播IP"
 elif [[ -n "${Broadcast_Ipv4}" ]]; then
   IPv4_Bro="$(echo ${Broadcast_Ipv4} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${IPv4_Bro}" ]]; then
     sed -i "$lan\set network.lan.broadcast='${Broadcast_Ipv4}'" "${GENE_PATH}"
+    echo "广播IP[${Broadcast_Ipv4}]设置完成"
   else
     echo "TIME r \"因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确\"" >> ${HOME_PATH}/CHONGTU
   fi
@@ -1130,26 +1131,32 @@ fi
 
 if [[ "${Disable_DHCP}" == "1" ]]; then
    sed -i "$lan\set dhcp.lan.ignore='1'" "${GENE_PATH}"
+   echo "关闭DHCP设置完成"
 fi
 
 if [[ "${Disable_Bridge}" == "1" ]]; then
    sed -i "$lan\delete network.lan.type" "${GENE_PATH}"
+   echo "去掉桥接设置完成"
 fi
 
 if [[ "${Ttyd_account_free_login}" == "1" ]]; then
    sed -i "$lan\set ttyd.@ttyd[0].command='/bin/login -f root'" "${GENE_PATH}"
+   echo "TTYD免账户登录完成"
 fi
 
 if [[ "${Password_free_login}" == "1" ]]; then
    sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
+   echo "固件免密登录完成"
 fi
 
 if [[ "${Disable_53_redirection}" == "1" ]]; then
    sed -i '/to-ports 53/d' "${ZZZ_PATH}"
+   echo "删除DNS重定向53端口完成"
 fi
 
 if [[ "${Cancel_running}" == "1" ]]; then
    echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${DEFAULT_PATH}"
+   echo "删除每天跑分任务完成"
 fi
 
 # 晶晨CPU机型自定义机型,内核,分区
@@ -1619,17 +1626,18 @@ fi
 export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
 export KERNEL_patc="patches-${Replace_Kernel}"
 if [[ "${Replace_Kernel}" == "0" ]]; then
-  echo 
+  echo "不进行内核更换"
 elif [[ -n "${Replace_Kernel}" ]] && [[ -n "${patchverl}" ]]; then
   if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
     sed -i "s/${patchverl}/${Replace_Kernel}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
+    echo "内核[${Replace_Kernel}]更换完成"
   else
     echo "TIME r \"${TARGET_PROFILE}机型源码没发现[ ${Replace_Kernel} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
 if [[ ! "${Default_theme}" == "0" ]]; then 
-  echo
+  echo "不进行默认主题设置"
 elif [[ -n "${Default_theme}" ]]; then
   export defaultt=CONFIG_PACKAGE_luci-theme-${Default_theme}=y
   if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
@@ -1637,6 +1645,7 @@ elif [[ -n "${Default_theme}" ]]; then
       uci set luci.main.mediaurlbase='/luci-static/${Default_theme}'
       uci commit luci
     " >> "${DEFAULT_PATH}"
+    echo "默认主题[${Default_theme}]设置完成"
   else
      echo "TIME r \"没有选择luci-theme-${Default_theme}此主题,将${Default_theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
   fi
