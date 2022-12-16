@@ -1031,19 +1031,19 @@ if [[ "${Disable_IPv6_option}" == "1" ]]; then
 fi
 
 if [[ "${Mandatory_theme}" == "0" ]] || [[ -z "${Mandatory_theme}" ]]; then
-  echo "无需替换bootstrap主题"
+  echo "不操作,替换bootstrap主题"
 elif [[ -n "${Mandatory_theme}" ]]; then
   echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
 fi
 
 if [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
-  echo "无需设置默认主题"
+  echo "不操作,设置默认主题"
 elif [[ -n "${Default_theme}" ]]; then
   echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
 fi
 
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
-  echo "无需设置个性签名"
+  echo "不操作,设置个性签名"
 elif [[ -n "${Customized_Information}" ]]; then
   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
   sed -i "s?OpenWrt ?${Customized_Information} @ OpenWrt ?g" "${ZZZ_PATH}"
@@ -1094,7 +1094,7 @@ elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
 fi
 
 if [[ "${Gateway_Settings}" == "0" ]] || [[ -z "${Gateway_Settings}" ]]; then
-  echo "无需设置网关"
+  echo "不操作,设置网关"
 elif [[ -n "${Gateway_Settings}" ]]; then
   Router_gat="$(echo ${Gateway_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Router_gat}" ]]; then
@@ -1106,7 +1106,7 @@ elif [[ -n "${Gateway_Settings}" ]]; then
 fi
 
 if [[ "${DNS_Settings}" == "0" ]] || [[ -z "${DNS_Settings}" ]]; then
-  echo "无需设置DNS"
+  echo "不操作,设置DNS"
 elif [[ -n "${DNS_Settings}" ]]; then
   ipa_dns="$(echo ${DNS_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${ipa_dns}" ]]; then
