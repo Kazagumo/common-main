@@ -138,7 +138,8 @@ aa="${inputs_establish_sample}"
 bb="${inputs_establish_name}"
 if [[ ! -d "repogx/build/${bb}" ]]; then
   cp -Rf repogx/build/"${aa}" repogx/build/"${bb}"
-  rm -rf repogx/build/${bb}/relevance/*ini
+  rm -rf repogx/build/${bb}/relevance/*.ini
+  rm -rf repogx/build/${bb}/*.bak
   echo "[${bb}]文件夹创建完成"
 else
   echo "[${bb}]文件夹已存在"
