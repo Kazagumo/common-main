@@ -146,6 +146,7 @@ if [[ ! -d "repogx/build/${bb}" ]]; then
   echo "[${bb}]文件夹创建完成"
 else
   echo "[${bb}]文件夹已存在"
+  exit 1
 fi
 
 SOURCE_CODE1="$(source "repogx/build/${bb}/settings.ini" && echo ${SOURCE_CODE})"
