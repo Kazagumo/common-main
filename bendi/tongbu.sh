@@ -7,7 +7,8 @@ function tongbu_0() {
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f repogx/build operates
 else
-  rm -rf shangyou && git clone -b main https://github.com/281677160/autobuild shangyou
+  sudo rm -rf shangyou
+  git clone -b main https://github.com/281677160/autobuild shangyou
   if [[ ! -d "operates" ]]; then
     cp -Rf shangyou/build operates
   fi
