@@ -45,7 +45,8 @@ case "${TONGBU_CANGKU}" in
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
     else
-      echo "build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在"
+      echo "build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件"
+      rm -rf "${X}"
     fi
     if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml ${X}
