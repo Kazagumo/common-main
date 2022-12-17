@@ -963,8 +963,8 @@ fi
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
   echo "加入IPV6功能"
   Create_Ipv6_Lan="0"
-  Disable_IPv6_option="0"
-  echo "Disable_IPv6_option=0" >> ${GITHUB_ENV}
+  Enable_IPV4_function="0"
+  echo "Enable_IPV4_function=0" >> ${GITHUB_ENV}
   echo "Enable_IPV6_function=1" >> ${GITHUB_ENV}
   echo "
     uci set network.lan.ip6assign='64'
@@ -985,7 +985,7 @@ fi
 if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
   echo "爱快+OP双系统时,爱快接管IPV6,在OP创建IPV6的lan口接收IPV6信息"
   echo "Create_Ipv6_Lan=1" >> ${GITHUB_ENV}
-  export Disable_IPv6_option="0"
+  export Enable_IPV4_function="0"
   echo "
     uci delete network.lan.ip6assign
     uci set network.lan.delegate='0'
@@ -1012,8 +1012,8 @@ if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
   " >> "${DEFAULT_PATH}"
 fi
 
-if [[ "${Disable_IPv6_option}" == "1" ]]; then
-  echo "Disable_IPv6_option=1" >> ${GITHUB_ENV}
+if [[ "${Enable_IPV4_function}" == "1" ]]; then
+  echo "Enable_IPV4_function=1" >> ${GITHUB_ENV}
   echo "关闭固件里面所有IPv6选项和IPv6的DNS解析记录"
   echo "
     uci delete network.globals.ula_prefix
@@ -1267,7 +1267,7 @@ CONFIG_PACKAGE_6to4=y
 ' >> ${HOME_PATH}/.config
 fi
 
-if [[ "${Disable_IPv6_option}" == "1" ]]; then
+if [[ "${Enable_IPV4_function}" == "1" ]]; then
 sed -i '/CONFIG_PACKAGE_ipv6helper=y/d' "${HOME_PATH}/.config"
 sed -i '/CONFIG_PACKAGE_ip6tables=y/d' "${HOME_PATH}/.config"
 sed -i '/CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y/d' "${HOME_PATH}/.config"
