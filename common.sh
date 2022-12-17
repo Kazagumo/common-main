@@ -1118,7 +1118,7 @@ elif [[ -n "${Gateway_Settings}" ]]; then
 fi
 
 if [[ "${DNS_Settings}" == "0" ]] || [[ -z "${DNS_Settings}" ]]; then
-  echo "设置,DNS设置"
+  echo "不进行,DNS设置"
 elif [[ -n "${DNS_Settings}" ]]; then
   ipa_dns="$(echo ${DNS_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${ipa_dns}" ]]; then
@@ -1245,14 +1245,14 @@ CONFIG_PACKAGE_default-settings=y
 EOF
 
 if [[ "${Mandatory_theme}" == "0" ]]; then
-  echo "不进行默认主题修改"
+  echo "不进行必选主题修改"
 elif [[ -n "${Mandatory_theme}" ]]; then
   collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
   yhtheme="luci-theme-${Mandatory_theme}"
   if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
     sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
-    echo "默认主题修改完成，主题为：${yhtheme}"
+    echo "必选主题修改完成，必选主题为：${yhtheme}"
   else
     echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
   fi
@@ -1659,7 +1659,7 @@ elif [[ -n "${Replace_Kernel}" ]] && [[ -n "${patchverl}" ]]; then
   fi
 fi
 
-if [[ ! "${Default_theme}" == "0" ]]; then 
+if [[ "${Default_theme}" == "0" ]]; then 
   echo "不进行默认主题设置"
 elif [[ -n "${Default_theme}" ]]; then
   export defaultt=CONFIG_PACKAGE_luci-theme-${Default_theme}=y
