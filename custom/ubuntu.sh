@@ -22,7 +22,7 @@ function ophub_amlogic-s9xxx(){
 # 安装我仓库需要的依赖
 ${INS} install -y rename pigz libfuse-dev
 # 安装打包N1需要用到的依赖
-${INS} install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
+# ${INS} install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
 }
 
 function update_apt_source(){
