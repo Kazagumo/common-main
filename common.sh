@@ -1033,19 +1033,19 @@ if [[ "${Disable_IPv6_option}" == "1" ]]; then
 fi
 
 if [[ "${Mandatory_theme}" == "0" ]] || [[ -z "${Mandatory_theme}" ]]; then
-  echo "不操作,替换bootstrap主题"
+  echo "不进行,替换bootstrap主题设置"
 elif [[ -n "${Mandatory_theme}" ]]; then
   echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
 fi
 
 if [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
-  echo "不操作,设置默认主题"
+  echo "不进行,默认主题设置"
 elif [[ -n "${Default_theme}" ]]; then
   echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
 fi
 
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
-  echo "不操作,设置个性签名"
+  echo "不进行,个性签名设置"
 elif [[ -n "${Customized_Information}" ]]; then
   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
   sed -i "s?OpenWrt ?${Customized_Information} @ OpenWrt ?g" "${ZZZ_PATH}"
@@ -1096,7 +1096,7 @@ elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
 fi
 
 if [[ "${Gateway_Settings}" == "0" ]] || [[ -z "${Gateway_Settings}" ]]; then
-  echo "不操作,设置网关"
+  echo "不进行,网关设置"
 elif [[ -n "${Gateway_Settings}" ]]; then
   Router_gat="$(echo ${Gateway_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${Router_gat}" ]]; then
@@ -1108,7 +1108,7 @@ elif [[ -n "${Gateway_Settings}" ]]; then
 fi
 
 if [[ "${DNS_Settings}" == "0" ]] || [[ -z "${DNS_Settings}" ]]; then
-  echo "不操作,设置DNS"
+  echo "设置,DNS设置"
 elif [[ -n "${DNS_Settings}" ]]; then
   ipa_dns="$(echo ${DNS_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${ipa_dns}" ]]; then
@@ -1120,7 +1120,7 @@ elif [[ -n "${DNS_Settings}" ]]; then
 fi
 
 if [[ "${Broadcast_Ipv4}" == "0" ]] || [[ -z "${Broadcast_Ipv4}" ]]; then
-  echo "不操作,设置广播IP"
+  echo "不进行,广播IP设置"
 elif [[ -n "${Broadcast_Ipv4}" ]]; then
   IPv4_Bro="$(echo ${Broadcast_Ipv4} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   if [[ -n "${IPv4_Bro}" ]]; then
@@ -1263,6 +1263,17 @@ CONFIG_IPV6=y
 CONFIG_PACKAGE_6rd=y
 CONFIG_PACKAGE_6to4=y
 ' >> ${HOME_PATH}/.config
+fi
+
+if [[ "${Disable_IPv6_option}" == "1" ]]; then
+sed -i '/CONFIG_PACKAGE_ipv6helper=y/d' "${HOME_PATH}/.config"
+sed -i '/CONFIG_PACKAGE_ip6tables=y/d' "${HOME_PATH}/.config"
+sed -i '/CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y/d' "${HOME_PATH}/.config"
+sed -i '/CONFIG_PACKAGE_odhcp6c=y/d' "${HOME_PATH}/.config"
+sed -i '/CONFIG_PACKAGE_odhcpd-ipv6only=y/d' "${HOME_PATH}/.config"
+sed -i '/CONFIG_IPV6=y/d' "${HOME_PATH}/.config"
+sed -i '/CONFIG_PACKAGE_6rd=y/d' "${HOME_PATH}/.config"
+sed -i '/CONFIG_PACKAGE_6to4=y/d' "${HOME_PATH}/.config"
 fi
 }
 
