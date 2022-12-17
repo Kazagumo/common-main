@@ -5,7 +5,7 @@
 
 function Delete_useless(){
 if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  echo "清理无用依赖,扩展空间"
+  echo "清理ubuntu无用插件,扩展空间"
   docker rmi `docker images -q`
   sudo -E apt-get -qq remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
 fi
