@@ -548,6 +548,9 @@ master)
 ;;
 esac
 
+rm -rf "${HOME_PATH}/feeds/other/lean/mt"
+svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/mt ${HOME_PATH}/feeds/other/lean/mt
+
 # 给源码增加passwall为默认自选
 if [[ `grep -c "luci-app-passwall luci-app-openclash" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall luci-app-openclash ?g' include/target.mk
