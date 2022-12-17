@@ -858,12 +858,6 @@ function Diy_Publicarea() {
 cd ${HOME_PATH}
 # diy-part.sh文件的延伸
 rm -rf ${HOME_PATH}/CHONGTU && touch ${HOME_PATH}/CHONGTU
-sed -i '/lan.gateway=/d' "${GENE_PATH}"
-sed -i '/lan.dns=/d' "${GENE_PATH}"
-sed -i '/lan.broadcast=/d' "${GENE_PATH}"
-sed -i '/lan.ignore=/d' "${GENE_PATH}"
-sed -i '/lan.type/d' "${GENE_PATH}"
-sed -i '/set ttyd/d' "${GENE_PATH}"
 lan="/set network.\$1.netmask/a"
 ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -v 'addr_offset' |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 netmas="$(grep "netmask:-" "${GENE_PATH}" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
