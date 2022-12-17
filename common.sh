@@ -469,6 +469,8 @@ else
   ./scripts/feeds clean
   ./scripts/feeds update -a > /dev/null 2>&1
 fi
+rm -rf feeds/packages/lang/golang
+svn export https://github.com/sbwml/packages_lang_golang/branches/19.x feeds/packages/lang/golang
 }
 
 
