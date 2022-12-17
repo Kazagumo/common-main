@@ -964,6 +964,7 @@ if [[ "${Enable_IPV6_function}" == "1" ]]; then
   echo "加入IPV6功能"
   Create_Ipv6_Lan="0"
   Disable_IPv6_option="0"
+  echo "Disable_IPv6_option=0" >> ${GITHUB_ENV}
   echo "Enable_IPV6_function=1" >> ${GITHUB_ENV}
   echo "
     uci set network.lan.ip6assign='64'
@@ -1012,6 +1013,7 @@ if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
 fi
 
 if [[ "${Disable_IPv6_option}" == "1" ]]; then
+  echo "Disable_IPv6_option=1" >> ${GITHUB_ENV}
   echo "关闭固件里面所有IPv6选项和IPv6的DNS解析记录"
   echo "
     uci delete network.globals.ula_prefix
