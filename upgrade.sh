@@ -84,7 +84,7 @@ function Diy_Part2() {
 	esac
 	
 	if [[ -f "$FILES_PATH/usr/bin/AutoUpdate" ]]; then
-	  export AutoUpdate_Version=$(grep -Eo "Version=V[0-9]+\.[0-9]+" "$FILES_PATH/usr/bin/AutoUpdate" |grep -Eo [0-9]+\.[0-9]+)
+	  export AutoUpdate_Version=$(grep -Eo "Version=V[0-9.]+" "$FILES_PATH/usr/bin/AutoUpdate" |grep -Eo [0-9.]+)
 	else
 	  export AutoUpdate_Version="7.1"
 	fi
