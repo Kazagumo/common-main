@@ -1559,7 +1559,7 @@ else
 fi
 
 cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
-echo "${cpu_model}"
+TIME y "正在使用CPU型号：${cpu_model}"
 
 if [[ -n "${CPU_SELECTIOY}" ]]; then
   CPU_OPTIMIZATION="${CPU_SELECTIOY}"
@@ -1571,7 +1571,7 @@ E5|弃用E5系列|弃用E5)
     export chonglaixx="E5-重新编译"
     export Continue_selecting="1"
   else
-    echo " 恭喜,不是E5系列的CPU啦"
+    TIME g " 恭喜,不是E5系列的CPU啦"
     export Continue_selecting="0"
   fi
 ;;
@@ -1580,7 +1580,7 @@ E5|弃用E5系列|弃用E5)
     export chonglaixx="非${CPU_OPTIMIZATION}-重新编译"
     export Continue_selecting="1"
   else
-    echo " 恭喜,正是您想要的${CPU_OPTIMIZATION}CPU"
+    TIME g " 恭喜,正是您想要的${CPU_OPTIMIZATION}CPU"
     export Continue_selecting="0"
   fi
 ;;
