@@ -1155,7 +1155,7 @@ fi
 
 if [[ "${Password_free_login}" == "1" ]]; then
    sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
-   echo "固件免密登录完成"
+   echo "固件免密登录设置完成"
 fi
 
 if [[ "${Disable_53_redirection}" == "1" ]]; then
