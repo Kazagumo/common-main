@@ -1,14 +1,9 @@
 name: API
 on:
   workflow_dispatch:
-    inputs:
-      again-fork:
-        description: '[fork-actions]改成[fork],再按[Run workflow]按钮启动,开启同步上游仓库'
-        required: false
-        default: 'fork'
         
   schedule:
-   - cron: 35 4 * * *
+   - cron: 00 * * * *
 
 env:
   TZ: Asia/Shanghai
@@ -31,7 +26,6 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         
     - name: API
-      if: steps.regular.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' && env.REPO_TOKEN
       run: |
         mkdir -p Github_Api
         cd Github_Api
