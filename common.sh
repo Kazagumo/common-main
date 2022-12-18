@@ -921,8 +921,10 @@ if [[ -d "${HOME_PATH}/package/luci-app-openclash" ]]; then
 fi
 if [[ "${HOUR}" -lt "12" ]]; then
   clashgs="1"
+  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
 else
   clashgs="0"
+  echo "OpenClash_Core=${OpenClash_Core}" >> ${GITHUB_ENV}
 fi
 if [[ -f "${jiance_clash}" ]]; then
   clash_branch="$(cat ${jiance_clash})"
