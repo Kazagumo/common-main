@@ -22,58 +22,76 @@ function Diy_Part1() {
 function Diy_Part2() {
 	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
 	export In_Firmware_Replace="$FILES_PATH/etc/openwrt_replace"
-	export Github_Release="${GITHUB_LINK}/releases/tag/${TARGET_BOARD}"
-	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
 	export Github_API1="https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${TARGET_BOARD}"
 	export Github_API2="https://ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
 	export API_PATH="/tmp/Downloads/zzz_api"
 	export Release_download1="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
 	export Release_download2="https://ghproxy.com/${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
-	export LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
-	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
+	export Github_Release="${GITHUB_LINK}/releases/tag/${TARGET_BOARD}"
 	
+	export TARGET_PROFILE_ER="${TARGET_PROFILE}"
+	
+	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
+		export TARGET_PROFILE_ER="phicomm-k3"
+	fi
+	if [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+		export TARGET_PROFILE_ER="phicomm-k2p"
+	fi
+	if [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3g_v2) ]]; then
+		export TARGET_PROFILE_ER="xiaomi_mir3g-v2"
+	fi
+	if [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
+		export TARGET_PROFILE_ER="xiaomi_mir3g"
+	fi
+	if [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
+		export TARGET_PROFILE_ER="xiaomi_mir3p"
+	fi
 	
 	case "${TARGET_BOARD}" in
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
 		export Firmware_SFX=".bin"
-		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}-sysupgrade"
 	;;
 	x86)
 		export Firmware_SFX=".img.gz"
-		export AutoBuild_Uefi="${LUCI_EDITION}-${Openwrt_Version}-uefi"
-		export AutoBuild_Legacy="${LUCI_EDITION}-${Openwrt_Version}-legacy"
+		export AutoBuild_Uefi="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}-uefi"
+		export AutoBuild_Legacy="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}-legacy"
 	;;
 	rockchip | bcm27xx | mxs | sunxi | zynq)
 		export Firmware_SFX=".img.gz"
-		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}-sysupgrade"
 	;;
 	mvebu)
 		case "${TARGET_SUBTARGET}" in
 		cortexa53 | cortexa72)
 			export Firmware_SFX=".img.gz"
-			export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+			export AutoBuild_Firmware="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}-sysupgrade"
 		;;
 		esac
 	;;
 	bcm53xx)
 		export Firmware_SFX=".trx"
-		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}-sysupgrade"
 	;;
 	octeon | oxnas | pistachio)
 		export Firmware_SFX=".tar"
-		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}-sysupgrade"
 	;;
 	*)
 		export Firmware_SFX=".bin"
-		export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}-sysupgrade"
+		export AutoBuild_Firmware="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}-sysupgrade"
 	;;
 	esac
 	
 	if [[ -f "$FILES_PATH/usr/bin/AutoUpdate" ]]; then
-	  export AutoUpdate_Version=$(egrep -o "Version=V[0-9]\.[0-9]" $FILES_PATH/usr/bin/AutoUpdate |cut -d "=" -f2 | sed 's/^.//g')
+	  export AutoUpdate_Version=$(grep "Version=" "/home/danshui/GITHUB_ENV" |grep -Eo [0-9]+\.[0-9]+)
 	else
 	  export AutoUpdate_Version="7.1"
 	fi
+	
+	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}"
+	export LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
+	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}"
 	
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
 	  echo "AutoBuild_Uefi=${AutoBuild_Uefi}" >> ${GITHUB_ENV}
