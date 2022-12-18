@@ -332,10 +332,6 @@ esac
 
 
 function Diy_Notice() {
-export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
-export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
-export RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
-export RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
 TIME r ""
 TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
 TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
@@ -1023,7 +1019,7 @@ fi
 
 if [[ "${Enable_IPV4_function}" == "1" ]]; then
   echo "Enable_IPV4_function=1" >> ${GITHUB_ENV}
-  echo "关闭固件里面所有IPv6选项和IPv6的DNS解析记录"
+  echo "编译IPV4固件"
   echo "
     uci delete network.globals.ula_prefix
     uci delete network.lan.ip6assign
@@ -1644,6 +1640,7 @@ fi
 function Diy_Publicarea2() {
 cd ${HOME_PATH}
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
+  echo "删除其他机型的固件,只保留当前主机型固件完成"
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
 fi
 
