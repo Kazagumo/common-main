@@ -158,7 +158,7 @@ menu2() {
   ECHOY " 2. 清空密码(qing kong mi ma)"
   ECHOYY " 3. 重启系统(chong qi xi tong)"
   ECHOY " 4. 恢复出厂设置(hui fu chu chang she zhi)"
-  ECHOYY " 5. 退出菜单(tui chu)"
+  ECHOYY " 5. 退出(tui chu)"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -186,7 +186,7 @@ menu2() {
     break
     ;;
     *)
-      XUANZHEOP="请输入正确的数字编号!"
+      XUANZHEOP="请输入正确的数字编号"
     ;;
     esac
     done
@@ -201,7 +201,7 @@ menu() {
   ECHOY " 3. 清空密码(qing kong mi ma)"
   ECHOYY " 4. 重启系统(chong qi xi tong)"
   ECHOY " 5. 恢复出厂设置(hui fu chu chang she zhi)"
-  ECHOYY " 6. 退出菜单(tui chu)"
+  ECHOYY " 6. 退出(tui chu)"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -233,7 +233,7 @@ menu() {
     break
     ;;
     *)
-      XUANZHEOP="请输入正确的数字编号!"
+      XUANZHEOP="请输入正确的数字编号"
     ;;
     esac
     done
