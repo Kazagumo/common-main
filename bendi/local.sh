@@ -715,7 +715,7 @@ function Bendi_Packaging() {
         judge "打包程序下载1"
         wget -q --no-check-certificate https://api.github.com/repos/ophub/kernel/contents/pub/stable -O amlogic/stable.api
         if [[ $? -ne 0 ]]; then
-          curl -fsSL https://api.github.com/repos/ophub/kernel/contents/pub/stable > amlogic/stable.api
+          curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o amlogic/stable.api
         fi
         if [[ `grep -c "name" amlogic/stable.api` -eq '0' ]]; then
           print_error "上游仓库amlogic内核版本API下载失败!"
