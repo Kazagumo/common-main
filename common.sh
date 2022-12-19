@@ -1897,6 +1897,25 @@ Diy_organize
 }
 
 
+function Diy_tg_push() {
+        if [[ "${INFORMATION_NOTICE}" == "TG" ]]; then
+          if [[ "${gitpushs}" == 'success' ]] && [[ "${compiles}" == 'success' ]]; then
+            curl -k --data chat_id="${TELEGRAM_CHAT_ID}" --data "text=🎉 主人💕：您的编译脚本成功触发【${FOLDER_NAME}】文件夹编译【${TARGET_PROFILE}】固件中,请耐心等待...... 😋(${Tongzhi_Date})" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
+          else
+            curl -k --data chat_id="${TELEGRAM_CHAT_ID}" --data "text=💥主人❌ ：上游扩展错误或者脚本错误,触发启动【${FOLDER_NAME}】失败,请点击触发脚本步骤查看详情!(${Tongzhi_Date})" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
+            exit 1
+          fi
+        fi
+        if [[ "${INFORMATION_NOTICE}" == "PUSH" ]]; then
+          if [[ "${gitpushs}" == 'success' ]] && [[ "${compiles}" == 'success' ]]; then
+            curl -k --data token="${PUSH_PLUS_TOKEN}" --data title="开始编译【${FOLDER_NAME}】" --data "content=🎉 主人💕：您的编译脚本成功触发【${FOLDER_NAME}】文件夹编译【${TARGET_PROFILE}】固件中,请耐心等待...... 😋(${Tongzhi_Date})" "http://www.pushplus.plus/send"
+          else
+            curl -k --data token="${PUSH_PLUS_TOKEN}" --data title="触发启动失败" --data "content=💥主人❌ ：上游扩展错误或者脚本错误,触发启动【${FOLDER_NAME}】失败,请点击触发脚本步骤查看详情!(${Tongzhi_Date})" "http://www.pushplus.plus/send"
+            exit 1
+          fi
+        fi
+}
+
 function Diy_xinxi() {
 Plug_in="$(grep 'CONFIG_PACKAGE_luci-app' ${HOME_PATH}/.config && grep 'CONFIG_PACKAGE_luci-theme' ${HOME_PATH}/.config)"
 Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/=m/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
