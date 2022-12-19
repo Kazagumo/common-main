@@ -1914,6 +1914,31 @@ if [[ "${INFORMATION_NOTICE}" == "PUSH" ]]; then
 fi
 }
 
+function Diy_compiles() {
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
+          if [[ "${compiles}" == 'failure' ]]; then
+            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的❌主人❌：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)编译失败😴！(${{env.Tongzhi_Date}})" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+          elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'success' ]]; then
+            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的✨主人✈️：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)顺利编译成功,发布云端在线更新使用的固件成功!🎈(${{env.Tongzhi_Date}})" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+          elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'skipped' ]]; then
+            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件💐(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)顺利编译完成了✌️💯！(${{env.Tongzhi_Date}})" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+          elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'failure' ]]; then  
+            curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=我亲爱的✨主人❌：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)顺利编译成功✌️,💥但是发布云端在线更新使用的固件失败了💥！(${{env.Tongzhi_Date}})" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
+          fi
+        fi
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
+          if [[ "${compiles}" == 'failure' ]]; then
+            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]编译失败" --data "content=我亲爱的❌主人❌：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)编译失败😴！(${{env.Tongzhi_Date}})" "http://www.pushplus.plus/send"
+          elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'success' ]]; then
+            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]编译成功,发布成功" --data "content=我亲爱的✨主人✈️：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)顺利编译成功,发布云端在线更新使用的固件成功！🎈(${{env.Tongzhi_Date}})" "http://www.pushplus.plus/send"
+          elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'skipped' ]]; then
+            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]编译成功" --data "content=我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件💐(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)顺利编译完成了✌️💯！(${{env.Tongzhi_Date}})" "http://www.pushplus.plus/send"
+          elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'failure' ]]; then
+            curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]编译成功,发布失败" --data "content=我亲爱的✨主人❌：您使用【${{matrix.target}}】文件夹编译的[${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}]固件(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)顺利编译成功✌️,💥但是发布云端在线更新使用的固件失败了💥！(${{env.Tongzhi_Date}})" "http://www.pushplus.plus/send"
+          fi
+        fi
+}
+
 function Diy_xinxi() {
 Plug_in="$(grep 'CONFIG_PACKAGE_luci-app' ${HOME_PATH}/.config && grep 'CONFIG_PACKAGE_luci-theme' ${HOME_PATH}/.config)"
 Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/=m/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
