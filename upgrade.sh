@@ -29,22 +29,18 @@ function Diy_Part2() {
 	export Release_download2="https://ghproxy.com/${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
 	export Github_Release="${GITHUB_LINK}/releases/tag/${TARGET_BOARD}"
 	
-	export TARGET_PROFILE_ER="${TARGET_PROFILE}"
-	
 	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 		export TARGET_PROFILE_ER="phicomm-k3"
-	fi
-	if [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+	elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
 		export TARGET_PROFILE_ER="phicomm-k2p"
-	fi
-	if [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3g_v2) ]]; then
+	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3g_v2) ]]; then
 		export TARGET_PROFILE_ER="xiaomi_mir3g-v2"
-	fi
-	if [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
+	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
 		export TARGET_PROFILE_ER="xiaomi_mir3g"
-	fi
-	if [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
+	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
 		export TARGET_PROFILE_ER="xiaomi_mir3p"
+	else
+		export TARGET_PROFILE_ER="${TARGET_PROFILE}"
 	fi
 	
 	case "${TARGET_BOARD}" in
@@ -111,7 +107,7 @@ GITHUB_LINK=${GITHUB_LINK}
 CURRENT_Version=${Openwrt_Version}
 SOURCE="${SOURCE}"
 LUCI_EDITION="${LUCI_EDITION}"
-DEFAULT_Device="${TARGET_PROFILE}"
+DEFAULT_Device="${TARGET_PROFILE_ER}"
 Firmware_SFX="${Firmware_SFX}"
 TARGET_BOARD="${TARGET_BOARD}"
 CLOUD_CHAZHAO="${CLOUD_CHAZHAO}"
@@ -132,7 +128,7 @@ GITHUB_LINK=${GITHUB_LINK}
 CURRENT_Version=${Openwrt_Version}
 SOURCE="${SOURCE}"
 LUCI_EDITION="${LUCI_EDITION}"
-DEFAULT_Device="${TARGET_PROFILE}"
+DEFAULT_Device="${TARGET_PROFILE_ER}"
 Firmware_SFX="${Firmware_SFX}"
 TARGET_BOARD="${TARGET_BOARD}"
 CLOUD_CHAZHAO="${CLOUD_CHAZHAO}"
