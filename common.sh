@@ -1193,6 +1193,8 @@ AMLOGIC)
   else
     echo "rootfs_size=960" >> ${GITHUB_ENV}
   fi
+  echo "kernel_repo=https://github.com/ophub/kernel/tree/main/pub" >> ${GITHUB_ENV}
+  echo "gh_token=${REPO_TOKEN}" >> ${GITHUB_ENV}
 ;;
 esac
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
