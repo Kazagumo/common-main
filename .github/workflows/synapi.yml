@@ -31,11 +31,11 @@ jobs:
         cd Github_Api
         curl -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" https://api.github.com/repos/ophub/kernel/contents/pub/stable -o stable.api
         if [[ $? -ne 0 ]]; then
-          curl -fsSL https://api.github.com/repos/ophub/kernel/contents/pub/stable -O stable.api
+          curl -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" https://api.github.com/repos/ophub/kernel/contents/pub/stable > stable.api
         fi
-        wget -q --no-check-certificate https://api.github.com/repos/vernesong/OpenClash/contents/core-lateset/premium -O premium.api
+        curl -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" https://api.github.com/repos/vernesong/OpenClash/contents/core-lateset/premium -o premium.api
         if [[ $? -ne 0 ]]; then
-          curl -fsSL https://api.github.com/repos/vernesong/OpenClash/contents/core-lateset/premium -o premium.api
+          curl -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" https://api.github.com/repos/vernesong/OpenClash/contents/core-lateset/premium > premium.api
         fi
         
     - name: API
