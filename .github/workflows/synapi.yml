@@ -29,7 +29,7 @@ jobs:
       run: |
         mkdir -p Github_Api
         cd Github_Api
-        curl -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" https://api.github.com/repos/ophub/kernel/contents/pub/stable
+        curl -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" https://api.github.com/repos/ophub/kernel/contents/pub/stable > stable.api
         if [[ $? -ne 0 ]]; then
           curl -fsSL https://api.github.com/repos/ophub/kernel/contents/pub/stable -O stable.api
         fi
