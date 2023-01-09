@@ -38,6 +38,10 @@ jobs:
         if [[ $? -ne 0 ]]; then
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/core-lateset/premium > premium.api
         fi
+        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/tmate-io/tmate/releases/latest -o tmate.api
+        if [[ $? -ne 0 ]]; then
+          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/tmate-io/tmate/releases/latest > tmate.api
+        fi
         
     - name: API
       uses: ncipollo/release-action@main
