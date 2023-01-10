@@ -80,9 +80,9 @@ function Diy_Part2() {
 	esac
 	
 	if [[ -f "$FILES_PATH/usr/bin/AutoUpdate" ]]; then
-	  export AutoUpdate_Version=$(grep -Eo "Version=V[0-9.]+" "$FILES_PATH/usr/bin/AutoUpdate" |grep -Eo [0-9.]+)
+		export AutoUpdate_Version=$(grep -Eo "Version=V[0-9.]+" "$FILES_PATH/usr/bin/AutoUpdate" |grep -Eo [0-9.]+)
 	else
-	  export AutoUpdate_Version="7.1"
+		export AutoUpdate_Version="7.1"
 	fi
 	
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}"
@@ -90,10 +90,10 @@ function Diy_Part2() {
 	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}"
 	
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
-	  echo "AutoBuild_Uefi=${AutoBuild_Uefi}" >> ${GITHUB_ENV}
-	  echo "AutoBuild_Legacy=${AutoBuild_Legacy}" >> ${GITHUB_ENV}
+		echo "AutoBuild_Uefi=${AutoBuild_Uefi}" >> ${GITHUB_ENV}
+		echo "AutoBuild_Legacy=${AutoBuild_Legacy}" >> ${GITHUB_ENV}
 	else
-	  echo "AutoBuild_Firmware=${AutoBuild_Firmware}" >> ${GITHUB_ENV}
+		echo "AutoBuild_Firmware=${AutoBuild_Firmware}" >> ${GITHUB_ENV}
 	fi
 	
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
