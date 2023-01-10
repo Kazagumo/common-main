@@ -1735,8 +1735,8 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ "${OpenClash_Core}" == "1" ]] && [[ `grep
   if [[ "${Archclash}" == "linux-amd64" ]]; then
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/meta/clash-${Archclash}.tar.gz -O meta.tar.gz
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/master/core-lateset/dev/clash-${Archclash}.tar.gz -O clash.tar.gz
-    curl -fsSL https://api.github.com/repos/vernesong/OpenClash/contents/core-lateset/premium -o premium.api
-    if [[ $? -ne 0 ]];then
+    curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/core-lateset/premium -o premium.api
+    if [[ `grep -c "name" premium.api` -eq '0' ]]; then
       wget -q https://github.com/281677160/common-main/releases/download/API/premium.api -O premium.api
     fi
     amd64_kernel="$(grep -Eo "clash-${Archclash}-.*.gz" premium.api |grep -v 'v3' |awk 'NR==1')"
