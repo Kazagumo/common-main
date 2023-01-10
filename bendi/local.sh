@@ -723,6 +723,18 @@ function Bendi_Packaging() {
         fi
       fi
     fi
+  else
+    ECHOY "正在下载打包所需的程序,请耐心等候~~~"
+    git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
+    judge "打包程序下载1"
+    curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o amlogic/stable.api
+    if [[ $? -ne 0 ]]; then
+      curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o amlogic/stable.api
+    fi
+    if [[ `grep -c "name" amlogic/stable.api` -eq '0' ]]; then
+      print_error "上游仓库amlogic内核版本API下载失败!"
+      exit 1
+    fi
   fi
   if [[ ! -d "${FIRMWARE_PATH}" ]] || [[ `ls -1 "${FIRMWARE_PATH}" |grep -Eoc "*armvirt-64-default-rootfs.tar.gz"` -eq '0' ]]; then
     mkdir -p "${FIRMWARE_PATH}"
