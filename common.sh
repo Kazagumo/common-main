@@ -511,6 +511,7 @@ case "${REPO_BRANCH}" in
 master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/master/boots > ${HOME_PATH}/feeds/packages/libs/boost/Makefile
 
 ;;
 21.02)
