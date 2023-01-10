@@ -739,8 +739,8 @@ function Bendi_Packaging() {
   START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
   t1=`date -d "$START_TIME" +%s`
   echo "${t1}" >amlogic/start_time
-  amkernel="$(cat amlogic/kernelpub |awk 'END {print}' |sed s/[[:space:]]//g)"
-  kernel_repo=https://github.com/ophub/kernel/tree/main/pub
+  export amkernel="$(cat amlogic/kernelpub |awk 'END {print}' |sed s/[[:space:]]//g)"
+  export kernel_repo=https://github.com/ophub/kernel/tree/main/pub
   rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,*README*,LICENSE}
   [ ! -d amlogic/openwrt-armvirt ] && mkdir -p amlogic/openwrt-armvirt
   
@@ -764,10 +764,10 @@ function Bendi_Packaging() {
   read -p "${YUMINGIP}：" auto_kernel
   case $auto_kernel in
   [Yy])
-    auto_kernel="true"
+    export auto_kernel="true"
   ;;
   *)
-    auto_kernel="false"
+    export auto_kernel="false"
   ;;
   esac
   export auto_kernel=${auto_kernel}
