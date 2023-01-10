@@ -713,7 +713,7 @@ function Bendi_Packaging() {
         ECHOY "正在下载打包所需的程序,请耐心等候~~~"
         git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
         judge "打包程序下载1"
-        wget -q --no-check-certificate https://api.github.com/repos/ophub/kernel/contents/pub/stable -O amlogic/stable.api
+        curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o amlogic/stable.api
         if [[ $? -ne 0 ]]; then
           curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o amlogic/stable.api
         fi
@@ -740,6 +740,7 @@ function Bendi_Packaging() {
   t1=`date -d "$START_TIME" +%s`
   echo "${t1}" >amlogic/start_time
   amkernel="$(cat amlogic/kernelpub |awk 'END {print}' |sed s/[[:space:]]//g)"
+  kernel_repo=https://github.com/ophub/kernel/tree/main/pub
   rm -rf ${GITHUB_WORKSPACE}/amlogic/{router-config,*README*,LICENSE}
   [ ! -d amlogic/openwrt-armvirt ] && mkdir -p amlogic/openwrt-armvirt
   
