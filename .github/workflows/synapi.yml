@@ -51,3 +51,11 @@ jobs:
         token: ${{ secrets.REPO_TOKEN }}
         artifacts: "Github_Api/*"
         allowUpdates: true
+        
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        token: ${{ secrets.REPO_TOKEN }}
+        repository: ${{ github.repository }}       
+        retain_days: 0.1
+        keep_minimum_runs: 0
