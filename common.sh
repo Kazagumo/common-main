@@ -1252,7 +1252,10 @@ elif [[ -n "${Mandatory_theme}" ]]; then
   collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
   yhtheme="luci-theme-${Mandatory_theme}"
-  if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
+  if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
+    sed -i "s?LUCI_DEPENDS:=?LUCI_DEPENDS:= +${yhtheme}?g" "${collections}"
+    echo "必选主题修改完成，必选主题为：${yhtheme}"
+  elif [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
     sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
     echo "必选主题修改完成，必选主题为：${yhtheme}"
   else
