@@ -1903,49 +1903,6 @@ Diy_organize
 }
 
 
-function Diy_trigger() {
-if [[ "${INFORMATION_NOTICE}" == "TG" ]]; then
-  if [[ "${gitpushs}" == 'success' ]] && [[ "${compiles}" == 'success' ]]; then
-    curl -k --data chat_id="${TELEGRAM_CHAT_ID}" --data "text=🎉 主人💕：您的编译脚本成功触发【${FOLDER_NAME}】文件夹编译【${TARGET_PROFILE}】固件中,请耐心等待...... 😋(${Tongzhi_Date})" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
-  else
-    curl -k --data chat_id="${TELEGRAM_CHAT_ID}" --data "text=💥主人❌ ：上游扩展错误或者脚本错误,触发启动【${FOLDER_NAME}】失败,请点击触发脚本步骤查看详情!(${Tongzhi_Date})" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
-  fi
-fi
-if [[ "${INFORMATION_NOTICE}" == "PUSH" ]]; then
-  if [[ "${gitpushs}" == 'success' ]] && [[ "${compiles}" == 'success' ]]; then
-    curl -k --data token="${PUSH_PLUS_TOKEN}" --data title="开始编译【${FOLDER_NAME}】" --data "content=🎉 主人💕：您的编译脚本成功触发【${FOLDER_NAME}】文件夹编译【${TARGET_PROFILE}】固件中,请耐心等待...... 😋(${Tongzhi_Date})" "http://www.pushplus.plus/send"
-  else
-    curl -k --data token="${PUSH_PLUS_TOKEN}" --data title="触发【${FOLDER_NAME}】启动失败" --data "content=💥主人❌ ：上游扩展错误或者脚本错误,触发启动【${FOLDER_NAME}】失败,请点击触发脚本步骤查看详情!(${Tongzhi_Date})" "http://www.pushplus.plus/send"
-  fi
-fi
-}
-
-function Diy_compiles() {
-if [[ "${INFORMATION_NOTICE}" == "TG" ]]; then
-  if [[ "${compiles}" == 'failure' ]]; then
-    curl -k --data chat_id="${TELEGRAM_CHAT_ID}" --data "text=我亲爱的❌主人❌：您使用【${FOLDER_NAME}】文件夹编译的[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]固件(${WAREHOUSE_MAN}仓库的#${RUN_NUMBER}号)编译失败😴！(${Tongzhi_Date})" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
-  elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'success' ]]; then
-    curl -k --data chat_id="${TELEGRAM_CHAT_ID}" --data "text=我亲爱的✨主人✈️：您使用【${FOLDER_NAME}】文件夹编译的[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]固件(${WAREHOUSE_MAN}仓库的#${RUN_NUMBER}号)顺利编译成功,发布云端在线更新使用的固件成功!🎈(${Tongzhi_Date})" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
-  elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'skipped' ]]; then
-    curl -k --data chat_id="${TELEGRAM_CHAT_ID}" --data "text=我亲爱的✨主人✨：您使用【${FOLDER_NAME}】文件夹编译的[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]固件💐(${WAREHOUSE_MAN}仓库的#${RUN_NUMBER}号)顺利编译完成了✌️💯！(${Tongzhi_Date})" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
-  elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'failure' ]]; then  
-    curl -k --data chat_id="${TELEGRAM_CHAT_ID}" --data "text=我亲爱的✨主人❌：您使用【${FOLDER_NAME}】文件夹编译的[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]固件(${WAREHOUSE_MAN}仓库的#${RUN_NUMBER}号)顺利编译成功✌️,💥但是发布云端在线更新使用的固件失败了💥！(${Tongzhi_Date})" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
-  fi
-fi
-
-if [[ "${INFORMATION_NOTICE}" == "PUSH" ]]; then
-  if [[ "${compiles}" == 'failure' ]]; then
-    curl -k --data token="${PUSH_PLUS_TOKEN}" --data title="[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]编译失败" --data "content=我亲爱的❌主人❌：您使用【${FOLDER_NAME}】文件夹编译的[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]固件(${WAREHOUSE_MAN}仓库的#${RUN_NUMBER}号)编译失败😴！(${Tongzhi_Date})" "http://www.pushplus.plus/send"
-  elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'success' ]]; then
-    curl -k --data token="${PUSH_PLUS_TOKEN}" --data title="[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]编译成功,发布成功" --data "content=我亲爱的✨主人✈️：您使用【${FOLDER_NAME}】文件夹编译的[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]固件(${WAREHOUSE_MAN}仓库的#${RUN_NUMBER}号)顺利编译成功,发布云端在线更新使用的固件成功！🎈(${Tongzhi_Date})" "http://www.pushplus.plus/send"
-  elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'skipped' ]]; then
-    curl -k --data token="${PUSH_PLUS_TOKEN}" --data title="[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]编译成功" --data "content=我亲爱的✨主人✨：您使用【${FOLDER_NAME}】文件夹编译的[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]固件💐(${WAREHOUSE_MAN}仓库的#${RUN_NUMBER}号)顺利编译完成了✌️💯！(${Tongzhi_Date})" "http://www.pushplus.plus/send"
-  elif [[ "${compiles}" == 'success' ]] && [[ "${regulars}" == 'failure' ]]; then
-    curl -k --data token="${PUSH_PLUS_TOKEN}" --data title="[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]编译成功,发布失败" --data "content=我亲爱的✨主人❌：您使用【${FOLDER_NAME}】文件夹编译的[${SOURCE}-${TARGET_PROFILE}-${LUCI_EDITION}]固件(${WAREHOUSE_MAN}仓库的#${RUN_NUMBER}号)顺利编译成功✌️,💥但是发布云端在线更新使用的固件失败了💥！(${Tongzhi_Date})" "http://www.pushplus.plus/send"
-  fi
-fi
-}
-
 function Diy_xinxi() {
 Plug_in="$(grep 'CONFIG_PACKAGE_luci-app' ${HOME_PATH}/.config && grep 'CONFIG_PACKAGE_luci-theme' ${HOME_PATH}/.config)"
 Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/=m/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
