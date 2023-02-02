@@ -125,7 +125,7 @@ if [[ `echo "${PATH}" |grep -ic "windows"` -ge '1' ]]; then
         ECHOG "配置已更新，请重启您的电脑"
         exit 0
       else
-        ECHO "无法完成操作，请再次尝试"
+        ECHOR "无法完成操作，请再次尝试"
         exit 1
       fi
     ;;
