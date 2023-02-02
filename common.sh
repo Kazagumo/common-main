@@ -888,15 +888,7 @@ else
 fi
 
 # openclash分支选择
-if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "0" ]]; then
-  [[ -f "${HOME_PATH}/files/etc/openclash/core/clash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core/clash
-  if [[ "${OpenClash_Core}" == "1" ]]; then
-    echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-    echo "TIME r \"因没开作者收集的插件包,没OpenClash插件,对openclash的分支选择无效\"" >> ${HOME_PATH}/CHONGTU
-  fi
-elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "1" ]]; then
   echo "OpenClash_Core=1" >> ${GITHUB_ENV}
-fi
 
 if [[ "${OpenClash_branch}" != "0" && "${OpenClash_branch}" != "dev" && "${OpenClash_branch}" != "master" ]]; then
   if [[ "${SOURCE_CODE}" =~ (OFFICIAL|Xwrt) ]]; then
