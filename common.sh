@@ -1721,7 +1721,7 @@ else
   weizhicpu="1"
 fi
 
-if [[ ! "${weizhicpu}" == "1" ]] && [[ "${OpenClash_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+if [[ ! "${weizhicpu}" == "1" ]] && [[ "${OpenClash_Core}" == "1" ]]; then
   echo "正在执行：给openclash下载核心"
   rm -rf ${HOME_PATH}/files/etc/openclash/core
   rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
