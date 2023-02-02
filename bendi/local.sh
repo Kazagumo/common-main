@@ -111,7 +111,7 @@ fi
 
 
 function Bendi_WslPath() {
-if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+if [[ `echo "${PATH}" |grep -ic "windows"` -ge '1' ]]; then
   if [[ ! "${WSL_ROUTEPATH}" == 'true' ]] && [[ ! "${MAKE_CONFIGURATION}" == "true" ]]; then
     clear
     echo
@@ -120,8 +120,14 @@ if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
     read -t 30 -p " [输入[Y/y]回车结束编译,按说明解决路径问题,任意键使用临时解决方式](不作处理,30秒后继续编译)： " Bendi_Wsl
     case ${Bendi_Wsl} in
     [Yy])
-      ECHOYY "请到 https://github.com/281677160/bendi 查看说明"
-      exit 0
+      bash <(curl -fsSL https://github.com/281677160/bendi/main/wsl.sh)
+      if [[ `sudo grep -c "appendWindowsPath = false" /etc/wsl.conf` == '1' ]]; then
+        ECHOG "配置已更新，请重启您的电脑"
+        exit 0
+      else
+        ECHO "无法完成操作，请再次尝试"
+        exit 1
+      fi
     ;;
     *)
       ECHOYY "正在使用临时路径解决编译问题！"
