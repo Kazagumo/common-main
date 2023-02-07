@@ -511,9 +511,6 @@ case "${REPO_BRANCH}" in
 master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-  # curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/master/boots > ${HOME_PATH}/feeds/packages/libs/boost/Makefile
-  # rm -rf ${HOME_PATH}/package/network/services/dnsmasq
-  # svn export https://github.com/coolsnowwolf/lede/trunk/package/network/services/dnsmasq ${HOME_PATH}/package/network/services/dnsmasq
 
 ;;
 21.02)
@@ -529,17 +526,6 @@ master)
     
   # Lienol大的19.07补丁
   sed -i 's?PATCHVER:=.*?PATCHVER:=4.14?g' target/linux/x86/Makefile
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-  rm -rf ${HOME_PATH}/feeds/packages/lang/golang && svn export https://github.com/coolsnowwolf/packages/trunk/lang/golang ${HOME_PATH}/feeds/packages/lang/golang
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
-  
-;;
-19.07-cannotuse)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-    
-  # Lienol大的19.07-cannotuse补丁
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang && svn export https://github.com/coolsnowwolf/packages/trunk/lang/golang ${HOME_PATH}/feeds/packages/lang/golang
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
