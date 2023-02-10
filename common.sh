@@ -1240,13 +1240,16 @@ if [[ "${Mandatory_theme}" == "0" ]]; then
   echo "不进行必选主题修改"
 elif [[ -n "${Mandatory_theme}" ]]; then
   collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+  luci_light="${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
   ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
   yhtheme="luci-theme-${Mandatory_theme}"
-  if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
-    sed -i "s?LUCI_DEPENDS:=?LUCI_DEPENDS:= +${yhtheme}?g" "${collections}"
-    echo "必选主题修改完成，必选主题为：${yhtheme}"
-  elif [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
-    sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
+  if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
+    if [[ `grep -Eoc "luci-theme" "${collections}"` -ge "1" ]]; then
+      sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
+    fi
+    if [[ `grep -Eoc "luci-theme" "${luci_light}"` -ge "1" ]]; then
+      sed -i "s/${ybtheme}/${yhtheme}/g" "${luci_light}"
+    fi
     echo "必选主题修改完成，必选主题为：${yhtheme}"
   else
     echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
