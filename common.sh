@@ -1481,18 +1481,6 @@ if [[ `grep -c "CONFIG_TARGET_mxs=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `gre
   fi
 fi
 
-if [[ `grep -c "CONFIG_TARGET_armvirt=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
-  export UPDATE_FIRMWARE_ONLINE="false"
-  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
-  echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${HOME_PATH}/.config"
-  PARTSIZE="$(grep -Eo "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
-  if [[ "${PARTSIZE}" -lt "600" ]];then
-    sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
-    echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=600" >> ${HOME_PATH}/.config
-  fi
-fi
-
 if [[ `grep -c "CONFIG_PACKAGE_odhcp6c=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   sed -i '/CONFIG_PACKAGE_odhcpd=y/d' "${HOME_PATH}/.config"
   sed -i '/CONFIG_PACKAGE_odhcpd_full_ext_cer_id=0/d' "${HOME_PATH}/.config"
