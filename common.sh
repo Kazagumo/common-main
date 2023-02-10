@@ -1245,11 +1245,10 @@ elif [[ -n "${Mandatory_theme}" ]]; then
   ybtheme2="$(grep -Eo "luci-theme-.*" "${luci_light}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
   yhtheme="luci-theme-${Mandatory_theme}"
   if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
-    if [[ `grep -Eoc "${ybtheme}" "${collections}" 2>&1` -eq "1" ]]; then
-      sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
-    fi
-    if [[ `grep -Eoc "${ybtheme2}" "${luci_light}" 2>&1` -eq "1" ]]; then
+    if [[ "${SOURCE_CODE}" == "XWRT" ]] && [[ "${REPO_BRANCH}" == "master" ]]; then
       sed -i "s/${ybtheme2}/${yhtheme}/g" "${luci_light}"
+    else
+      sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
     fi
     echo "必选主题修改完成，必选主题为：${yhtheme}"
   else
