@@ -473,7 +473,7 @@ cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（LEDE）
   for X in "${HOME_PATH}/feeds" "${HOME_PATH}/package"; do
-    find ${X} -type d -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-argon' -o -name 'luci-theme-argon-mod' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
     find ${X} -type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
     find ${X} -type d -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
