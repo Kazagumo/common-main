@@ -1500,6 +1500,12 @@ if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]];
     echo "" >> ${HOME_PATH}/CHONGTU
   fi
 fi
+
+if [[ `grep -c "CONFIG_PACKAGE_luci-app-alist=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  rm -rf feeds/packages/lang/golang
+  svn export https://github.com/sbwml/packages_lang_golang/branches/19.x feeds/packages/lang/golang
+fi
+
 cd ${HOME_PATH}
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
 ./scripts/diffconfig.sh > ${HOME_PATH}/build_logo/config.txt
