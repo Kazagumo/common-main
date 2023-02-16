@@ -479,7 +479,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
-    find ${X} -type d -name 'mac80211' -o -name 'acx-mac80211' | xargs -i rm -rf {}
+    find ${X} -type d -name 'mac80211' -o -name 'acx-mac80211' -o -name 'ath10k-ct-firmware' -o -name 'b43legacy-firmware' | xargs -i rm -rf {}
   done
 fi
 # 给固件LUCI做个标记
@@ -705,7 +705,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
-    find ${X} -type d -name 'mac80211' -o -name 'acx-mac80211' | xargs -i rm -rf {}
+    find ${X} -type d -name 'mac80211' -o -name 'acx-mac80211' -o -name 'ath10k-ct-firmware' -o -name 'b43legacy-firmware' | xargs -i rm -rf {}
   done
 fi
   
