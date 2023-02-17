@@ -1517,8 +1517,8 @@ if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]];
   fi
 fi
 
-if [[ `grep -c "CONFIG_PACKAGE_luci-app-alist=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  echo "您选择了luci-app-alist插件，正在执行替换golang版本，会不会对其他插件造成什么影响，未知..."
+if [[ `grep -c "CONFIG_PACKAGE_alist=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  echo "您选择了alist插件，正在执行替换golang版本，会不会对其他插件造成什么影响，未知..."
   rm -rf feeds/packages/lang/golang
   svn export https://github.com/sbwml/packages_lang_golang/branches/19.x feeds/packages/lang/golang
 fi
