@@ -479,7 +479,6 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
-    # find ${X} -type d -name 'mac80211' -o -name 'acx-mac80211' -o -name 'ath10k-ct-firmware' -o -name 'b43legacy-firmware' | xargs -i rm -rf {}
   done
 fi
 # 给固件LUCI做个标记
@@ -493,7 +492,8 @@ fi
 
 # 替换mac80211源码文件
 rm -rf package/kernel/{ath10k-ct,mac80211}
-rm -rf package/kernel/{ath10k-ct-firmware,b43legacy-firmware}
+rm -rf package/firmware/{ath10k-ct-firmware,b43legacy-firmware}
+svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/ath10k-ct package/kernel/ath10k-ct
 svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/acx-mac80211 package/kernel/acx-mac80211
 svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/mac80211 package/kernel/mac80211
 svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/firmware/ath10k-ct-firmware package/firmware/ath10k-ct-firmware
