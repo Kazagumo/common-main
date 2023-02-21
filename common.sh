@@ -491,9 +491,8 @@ if [[ `grep -c "luci-app-passwall luci-app-openclash" ${HOME_PATH}/include/targe
 fi
 
 # 替换mac80211源码文件
-rm -rf package/kernel/{ath10k-ct,mac80211}
+rm -rf package/kernel/mac80211
 rm -rf package/firmware/{ath10k-ct-firmware,b43legacy-firmware}
-svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/ath10k-ct package/kernel/ath10k-ct
 svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/acx-mac80211 package/kernel/acx-mac80211
 svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/mac80211 package/kernel/mac80211
 svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/firmware/ath10k-ct-firmware package/firmware/ath10k-ct-firmware
