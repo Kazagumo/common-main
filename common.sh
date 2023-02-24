@@ -523,6 +523,9 @@ case "${REPO_BRANCH}" in
 master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+  if [[ ! -d package/emortal/default-settings ]]; then
+    svn co https://github.com/immortalwrt/immortalwrt/trunk/package/emortal/default-settings package/emortal/default-settings
+  fi
 
 ;;
 21.02)
