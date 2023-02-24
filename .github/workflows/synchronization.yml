@@ -50,7 +50,7 @@ jobs:
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
       run: |
         cd $GITHUB_WORKSPACE
-        sed -i "s?Disable_IPv6_option?Enable_IPV4_function?g" shangyou/common.sh
+        rm -rf shangyou/IMMORTALWRT/default-settings
         chmod -R 775 $GITHUB_WORKSPACE/shangyou
         cd shangyou
         git add .
