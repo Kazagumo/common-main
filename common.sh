@@ -450,7 +450,6 @@ sed -i '/AdGuardHome/d' "${KEEPD_PATH}"
 sed -i '/background/d' "${KEEPD_PATH}"
 cat >>"${KEEPD_PATH}" <<-EOF
 /etc/config/AdGuardHome.yaml
-/etc/clashqidong
 /www/luci-static/argon/background/
 EOF
 }
@@ -1236,10 +1235,19 @@ cd ${HOME_PATH}
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
+
+if [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
+cat >> "${HOME_PATH}/.config" <<-EOF
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_default-settings-chn=y
+EOF
+sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
+else
 cat >> "${HOME_PATH}/.config" <<-EOF
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_default-settings=y
 EOF
+fi
 
 if [[ "${Mandatory_theme}" == "0" ]]; then
   echo "不进行必选主题修改"
