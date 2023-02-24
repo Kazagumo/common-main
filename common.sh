@@ -579,12 +579,6 @@ master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   find . -name 'default-settings' | xargs -i rm -rf {}
-  svn export https://github.com/281677160/common-main/trunk/IMMORTALWRT/default-settings  ${HOME_PATH}/package/emortal/default-settings > /dev/null 2>&1
-  if [[ `grep -c 'default-settings-chn' "${HOME_PATH}/include/target.mk"` -eq '1' ]]; then
-    sed -i 's?default-settings-chn?default-settings?g' "${HOME_PATH}/include/target.mk"
-  elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-    sed -i 's?DEFAULT_PACKAGES.router:=?DEFAULT_PACKAGES.router:=default-settings ?g' "${HOME_PATH}/include/target.mk"
-  fi
   
 if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
   sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
