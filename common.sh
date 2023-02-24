@@ -795,6 +795,7 @@ fi
 
 
 function Diy_chajianyuan() {
+echo "5"
 cd ${HOME_PATH}
 case "${COLLECTED_PACKAGES}" in
 true)
