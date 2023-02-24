@@ -523,9 +523,6 @@ case "${REPO_BRANCH}" in
 master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-  if [[ ! -d package/emortal/default-settings ]]; then
-    svn co https://github.com/immortalwrt/immortalwrt/trunk/package/emortal/default-settings package/emortal/default-settings
-  fi
 
 ;;
 21.02)
@@ -585,9 +582,13 @@ master)
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   find . -name 'default-settings' | xargs -i rm -rf {}
   
-if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
-  sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
-fi
+  if [[ ! -d package/emortal/default-settings ]]; then
+    svn co https://github.com/281677160/common-main/trunk/IMMORTALWRT/default-settings package/emortal/default-settings
+  fi
+  
+  if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
+    sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+  fi
 
 ;;
 openwrt-18.06)
