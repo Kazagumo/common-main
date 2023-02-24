@@ -418,6 +418,7 @@ git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 }
 
 function Diy_wenjian() {
+echo "1"
 cd ${HOME_PATH}
 # 拉取源码之后增加应用文件
 
@@ -456,6 +457,7 @@ EOF
 
 
 function Diy_clean() {
+echo "2"
 cd ${HOME_PATH}
 if [[ -n "${BENDI_VERSION}" ]]; then
   ./scripts/feeds clean
@@ -554,6 +556,7 @@ fi
 
 
 function Diy_IMMORTALWRT() {
+echo "3"
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（天灵）
@@ -731,6 +734,7 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/pack
 
 
 function Diy_distrib() {
+echo "4"
 cd ${HOME_PATH}
 ZZZ_PATH1="$(find ./package -type f -name "*default-settings" |grep files |cut -d '/' -f2-)"
 if [[ -n "${ZZZ_PATH1}" ]]; then
