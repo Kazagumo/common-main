@@ -72,7 +72,7 @@ judge() {
 }
 
 # 变量
-export BENDI_VERSION="2.0"
+export BENDI_VERSION="2.1"
 export GITHUB_WORKSPACE="$PWD"
 export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export OPERATES_PATH="${GITHUB_WORKSPACE}/operates"
@@ -291,13 +291,22 @@ BENDI_WENJIAN
 }
 
 function github_establish() {
-ECHOY "在operates文件夹里面创建机型文件夹"
-git clone https://github.com/281677160/autobuild chuang
-ls -1 chuang/build |awk '{print "  " $0}'
+ECHOY "在operates文件夹里面创建机型文件夹,正在下载上游源码,请稍后..."
+rm -rf chuang && git clone https://github.com/281677160/autobuild chuang > /dev/null 2>&1
+if [[ ! -d "chuang/build" ]]; then
+  rm -rf chuang && svn co https://github.com/281677160/autobuild/trunk/build chuang/build > /dev/null 2>&1
+  rm -rf chuang/build/.svn
+fi
+if [[ ! -d "chuang/build" ]]; then
+  ECHOR "上游源码下载失败,请检测网络"
+  exit 1
+else
+  ls -1 chuang/build |awk '{print "  " $0}'
+fi
 echo
 ECHOGG "请输入上面某一文件夹名称,为您要创建的机型文件夹当蓝本"
 while :; do
-read -p " 请输入：" aa
+read -p " 请输入源码文件夹名称：" aa
 if [[ -z "${aa}" ]]; then
   ECHOR "文件名不能为空"
 elif [[ ! -d "chuang/build/${aa}" ]]; then
@@ -311,11 +320,10 @@ fi
 done
 }
 function github_establish2() {
-rm -rf chuang
 echo
 ECHOGG "请输入您要创建的机型文件夹名称"
 while :; do
-read -p " 请输入：" bb
+read -p " 请输入创建文件名称：" bb
 if [[ -z "${bb}" ]]; then
   ECHOR "文件名不能为空"
 elif [[ -d "operates/${bb}" ]]; then
@@ -329,7 +337,8 @@ fi
 done
 }
 function github_establish3() {
-cp -Rf operates/"${aa}" operates/"${bb}"
+cp -Rf chuang/build/"${aa}" operates/"${bb}"
+rm -rf chuang
 ECHOY "[${bb}]文件夹创建完成"
 ECHOBB "10秒后返回主菜单"
 sleep 1
