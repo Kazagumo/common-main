@@ -30,6 +30,13 @@ for X in $(grep "\"XWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/setting
 for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
 for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
 
+for X in $(grep "\"COOLSNOWWOLF\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
+for X in $(grep "\"LIENOL\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
+for X in $(grep "\"IMMORTALWRT\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
+for X in $(grep "\"XWRT\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
+for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
+for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
+
 # 云仓库的修改文件
 case "${TONGBU_CANGKU}" in
 1)
@@ -43,7 +50,9 @@ case "${TONGBU_CANGKU}" in
     TARGE2="target: \\[${aa}\\]"
     yml_name2="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
+      echo "1"
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
+      echo "22"
     else
       rm -rf "${X}"
       echo
