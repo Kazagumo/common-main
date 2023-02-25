@@ -46,16 +46,11 @@ case "${TONGBU_CANGKU}" in
   
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak' |grep -v 'synchronise.yml' |grep -v 'compile.yml'); do
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
-    echo "${aa}"
     TARGE1="target: \\[.*\\]"
     TARGE2="target: \\[${aa}\\]"
     yml_name2="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
-      echo "1"
-      echo "${aa}"
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
-      echo "${SOURCE_CODE1}"
-      echo "22"
     else
       rm -rf "${X}"
       echo
