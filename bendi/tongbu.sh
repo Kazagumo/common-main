@@ -52,6 +52,7 @@ case "${TONGBU_CANGKU}" in
     yml_name2="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
       echo "1"
+      echo "${aa}"
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
       echo "${SOURCE_CODE1}"
       echo "22"
