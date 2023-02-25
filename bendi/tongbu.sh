@@ -142,7 +142,7 @@ fi
 aa="${inputs_establish_sample}"
 bb="${inputs_establish_name}"
 if [[ ! -d "repogx/build/${bb}" ]]; then
-  cp -Rf repogx/build/"${aa}" repogx/build/"${bb}"
+  cp -Rf shangyou/build/"${aa}" repogx/build/"${bb}"
   rm -rf repogx/build/${bb}/relevance/*.ini
   rm -rf repogx/build/${bb}/*.bak
   echo
