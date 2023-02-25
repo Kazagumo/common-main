@@ -52,6 +52,7 @@ case "${TONGBU_CANGKU}" in
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
       echo "1"
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
+      echo "${SOURCE_CODE1}"
       echo "22"
     else
       rm -rf "${X}"
