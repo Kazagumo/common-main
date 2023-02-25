@@ -13,7 +13,7 @@ sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /
 }
 
 function install_mustrelyon(){
-# 安装大雕列出的编译openwrt依赖
+# 安装天灵大佬的依赖
 sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
 }
 
@@ -21,7 +21,7 @@ function ophub_amlogic-s9xxx(){
 # 安装我仓库需要的依赖
 ${INS} install -y rename pigz libfuse-dev
 # 安装打包N1需要用到的依赖
-${INS} install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
+${INS} install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt) > /dev/null 2>&1
 }
 
 function update_apt_source(){
