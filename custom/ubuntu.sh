@@ -19,7 +19,7 @@ sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build
 
 function ophub_amlogic-s9xxx(){
 # 安装我仓库需要的依赖
-${INS} install -y rename pigz grub-efi-amd64-bin libfuse-dev
+${INS} install -y rename pigz
 # 安装打包N1需要用到的依赖
 ${INS} install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt) > /dev/null 2>&1
 }
