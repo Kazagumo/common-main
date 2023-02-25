@@ -141,7 +141,13 @@ if [[ ! -d "repogx" ]]; then
 fi
 aa="${inputs_establish_sample}"
 bb="${inputs_establish_name}"
-if [[ ! -d "repogx/build/${bb}" ]] && [[ ! ${aa}" == "请选择" ]]; then
+if [[ "${aa}" == "请选择" ]]; then
+  echo
+  echo -e "\033[31m 没选择源码,创建文件夹时请选择创建文件夹的源码 \033[0m"
+  echo
+  exit 1
+fi
+if [[ ! -d "repogx/build/${bb}" ]]; then
   cp -Rf shangyou/build/"${aa}" repogx/build/"${bb}"
   rm -rf repogx/build/${bb}/relevance/*.ini
   rm -rf repogx/build/${bb}/*.bak
