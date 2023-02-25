@@ -141,7 +141,7 @@ if [[ ! -d "repogx" ]]; then
 fi
 aa="${inputs_establish_sample}"
 bb="${inputs_establish_name}"
-if [[ ! -d "repogx/build/${bb}" ]]; then
+if [[ ! -d "repogx/build/${bb}" ]] && [[ ! ${aa}" == "请选择" ]]; then
   cp -Rf shangyou/build/"${aa}" repogx/build/"${bb}"
   rm -rf repogx/build/${bb}/relevance/*.ini
   rm -rf repogx/build/${bb}/*.bak
