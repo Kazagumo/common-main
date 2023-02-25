@@ -46,6 +46,7 @@ case "${TONGBU_CANGKU}" in
   
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak'); do
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
+    echo "${aa}"
     TARGE1="target: \\[.*\\]"
     TARGE2="target: \\[${aa}\\]"
     yml_name2="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
