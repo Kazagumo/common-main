@@ -4,6 +4,7 @@
 # Copyright (C) ImmortalWrt.org
 
 function Delete_useless(){
+sudo apt-get update -y
 if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "清理ubuntu无用插件,扩展空间"
   docker rmi `docker images -q`
@@ -13,17 +14,14 @@ sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /
 }
 
 function install_mustrelyon(){
+# 安装我仓库需要的依赖
+sudo apt-get install -y rename pigz
+
 # 安装天灵大佬的依赖
 sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
 }
 
 function ophub_amlogic-s9xxx(){
-# 安装我仓库需要的依赖
-sudo apt-get -y purge grub\*
-sudo apt-get -y install grub-efi
-sudo apt-get -y autoremove
-sudo update-grub
-${INS} install -y rename pigz
 # 安装打包N1需要用到的依赖
 ${INS} install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt) > /dev/null 2>&1
 }
