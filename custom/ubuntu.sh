@@ -5,10 +5,6 @@
 
 function Delete_useless(){
 sudo apt-get update -y
-sudo apt-get -y purge grub\*
-sudo apt-get -y install grub-efi
-sudo apt-get -y autoremove
-sudo update-grub
 if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
   echo "清理ubuntu无用插件,扩展空间"
   docker rmi `docker images -q`
