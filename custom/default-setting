@@ -24,6 +24,10 @@ if [[ `grep -c "passwall" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
   sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 fi
 
+if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
+  echo "export const revision = '112233', branch = '';" > "/usr/share/ucode/luci/version.uc"
+fi
+
 if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/crontabs/root` -eq '0' ]]; then
   rm -rf /etc/networkdetection
 fi
