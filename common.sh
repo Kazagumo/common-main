@@ -104,6 +104,7 @@ fi
 }
 
 function Diy_variable() {
+export DIY_PART_SH="diy-part.sh"
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
 elif [[ "${Manually_Run}" == "1" ]]; then
@@ -230,7 +231,7 @@ AMLOGIC)
 esac
 
 echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
-echo "DIY_PART_SH=diy-part.sh" >> ${GITHUB_ENV}
+echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
 echo "DIY_WORK=${DIY_WORK}" >> ${GITHUB_ENV}
 echo "PACKAGE_BRANCH=${PACKAGE_BRANCH}" >> ${GITHUB_ENV}
 echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
