@@ -525,6 +525,11 @@ master)
   if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
     sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   fi
+  
+  if [[ `grep -c 'luci-lib-ipkg' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+    sed -i 's?luci-compat?luci-compat luci-lib-ipkg ?g' "include/target.mk"
+  fi  
+  
   rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/autosamba ${HOME_PATH}/feeds/other/lean/autosamba
 
