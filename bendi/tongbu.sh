@@ -18,8 +18,6 @@ fi
 function tongbu_1() {
 # 删除上游的seed和备份diy-part.sh、settings.ini
 rm -rf shangyou/build/*/{diy,files,patches,seed}
-for X in $(find "shangyou" -name "diy-part.sh"); do sed -i "s?带次?带此?g" ${X}; done
-
 for X in $(find "operates" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
 for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
 
