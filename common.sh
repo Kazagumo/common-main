@@ -528,7 +528,7 @@ master)
   fi
   
   if [[ `grep -c 'luci-lib-ipkg' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-    sed -i 's?luci-compat?luci-compat luci-lib-ipkg ?g' "include/target.mk"
+    sed -i 's?luci-compat?luci-compat luci-lib-ipkg?g' "include/target.mk"
   fi  
   
   rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
