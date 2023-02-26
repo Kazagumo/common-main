@@ -3,7 +3,7 @@
 tee -a "${In_Firmware_Replace}" << EOF > /dev/null
 ledezx="18.06-Lede"
 lienolzx1="19.07-Lienol"
-lienolzx2="19.07-cannotuse-Lienol"
+lienolzx2="19.07-test-Lienol"
 lienolzx3="21.02-Lienol"
 lienolzx4="master-Lienol"
 immortalwrtzx1="18.06-Immortalwrt"
