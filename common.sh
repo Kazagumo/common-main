@@ -521,6 +521,9 @@ case "${REPO_BRANCH}" in
 master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+  if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
+    sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+  fi
 
 ;;
 21.02)
