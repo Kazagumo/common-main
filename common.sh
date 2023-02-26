@@ -140,7 +140,7 @@ LIENOL)
   export SOURCE="Lienol"
   export SOURCE_OWNER="Lienol's"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
-    export PACKAGE_BRANCH="19.07"
+    export PACKAGE_BRANCH="21.02"
     export LUCI_EDITION="master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
@@ -524,6 +524,8 @@ master)
   if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
     sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   fi
+  rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
+  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/autosamba ${HOME_PATH}/feeds/other/lean/autosamba
 
 ;;
 21.02)
