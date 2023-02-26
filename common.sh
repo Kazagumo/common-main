@@ -433,7 +433,7 @@ fi
 rm -rf "${FILES_PATH}/etc/init.d/Postapplication"
 cp ${HOME_PATH}/build/common/custom/Postapplication "${FILES_PATH}/etc/init.d/Postapplication"
 sudo chmod +x "${FILES_PATH}/etc/init.d/Postapplication"
-sed -i 's?112233?${SOURCE} - ${LUCI_EDITION}?g' "${FILES_PATH}/etc/init.d/Postapplication"
+sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${FILES_PATH}/etc/init.d/Postapplication"
 
 rm -rf "${FILES_PATH}/etc/networkdetection"
 cp ${HOME_PATH}/build/common/custom/networkdetection "${FILES_PATH}/etc/networkdetection"
