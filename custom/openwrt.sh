@@ -159,6 +159,10 @@ rm -rf /tmp/luci-indexcache
 /etc/init.d/network restart
 /etc/init.d/dnsmasq restart
 /etc/init.d/system restart
+if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
+  echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
+  /etc/init.d/cron restart
+fi
 }
 
 
