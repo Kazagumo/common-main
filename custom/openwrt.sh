@@ -152,7 +152,6 @@ function first_boot() {
 }
 
 function rm_init() {
-rm -rf /tmp/luci-*cache*
 rm -rf /tmp/luci-modulecache/
 rm -rf /tmp/luci-indexcache
 /etc/init.d/uhttpd restart
