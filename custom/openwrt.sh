@@ -252,7 +252,6 @@ else
     sed -i '/openwrt -r/d' "/etc/rc.local"
     sleep 10
     reboot
-    exit 0
   ;;
   esac
 fi
