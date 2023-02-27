@@ -16,6 +16,7 @@ GreenBG="\033[42;37m"
 RedBG="\033[41;37m"
 OK="${Green}[OK]${Font}"
 ERROR="${Red}[ERROR]${Font}"
+Input_Optio=$1
 
 function ECHOY() {
   echo
@@ -239,8 +240,16 @@ menu() {
     done
 }
 
-if [[ -f '/usr/bin/replace' ]]; then
-  menu "$@"
+if [[ -z "${Input_Optio}" ]]; then
+  if [[ -f '/usr/bin/replace' ]]; then
+    menu "$@"
+  else
+    menu2 "$@"
+  fi
 else
-  menu2 "$@"
+  case ${Input_Optio} in
+  -r)
+  reboot
+  ;;
+  esac
 fi
