@@ -249,7 +249,9 @@ if [[ -z "${Input_Optio}" ]]; then
 else
   case ${Input_Optio} in
   -r)
-  reboot
+    sed -i '/openwrt -r/d' "/etc/rc.local"
+    sleep 10
+    reboot
   ;;
   esac
 fi
