@@ -250,7 +250,6 @@ else
   case ${Input_Optio} in
   -r)
     sed -i '/openwrt -r/d' "/etc/rc.local"
-    sleep 10
     reboot
   ;;
   esac
