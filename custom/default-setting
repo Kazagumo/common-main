@@ -33,22 +33,12 @@ if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/cront
   rm -rf /etc/networkdetection
 fi
 
-sed -i '/rm -rf \/tmp\/luci/d' "/etc/rc.local"
+sed -i '/openwrt -e/d' "/etc/rc.local"
 sed -i '/openwrt -r/d' "/etc/rc.local"
-sed -i '/etc\/init.d\/uhttpd restart/d' "/etc/rc.local"
-sed -i '/etc\/init.d\/network restart/d' "/etc/rc.local"
-sed -i '/etc\/init.d\/dnsmasq restart/d' "/etc/rc.local"
-sed -i '/etc\/init.d\/system restart/d' "/etc/rc.local"
 sed -i '/exit 0/d' "/etc/rc.local"
 
 cat >>"/etc/rc.local" <<-EOF
-rm -rf /tmp/luci-*cache*
-rm -rf /tmp/luci-modulecache/
-rm -rf /tmp/luci-indexcache
-/etc/init.d/uhttpd restart
-/etc/init.d/network restart
-/etc/init.d/dnsmasq restart
-/etc/init.d/system restart
+openwrt -e
 openwrt -r
 exit 0
 EOF
