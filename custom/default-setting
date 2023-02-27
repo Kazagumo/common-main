@@ -39,6 +39,7 @@ sed -i '/etc\/init.d\/uhttpd restart/d' "/etc/rc.local"
 sed -i '/etc\/init.d\/network restart/d' "/etc/rc.local"
 sed -i '/etc\/init.d\/dnsmasq restart/d' "/etc/rc.local"
 sed -i '/etc\/init.d\/system restart/d' "/etc/rc.local"
+sed -i '/exit 0/d' "/etc/rc.local"
 
 cat >>"/etc/rc.local" <<-EOF
 rm -rf /tmp/luci-*cache*
@@ -49,6 +50,7 @@ rm -rf /tmp/luci-indexcache
 /etc/init.d/dnsmasq restart
 /etc/init.d/system restart
 openwrt -r
+exit 0
 EOF
 
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
