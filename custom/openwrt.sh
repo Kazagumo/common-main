@@ -151,6 +151,17 @@ function first_boot() {
   judge
 }
 
+function rm_init() {
+rm -rf /tmp/luci-*cache*
+rm -rf /tmp/luci-modulecache/
+rm -rf /tmp/luci-indexcache
+/etc/init.d/uhttpd restart
+/etc/init.d/network restart
+/etc/init.d/dnsmasq restart
+/etc/init.d/system restart
+}
+
+
 menu2() {
   clear
   echo  
@@ -251,6 +262,9 @@ else
   -r)
     sed -i '/openwrt -r/d' "/etc/rc.local"
     reboot
+  ;;
+  -e)
+    rm_init
   ;;
   esac
 fi
