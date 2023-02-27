@@ -14,14 +14,6 @@ run_zzz_default() {
 		echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
 		/etc/init.d/cron restart
 	fi
-	
-	rm -rf /tmp/luci-*cache*
-	rm -rf /tmp/luci-modulecache/
-	rm -f /tmp/luci-indexcache
-	/etc/init.d/uhttpd restart
-	/etc/init.d/network restart
-	/etc/init.d/dnsmasq restart
-	/etc/init.d/system restart
 }
 
 start() {
