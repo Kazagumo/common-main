@@ -35,12 +35,8 @@ fi
 
 sed -i '/openwrt -e/d' "/etc/rc.local"
 sed -i '/openwrt -r/d' "/etc/rc.local"
-sed -i '/exit 0/d' "/etc/rc.local"
-cat >>"/etc/rc.local" <<-EOF
-openwrt -e
-openwrt -r
-exit 0
-EOF
+sed -i "/exit 0/i\openwrt -e" "/etc/rc.local"
+sed -i "/exit 0/i\openwrt -r" "/etc/rc.local"
 
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
 if [[ -f '/etc/index.htm' ]] && [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"` -eq '1' ]]; then
