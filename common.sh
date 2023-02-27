@@ -1865,6 +1865,7 @@ sed -i '/#\!\/bin\//d' "${ZZZ_PATH}"
 sed -i '1i\#!/bin/sh' "${ZZZ_PATH}"
 sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
 sed -i '/exit 0/d' "${ZZZ_PATH}"
+echo "openwrt -r" >> "${ZZZ_PATH}"
 sed -i '$a\exit 0' "${ZZZ_PATH}" 
 
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
