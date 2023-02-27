@@ -762,6 +762,7 @@ ZZZ_PATH1="$(find ./package -type f -name "*default-settings" |grep files |cut -
 if [[ -n "${ZZZ_PATH1}" ]]; then
   ZZZ_PATH="${HOME_PATH}/${ZZZ_PATH1}"
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+  sed -i '/exit 0/d' "${ZZZ_PATH}"
 fi
 
 ttydjso="$(find ./ -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
@@ -790,7 +791,6 @@ fi
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
 sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
-sed -i '/exit 0/d' "${ZZZ_PATH}"
 
 if [[ "$(. ${FILES_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
 cat >> "${ZZZ_PATH}" <<-EOF
@@ -800,7 +800,6 @@ sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-exit 0
 EOF
 else
 cat >> "${ZZZ_PATH}" <<-EOF
@@ -810,7 +809,6 @@ sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciversion    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-exit 0
 EOF
 fi
 }
@@ -1859,12 +1857,10 @@ cd ${HOME_PATH}
 sed -i '/#\!\/bin\//d' "${DEFAULT_PATH}"
 sed -i '1i\#!/bin/sh' "${DEFAULT_PATH}"
 sed -i 's/^[ ]*//g' "${DEFAULT_PATH}"
-sed -i '/exit 0/d' "${DEFAULT_PATH}"
 sed -i '$a\exit 0' "${DEFAULT_PATH}"
 sed -i '/#\!\/bin\//d' "${ZZZ_PATH}"
 sed -i '1i\#!/bin/sh' "${ZZZ_PATH}"
 sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
-sed -i '/exit 0/d' "${ZZZ_PATH}"
 sed -i '$a\exit 0' "${ZZZ_PATH}" 
 
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
