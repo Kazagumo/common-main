@@ -528,6 +528,9 @@ master)
   
   rm -rf ${HOME_PATH}/feeds/packages/utils/antfs-mount
   svn co https://github.com/Lienol/openwrt-packages/trunk/utils/antfs-mount ${HOME_PATH}/feeds/packages/utils/antfs-mount
+  
+  rm -rf ${HOME_PATH}/feeds/packages/kernel/antfs
+  svn co https://github.com/Lienol/openwrt-packages/trunk/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
 
 ;;
 21.02)
