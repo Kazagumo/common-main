@@ -525,6 +525,9 @@ master)
   
   rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/autosamba ${HOME_PATH}/feeds/other/lean/autosamba
+  
+  rm -rf ${HOME_PATH}/feeds/packages/utils/antfs-mount
+  svn co https://github.com/Lienol/openwrt-packages/branches/21.02/utils/antfs-mount ${HOME_PATH}/feeds/packages/utils/antfs-mount
 
 ;;
 21.02)
