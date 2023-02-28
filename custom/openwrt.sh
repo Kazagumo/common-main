@@ -170,7 +170,9 @@ if [ -f "/etc/default-setting" ]; then
 fi
 sed -i '/openwrt -r/d' "/etc/init.d/Postapplication"
 sleep 2
-sed -i "/openwrt -r/d" /etc/init.d/Postapplication
+if [[ `grep -c "openwrt -r" /etc/init.d/Postapplication` -ge '1' ]]; then
+  sed -i "s?openwrt -r??g" "/etc/init.d/Postapplication"
+fi
 reboot
 }
 
