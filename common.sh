@@ -526,11 +526,14 @@ master)
   rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/autosamba ${HOME_PATH}/feeds/other/lean/autosamba
   
+  rm -rf ${HOME_PATH}/feeds/other/lean/automount
+  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount
+  
   rm -rf ${HOME_PATH}/feeds/packages/utils/antfs-mount
-  svn co https://github.com/Lienol/openwrt-packages/trunk/utils/antfs-mount ${HOME_PATH}/feeds/packages/utils/antfs-mount
+  svn co https://github.com/coolsnowwolf/packages/trunk/utils/antfs-mount ${HOME_PATH}/feeds/packages/utils/antfs-mount
   
   rm -rf ${HOME_PATH}/feeds/packages/kernel/antfs
-  svn co https://github.com/Lienol/openwrt-packages/trunk/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
+  svn co https://github.com/coolsnowwolf/packages/trunk/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
 
 ;;
 21.02)
