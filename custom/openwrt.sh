@@ -165,6 +165,9 @@ fi
 }
 
 function ks_reboot() {
+if [ -f "/etc/default-setting" ]; then
+  rm -rf /etc/default-setting
+fi
 sed -i '/openwrt -r/d' "/etc/init.d/Postapplication"
 sleep 2
 sed -i '/openwrt -r/d' "/etc/init.d/Postapplication"
