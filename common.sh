@@ -1223,7 +1223,7 @@ fi
 }
 
 
-function Diy_part_sh() {
+function Diy_shpart() {
 cd ${HOME_PATH}
 # 修正连接数
 if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
@@ -2101,7 +2101,7 @@ Diy_upgrade2
 
 function Diy_menu4() {
 Diy_files
-Diy_part_sh
+Diy_shpart
 Diy_Language
 Diy_feeds
 Diy_IPv6helper
