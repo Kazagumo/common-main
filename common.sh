@@ -1857,12 +1857,8 @@ fi
 
 function Diy_upgrade2() {
 cd ${HOME_PATH}
-sed -i '/#\!\/bin\//d' "${DEFAULT_PATH}"
-sed -i '1i\#!/bin/sh' "${DEFAULT_PATH}"
 sed -i 's/^[ ]*//g' "${DEFAULT_PATH}"
 sed -i '$a\exit 0' "${DEFAULT_PATH}"
-sed -i '/#\!\/bin\//d' "${ZZZ_PATH}"
-sed -i '1i\#!/bin/sh' "${ZZZ_PATH}"
 sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
 sed -i '$a\exit 0' "${ZZZ_PATH}" 
 
