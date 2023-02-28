@@ -164,6 +164,12 @@ if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
 fi
 }
 
+function ks_reboot() {
+sed -i '/openwrt -r/d' "/etc/init.d/Postapplication"
+sleep 2
+sed -i '/openwrt -r/d' "/etc/init.d/Postapplication"
+reboot
+}
 
 menu2() {
   clear
@@ -263,8 +269,7 @@ if [[ -z "${Input_Optio}" ]]; then
 else
   case ${Input_Optio} in
   -r)
-    sed -i '/openwrt -r/d' "/etc/init.d/Postapplication"
-    reboot
+    ks_reboot
   ;;
   -e)
     rm_init
