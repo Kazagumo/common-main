@@ -978,9 +978,10 @@ fi
 
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
-  echo "加入IPV6功能"
-  Create_Ipv6_Lan="0"
-  Enable_IPV4_function="0"
+  echo "固件加入IPV6功能"
+  echo "自动取消IPV4功能 和 爱快+OP双系统时,爱快接管IPV6功能"
+  export Create_Ipv6_Lan="0"
+  export Enable_IPV4_function="0"
   echo "Enable_IPV4_function=0" >> ${GITHUB_ENV}
   echo "Enable_IPV6_function=1" >> ${GITHUB_ENV}
   echo "
@@ -1031,7 +1032,9 @@ fi
 
 if [[ "${Enable_IPV4_function}" == "1" ]]; then
   echo "Enable_IPV4_function=1" >> ${GITHUB_ENV}
-  echo "编译IPV4固件"
+  echo "Enable_IPV6_function=0" >> ${GITHUB_ENV}
+  echo "Create_Ipv6_Lan=0" >> ${GITHUB_ENV}
+  echo "固件加入IPV4功能"
   echo "
     uci delete network.globals.ula_prefix
     uci delete network.lan.ip6assign
