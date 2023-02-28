@@ -10,9 +10,8 @@ run_zzz_default() {
                 rm -rf /etc/default-setting
 	fi
 	
-	if [[ `grep -c "openwrt -e" "/etc/rc.local"` -eq '0' ]]; then
-		sed -i "/exit 0/i\openwrt -e" "/etc/rc.local"
-	fi
+	openwrt -e
+	openwrt -r
 }
 
 start() {
