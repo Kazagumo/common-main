@@ -170,7 +170,7 @@ if [ -f "/etc/default-setting" ]; then
 fi
 sed -i '/openwrt -r/d' "/etc/init.d/Postapplication"
 sleep 2
-sed -i '/openwrt -r/d' "/etc/init.d/Postapplication"
+sed -i "/openwrt -r/d" /etc/init.d/Postapplication
 reboot
 }
 
