@@ -263,7 +263,7 @@ if [[ -z "${Input_Optio}" ]]; then
 else
   case ${Input_Optio} in
   -r)
-    sed -i '/openwrt -r/d' "/etc/rc.local"
+    sed -i '/openwrt -r/d' "/etc/init.d/Postapplication"
     reboot
   ;;
   -e)
