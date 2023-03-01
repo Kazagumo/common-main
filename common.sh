@@ -926,16 +926,14 @@ fi
 
 uci_openclash="0"
 sj_clash=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
-if [[ -d "${HOME_PATH}/package/luci-app-openclash" ]]; then
-  jian_clash="$(ls -1 ${HOME_PATH}/package/luci-app-openclash |grep -Eo sj_[0-9]+)"
-  jiance_clash="${HOME_PATH}/package/luci-app-openclash/${jian_clash}"
-  t1="$(echo "${jian_clash}" |grep -Eo [0-9]+)"
+if [[ -d "${HOME_PATH}/package/luci-app-openclash" ]] && [[ -f "${HOME_PATH}/package/luci-app-openclash/sj_clash" ]]; then
+  t1="$(cat ${HOME_PATH}/package/luci-app-openclash/sj_clash)"
   t2=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
   SECONDS=$((t2-t1))
   HOUR=$(( $SECONDS/3600 ))
 fi
 
-if [[ -n "${BENDI_VERSION}" ]]; then
+if [[ -n "${BENDI_VERSION}" ]] && [[ -f "${HOME_PATH}/package/luci-app-openclash/sj_clash" ]]; then
   if [[ "${HOUR}" -lt "12" ]]; then
     clashgs="1"
     echo "OpenClash_Core=0" >> ${GITHUB_ENV}
@@ -945,8 +943,8 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   fi
 fi
 
-if [[ -f "${jiance_clash}" ]]; then
-  clash_branch="$(cat ${jiance_clash})"
+if [[ -f "${HOME_PATH}/package/luci-app-openclash/sj_branch" ]]; then
+  clash_branch="$(cat sj_branch)"
 else
   clash_branch="clash_branch"
 fi
@@ -962,7 +960,8 @@ else
   if [[ $? -ne 0 ]]; then
     echo "luci-app-openclash下载失败"
   else
-    echo "${OpenClash_branch}" > "${HOME_PATH}/package/luci-app-openclash/sj_${sj_clash}"
+    echo "${OpenClash_branch}" > "${HOME_PATH}/package/luci-app-openclash/sj_branch"
+    echo "${${sj_clash}" > "${HOME_PATH}/package/luci-app-openclash/sj_clash"
     uci_openclash="1"
     echo "正在使用"${OpenClash_branch}"分支的openclash"
   fi
