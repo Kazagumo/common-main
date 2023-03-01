@@ -944,7 +944,7 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ -f "${HOME_PATH}/package/luci-app-openclash
 fi
 
 if [[ -f "${HOME_PATH}/package/luci-app-openclash/sj_branch" ]]; then
-  clash_branch="$(cat sj_branch)"
+  clash_branch="$(cat ${HOME_PATH}/package/luci-app-openclash/sj_branch)"
 else
   clash_branch="clash_branch"
 fi
@@ -961,7 +961,7 @@ else
     echo "luci-app-openclash下载失败"
   else
     echo "${OpenClash_branch}" > "${HOME_PATH}/package/luci-app-openclash/sj_branch"
-    echo "${${sj_clash}" > "${HOME_PATH}/package/luci-app-openclash/sj_clash"
+    echo "${sj_clash}" > "${HOME_PATH}/package/luci-app-openclash/sj_clash"
     uci_openclash="1"
     echo "正在使用"${OpenClash_branch}"分支的openclash"
   fi
