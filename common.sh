@@ -491,6 +491,8 @@ echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${R
 if [[ `grep -c "luci-app-passwall luci-app-openclash" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall luci-app-openclash ?g' include/target.mk
 fi
+
+svn co https://github.com/openwrt/packages/trunk/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
 }
 
 
@@ -533,7 +535,7 @@ master)
   svn co https://github.com/coolsnowwolf/packages/trunk/utils/antfs-mount ${HOME_PATH}/feeds/packages/utils/antfs-mount
   
   rm -rf ${HOME_PATH}/feeds/packages/kernel/antfs
-  svn co https://github.com/coolsnowwolf/packages/trunk/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
+  svn co https://github.com/openwrt/packages/trunk/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
 
 ;;
 21.02)
