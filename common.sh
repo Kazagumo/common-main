@@ -1939,7 +1939,7 @@ else
   done
 fi
 
-if [[ "${SOURCE_CODE}" != "AMLOGIC" ]]; then
+if [[ `ls -1 | grep -c "armvirt"` -eq '0' ]]; then
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
 sudo rm -rf "${CLEAR_PATH}"
