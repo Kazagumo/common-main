@@ -1928,14 +1928,15 @@ sudo tar -czf ipk.tar.gz ipk && sync && sudo rm -rf ipk
 if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
 fi
+if [[ `ls -1 | grep -c "generic"` -ge '1' ]]; then
+  rename -v "s/-generic-/-/" *
+fi
 for X in $(cat ${CLEAR_PATH} |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed "s/.*${TARGET_BOARD}//g" | cut -d '-' -f3-); do
    rm -rf *"$X"*
 done
 
-if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  rename -v "s/^openwrt/openwrt-amlogic/" *
-else
-  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}/" *
+if [[ "${SOURCE_CODE}" != "AMLOGIC" ]]; then
+  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
 sudo rm -rf "${CLEAR_PATH}"
 }
@@ -1969,6 +1970,8 @@ else
   export LINUX_KERNEL="$(grep "LINUX_KERNEL_HASH" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "${KERNEL_PATCH}\.[0-9]+")"
   [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
 fi
+
+echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 
 echo
 TIME b "编译源码: ${SOURCE}"
