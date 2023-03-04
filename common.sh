@@ -755,6 +755,8 @@ done
 echo "修改cpufreq和autocore一些代码适配amlogic"
 sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' ${HOME_PATH}/feeds/luci/applications/luci-app-cpufreq/Makefile
 sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/package/lean/autocore/Makefile
+
+svn co https://github.com/openwrt/packages/branches/openwrt-22.03/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
 }
 
 
