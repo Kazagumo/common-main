@@ -34,13 +34,13 @@ jobs:
         if [[ $? -ne 0 ]]; then
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/ophub/kernel/contents/pub/stable > stable.api
         fi
-        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/core/dev/premium -o devpremium.api
+        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/dev/premium -o devpremium.api
         if [[ $? -ne 0 ]]; then
-          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/core/dev/premium > devpremium.api
+          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/dev/premium > devpremium.api
         fi
-        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/core/master/premium -o masterdevpremium.api
+        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/master/premium -o masterdevpremium.api
         if [[ $? -ne 0 ]]; then
-          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/core/master/premium > masterdevpremium.api
+          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/vernesong/OpenClash/contents/master/premium > masterdevpremium.api
         fi
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/tmate-io/tmate/releases/latest -o tmate.api
         if [[ $? -ne 0 ]]; then
