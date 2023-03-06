@@ -148,6 +148,10 @@ LIENOL)
     export PACKAGE_BRANCH="21.02"
     export LUCI_EDITION="21.02"
     export DIY_WORK="${FOLDER_NAME}2102"
+  elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
+    export PACKAGE_BRANCH="21.02"
+    export LUCI_EDITION="22.03"
+    export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "19.07-test" ]]; then
     export PACKAGE_BRANCH="19.07"
     export LUCI_EDITION="19.07-test"
@@ -543,6 +547,12 @@ master)
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   # Lienol大的21.02PW会显示缺少依赖，要修改一下
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  
+
+;;
+22.03)
+  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 ;;
 19.07)
