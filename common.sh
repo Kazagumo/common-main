@@ -530,14 +530,14 @@ master)
   rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/autosamba ${HOME_PATH}/feeds/other/lean/autosamba
   
-  rm -rf ${HOME_PATH}/feeds/other/lean/automount
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount
+  # rm -rf ${HOME_PATH}/feeds/other/lean/automount
+  # svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount
   
-  rm -rf ${HOME_PATH}/feeds/packages/utils/antfs-mount
-  svn co https://github.com/coolsnowwolf/packages/trunk/utils/antfs-mount ${HOME_PATH}/feeds/packages/utils/antfs-mount
+  # rm -rf ${HOME_PATH}/feeds/packages/utils/antfs-mount
+  # svn co https://github.com/coolsnowwolf/packages/trunk/utils/antfs-mount ${HOME_PATH}/feeds/packages/utils/antfs-mount
   
-  rm -rf ${HOME_PATH}/feeds/packages/kernel/antfs
-  svn co https://github.com/openwrt/packages/branches/openwrt-22.03/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
+  # rm -rf ${HOME_PATH}/feeds/packages/kernel/antfs
+  # svn co https://github.com/openwrt/packages/branches/openwrt-22.03/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
 
 ;;
 21.02)
@@ -553,6 +553,10 @@ master)
   if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
     sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   fi
+  
+  if [[ `grep -c 'luci-lib-ipkg' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+    sed -i 's?luci-compat?luci-compat luci-lib-ipkg?g' "include/target.mk"
+  fi 
 
 ;;
 19.07)
@@ -1239,9 +1243,8 @@ esac
 
 if [[ "${Replace_mac80211}" == "1" ]]; then
   echo "替换mac80211源码文件"
-  rm -rf package/kernel/{ath10k-ct,mac80211,acx-mac80211}
+  rm -rf package/kernel/{mac80211,acx-mac80211}
   rm -rf package/firmware/{ath10k-ct-firmware,b43legacy-firmware}
-  svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/ath10k-ct package/kernel/ath10k-ct
   svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/acx-mac80211 package/kernel/acx-mac80211
   svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/mac80211 package/kernel/mac80211
   svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/firmware/ath10k-ct-firmware package/firmware/ath10k-ct-firmware
