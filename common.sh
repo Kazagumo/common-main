@@ -974,11 +974,13 @@ else
   find . -type d -name 'luci-app-openclash' | xargs -i rm -rf {}
   git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
   if [[ $? -ne 0 ]]; then
+    echo
     echo "luci-app-openclash下载失败"
   else
     echo "${OpenClash_branch}" > "${HOME_PATH}/package/luci-app-openclash/sj_branch"
     echo "${sj_clash}" > "${HOME_PATH}/package/luci-app-openclash/sj_clash"
     uci_openclash="1"
+    echo
     echo "正在使用"${OpenClash_branch}"分支的openclash"
   fi
 fi
