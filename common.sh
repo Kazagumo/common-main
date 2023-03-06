@@ -495,8 +495,6 @@ echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${R
 if [[ `grep -c "luci-app-passwall luci-app-openclash" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall luci-app-openclash ?g' include/target.mk
 fi
-
-# svn co https://github.com/openwrt/packages/branches/openwrt-22.03/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
 }
 
 
@@ -767,8 +765,6 @@ done
 echo "修改cpufreq和autocore一些代码适配amlogic"
 sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' ${HOME_PATH}/feeds/luci/applications/luci-app-cpufreq/Makefile
 sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/package/lean/autocore/Makefile
-
-svn co https://github.com/openwrt/packages/branches/openwrt-22.03/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
 }
 
 
