@@ -2,10 +2,11 @@
 
 tee -a "${In_Firmware_Replace}" << EOF > /dev/null
 ledezx="18.06-Lede"
-lienolzx1="21.02-Lienol"
-lienolzx2="19.07-Lienol"
-lienolzx3="master-Lienol"
-lienolzx4="19.07-test-Lienol"
+lienolzx1="19.07-Lienol"
+lienolzx2="21.02-Lienol"
+lienolzx3="22.03-Lienol"
+lienolzx4="master-Lienol"
+lienolzx5="19.07-test-Lienol"
 immortalwrtzx1="21.02-Immortalwrt"
 immortalwrtzx2="18.06-Immortalwrt"
 immortalwrtzx3="master-Immortalwrt"
