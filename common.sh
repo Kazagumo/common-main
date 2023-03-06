@@ -496,7 +496,7 @@ if [[ `grep -c "luci-app-passwall luci-app-openclash" ${HOME_PATH}/include/targe
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-passwall luci-app-openclash ?g' include/target.mk
 fi
 
-svn co https://github.com/openwrt/packages/branches/openwrt-22.03/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
+# svn co https://github.com/openwrt/packages/branches/openwrt-22.03/kernel/antfs ${HOME_PATH}/feeds/packages/kernel/antfs
 }
 
 
