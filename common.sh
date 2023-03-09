@@ -485,6 +485,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 fi
 # 给固件LUCI做个标记
@@ -509,6 +510,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 else
   svn export https://github.com/xiaorouji/openwrt-passwall/trunk/pdnsd-alt package/pdnsd-alt
@@ -601,6 +603,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-cifs' -o -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 else
   find . -type d -name 'luci-app-argon-config' -o -name 'luci-theme-argonv3' | xargs -i rm -rf {}
@@ -655,6 +658,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 fi
 find . -type d -name 'default-settings' | xargs -i rm -rf {}
@@ -696,6 +700,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 fi
 find . -type d -name 'default-settings' | xargs -i rm -rf {}
@@ -745,6 +750,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'mac80211' -o -name 'acx-mac80211' -o -name 'ath10k-ct-firmware' -o -name 'b43legacy-firmware' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 fi
   
