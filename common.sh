@@ -353,7 +353,7 @@ if [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.15" ]]; then
     svn co https://github.com/lede-project/source/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
     curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
   fi
-else [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "0" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ -z "${Lace_Kernel}" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.4" ]]; then
+elif [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "0" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ -z "${Lace_Kernel}" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.4" ]]; then
   if [[ ! -d "${HOME_PATH}/target/linux/ramips/patches-5.4" ]]; then
     rm -rf ${HOME_PATH}/target/linux/ramips
     svn co https://github.com/coolsnowwolf/lede/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
