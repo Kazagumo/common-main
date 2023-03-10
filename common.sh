@@ -335,8 +335,9 @@ OFFICIAL)
 COOLSNOWWOLF)
   for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
     if [[ ! -f "${HOME_PATH}/target/linux/ramips/$i/config-5.15" ]]; then
-      curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 > ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
+      curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 > ${HOME_PATH}/target/linux/ramips/$i/config-5.15
     fi
+  ; \
   done
 ;;
 esac
