@@ -1113,7 +1113,7 @@ if [[ "${Delete_unnecessary_items}" == "1" ]]; then
 fi
 
 if [[ "${Replace_Kernel}" == "0" ]] || [[ -z "${Replace_Kernel}" ]]; then
-  echo ""
+  echo "使用默认内核"
 elif [[ -n "${Replace_Kernel}" ]]; then
   echo "Replace_Kernel=${Replace_Kernel}" >> ${GITHUB_ENV}
 fi
@@ -1759,6 +1759,12 @@ elif [[ -n "${Default_theme}" ]]; then
   else
      echo "TIME r \"没有选择luci-theme-${Default_theme}此主题,将${Default_theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
   fi
+fi
+
+if [[ "${TARGET_BOARD}" == "ramips" ]] && [[ "${Replace_Kernel}" == "5.15" ]]; then
+  rm -rf ${HOME_PATH}/target/linux/ramips
+  svn co https://github.com/lede-project/source/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
+  curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
 fi
 }
 
