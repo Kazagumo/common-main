@@ -332,34 +332,36 @@ OFFICIAL)
     echo
   fi
 ;;
-COOLSNOWWOLF)
-  Diy_ramips515
-;;
 esac
 }
 
 function Diy_ramips515() {
-Part_diy="${BUILD_PATH}/${DIY_PART_SH}"
-Part_con="${BUILD_PATH}/${CONFIG_FILE}"
-Mt_7621="${HOME_PATH}/target/linux/ramips/mt7621/config-5.15"
-Rt_3883="${HOME_PATH}/target/linux/ramips/rt3883/config-5.15"
-Lace_Kernel="$(grep "Replace_Kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/Replace_Kernel/{print $2}')"
-if [[ `grep -Eoc 'CONFIG_TARGET_ramips=y' ${Part_con}` -eq '1' ]]; then
-  Get_boardt="ramips"
-fi
-if [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.15" ]]; then
-  if [[ ! -f "${Mt_7621}" ]] && [[ ! -f "${Rt_3883}" ]]; then
-    rm -rf ${HOME_PATH}/target/linux/ramips
-    svn co https://github.com/lede-project/source/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
-    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
+cd ${HOME_PATH}
+case "${SOURCE_CODE}" in
+COOLSNOWWOLF)
+  Part_diy="${BUILD_PATH}/${DIY_PART_SH}"
+  Part_con="${BUILD_PATH}/${CONFIG_FILE}"
+  Mt_7621="${HOME_PATH}/target/linux/ramips/mt7621/config-5.15"
+  Rt_3883="${HOME_PATH}/target/linux/ramips/rt3883/config-5.15"
+  Lace_Kernel="$(grep "Replace_Kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/Replace_Kernel/{print $2}')"
+  if [[ `grep -Eoc 'CONFIG_TARGET_ramips=y' ${Part_con}` -eq '1' ]]; then
+    Get_boardt="ramips"
   fi
-elif [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "0" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ -z "${Lace_Kernel}" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.4" ]]; then
-  if [[ ! -d "${HOME_PATH}/target/linux/ramips/patches-5.4" ]]; then
-    rm -rf ${HOME_PATH}/target/linux/ramips
-    svn co https://github.com/coolsnowwolf/lede/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
-    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
+  if [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.15" ]]; then
+    if [[ ! -f "${Mt_7621}" ]] && [[ ! -f "${Rt_3883}" ]]; then
+      rm -rf ${HOME_PATH}/target/linux/ramips
+      svn co https://github.com/lede-project/source/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
+      curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
+    fi
+  elif [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "0" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ -z "${Lace_Kernel}" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.4" ]]; then
+    if [[ ! -d "${HOME_PATH}/target/linux/ramips/patches-5.4" ]]; then
+      rm -rf ${HOME_PATH}/target/linux/ramips
+      svn co https://github.com/coolsnowwolf/lede/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
+      curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
+    fi
   fi
-fi
+;;
+esac
 }
 
 function Diy_Notice() {
@@ -2166,6 +2168,7 @@ Diy_IPv6helper
 }
 
 function Diy_menu3() {
+Diy_ramips515
 Diy_wenjian
 Diy_clean
 Diy_${SOURCE_CODE}
