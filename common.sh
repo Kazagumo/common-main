@@ -1762,9 +1762,11 @@ elif [[ -n "${Default_theme}" ]]; then
 fi
 
 if [[ "${TARGET_BOARD}" == "ramips" ]] && [[ "${Replace_Kernel}" == "5.15" ]]; then
-  rm -rf ${HOME_PATH}/target/linux/ramips
-  svn co https://github.com/lede-project/source/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
-  curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
+  if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
+    rm -rf ${HOME_PATH}/target/linux/ramips
+    svn co https://github.com/lede-project/source/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
+    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
+  fi
 fi
 }
 
