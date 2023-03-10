@@ -334,8 +334,8 @@ OFFICIAL)
   fi
 ;;
 COOLSNOWWOLF)
-Part_diy="${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}"
-Part_con="${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}"
+Part_diy="${BUILD_PATH}/${DIY_PART_SH}"
+Part_con="${BUILD_PATH}/${CONFIG_FILE}"
 Mt_7621="${HOME_PATH}/target/linux/ramips/mt7621/config-5.15"
 Rt_3883="${HOME_PATH}/target/linux/ramips/rt3883/config-5.15"
 Lace_Kernel="$(grep "Replace_Kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/Replace_Kernel/{print $2}')"
