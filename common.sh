@@ -319,7 +319,6 @@ else
 fi
 }
 
-
 function Diy_checkout() {
 cd ${GITHUB_WORKSPACE}/openwrt
 case "${SOURCE_CODE}" in
@@ -334,6 +333,12 @@ OFFICIAL)
   fi
 ;;
 COOLSNOWWOLF)
+  Diy_ramips515
+;;
+esac
+}
+
+function Diy_ramips515() {
 Part_diy="${BUILD_PATH}/${DIY_PART_SH}"
 Part_con="${BUILD_PATH}/${CONFIG_FILE}"
 Mt_7621="${HOME_PATH}/target/linux/ramips/mt7621/config-5.15"
@@ -348,11 +353,14 @@ if [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.15" ]]; then
     svn co https://github.com/lede-project/source/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
     curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
   fi
+else [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "0" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ -z "${Lace_Kernel}" ]] || [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.4" ]]; then
+  if [[ ! -d "${HOME_PATH}/target/linux/ramips/patches-5.4" ]]; then
+    rm -rf ${HOME_PATH}/target/linux/ramips
+    svn co https://github.com/coolsnowwolf/lede/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
+    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
+  fi
 fi
-;;
-esac
 }
-
 
 function Diy_Notice() {
 TIME r ""
