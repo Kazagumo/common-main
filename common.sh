@@ -977,6 +977,7 @@ fi
 if [[ "${OpenClash_branch}" == "0" ]]; then
   find . -type d -name 'luci-app-openclash' | xargs -i rm -rf {}
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
+  sed -i 's/ luci-app-openclash//' ${HOME_PATH}/include/target.mk
   echo "不需要OpenClash插件"
 elif [[ "${OpenClash_branch}" == "${clash_branch}" ]] && [[ "${clashgs}" == "1" ]]; then
   echo ""
