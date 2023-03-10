@@ -333,6 +333,23 @@ OFFICIAL)
     echo
   fi
 ;;
+COOLSNOWWOLF)
+Part_diy="${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}"
+Part_con="${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}"
+Mt_7621="${HOME_PATH}/target/linux/ramips/mt7621/config-5.15"
+Rt_3883="${HOME_PATH}/target/linux/ramips/rt3883/config-5.15"
+Lace_Kernel="$(grep "Replace_Kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/Replace_Kernel/{print $2}')"
+if [[ `grep -Eoc 'CONFIG_TARGET_ramips=y' ${Part_con}` -eq '1' ]]; then
+  Get_boardt="ramips"
+fi
+if [[ "${Get_boardt}" == "ramips" ]] && [[ "${Lace_Kernel}" == "5.15" ]]; then
+  if [[ ! -f "${Mt_7621}" ]] && [[ ! -f "${Rt_3883}" ]]; then
+    rm -rf ${HOME_PATH}/target/linux/ramips
+    svn co https://github.com/lede-project/source/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
+    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
+  fi
+fi
+;;
 esac
 }
 
@@ -1758,14 +1775,6 @@ elif [[ -n "${Default_theme}" ]]; then
     echo "默认主题[${Default_theme}]设置完成"
   else
      echo "TIME r \"没有选择luci-theme-${Default_theme}此主题,将${Default_theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
-  fi
-fi
-
-if [[ "${TARGET_BOARD}" == "ramips" ]] && [[ "${Replace_Kernel}" == "5.15" ]]; then
-  if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
-    rm -rf ${HOME_PATH}/target/linux/ramips
-    svn co https://github.com/lede-project/source/trunk/target/linux/ramips ${HOME_PATH}/target/linux/ramips
-    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/include/kernel-5.15 > ${HOME_PATH}/include/kernel-5.15
   fi
 fi
 }
