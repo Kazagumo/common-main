@@ -333,6 +333,8 @@ OFFICIAL)
   fi
 ;;
 COOLSNOWWOLF)
+  rm -rf ${HOME_PATH}/target/linux/ramips/patches-5.15
+  svn co https://github.com/lede-project/source/trunk/target/linux/ramips/patches-5.15 ${HOME_PATH}/target/linux/ramips/patches-5.15
   for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
       [[ ! -f "${HOME_PATH}/target/linux/ramips/$i/config-5.15" ]] &&  \
       curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 > ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
