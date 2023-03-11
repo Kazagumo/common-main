@@ -1977,8 +1977,8 @@ echo "正在执行：打包N1和景晨系列固件"
 cd ${GITHUB_WORKSPACE}
 [[ -d "${GITHUB_WORKSPACE}/amlogic" ]] && sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 [[ ! -d "${HOME_PATH}/bin/targets/armvirt/64" ]] && mkdir -p "${HOME_PATH}/bin/targets/armvirt/64"
-FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
-Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/diy-part.sh"
+export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
+export Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/diy-part.sh"
 if [[ -z "${amlogic_model}" ]]; then
   export amlogic_model="$(grep "amlogic_model" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_model/{print $2}')"
   [[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
@@ -2004,7 +2004,6 @@ fi
 
 export kernel_repo="https://github.com/ophub/kernel/tree/main/pub"
 export gh_token="${REPO_TOKEN}"
-echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
 
 echo "${amlogic_model}"
 echo "${amlogic_kernel}"
