@@ -2026,13 +2026,13 @@ if [[ `ls -1 "${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt" |grep -c ".*default-r
   cp -Rf ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/temp_dir/openwrt-armvirt-64-default-rootfs.tar.gz && sync
   tar -xzf ${GITHUB_WORKSPACE}/amlogic/temp_dir/openwrt-armvirt-64-default-rootfs.tar.gz
   if [[ `grep -c "DISTRIB_SOURCECODE" ${GITHUB_WORKSPACE}/amlogic/temp_dir/etc/openwrt_release` -eq '1' ]]; then
-    source_codename="$(cat "/home/danshui/etc/openwrt_release" 2>/dev/null | grep -oE "^DISTRIB_SOURCECODE=.*" | head -n 1 | cut -d"'" -f2)"
+    source_codename="$(cat "${GITHUB_WORKSPACE}/amlogic/temp_dir/etc/openwrt_release" 2>/dev/null | grep -oE "^DISTRIB_SOURCECODE=.*" | head -n 1 | cut -d"'" -f2)"
     echo "source_codename=${source_codename}" >> ${GITHUB_ENV}
-    sudo rm -rf ${GITHUB_WORKSPACE}/amlogic/temp_dir
+    #sudo rm -rf ${GITHUB_WORKSPACE}/amlogic/temp_dir
   else
     source_codename="amlogic"
     echo "source_codename=${source_codename}" >> ${GITHUB_ENV}
-    sudo rm -rf ${GITHUB_WORKSPACE}/amlogic/temp_dir
+    #sudo rm -rf ${GITHUB_WORKSPACE}/amlogic/temp_dir
   fi
 else
   TIME r "没发现openwrt-armvirt-64-default-rootfs.tar.gz固件存在"
