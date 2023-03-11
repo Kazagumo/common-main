@@ -1940,8 +1940,11 @@ auto_kernel="$(grep "auto_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/au
 rootfs_size="$(grep "rootfs_size" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/rootfs_size/{print $2}')"
 
 [[ -z "${amlogic_model}" ]] && amlogic_model="s905d"
-[[ -z "${amlogic_kernel}" ]] && amlogic_kernel="5.10.01"
-[[ -z "${amlogic_kernel}" ]] && auto_kernel="true"
+if [[ -z "${amlogic_kernel}" ]]; then
+  curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o stable.api
+  amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
+fi
+[[ -z "${auto_kernel}" ]] && auto_kernel="true"
 [[ -z "${rootfs_size}" ]] && rootfs_size="960"
 
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
