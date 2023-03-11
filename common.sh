@@ -1933,6 +1933,36 @@ fi
 }
 
 
+
+function openwrt_armvirt() {
+cd ${GITHUB_WORKSPACE}
+git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
+export YML_PATH="${FOLDER_NAME}/.github/workflows/sole_amlogic.yml"
+export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+export TARGET2="target: \\[${FOLDER_NAME}\\]"
+export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
+export PATHS2="- 'build/${FOLDER_NAME}/relevance/amstart'"
+
+if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
+  sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
+  sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
+else
+  echo "获取变量失败,请勿胡乱修改sole_amlogic.yml文件"
+  exit 1
+fi
+
+cp -Rf ${FIRMWARE_PATH}/*armvirt-64-default-rootfs.tar.gz ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+
+echo "启动打包amlogic固件-$(date +%Y年%m月%d号%H时%M分%S秒)" >> ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/amstart
+
+cd ${FOLDER_NAME}
+git add .
+git commit -m "启动打包amlogic固件"
+git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
+}
+
+
+
 function Package_amlogic2() {
 echo "正在执行：打包N1和景晨系列固件"
 # 下载上游仓库
