@@ -1937,19 +1937,29 @@ cd ${GITHUB_WORKSPACE}
 [[ ! -d "${HOME_PATH}/bin/targets/armvirt/64" ]] && mkdir -p "${HOME_PATH}/bin/targets/armvirt/64"
 FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
 Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/diy-part.sh"
-amlogic_model="$(grep "amlogic_model" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_model/{print $2}')"
-amlogic_kernel="$(grep "amlogic_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_kernel/{print $2}')"
-auto_kernel="$(grep "auto_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/auto_kernel/{print $2}')"
-rootfs_size="$(grep "rootfs_size" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/rootfs_size/{print $2}')"
 
-[[ -z "${amlogic_model}" ]] && amlogic_model="s905d"
-if [[ -z "${amlogic_kernel}" ]]; then
-  curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o ${HOME_PATH}/stable.api
-  amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "${HOME_PATH}/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
-  [[ -z "${amlogic_kernel}" ]] && amlogic_kernel="5.10.160"
+if [[ -z "${amlogic_model}" ]]; then
+  amlogic_model="$(grep "amlogic_model" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_model/{print $2}')"
+  [[ -z "${amlogic_model}" ]] && amlogic_model="s905d"
 fi
-[[ -z "${auto_kernel}" ]] && auto_kernel="true"
-[[ -z "${rootfs_size}" ]] && rootfs_size="960"
+
+if [[ -z "${amlogic_kernel}" ]]; then
+  amlogic_kernel="$(grep "amlogic_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_kernel/{print $2}')"
+  if [[ -z "${amlogic_kernel}" ]]; then 
+    curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o ${HOME_PATH}/stable.api
+    amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "${HOME_PATH}/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
+  fi
+fi
+
+if [[ -z "${auto_kernel}" ]]; then
+  auto_kernel="$(grep "auto_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/auto_kernel/{print $2}')"
+  [[ -z "${auto_kernel}" ]] && auto_kernel="true"
+fi
+
+if [[ -z "${auto_kernel}" ]]; then
+  rootfs_size="$(grep "rootfs_size" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/rootfs_size/{print $2}')"
+  [[ -z "${rootfs_size}" ]] && rootfs_size="960"
+fi
 
 echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
 
