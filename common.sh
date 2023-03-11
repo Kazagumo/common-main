@@ -1966,6 +1966,7 @@ cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
 sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size}
 if [[ 0 -eq $? ]]; then
+  sudo rm -rf ${GITHUB_WORKSPACE}/amlogic/out/sha256sums
   sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
   sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
   echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
