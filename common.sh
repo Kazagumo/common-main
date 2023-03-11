@@ -815,6 +815,8 @@ else
   cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
 fi
 
+sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_SOURCECODE='${SOURCE}-${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 echo "DISTRIB_SOURCECODE='${SOURCE}'" >> "${ZZZ_PATH}"
