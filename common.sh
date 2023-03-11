@@ -1933,7 +1933,8 @@ function Package_amlogic2() {
 echo "正在执行：打包N1和景晨系列固件"
 # 下载上游仓库
 cd ${GITHUB_WORKSPACE}
-Part_diy="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/diy-part.sh"
+[[ -d "${GITHUB_WORKSPACE}/amlogic" ]] && sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
+Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/diy-part.sh"
 amlogic_model="$(grep "amlogic_model" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_model/{print $2}')"
 amlogic_kernel="$(grep "amlogic_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_kernel/{print $2}')"
 auto_kernel="$(grep "auto_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/auto_kernel/{print $2}')"
@@ -1941,15 +1942,16 @@ rootfs_size="$(grep "rootfs_size" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/ro
 
 [[ -z "${amlogic_model}" ]] && amlogic_model="s905d"
 if [[ -z "${amlogic_kernel}" ]]; then
-  curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o stable.api
-  amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
+  curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o ${HOME_PATH}/stable.api
+  amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "${HOME_PATH}/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
+  [[ -z "${amlogic_kernel}" ]] && amlogic_kernel="5.10.160"
 fi
 [[ -z "${auto_kernel}" ]] && auto_kernel="true"
 [[ -z "${rootfs_size}" ]] && rootfs_size="960"
 
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
 [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
-if [[ `ls -1 "${GITHUB_WORKSPACE}/build/Amlogic/firmware" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
+if [[ `ls -1 "${HOME_PATH}/build/${FOLDER_NAME}/firmware" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
   cp -Rf ${GITHUB_WORKSPACE}/build/Amlogic/firmware/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 else
   wget -q https://github.com/${GIT_REPOSITORY}/releases/download/amlogic/openwrt-armvirt-64-default-rootfs.tar.gz -O ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
@@ -1961,7 +1963,7 @@ sudo chmod +x make
 sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size}
 if [[ 0 -eq $? ]]; then
   echo "FIRMWARE_PATH=${GITHUB_WORKSPACE}/amlogic/out" >> ${GITHUB_ENV}
-  TIME g "固件打包完成,已将固件存入${FIRMWARE_PATH}文件夹内"
+  TIME g "固件打包完成,已将固件存入amlogic/out文件夹内"
 else
   TIME r "固件打包失败"
 fi
