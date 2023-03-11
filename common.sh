@@ -1949,10 +1949,12 @@ fi
 [[ -z "${auto_kernel}" ]] && auto_kernel="true"
 [[ -z "${rootfs_size}" ]] && rootfs_size="960"
 
+echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
 [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
 if [[ `ls -1 "${HOME_PATH}/build/${FOLDER_NAME}/firmware" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
-  cp -Rf ${GITHUB_WORKSPACE}/build/Amlogic/firmware/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+  cp -Rf ${HOME_PATH}/build/${FOLDER_NAME}/firmware/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 else
   wget -q https://github.com/${GIT_REPOSITORY}/releases/download/amlogic/openwrt-armvirt-64-default-rootfs.tar.gz -O ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
 fi
