@@ -375,6 +375,9 @@ else
   export kaisbianyixx="编译"
 fi
 git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
+if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
+  mkdir -p "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance"
+fi
 export YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
 export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
@@ -1692,10 +1695,13 @@ esac
 if [[ "${Continue_selecting}" == "1" ]]; then
   cd ${GITHUB_WORKSPACE}
   git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
+  if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
+    mkdir -p "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance"
+  fi
   rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}
   cp -Rf build/${FOLDER_NAME} ${FOLDER_NAME}/build/${FOLDER_NAME}
   rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/*.sh
-  cp -Rf build/${FOLDER_NAME}/diy-part.sh ${FOLDER_NAME}/build/${FOLDER_NAME}/diy-part.sh
+  cp -Rf build/${FOLDER_NAME}/${DIY_PART_SH} ${FOLDER_NAME}/build/${FOLDER_NAME}/${DIY_PART_SH}
   
   rm -rf ${FOLDER_NAME}/.github/workflows
   cp -Rf .github/workflows ${FOLDER_NAME}/.github/workflows
@@ -1937,6 +1943,9 @@ fi
 function openwrt_armvirt() {
 cd ${GITHUB_WORKSPACE}
 git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
+if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
+  mkdir -p "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance"
+fi
 export YML_PATH="${FOLDER_NAME}/.github/workflows/sole_amlogic.yml"
 export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
