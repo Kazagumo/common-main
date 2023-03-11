@@ -1937,10 +1937,11 @@ cd ${GITHUB_WORKSPACE}
 [[ ! -d "${HOME_PATH}/bin/targets/armvirt/64" ]] && mkdir -p "${HOME_PATH}/bin/targets/armvirt/64"
 FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
 Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/diy-part.sh"
-
+echo "${amlogic_model}"
 if [[ -z "${amlogic_model}" ]]; then
   amlogic_model="$(grep "amlogic_model" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_model/{print $2}')"
   [[ -z "${amlogic_model}" ]] && amlogic_model="s905d"
+  echo "${amlogic_model}"
 fi
 
 if [[ -z "${amlogic_kernel}" ]]; then
