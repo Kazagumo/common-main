@@ -817,6 +817,7 @@ fi
 
 
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+echo "DISTRIB_SOURCECODE='${SOURCE}'" >> "${ZZZ_PATH}"
 sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
 sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
 
