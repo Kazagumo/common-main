@@ -1960,12 +1960,15 @@ if [[ -z "${rootfs_size}" ]]; then
   [[ -z "${rootfs_size}" ]] && export rootfs_size="960"
 fi
 
+export kernel_repo="https://github.com/ophub/kernel/tree/main/pub"
+export gh_token="${REPO_TOKEN}"
+echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+
 echo "${amlogic_model}"
 echo "${amlogic_kernel}"
 echo "${auto_kernel}"
 echo "${rootfs_size}"
-
-echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+echo "${kernel_repo}"
 
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
 [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
@@ -1980,7 +1983,11 @@ fi
 echo "开始打包"
 cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
-sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size}
+if [[ -z "${gh_token}" ]]; then
+  sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo}
+else
+  sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo} -g ${gh_token}
+fi
 if [[ 0 -eq $? ]]; then
   sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
   sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
