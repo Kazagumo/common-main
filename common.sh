@@ -1934,6 +1934,8 @@ echo "正在执行：打包N1和景晨系列固件"
 # 下载上游仓库
 cd ${GITHUB_WORKSPACE}
 [[ -d "${GITHUB_WORKSPACE}/amlogic" ]] && sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
+[[ ! -d "${HOME_PATH}/bin/targets/armvirt/64" ]] && mkdir -p "${HOME_PATH}/bin/targets/armvirt/64"
+FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
 Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/diy-part.sh"
 amlogic_model="$(grep "amlogic_model" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_model/{print $2}')"
 amlogic_kernel="$(grep "amlogic_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_kernel/{print $2}')"
@@ -1964,8 +1966,10 @@ cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
 sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size}
 if [[ 0 -eq $? ]]; then
-  echo "FIRMWARE_PATH=${GITHUB_WORKSPACE}/amlogic/out" >> ${GITHUB_ENV}
-  TIME g "固件打包完成,已将固件存入amlogic/out文件夹内"
+  sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
+  sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
+  echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
+  TIME g "固件打包完成,已将固件存入${FIRMWARE_PATH}文件夹内"
 else
   TIME r "固件打包失败"
 fi
