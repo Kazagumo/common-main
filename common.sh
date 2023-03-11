@@ -1942,11 +1942,12 @@ fi
 
 function openwrt_armvirt() {
 cd ${GITHUB_WORKSPACE}
-git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
-if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
-  mkdir -p "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance"
+export FOLDER_NAME2="REPOSITORY"
+git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME2}
+if [[ ! -d "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance" ]]; then
+  mkdir -p "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance"
 fi
-export YML_PATH="${FOLDER_NAME}/.github/workflows/sole_amlogic.yml"
+export YML_PATH="${FOLDER_NAME2}/.github/workflows/sole_amlogic.yml"
 export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
 export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
@@ -1960,12 +1961,12 @@ else
   exit 1
 fi
 
-rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*default-rootfs.tar.gz
-cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/openwrt-armvirt-64-default-rootfs.tar.gz
+rm -rf ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/*default-rootfs.tar.gz
+cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/openwrt-armvirt-64-default-rootfs.tar.gz
 
-echo "启动打包amlogic固件-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/amstart
+echo "启动打包amlogic固件-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amstart
 
-cd ${FOLDER_NAME}
+cd ${FOLDER_NAME2}
 git add .
 git commit -m "启动打包amlogic固件"
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
