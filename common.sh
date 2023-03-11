@@ -1937,12 +1937,9 @@ cd ${GITHUB_WORKSPACE}
 [[ ! -d "${HOME_PATH}/bin/targets/armvirt/64" ]] && mkdir -p "${HOME_PATH}/bin/targets/armvirt/64"
 FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
 Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/diy-part.sh"
-echo "1${amlogic_model}"
 if [[ -z "${amlogic_model}" ]]; then
   export amlogic_model="$(grep "amlogic_model" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_model/{print $2}')"
-  echo "2${amlogic_model}"
   [[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
-  echo "3${amlogic_model}"
 fi
 
 if [[ -z "${amlogic_kernel}" ]]; then
@@ -1958,10 +1955,15 @@ if [[ ! "${auto_kernel}" == "true" ]] || [[ ! "${auto_kernel}" == "false" ]]; th
   [[ -z "${auto_kernel}" ]] && export auto_kernel="true"
 fi
 
-if [[ -z "${auto_kernel}" ]]; then
+if [[ -z "${rootfs_size}" ]]; then
   export rootfs_size="$(grep "rootfs_size" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/rootfs_size/{print $2}')"
   [[ -z "${rootfs_size}" ]] && export rootfs_size="960"
 fi
+
+echo "${amlogic_model}"
+echo "${amlogic_kernel}"
+echo "${auto_kernel}"
+echo "${rootfs_size}"
 
 echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
 
