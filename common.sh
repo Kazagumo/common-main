@@ -1951,9 +1951,10 @@ else
   exit 1
 fi
 
-cp -Rf ${FIRMWARE_PATH}/*armvirt-64-default-rootfs.tar.gz ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*default-rootfs.tar.gz
+cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/openwrt-armvirt-64-default-rootfs.tar.gz
 
-echo "启动打包amlogic固件-$(date +%Y年%m月%d号%H时%M分%S秒)" >> ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/amstart
+echo "启动打包amlogic固件-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/amstart
 
 cd ${FOLDER_NAME}
 git add .
