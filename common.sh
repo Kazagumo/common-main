@@ -1965,11 +1965,12 @@ echo "启动打包amlogic固件-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOL
 rm -rf ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/*.ini
 
 echo "
-UPLOAD_FIRMWARE=\"${UPLOAD_FIRMWARE}\"
 amlogic_model=\"${amlogic_model}\"
 amlogic_kernel=\"${amlogic_kernel}\"
 auto_kernel=\"${auto_kernel}\"
 rootfs_size=\"${rootfs_size}\"
+UPLOAD_FIRMWARE=\"${UPLOAD_FIRMWARE}\"
+UPLOAD_RELEASE=\"${UPLOAD_RELEASE}\"
 " > ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amlogic.ini
 
 chmod -R 775 $GITHUB_WORKSPACE/${FOLDER_NAME2}
