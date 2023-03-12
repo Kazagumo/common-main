@@ -1930,7 +1930,7 @@ git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 
 
 function firmware_jiance() {
-if [[ "${TARGET_BOARD}" == "armvirt" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` -eq '1' ]]; then
+if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` -eq '1' ]]; then
   cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${HOME_PATH}/bin/openwrt-armvirt-64-default-rootfs.tar.gz
   rm -rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz
   cp -Rf ${HOME_PATH}/bin/openwrt-armvirt-64-default-rootfs.tar.gz ${FIRMWARE_PATH}/openwrt-armvirt-64-default-rootfs.tar.gz
