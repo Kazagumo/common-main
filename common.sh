@@ -92,7 +92,9 @@ fi
 }
 
 function Diy_variable() {
+
 export DIY_PART_SH="diy-part.sh"
+
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
 elif [[ "${Manually_Run}" == "1" ]]; then
