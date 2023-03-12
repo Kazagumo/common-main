@@ -1711,6 +1711,7 @@ fi
 
 if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]]; then
   echo "AMLOGIC_CODE=AMLOGIC" >> ${GITHUB_ENV}
+  export PACKAGING_FIRMWARE="${UPDATE_FIRMWARE_ONLINE}"
   echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
   echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
   # 修改cpufreq代码适配amlogic"
@@ -1723,6 +1724,12 @@ elif [[ "${TARGET_BOARD}" == "armvirt" ]]; then
   echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
 else
   echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+fi
+
+if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
+  echo "ING_FIRMWAR=false" >> ${GITHUB_ENV}
+else
+  echo "ING_FIRMWAR=true" >> ${GITHUB_ENV}
 fi
 }
 
