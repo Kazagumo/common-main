@@ -1864,36 +1864,6 @@ fi
 }
 
 
-function Package_amlogic() {
-echo "正在执行：打包N1和景晨系列固件"
-# 下载上游仓库
-cd ${GITHUB_WORKSPACE}
-[[ -d "${GITHUB_WORKSPACE}/amlogic" ]] && sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
-git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
-[ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
-if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
-  cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
-else
-  armvirtargz="$(ls -1 "${FIRMWARE_PATH}" |grep ".*tar.gz" |awk 'END {print}')"
-  cp -Rf ${FIRMWARE_PATH}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
-fi
-
-echo "开始打包"
-cd ${GITHUB_WORKSPACE}/amlogic
-sed -i '/download_depends()/aecho "source_codename=${source_codename}" >> ${GITHUB_ENV}' "make"
-sudo chmod +x make
-sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size}
-if [[ 0 -eq $? ]]; then
-  sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
-  sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
-  TIME g "固件打包完成,已将固件存入${FIRMWARE_PATH}文件夹内"
-else
-  TIME r "固件打包失败"
-fi
-}
-
-
-
 function openwrt_armvirt() {
 cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME2="REPOSITORY"
@@ -1901,7 +1871,7 @@ git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME2}
 if [[ ! -d "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance" ]]; then
   mkdir -p "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance"
 fi
-export YML_PATH="${FOLDER_NAME2}/.github/workflows/sole_amlogic.yml"
+export YML_PATH="${FOLDER_NAME2}/.github/workflows/pack_armvirt.yml"
 export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
 export TARGET2="target: \\[${FOLDER_NAME}\\]"
 export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
@@ -1911,7 +1881,7 @@ if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
   sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
   sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
 else
-  echo "获取变量失败,请勿胡乱修改sole_amlogic.yml文件"
+  echo "获取变量失败,请勿胡乱修改pack_armvirt.yml文件"
   exit 1
 fi
 
@@ -1945,7 +1915,7 @@ if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |gr
 fi
 }
 
-function Package_amlogic2() {
+function Package_amlogic() {
 echo "正在执行：打包N1和景晨系列固件"
 # 下载上游仓库
 cd ${GITHUB_WORKSPACE}
@@ -2072,6 +2042,10 @@ function Diy_firmware() {
 echo "正在执行：整理固件,您不想要啥就删啥,删删删"
 echo "需要配合${DIY_PART_SH}文件设置使用"
 echo
+if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
+  # 打包固件转换仓库
+  openwrt_armvirt
+fi
 Diy_upgrade3
 Diy_organize
 }
