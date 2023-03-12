@@ -220,16 +220,8 @@ OFFICIAL)
     export DIY_WORK="${FOLDER_NAME}2203"
   fi
 ;;
-AMLOGIC)
-  export REPO_URL="https://github.com/coolsnowwolf/lede"
-  export SOURCE="Amlogic"
-  export LUCI_EDITION="18.06"
-  export SOURCE_OWNER="Lede's"
-  export PACKAGE_BRANCH="master"
-  export DIY_WORK="${FOLDER_NAME}AMLOGIC"
-;;
 *)
-  TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL和AMLOGIC"
+  TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
   exit 1
 ;;
 esac
@@ -248,11 +240,7 @@ echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> ${GITHUB_ENV}
 echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
 echo "INFORMATION_NOTICE=${INFORMATION_NOTICE}" >> ${GITHUB_ENV}
 echo "CACHEWRTBUILD_SWITCH=${CACHEWRTBUILD_SWITCH}" >> ${GITHUB_ENV}
-if [[ ${SOURCE_CODE} == "AMLOGIC" ]]; then
-  echo "PACKAGING_FIRMWARE=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
-else
-  echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
-fi
+echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
 echo "COMPILATION_INFORMATION=${COMPILATION_INFORMATION}" >> ${GITHUB_ENV}
 echo "COLLECTED_PACKAGES=${COLLECTED_PACKAGES}" >> ${GITHUB_ENV}
 echo "WAREHOUSE_MAN=${GIT_REPOSITORY##*/}" >> ${GITHUB_ENV}
@@ -747,27 +735,9 @@ if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/l
 fi
 }
 
-
-function Diy_AMLOGIC() {
-cd ${HOME_PATH}
-if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  # 删除重复插件（LEDE - N1等）
-  for X in "${HOME_PATH}/feeds" "${HOME_PATH}/package"; do
-    find ${X} -type d -name 'luci-theme-argon' -o -name 'luci-app-argon-config' -o -name 'mentohust' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-    find ${X} -type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-    find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
-    find ${X} -type d -name 'mac80211' -o -name 'acx-mac80211' -o -name 'ath10k-ct-firmware' -o -name 'b43legacy-firmware' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
-  done
-fi
-  
-# 给固件LUCI做个标记
-sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
-echo "修复NTFS格式优盘不自动挂载"
+function Diy_distrib() {
+# armvirt修复NTFS格式优盘不自动挂载
+if [[ `grep -c "ntfs-3g" ${HOME_PATH}/target/linux/armvirt/Makefile` -eq '0' ]]; then
 packages=" \
 block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
 kmod-usb-ohci kmod-usb-uhci kmod-usb-storage kmod-usb-storage-extras kmod-usb2 kmod-usb3 \
@@ -780,14 +750,9 @@ sed -i '/FEATURES+=/ { s/cpiogz //; s/ext4 //; s/ramdisk //; s/squashfs //; }' $
 for x in $packages; do
   sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" ${HOME_PATH}/target/linux/armvirt/Makefile
 done
+fi
 
-echo "修改cpufreq和autocore一些代码适配amlogic"
-sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' ${HOME_PATH}/feeds/luci/applications/luci-app-cpufreq/Makefile
-sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/package/lean/autocore/Makefile
-}
-
-
-function Diy_distrib() {
+# 获取ZZZ_PATH路径
 cd ${HOME_PATH}
 ZZZ_PATH1="$(find ./package -type f -name "*default-settings" |grep files |cut -d '/' -f2-)"
 if [[ -n "${ZZZ_PATH1}" ]]; then
@@ -1776,6 +1741,17 @@ elif [[ -n "${Default_theme}" ]]; then
      echo "TIME r \"没有选择luci-theme-${Default_theme}此主题,将${Default_theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
+
+if [[ "${TARGET_BOARD}" == "armvirt" ]]; then
+echo "AMLOGIC_CODE=AMLOGIC" >> ${GITHUB_ENV}
+echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
+# 修改cpufreq代码适配amlogic"
+for X in $(find . -type d -name "luci-app-cpufreq"); do \
+  [[ -d "$X" ]] && \
+  sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
+done
+fi
 }
 
 
@@ -2151,7 +2127,7 @@ TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${SOURCE_OWNER}"
 TIME b "Luci版本: ${LUCI_EDITION}"
-if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
+if [[ "${AMLOGIC_CODE}" == "AMLOGIC" ]]; then
   TIME b "编译机型: 晶晨系列"
   if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
      TIME g "打包机型: ${amlogic_model}"
@@ -2214,7 +2190,7 @@ fi
 if [[ ${COMPILATION_INFORMATION} == "true" ]]; then
   TIME y "编译信息显示: 开启"
 fi
-if [[ ${SOURCE_CODE} == "AMLOGIC" ]]; then
+if [[ ${AMLOGIC_CODE} == "AMLOGIC" ]]; then
   if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
     TIME y "N1和晶晨系列固件自动打包成 .img 固件: 开启"
   else
