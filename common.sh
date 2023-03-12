@@ -1962,6 +1962,8 @@ else
 fi
 
 echo "启动打包amlogic固件-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amstart
+echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amstart
+echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amstart
 
 cd ${FOLDER_NAME2}
 git add .
