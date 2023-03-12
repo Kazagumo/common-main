@@ -1709,18 +1709,20 @@ elif [[ -n "${Default_theme}" ]]; then
   fi
 fi
 
-if [[ "${TARGET_BOARD}" == "armvirt" ]]; then
-echo "AMLOGIC_CODE=AMLOGIC" >> ${GITHUB_ENV}
-echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
-echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
-# 修改cpufreq代码适配amlogic"
-for X in $(find . -type d -name "luci-app-cpufreq"); do \
-  [[ -d "$X" ]] && \
-  sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
-done
+if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]]; then
+  echo "AMLOGIC_CODE=AMLOGIC" >> ${GITHUB_ENV}
+  echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
+  # 修改cpufreq代码适配amlogic"
+  for X in $(find . -type d -name "luci-app-cpufreq"); do \
+    [[ -d "$X" ]] && \
+    sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
+  done
+elif [[ "${TARGET_BOARD}" == "armvirt" ]]; then
+  echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
+  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
 fi
 }
-
 
 function Diy_adguardhome() {
 cd ${HOME_PATH}
