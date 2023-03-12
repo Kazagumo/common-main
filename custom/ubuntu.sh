@@ -5,11 +5,7 @@
 
 function Delete_useless(){
 sudo apt-get update -y
-if [[ "${SOURCE_CODE}" == "AMLOGIC" ]]; then
-  echo "清理ubuntu无用插件,扩展空间"
-  docker rmi `docker images -q`
-  sudo -E apt-get -qq remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
-fi
+sudo -E apt-get -qq remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
 sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
 }
 
