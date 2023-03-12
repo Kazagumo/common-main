@@ -28,14 +28,12 @@ for X in $(grep "\"LIENOL\"" -rl "operates" |grep "settings.ini" |sed 's/\/setti
 for X in $(grep "\"IMMORTALWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
 for X in $(grep "\"XWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
 for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
-for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
 
 for X in $(grep "\"COOLSNOWWOLF\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
 for X in $(grep "\"LIENOL\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
 for X in $(grep "\"IMMORTALWRT\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
 for X in $(grep "\"XWRT\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
 for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
-for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Amlogic/* "${X}"; done
 
 # 云仓库的修改文件
 case "${TONGBU_CANGKU}" in
@@ -57,9 +55,7 @@ case "${TONGBU_CANGKU}" in
       echo -e "\033[31m build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件 \033[0m"
       echo
     fi
-    if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
-      cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Amlogic.yml ${X}
-    elif [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
+    if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${X}
     elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lede.yml ${X}
@@ -170,10 +166,7 @@ else
 fi
 
 SOURCE_CODE1="$(source "repogx/build/${bb}/settings.ini" && echo ${SOURCE_CODE})"
-if [[ "${SOURCE_CODE1}" == "AMLOGIC" ]]; then
-  cp -Rf shangyou/.github/workflows/Amlogic.yml repogx/.github/workflows/${bb}.yml
-  nn="Amlogic"
-elif [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
+if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
   cp -Rf shangyou/.github/workflows/Immortalwrt.yml repogx/.github/workflows/${bb}.yml
   nn="Immortalwrt"
 elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
