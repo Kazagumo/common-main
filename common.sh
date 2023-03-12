@@ -1721,6 +1721,8 @@ if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]]; then
 elif [[ "${TARGET_BOARD}" == "armvirt" ]]; then
   echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
   echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
+else
+  echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
 fi
 }
 
