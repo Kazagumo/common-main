@@ -1924,7 +1924,7 @@ cd ${GITHUB_WORKSPACE}
 [[ -d "${GITHUB_WORKSPACE}/amlogic" ]] && sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 [[ ! -d "${HOME_PATH}/bin/targets/armvirt/64" ]] && mkdir -p "${HOME_PATH}/bin/targets/armvirt/64"
 export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
-export Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/diy-part.sh"
+export Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/${DIY_PART_SH}"
 if [[ -z "${amlogic_model}" ]]; then
   export amlogic_model="$(grep "amlogic_model" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_model/{print $2}')"
   [[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
