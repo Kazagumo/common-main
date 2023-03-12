@@ -1962,9 +1962,17 @@ else
 fi
 
 echo "启动打包amlogic固件-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amstart
-echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amstart
-echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amstart
+rm -rf ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/*.ini
 
+echo "
+UPLOAD_FIRMWARE=\"${UPLOAD_FIRMWARE}\"
+amlogic_model=\"${amlogic_model}\"
+amlogic_kernel=\"${amlogic_kernel}\"
+auto_kernel=\"${auto_kernel}\"
+rootfs_size=\"${rootfs_size}\"
+" > ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amlogic.ini
+
+chmod -R 775 $GITHUB_WORKSPACE/${FOLDER_NAME2}
 cd ${FOLDER_NAME2}
 git add .
 git commit -m "启动打包amlogic固件"
