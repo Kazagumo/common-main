@@ -99,7 +99,7 @@ if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
     sed -i '/CPU_SELECTION/d' "${X}"
     sed -i '/RETAIN_DAYS/d' "${X}"
     sed -i '/KEEP_LATEST/d' "${X}"
-    echo 'PACKAGING_FIRMWARE="true"         # N1和晶晨系列固件自动打包成 .img 固件（true=开启）（false=关闭）' >> "${X}"
+    echo 'PACKAGING_FIRMWARE="true"           # N1和晶晨系列固件自动打包成 .img 固件（true=开启）（false=关闭）' >> "${X}"
     echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
     if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
       echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
