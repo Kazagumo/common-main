@@ -1863,7 +1863,7 @@ export YML_PATH="${FOLDER_NAME2}/.github/workflows/pack_armvirt.yml"
 export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
 export PATHS2="- 'build/${FOLDER_NAME}/relevance/amstart'"
 
-if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
+if [[ -n "${PATHS1}" ]]; then
   sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
 else
   echo "获取变量失败,请勿胡乱修改pack_armvirt.yml文件"
