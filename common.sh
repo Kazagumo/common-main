@@ -1860,14 +1860,11 @@ if [[ ! -d "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance" ]]; then
   mkdir -p "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance"
 fi
 export YML_PATH="${FOLDER_NAME2}/.github/workflows/pack_armvirt.yml"
-export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-export TARGET2="target: \\[${FOLDER_NAME}\\]"
 export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
 export PATHS2="- 'build/${FOLDER_NAME}/relevance/amstart'"
 
 if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
   sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
-  sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
 else
   echo "获取变量失败,请勿胡乱修改pack_armvirt.yml文件"
   exit 1
