@@ -1854,11 +1854,14 @@ fi
 
 function openwrt_armvirt() {
 cd ${GITHUB_WORKSPACE}
-export FOLDER_NAME2="REPOSITORY"
+export FOLDER_NAME2="${GITHUB_WORKSPACE}/REPOSITORY"
+export RELEVANCE="${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance"
+
 git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME2}
-if [[ ! -d "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance" ]]; then
-  mkdir -p "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance"
+if [[ ! -d "${RELEVANCE}" ]]; then
+  mkdir -p "${RELEVANCE}"
 fi
+
 export YML_PATH="${FOLDER_NAME2}/.github/workflows/pack_armvirt.yml"
 export PATHS1="$(grep -C 3 'paths:' "${YML_PATH}" |grep -v "#" |grep -Eo "\- '.*'" |sed 's/^[ ]*//g' |awk 'NR==1')"
 export PATHS2="- 'build/${FOLDER_NAME}/relevance/amstart'"
@@ -1870,34 +1873,34 @@ else
   exit 1
 fi
 
-echo "启动打包amlogic固件-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amstart
-rm -rf ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/*.ini
+cat >"${RELEVANCE}/amstart" <<-EOF
+Trigger packaging ${FOLDER_NAME} program-$(date +%Y%m%d%H%M%S)
+EOF
 
-echo "
-amlogic_model=\"${amlogic_model}\"
-amlogic_kernel=\"${amlogic_kernel}\"
-auto_kernel=\"${auto_kernel}\"
-rootfs_size=\"${rootfs_size}\"
-UPLOAD_FIRMWARE=\"${UPLOAD_FIRMWARE}\"
-UPLOAD_RELEASE=\"${UPLOAD_RELEASE}\"
-FOLDER_NAME=\"${FOLDER_NAME}\"
-" > ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amlogic.ini
+cat >"${RELEVANCE}/amlogic.ini" <<-EOF
+amlogic_model="${amlogic_model}"
+amlogic_kernel="${amlogic_kernel}"
+auto_kernel="${auto_kernel}"
+rootfs_size="${rootfs_size}"
+UPLOAD_FIRMWARE="${UPLOAD_FIRMWARE}"
+UPLOAD_RELEASE="${UPLOAD_RELEASE}"
+FOLDER_NAME="${FOLDER_NAME}"
+EOF
 
-chmod -R 775 $GITHUB_WORKSPACE/${FOLDER_NAME2}
+chmod -R +x ${FOLDER_NAME2}
 cd ${FOLDER_NAME2}
 git add .
-git commit -m "启动打包amlogic固件"
+git commit -m "启动打包amlogic固件(${SOURCE}-${LUCI_EDITION})"
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 }
 
 
-
 function firmware_jiance() {
-if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*default-rootfs.tar.gz"` -eq '1' ]]; then
-  cp -Rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz ${HOME_PATH}/bin/openwrt-armvirt-64-default-rootfs.tar.gz
-  rm -rf ${FIRMWARE_PATH}/*default-rootfs.tar.gz
+if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*.tar.gz"` -eq '1' ]]; then
+  cp -Rf ${FIRMWARE_PATH}/*.tar.gz ${HOME_PATH}/bin/openwrt-armvirt-64-default-rootfs.tar.gz
+  rm -rf ${FIRMWARE_PATH}/*.tar.gz
   cp -Rf ${HOME_PATH}/bin/openwrt-armvirt-64-default-rootfs.tar.gz ${FIRMWARE_PATH}/openwrt-armvirt-64-default-rootfs.tar.gz
-  rm -rf ${HOME_PATH}/bin/*default-rootfs.tar.gz
+  rm -rf ${HOME_PATH}/bin/*.tar.gz
 fi
 }
 
