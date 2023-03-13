@@ -1883,6 +1883,7 @@ auto_kernel=\"${auto_kernel}\"
 rootfs_size=\"${rootfs_size}\"
 UPLOAD_FIRMWARE=\"${UPLOAD_FIRMWARE}\"
 UPLOAD_RELEASE=\"${UPLOAD_RELEASE}\"
+FOLDER_NAME=\"${FOLDER_NAME}\"
 " > ${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance/amlogic.ini
 
 chmod -R 775 $GITHUB_WORKSPACE/${FOLDER_NAME2}
