@@ -727,6 +727,7 @@ fi
 
 function Diy_distrib() {
 # armvirt修复NTFS格式优盘不自动挂载
+if [[ "${SOURCE_CODE}" != "LIENOL" ]] && [[ "${REPO_BRANCH}" != "19.07" ]] || [[ "${SOURCE_CODE}" != "OFFICIAL" ]] && [[ "${REPO_BRANCH}" != "openwrt-19.07" ]]; then
 if [[ `grep -c "ntfs-3g" ${HOME_PATH}/target/linux/armvirt/Makefile` -eq '0' ]]; then
 packages=" \
 block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
@@ -741,7 +742,7 @@ for x in $packages; do
   sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" ${HOME_PATH}/target/linux/armvirt/Makefile
 done
 fi
-
+fi
 # 获取ZZZ_PATH路径
 cd ${HOME_PATH}
 ZZZ_PATH1="$(find ./package -type f -name "*default-settings" |grep files |cut -d '/' -f2-)"
