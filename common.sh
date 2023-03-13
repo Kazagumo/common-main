@@ -726,23 +726,6 @@ fi
 }
 
 function Diy_distrib() {
-# armvirt修复NTFS格式优盘不自动挂载
-if [[ "${SOURCE_CODE}" != "LIENOL" ]]; then
-if [[ `grep -c "ntfs-3g" ${HOME_PATH}/target/linux/armvirt/Makefile` -eq '0' ]]; then
-packages=" \
-block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
-kmod-usb-ohci kmod-usb-uhci kmod-usb-storage kmod-usb-storage-extras kmod-usb2 kmod-usb3 \
-kmod-fs-ext4 kmod-fs-vfat kmod-fuse luci-app-amlogic unzip curl \
-brcmfmac-firmware-43430-sdio brcmfmac-firmware-43455-sdio kmod-brcmfmac wpad \
-lscpu htop iperf3 curl lm-sensors python3 losetup resize2fs tune2fs pv blkid lsblk parted \
-kmod-usb-net kmod-usb-net-asix-ax88179 kmod-usb-net-rtl8150 kmod-usb-net-rtl8152
-"
-sed -i '/FEATURES+=/ { s/cpiogz //; s/ext4 //; s/ramdisk //; s/squashfs //; }' ${HOME_PATH}/target/linux/armvirt/Makefile
-for x in $packages; do
-  sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" ${HOME_PATH}/target/linux/armvirt/Makefile
-done
-fi
-fi
 # 获取ZZZ_PATH路径
 cd ${HOME_PATH}
 ZZZ_PATH1="$(find ./package -type f -name "*default-settings" |grep files |cut -d '/' -f2-)"
