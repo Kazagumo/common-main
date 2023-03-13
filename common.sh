@@ -727,7 +727,7 @@ fi
 
 function Diy_distrib() {
 # armvirt修复NTFS格式优盘不自动挂载
-if [[ "${SOURCE_CODE}" != "LIENOL" ]] && [[ "${REPO_BRANCH}" != "19.07" ]] || [[ "${SOURCE_CODE}" != "OFFICIAL" ]] && [[ "${REPO_BRANCH}" != "openwrt-19.07" ]]; then
+if [[ "${SOURCE_CODE}" != "LIENOL" ]]; then
 if [[ `grep -c "ntfs-3g" ${HOME_PATH}/target/linux/armvirt/Makefile` -eq '0' ]]; then
 packages=" \
 block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
