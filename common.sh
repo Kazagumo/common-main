@@ -1910,30 +1910,13 @@ cd ${GITHUB_WORKSPACE}
 [[ -d "${GITHUB_WORKSPACE}/amlogic" ]] && sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 [[ ! -d "${HOME_PATH}/bin/targets/armvirt/64" ]] && mkdir -p "${HOME_PATH}/bin/targets/armvirt/64"
 export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
-export Part_diy="${HOME_PATH}/build/${FOLDER_NAME}/${DIY_PART_SH}"
-if [[ -z "${amlogic_model}" ]]; then
-  export amlogic_model="$(grep "amlogic_model" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_model/{print $2}')"
-  [[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
-fi
-
+[[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
 if [[ -z "${amlogic_kernel}" ]]; then
-  export amlogic_kernel="$(grep "amlogic_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/amlogic_kernel/{print $2}')"
-  if [[ -z "${amlogic_kernel}" ]]; then 
-    curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o ${HOME_PATH}/stable.api
-    export amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "${HOME_PATH}/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
-  fi
+  curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o ${HOME_PATH}/stable.api
+  export amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "${HOME_PATH}/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
 fi
-
-if [[ ! "${auto_kernel}" == "true" ]] || [[ ! "${auto_kernel}" == "false" ]]; then
-  export auto_kernel="$(grep "auto_kernel" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/auto_kernel/{print $2}')"
-  [[ -z "${auto_kernel}" ]] && export auto_kernel="true"
-fi
-
-if [[ -z "${rootfs_size}" ]]; then
-  export rootfs_size="$(grep "rootfs_size" "${Part_diy}"|grep -v '^#'|awk -F '[="]+' '/rootfs_size/{print $2}')"
-  [[ -z "${rootfs_size}" ]] && export rootfs_size="960"
-fi
-
+[[ -z "${auto_kernel}" ]] && export auto_kernel="true"
+[[ -z "${rootfs_size}" ]] && export rootfs_size="960"
 export kernel_repo="https://github.com/ophub/kernel/tree/main/pub"
 export gh_token="${REPO_TOKEN}"
 
