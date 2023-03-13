@@ -1915,6 +1915,7 @@ if [[ -z "${amlogic_kernel}" ]]; then
 fi
 [[ -z "${auto_kernel}" ]] && export auto_kernel="true"
 [[ -z "${rootfs_size}" ]] && export rootfs_size="960"
+[[ -z "${UPLOAD_WETRANSFER}" ]] && export UPLOAD_WETRANSFER="true"
 export kernel_repo="https://github.com/ophub/kernel/tree/main/pub"
 export gh_token="${REPO_TOKEN}"
 
