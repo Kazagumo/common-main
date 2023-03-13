@@ -1860,7 +1860,7 @@ if [[ ! -d "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance" ]]; then
   mkdir -p "${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance"
 fi
 export YML_PATH="${FOLDER_NAME2}/.github/workflows/pack_armvirt.yml"
-export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
+export PATHS1="$(grep -C 3 'paths:' "${YML_PATH}" |grep -v "#" |grep -Eo "\- '.*'" |sed 's/^[ ]*//g' |awk 'NR==1')"
 export PATHS2="- 'build/${FOLDER_NAME}/relevance/amstart'"
 
 if [[ -n "${PATHS1}" ]]; then
