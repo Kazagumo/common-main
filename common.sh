@@ -1912,6 +1912,7 @@ export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
 if [[ -z "${amlogic_kernel}" ]]; then
   curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o ${HOME_PATH}/stable.api
   export amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "${HOME_PATH}/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
+  [[ -z "${amlogic_kernel}" ]] && export amlogic_kernel="5.10.170"
 fi
 [[ -z "${auto_kernel}" ]] && export auto_kernel="true"
 [[ -z "${rootfs_size}" ]] && export rootfs_size="960"
