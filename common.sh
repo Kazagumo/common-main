@@ -1714,9 +1714,11 @@ fi
 
 if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]]; then
   echo "AMLOGIC_CODE=AMLOGIC" >> ${GITHUB_ENV}
-  export PACKAGING_FIRMWARE="${UPDATE_FIRMWARE_ONLINE}"
-  echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
-  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
+  if [[ -z "${BENDI_VERSION}" ]]; then
+    export PACKAGING_FIRMWARE="${UPDATE_FIRMWARE_ONLINE}"
+    echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+    echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
+  fi
   # 修改cpufreq代码适配amlogic"
   for X in $(find . -type d -name "luci-app-cpufreq"); do \
     [[ -d "$X" ]] && \
