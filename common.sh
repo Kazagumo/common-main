@@ -1662,7 +1662,11 @@ if [[ "${Delete_unnecessary_items}" == "1" ]]; then
 fi
 
 export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
-export KERNEL_patc="patches-${Replace_Kernel}"
+if [[ "${TARGET_BOARD}" == "armvirt" ]]; then
+  export KERNEL_patc="config-${Replace_Kernel}"
+else
+  export KERNEL_patc="patches-${Replace_Kernel}"
+fi
 if [[ "${Replace_Kernel}" == "0" ]]; then
   echo "不进行内核更换"
 elif [[ -n "${Replace_Kernel}" ]] && [[ -n "${patchverl}" ]]; then
