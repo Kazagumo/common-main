@@ -1862,7 +1862,7 @@ if [[ ! -d "${RELEVANCE}" ]]; then
   mkdir -p "${RELEVANCE}"
 fi
 
-export YML_PATH="${FOLDER_NAME2}/.github/workflows/packaging_armvirt.yml"
+export YML_PATH="${FOLDER_NAME2}/.github/workflows/packaging.yml"
 export PATHS1="$(grep -C 3 'paths:' "${YML_PATH}" |grep -v "#" |grep -Eo "\- '.*'" |sed 's/^[ ]*//g' |awk 'NR==1')"
 export PATHS2="- 'build/${FOLDER_NAME}/relevance/${SOURCE}start'"
 export ER_NAME1="$(grep 'FOLDER_NAME:' "${YML_PATH}" |grep -v "#" |sed 's/^[ ]*//g')"
