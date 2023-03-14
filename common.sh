@@ -1906,6 +1906,7 @@ if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |gr
   mkdir -p "${HOME_PATH}/targz"
   cp -rf ${FIRMWARE_PATH}/*.tar.gz ${HOME_PATH}/targz/${SOURCE}-armvirt-64-default-rootfs.tar.gz
 else
+  echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
   TIME r "虽然编译成功,但是没发现任何.tar.gz包存在"
 fi
 }
