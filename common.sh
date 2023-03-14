@@ -1862,9 +1862,9 @@ if [[ ! -d "${RELEVANCE}" ]]; then
   mkdir -p "${RELEVANCE}"
 fi
 
-export YML_PATH="${FOLDER_NAME2}/.github/workflows/pack_armvirt.yml"
+export YML_PATH="${FOLDER_NAME2}/.github/workflows/packaging_armvirt.yml"
 export PATHS1="$(grep -C 3 'paths:' "${YML_PATH}" |grep -v "#" |grep -Eo "\- '.*'" |sed 's/^[ ]*//g' |awk 'NR==1')"
-export PATHS2="- 'build/${FOLDER_NAME}/relevance/amstart'"
+export PATHS2="- 'build/${FOLDER_NAME}/relevance/${SOURCE}start'"
 export ER_NAME1="$(grep 'FOLDER_NAME:' "${YML_PATH}" |grep -v "#" |sed 's/^[ ]*//g')"
 export ER_NAME2="FOLDER_NAME: ${FOLDER_NAME}"
 export SOURCE_NAME1="$(grep 'SOURCE:' "${YML_PATH}" |grep -v "#" |sed 's/^[ ]*//g')"
@@ -1879,11 +1879,11 @@ else
   exit 1
 fi
 
-cat >"${RELEVANCE}/amstart" <<-EOF
+cat >"${RELEVANCE}/${SOURCE}start" <<-EOF
 Trigger packaging ${FOLDER_NAME} program-$(date +%Y%m%d%H%M%S)
 EOF
 
-cat >"${RELEVANCE}/amlogic.ini" <<-EOF
+cat >"${RELEVANCE}/${SOURCE}.ini" <<-EOF
 amlogic_model="${amlogic_model}"
 amlogic_kernel="${amlogic_kernel}"
 auto_kernel="${auto_kernel}"
