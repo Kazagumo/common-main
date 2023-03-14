@@ -1172,7 +1172,7 @@ echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 
 
-if [[ "${Replace_mac80211}" == "1" ]]; then
+if [[ "${Replace_mac80211}" == "1" ]] && [[ ! -d "package/kernel/mac80211/.svn" ]]; then
   echo "替换mac80211源码文件"
   rm -rf package/kernel/{mac80211,acx-mac80211}
   rm -rf package/firmware/{ath10k-ct-firmware,b43legacy-firmware}
