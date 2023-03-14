@@ -1888,9 +1888,10 @@ amlogic_model="${amlogic_model}"
 amlogic_kernel="${amlogic_kernel}"
 auto_kernel="${auto_kernel}"
 rootfs_size="${rootfs_size}"
+FOLDER_NAME="${FOLDER_NAME}"
 UPLOAD_FIRMWARE="${UPLOAD_FIRMWARE}"
 UPLOAD_RELEASE="${UPLOAD_RELEASE}"
-FOLDER_NAME="${FOLDER_NAME}"
+UPLOAD_WETRANSFER="${UPLOAD_WETRANSFER}"
 EOF
 
 chmod -R +x ${FOLDER_NAME2}
