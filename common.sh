@@ -1899,8 +1899,8 @@ git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 
 function firmware_jiance() {
 if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]] && [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*.tar.gz"` -eq '1' ]]; then
-  mv -f ${FIRMWARE_PATH}/*.tar.gz ${HOME_PATH}/bin/openwrt-armvirt-64-default-rootfs.tar.gz
-  mv -f ${HOME_PATH}/bin/openwrt-armvirt-64-default-rootfs.tar.gz ${FIRMWARE_PATH}/openwrt-armvirt-64-default-rootfs.tar.gz
+  mv -f ${FIRMWARE_PATH}/*.tar.gz ${HOME_PATH}/bin/${SOURCE}-armvirt-64-default-rootfs.tar.gz
+  mv -f ${HOME_PATH}/bin/${SOURCE}-armvirt-64-default-rootfs.tar.gz ${FIRMWARE_PATH}/${SOURCE}-armvirt-64-default-rootfs.tar.gz
 else
   TIME r "虽然编译成功,但是没发现任何.tar.gz包存在"
 fi
