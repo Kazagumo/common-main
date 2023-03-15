@@ -13,6 +13,8 @@ else
     cp -Rf shangyou/build operates
   fi
 fi
+
+for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do rm -rf "${X}"; done
 }
 
 function tongbu_1() {
@@ -68,8 +70,6 @@ case "${TONGBU_CANGKU}" in
   done
   
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/*.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/
-  
-  for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do rm -rf "${X}"; done
 ;;
 esac
 
