@@ -40,7 +40,7 @@ case "${TONGBU_CANGKU}" in
   
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak'); do cp -Rf "${X}" "${X}.bak"; done
   
-  for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak' |grep -v 'synchronise.yml' |grep -v 'compile.yml'); do
+  for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v 'synchronise.yml\|compile.yml\|packaging.yml\|.bak'); do
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
     TARGE1="target: \\[.*\\]"
     TARGE2="target: \\[${aa}\\]"
