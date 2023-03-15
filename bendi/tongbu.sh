@@ -141,9 +141,7 @@ cp -Rf shangyou/.github/workflows/* repogx/.github/workflows/
 }
 
 function github_establish() {
-if [[ ! -d "shangyou" ]]; then
-  git clone -b main https://github.com/281677160/autobuild.git shangyou
-fi
+rm -rf shangyoues git clone -b main https://github.com/281677160/autobuild.git shangyoues
 if [[ ! -d "repogx" ]]; then
   git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 fi
@@ -156,7 +154,7 @@ if [[ "${aa}" == "请选择" ]]; then
   exit 1
 fi
 if [[ ! -d "repogx/build/${bb}" ]]; then
-  cp -Rf shangyou/build/"${aa}" repogx/build/"${bb}"
+  cp -Rf shangyoues/build/"${aa}" repogx/build/"${bb}"
   rm -rf repogx/build/${bb}/relevance/*.ini
   rm -rf repogx/build/${bb}/*.bak
   echo
@@ -171,19 +169,19 @@ fi
 
 SOURCE_CODE1="$(source "repogx/build/${bb}/settings.ini" && echo ${SOURCE_CODE})"
 if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
-  cp -Rf shangyou/.github/workflows/Immortalwrt.yml repogx/.github/workflows/${bb}.yml
+  cp -Rf shangyoues/.github/workflows/Immortalwrt.yml repogx/.github/workflows/${bb}.yml
   nn="Immortalwrt"
 elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
-  cp -Rf shangyou/.github/workflows/Lede.yml repogx/.github/workflows/${bb}.yml
+  cp -Rf shangyoues/.github/workflows/Lede.yml repogx/.github/workflows/${bb}.yml
   nn="Lede"
 elif [[ "${SOURCE_CODE1}" == "LIENOL" ]]; then
-  cp -Rf shangyou/.github/workflows/Lienol.yml repogx/.github/workflows/${bb}.yml
+  cp -Rf shangyoues/.github/workflows/Lienol.yml repogx/.github/workflows/${bb}.yml
   nn="Lienol"
 elif [[ "${SOURCE_CODE1}" == "OFFICIAL" ]]; then
-  cp -Rf shangyou/.github/workflows/Official.yml repogx/.github/workflows/${bb}.yml
+  cp -Rf shangyoues/.github/workflows/Official.yml repogx/.github/workflows/${bb}.yml
   nn="Official"
 elif [[ "${SOURCE_CODE1}" == "XWRT" ]]; then
-  cp -Rf shangyou/.github/workflows/Xwrt.yml repogx/.github/workflows/${bb}.yml
+  cp -Rf shangyoues/.github/workflows/Xwrt.yml repogx/.github/workflows/${bb}.yml
   nn="Xwrt"
 fi
 
