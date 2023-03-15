@@ -45,6 +45,9 @@ case "${TONGBU_CANGKU}" in
     TARGE1="target: \\[.*\\]"
     TARGE2="target: \\[${aa}\\]"
     yml_name2="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+    if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
+      SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
+    fi
     if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${X}
     elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
@@ -62,13 +65,9 @@ case "${TONGBU_CANGKU}" in
     sed -i "s?${TARGE1}?${TARGE2}?g" ${X}
     sed -i "s?${yml_name1}?${yml_name2}?g" "${X}"
     
-    if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
-      SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
-    else
+    if [[ ! -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
       rm -rf "${X}"
-      echo
       echo -e "\033[31m build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件 \033[0m"
-      echo
     fi
   done
   
