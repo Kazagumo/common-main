@@ -29,12 +29,6 @@ for X in $(grep "\"IMMORTALWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/
 for X in $(grep "\"XWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
 for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
 
-for X in $(grep "\"COOLSNOWWOLF\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
-for X in $(grep "\"LIENOL\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
-for X in $(grep "\"IMMORTALWRT\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
-for X in $(grep "\"XWRT\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
-for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "diy-part.sh" |sed 's/\/diy-part.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
-
 # 云仓库的修改文件
 case "${TONGBU_CANGKU}" in
 1)
