@@ -6,6 +6,7 @@ function tongbu_0() {
 # 第一步下载上游仓库
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f repogx/build operates
+  echo "11"
 else
   sudo rm -rf shangyou
   git clone -b main https://github.com/281677160/autobuild shangyou
@@ -13,8 +14,6 @@ else
     cp -Rf shangyou/build operates
   fi
 fi
-
-for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do rm -rf "${X}"; done
 }
 
 function tongbu_1() {
@@ -22,6 +21,8 @@ function tongbu_1() {
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 for X in $(find "operates" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
 for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
+
+for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do rm -rf "${X}"; done
 
 
 # 从上游仓库覆盖文件到本地仓库
@@ -78,6 +79,8 @@ esac
 
 # 修改本地文件
 if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
+  for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do rm -rf "${X}"; done
+  
   rm -rf operates/*/relevance
   for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do 
     mkdir -p "${X}/relevance"
@@ -113,7 +116,9 @@ fi
 
 function tongbu_2() {
   for X in $(find "operates" -name "*.bak"); do rm -rf "${X}"; done
+  echo "22"
   if [[ -d "repogx/.github/workflows" ]]; then
+    echo "33"
     for X in $(find "repogx/.github/workflows" -name "*.bak"); do rm -rf "${X}"; done
   fi
 }
@@ -122,6 +127,7 @@ function tongbu_3() {
 # 上游仓库用完，删除了
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f operates repogx/build
+  echo "44"
 else
   rm -rf shangyou
 fi
