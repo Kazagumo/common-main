@@ -1939,9 +1939,21 @@ git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_
 if [[ `ls -1 "${FIRMWARE_PATH}" |grep -c ".*.tar.gz"` -eq '1' ]]; then
   cp -Rf ${FIRMWARE_PATH}/*.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 else
-  wget -q https://github.com/${GIT_REPOSITORY}/releases/download/targz/${SOURCE}-armvirt-64-default-rootfs.tar.gz -O ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+  curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/targz -o targz.api
   if [[ $? -ne 0 ]];then
-    echo "下载rootfs.tar.gz包失败,请检查链接或链接地址源头存不存在${SOURCE}-armvirt-64-default-rootfs.tar.gz"
+    TIME r "下载api失败"
+    exit 1
+  fi
+  if [[ `grep -c "${SOURCE}-armvirt-64-default-rootfs.tar.gz" "targz.api"` -eq '0' ]]; then
+    TIME r "该链接 https://github.com/${GIT_REPOSITORY}/releases/tag/targz"
+    TIME r "不存在 ${SOURCE}-armvirt-64-default-rootfs.tar.gz 包"
+    exit 1
+  else
+    wget -q https://github.com/${GIT_REPOSITORY}/releases/download/targz/${SOURCE}-armvirt-64-default-rootfs.tar.gz -O ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+  fi
+  if [[ $? -ne 0 ]];then
+    TIME r "下载rootfs.tar.gz包失败,请检查网络"
+    exit 1
   fi
 fi
 
