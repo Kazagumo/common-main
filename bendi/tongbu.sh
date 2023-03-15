@@ -73,8 +73,9 @@ case "${TONGBU_CANGKU}" in
     sed -i "s?${yml_name1}?${yml_name2}?g" "${X}"
   done
   
-  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/compile.yml
-  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/synchronise.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/synchronise.yml
+  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/*.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/
+  
+  for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
 ;;
 esac
 
