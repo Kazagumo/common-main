@@ -48,6 +48,10 @@ case "${TONGBU_CANGKU}" in
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
     fi
+    if [[ ! -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
+      rm -rf "${X}"
+      echo -e "\033[31m build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件 \033[0m"
+    fi
     if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${X}
     elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
@@ -64,11 +68,6 @@ case "${TONGBU_CANGKU}" in
     yml_name1="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
     sed -i "s?${TARGE1}?${TARGE2}?g" ${X}
     sed -i "s?${yml_name1}?${yml_name2}?g" "${X}"
-    
-    if [[ ! -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
-      rm -rf "${X}"
-      echo -e "\033[31m build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件 \033[0m"
-    fi
   done
   
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/compile.yml
