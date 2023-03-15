@@ -1929,11 +1929,11 @@ fi
 export kernel_repo="https://github.com/ophub/kernel/tree/main/pub"
 export gh_token="${REPO_TOKEN}"
 
-echo "${amlogic_model}"
-echo "${amlogic_kernel}"
-echo "${auto_kernel}"
-echo "${rootfs_size}"
-echo "${kernel_repo}"
+echo "芯片型号：${amlogic_model}"
+echo "使用内核：${amlogic_kernel}"
+echo "自动检测：${auto_kernel}"
+echo "rootfs大小：${rootfs_size}"
+echo "内核仓库：${kernel_repo}"
 
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
 [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
