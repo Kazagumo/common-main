@@ -5,6 +5,8 @@
 
 function Delete_useless(){
 sudo apt-get update -y
+docker rmi `docker images -q`
+[[ -n "${AGENT_TOOLSDIRECTORY}" ]] && sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
 # sudo -E apt-get -qq remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
 sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
 }
@@ -12,6 +14,7 @@ sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /
 function install_mustrelyon(){
 # 安装我仓库需要的依赖
 sudo apt-get install -y rename pigz curl libfuse-dev
+sudo -E systemctl daemon-reload
 
 # 安装天灵大佬的依赖
 sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
