@@ -38,7 +38,6 @@ case "${TONGBU_CANGKU}" in
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE repogx/LICENSE
   
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak'); do cp -Rf "${X}" "${X}.bak"; done
-  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/*.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/
   
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak' |grep -v 'synchronise.yml' |grep -v 'compile.yml'); do
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
@@ -71,17 +70,9 @@ case "${TONGBU_CANGKU}" in
     fi
   done
   
-  
-  for i in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak' |grep -v 'synchronise.yml' |grep -v 'compile.yml'); do
-    aa="$(grep 'target: \[.*\]' "${i}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
-    TARGE1="target: \\[.*\\]"
-    TARGE2="target: \\[${aa}\\]"
-    yml_name2="$(grep 'name:' "${i}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
-    
-    yml_name1="$(grep 'name:' "${i}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
-    sed -i "s?${TARGE1}?${TARGE2}?g" ${i}
-    sed -i "s?${yml_name1}?${yml_name2}?g" "${i}"
-  done
+  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/compile.yml
+  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/packaging.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/packaging.yml
+  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/synchronise.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/synchronise.yml
 ;;
 esac
 
