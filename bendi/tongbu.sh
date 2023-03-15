@@ -36,19 +36,15 @@ case "${TONGBU_CANGKU}" in
 1)
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md repogx/README.md
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE repogx/LICENSE
-  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/*.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/
+  
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak'); do cp -Rf "${X}" "${X}.bak"; done
+  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/*.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/
   
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak' |grep -v 'synchronise.yml' |grep -v 'compile.yml'); do
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
-    if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
-      SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
-    else
-      rm -rf "${X}"
-      echo
-      echo -e "\033[31m build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件 \033[0m"
-      echo
-    fi
+    TARGE1="target: \\[.*\\]"
+    TARGE2="target: \\[${aa}\\]"
+    yml_name2="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
     if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${X}
     elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
@@ -61,6 +57,18 @@ case "${TONGBU_CANGKU}" in
       cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml ${X}
     else
       echo ""
+    fi
+    yml_name1="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+    sed -i "s?${TARGE1}?${TARGE2}?g" ${X}
+    sed -i "s?${yml_name1}?${yml_name2}?g" "${X}"
+    
+    if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
+      SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
+    else
+      rm -rf "${X}"
+      echo
+      echo -e "\033[31m build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件 \033[0m"
+      echo
     fi
   done
   
