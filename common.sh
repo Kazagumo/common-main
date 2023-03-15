@@ -1861,12 +1861,12 @@ if [[ ! -d "${RELEVANCE}" ]]; then
 fi
 
 export YML_PATH="${FOLDER_NAME2}/.github/workflows/packaging.yml"
-export PATHS1="$(grep -C 3 'paths:' "${YML_PATH}" |grep -v "#" |grep -Eo "\- '.*'" |sed 's/^[ ]*//g' |awk 'NR==1')"
-export PATHS2="- 'build/${FOLDER_NAME}/relevance/${SOURCE}start'"
-export ER_NAME1="$(grep 'FOLDER_NAME:' "${YML_PATH}" |grep -v "#" |sed 's/^[ ]*//g')"
-export ER_NAME2="FOLDER_NAME: ${FOLDER_NAME}"
-export SOURCE_NAME1="$(grep 'SOURCE:' "${YML_PATH}" |grep -v "#" |sed 's/^[ ]*//g')"
-export SOURCE_NAME2="SOURCE: ${SOURCE}"
+export PATHS1="$(grep -A 5 'paths:' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |grep -Eo "\- '.*'" |cut -d"'" -f2 |awk 'NR==1')"
+export PATHS2="build/${FOLDER_NAME}/relevance/${SOURCE}start"
+export ER_NAME1="$(grep 'FOLDER_NAME:' "${YML_PATH}"|sed 's/^[ ]*//g' |grep -v "^#" |cut -d' ' -f2)"
+export ER_NAME2="${FOLDER_NAME}"
+export SOURCE_NAME1="$(grep 'SOURCE:' "${YML_PATH}"|sed 's/^[ ]*//g' |grep -v "^#" |cut -d' ' -f2)"
+export SOURCE_NAME2="${SOURCE}"
 
 if [[ -n "${PATHS1}" ]] && [[ -n "${ER_NAME1}" ]] && [[ -n "${SOURCE_NAME1}" ]]; then
   sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
