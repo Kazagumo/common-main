@@ -40,9 +40,6 @@ case "${TONGBU_CANGKU}" in
   
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak' |grep -v 'synchronise.yml' |grep -v 'compile.yml'); do
     aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
-    TARGE1="target: \\[.*\\]"
-    TARGE2="target: \\[${aa}\\]"
-    yml_name2="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
     if [[ -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
       SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
     else
@@ -64,10 +61,20 @@ case "${TONGBU_CANGKU}" in
     else
       echo ""
     fi
-    yml_name1="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
-    sed -i "s?${TARGE1}?${TARGE2}?g" ${X}
-    sed -i "s?${yml_name1}?${yml_name2}?g" "${X}"
   done
+  
+  
+  for i in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak' |grep -v 'synchronise.yml' |grep -v 'compile.yml'); do
+    aa="$(grep 'target: \[.*\]' "${i}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
+    TARGE1="target: \\[.*\\]"
+    TARGE2="target: \\[${aa}\\]"
+    yml_name2="$(grep 'name:' "${i}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+    
+    yml_name1="$(grep 'name:' "${i}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+    sed -i "s?${TARGE1}?${TARGE2}?g" ${i}
+    sed -i "s?${yml_name1}?${yml_name2}?g" "${i}"
+  done
+    
   
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/*.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/
 ;;
