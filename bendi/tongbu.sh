@@ -36,6 +36,7 @@ case "${TONGBU_CANGKU}" in
 1)
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md repogx/README.md
   cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE repogx/LICENSE
+  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/*.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak'); do cp -Rf "${X}" "${X}.bak"; done
   
   for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak' |grep -v 'synchronise.yml' |grep -v 'compile.yml'); do
@@ -74,9 +75,6 @@ case "${TONGBU_CANGKU}" in
     sed -i "s?${TARGE1}?${TARGE2}?g" ${i}
     sed -i "s?${yml_name1}?${yml_name2}?g" "${i}"
   done
-    
-  
-  cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/*.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/
 ;;
 esac
 
