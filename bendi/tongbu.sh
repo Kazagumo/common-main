@@ -140,7 +140,8 @@ cp -Rf shangyou/.github/workflows/* repogx/.github/workflows/
 }
 
 function github_establish() {
-rm -rf shangyoues && git clone -b main https://github.com/281677160/autobuild.git shangyoues
+rm -rf shangyoues
+git clone -b main https://github.com/281677160/autobuild.git shangyoues
 if [[ ! -d "repogx" ]]; then
   git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 fi
