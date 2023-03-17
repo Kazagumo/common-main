@@ -1,5 +1,5 @@
 #!/bin/bash
-# https://github.com/281677160/build-actions
+# https://github.com/kazagumo/build-actions
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
@@ -287,7 +287,7 @@ fi
 
 
 function Diy_update() {
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/custom/ubuntu.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/kazagumo/common-main/main/custom/ubuntu.sh)
 if [[ $? -ne 0 ]];then
   TIME r "依赖安装失败，请检测网络后再次尝试!"
   exit 1
@@ -527,7 +527,7 @@ master)
   sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   # Lienol大的21.02PW会显示缺少依赖，要修改一下
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/kazagumo/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 
 ;;
 22.03)
@@ -548,9 +548,9 @@ master)
     
   # Lienol大的19.07补丁
   sed -i 's?PATCHVER:=.*?PATCHVER:=4.14?g' target/linux/x86/Makefile
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/kazagumo/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/kazagumo/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/kazagumo/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
 
 ;;
 19.07-test)
@@ -558,9 +558,9 @@ master)
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
     
   # Lienol大的19.07-cannotuse补丁
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/kazagumo/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/kazagumo/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/kazagumo/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
 ;;
 esac
 
@@ -602,7 +602,7 @@ master)
   find . -name 'default-settings' | xargs -i rm -rf {}
   
   if [[ ! -d package/emortal/default-settings ]]; then
-    svn co https://github.com/281677160/common-main/trunk/IMMORTALWRT/default-settings package/emortal/default-settings
+    svn co https://github.com/kazagumo/common-main/trunk/IMMORTALWRT/default-settings package/emortal/default-settings
   fi
   
   if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
@@ -648,7 +648,7 @@ find . -type d -name 'default-settings' | xargs -i rm -rf {}
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   
-svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+svn export https://github.com/kazagumo/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 if [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash ?g' "include/target.mk"
@@ -690,7 +690,7 @@ find . -type d -name 'default-settings' | xargs -i rm -rf {}
 sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
-svn export https://github.com/281677160/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+svn export https://github.com/kazagumo/common-main/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 if [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci luci-compat luci-lib-ipkg luci-app-openclash ?g' "include/target.mk"
@@ -704,13 +704,13 @@ if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Ma
 fi
 
 if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/kazagumo/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 elif [[ "${REPO_BRANCH}" = "openwrt-19.07" ]]; then
   sed -i "s?+luci-lib-base?+luci-base?g" ${HOME_PATH}/package/default-settings/Makefile
-  rm -rf ${HOME_PATH}/feeds/packages/devel/packr && svn export https://github.com/281677160/common-main/trunk/OFFICIAL/1907/packr ${HOME_PATH}/feeds/packages/devel/packr
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
+  rm -rf ${HOME_PATH}/feeds/packages/devel/packr && svn export https://github.com/kazagumo/common-main/trunk/OFFICIAL/1907/packr ${HOME_PATH}/feeds/packages/devel/packr
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/kazagumo/common-main/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/kazagumo/common-main/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/kazagumo/common-main/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang && svn export https://github.com/coolsnowwolf/packages/trunk/lang/golang ${HOME_PATH}/feeds/packages/lang/golang
 fi
 
@@ -734,7 +734,7 @@ if [[ -n "${ttydjso}" ]]; then
   ttydjson="${HOME_PATH}/${ttydjso}"
 fi
 if [[ -f "${ttydjson}" ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjson}"
+  curl -fsSL https://raw.githubusercontent.com/kazagumo/common-main/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjson}"
 fi
 
 [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
@@ -1407,7 +1407,7 @@ fi
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   pmg="$(echo "$(date +%d)" | sed 's/^.//g')"
   mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
-  curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/argon/jpg/${pmg}.jpg > ${HOME_PATH}/files/www/luci-static/argon/background/moren.jpg
+  curl -fsSL  https://raw.githubusercontent.com/kazagumo/openwrt-package/usb/argon/jpg/${pmg}.jpg > ${HOME_PATH}/files/www/luci-static/argon/background/moren.jpg
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
@@ -1459,7 +1459,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-unblockneteasemusic=y" ${HOME_PATH}/.con
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  mkdir -p ${HOME_PATH}/files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
+  mkdir -p ${HOME_PATH}/files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/kazagumo/openwrt-package/usb/block/10-mount > ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
@@ -1919,7 +1919,7 @@ cd ${GITHUB_WORKSPACE}
 export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
 [[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
 if [[ -z "${amlogic_kernel}" ]]; then
-  curl -fsSL https://github.com/281677160/common-main/releases/download/API/stable.api -o ${HOME_PATH}/stable.api
+  curl -fsSL https://github.com/kazagumo/common-main/releases/download/API/stable.api -o ${HOME_PATH}/stable.api
   export amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "${HOME_PATH}/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
   [[ -z "${amlogic_kernel}" ]] && export amlogic_kernel="5.10.170"
 fi
