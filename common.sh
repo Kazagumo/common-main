@@ -2203,7 +2203,7 @@ fi
 }
 
 function Diy_menu5() {
-Diy_prevent
+#Diy_prevent
 Make_defconfig
 Diy_Publicarea2
 Diy_adguardhome
